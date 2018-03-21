@@ -7,6 +7,37 @@ import arrow from './img/arrow.svg';
 import kitten from './img/kitten.svg';
 import metamask from './img/metamask.png';
 
+const myCats = [{ sequence: 4784520, token: '341605' }, { sequence: 4784503, token: '347851' }];
+const purrs = [
+  {
+    author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+    created_at: 1520425637000,
+    id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
+    message: "I'm supercat! (true story)",
+    sequence: 5212559,
+    token_id: '341605',
+    family: 'ethereum'
+  },
+  {
+    author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+    created_at: 1520425637000,
+    id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
+    message: "I'm supercat! (true story)",
+    sequence: 5212559,
+    token_id: '341603',
+    family: 'ethereum'
+  },
+  {
+    author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+    created_at: 1520425637000,
+    id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
+    message: "I'm supercat! (true story)",
+    sequence: 5212559,
+    token_id: '341605',
+    family: 'ethereum'
+  }
+];
+
 class PurrForm extends Component {
   state = {
     purr: undefined
@@ -30,7 +61,8 @@ class PurrForm extends Component {
           </div>
           <div className={this.state.purr ? '' : 'hidden'}>
             <a className="button purrit">
-              <img alt="MetaMask" style={{ width: '22px', marginRight: '20px', height: 'auto' }} src={metamask} />Purr it!
+              <img alt="MetaMask" style={{ width: '22px', marginRight: '20px', height: 'auto' }} src={metamask} />Purr
+              it!
             </a>
           </div>
         </form>
@@ -73,9 +105,9 @@ class App extends Component {
               <div className="container">
                 <div className="columns" style={{ alignItems: 'center' }}>
                   <div className="column is-2">
-                    <a href="index.html">
+                    <Link to="/">
                       <h3 className="logo">Purrbook</h3>
-                    </a>
+                    </Link>
                   </div>
                   <div className="column is-10 has-text-right">
                     <div className="select">
