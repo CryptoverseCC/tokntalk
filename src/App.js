@@ -24,7 +24,43 @@ const purrs = [
     id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
     message: "I'm supercat! (true story)",
     sequence: 5212559,
+    token_id: '341605',
+    family: 'ethereum'
+  },
+  {
+    author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+    created_at: 1520425637000,
+    id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
+    message: "I'm supercat! (true story)",
+    sequence: 5212559,
+    token_id: '341605',
+    family: 'ethereum'
+  },
+  {
+    author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+    created_at: 1520425637000,
+    id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
+    message: "I'm supercat! (true story)",
+    sequence: 5212559,
     token_id: '341603',
+    family: 'ethereum'
+  },
+  {
+    author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+    created_at: 1520425637000,
+    id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
+    message: "I'm supercat! (true story)",
+    sequence: 5212559,
+    token_id: '341605',
+    family: 'ethereum'
+  },
+  {
+    author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+    created_at: 1520425637000,
+    id: 'claim:0x3e58d7a2955b3677fcb63752b906640c04bc9d773c07c11d146955cd7edc4ead:0',
+    message: "I'm supercat! (true story)",
+    sequence: 5212559,
+    token_id: '341605',
     family: 'ethereum'
   },
   {
@@ -37,6 +73,22 @@ const purrs = [
     family: 'ethereum'
   }
 ];
+
+const chunkBy = (items, keySelector) => {
+  let chunks = [];
+  for (const item of items) {
+    const lastChunk = chunks[chunks.length - 1];
+    if (lastChunk && lastChunk.key === keySelector(item)) {
+      lastChunk.items.push(item);
+    } else {
+      chunks.push({ key: keySelector(item), items: [item] });
+    }
+  }
+  return chunks;
+};
+
+export const transformPurrsToPurrGroups = purrs =>
+  chunkBy(purrs, ({ token_id }) => token_id).map(({ key, items }) => ({ catId: key, purrs: items }));
 
 class PurrForm extends Component {
   state = {
@@ -196,41 +248,13 @@ class App extends Component {
                       <PurrGroup catId="189402" img={kitty1}>
                         <PurrForm />
                       </PurrGroup>
-                      <PurrGroup catId="189402" img={kitty1}>
-                        <Purr message={'Teddy bears taking over!'} date={'10/12/2018'} />
-                        <Purr
-                          message={'A thank you, to everyone working countless hours to solve the scaling problem'}
-                          date={'09/12/2018'}
-                        />
-                      </PurrGroup>
-                      <PurrGroup catId="189403" img={kitty2}>
-                        <Purr
-                          message={
-                            'Anyone interested to be the iOS track judge for @it_challenges this weekend in Krakow? #iosdev https://itchallenges.me/'
-                          }
-                          date={'10/12/2018'}
-                        />
-                        <Purr
-                          message={
-                            '#DeleteFacebook Movement Gains Steam After 50 Million Users Have Data Leaked $FB https://goo.gl/LA9wRb'
-                          }
-                          date={'09/12/2018'}
-                        />
-                      </PurrGroup>
-                      <PurrGroup catId="189404" img={kitty3}>
-                        <Purr
-                          message={
-                            "I deleted my Facebook account over a year ago and noticed a very real drop in anxiety. I have never been a particularly anxious person and until then, hadn't realised how deeply entrenched I had become in what is essentially an addictive game with shit graphics. #DeleteFacebook"
-                          }
-                          date={'10/12/2018'}
-                        />
-                        <Purr
-                          message={
-                            'There is a pleasure in righteous fury. I savor it about silly things, like lids left ajar or autocorrect insisting “lids” is “kids” So that I can be kind about things that matter.'
-                          }
-                          date={'09/12/2018'}
-                        />
-                      </PurrGroup>
+                      {transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
+                        <PurrGroup key={groupIndex} catId={catId} img={kitty1}>
+                          {purrs.map(({ message, sequence }, purrIndex) => (
+                            <Purr key={purrIndex} message={message} date={sequence} />
+                          ))}
+                        </PurrGroup>
+                      ))}
                     </div>
                   </section>
                 </React.Fragment>
