@@ -255,7 +255,39 @@ a:hover {
   letter-spacing: 0.2em;
   font-weight: 700;
   font-family: 'Open Sans', sans-serif;
-  color: #827F87;
+  color: #827f87;
+}
+
+.changeCat--button {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0;
+  top: 50%;
+  background: none;
+  outline: none;
+  border: none;
+  transform: translateY(calc(-50% - 5px));
+  cursor: pointer;
+}
+
+.changeCat--button-back .changeCat--arrow {
+  transform: rotate(90deg);
+}
+
+.changeCat--button-back:hover .changeCat--arrow {
+  color: #ffa08d;
+  transform: scale(1.1) rotate(90deg);
+}
+
+.changeCat--button-forward .changeCat--arrow {
+  transform: rotate(-90deg);
+}
+
+.changeCat--button-forward:hover .changeCat--arrow {
+  color: #ffa08d;
+  transform: scale(1.1) rotate(-90deg);
 }
 
 .kitten {
