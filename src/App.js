@@ -216,6 +216,57 @@ const Index = ({ activeCat }) => (
   </React.Fragment>
 );
 
+class Dropdown extends Component {
+  state = {
+    active: false
+  };
+
+  componentWillUnmount() {
+    this.closeDropdown();
+  }
+
+  openDropdown = e => {
+    e.stopPropagation();
+    this.setState({ active: true }, () => {
+      window.addEventListener('click', this.onWindowClick);
+      window.addEventListener('touchstart', this.onWindowClick);
+    });
+  };
+
+  closeDropdown = () => {
+    this.setState({ active: false });
+    window.removeEventListener('click', this.onWindowClick);
+    window.removeEventListener('touchstart', this.onWindowClick);
+  };
+
+  onWindowClick = event => {
+    if (event.target !== this.dropdownElement && !this.dropdownElement.contains(event.target) && this.state.active) {
+      this.closeDropdown();
+    }
+  };
+
+  render() {
+    return (
+      <div className={`dropdown ${this.state.active ? 'is-active' : ''}`}>
+        <div className="dropdown-trigger">
+          <button className="button" onClick={e => this.openDropdown(e)}>
+            <span>Your kitties</span>
+          </button>
+        </div>
+        <div className="dropdown-menu" ref={dropdown => (this.dropdownElement = dropdown)}>
+          <div className="dropdown-content">{this.props.children(this.closeDropdown)}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+const DropdownItem = ({ children, to, closeDropdown }) => (
+  <Link to={`/${to}`} className="dropdown-item" onClick={closeDropdown}>
+    {children}
+  </Link>
+);
+
 const Navigation = ({ myCats, activeCat, changeActiveCat }) => (
   <nav className="navigation">
     <div className="container">
@@ -226,11 +277,15 @@ const Navigation = ({ myCats, activeCat, changeActiveCat }) => (
           </Link>
         </div>
         <div className="column is-10 has-text-right">
-          <div className="select">
-            <select id="account" value={activeCat.token} onChange={e => changeActiveCat(e.target.value)}>
-              {myCats.map(cat => <option value={cat.token}>Kitten #{cat.token}</option>)}
-            </select>
-          </div>
+          <Dropdown>
+            {closeDropdown =>
+              myCats.map(cat => (
+                <DropdownItem key={cat.token} to={cat.token} closeDropdown={closeDropdown}>
+                  Kitty {cat.token}
+                </DropdownItem>
+              ))
+            }
+          </Dropdown>
         </div>
       </div>
     </div>
@@ -283,7 +338,6 @@ class App extends Component {
     activeCat: myCats[0],
     myCats,
     changeActiveCat: token => {
-      console.log(token, myCats, myCats.find(cat => cat.token === token))
       this.setState({ activeCat: myCats.find(cat => cat.token === token) });
     }
   };
