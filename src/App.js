@@ -147,7 +147,7 @@ const PurrGroup = ({ catId, img, children }) => (
   </div>
 );
 
-const ShowCat = ({ match: { params: { catId } } }) => (
+const ShowCat = ({ match: { params: { catId } }, activeCat }) => (
   <React.Fragment>
     <section className="hero hero-kitten is-small">
       <div className="hero-body">
@@ -165,6 +165,7 @@ const ShowCat = ({ match: { params: { catId } } }) => (
         {transformPurrsToPurrGroups(purrs.filter(purr => purr.token_id === catId)).map(
           ({ catId, purrs }, groupIndex) => (
             <PurrGroup key={groupIndex} catId={catId} img={kitty1}>
+              {activeCat && activeCat.token === catId && <PurrForm />}
               {purrs.map(({ message, sequence }, purrIndex) => (
                 <Purr key={purrIndex} message={message} date={sequence} />
               ))}
@@ -176,7 +177,7 @@ const ShowCat = ({ match: { params: { catId } } }) => (
   </React.Fragment>
 );
 
-const Index = () => (
+const Index = ({ activeCat }) => (
   <React.Fragment>
     <section className="hero">
       <div className="hero-body">
@@ -198,9 +199,11 @@ const Index = () => (
     </section>
     <section style={{ paddingTop: '4rem' }}>
       <div className="container">
-        <PurrGroup catId="189402" img={kitty1}>
-          <PurrForm />
-        </PurrGroup>
+        {activeCat && (
+          <PurrGroup catId={activeCat.token} img={kitty1}>
+            <PurrForm />
+          </PurrGroup>
+        )}
         {transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
           <PurrGroup key={groupIndex} catId={catId} img={kitty1}>
             {purrs.map(({ message, sequence }, purrIndex) => (
@@ -213,7 +216,7 @@ const Index = () => (
   </React.Fragment>
 );
 
-const Navigation = () => (
+const Navigation = ({ myCats, activeCat, changeActiveCat }) => (
   <nav className="navigation">
     <div className="container">
       <div className="columns" style={{ alignItems: 'center' }}>
@@ -224,8 +227,8 @@ const Navigation = () => (
         </div>
         <div className="column is-10 has-text-right">
           <div className="select">
-            <select id="account">
-              <option>Kitten #189402</option>
+            <select id="account" value={activeCat.token} onChange={e => changeActiveCat(e.target.value)}>
+              {myCats.map(cat => <option value={cat.token}>Kitten #{cat.token}</option>)}
             </select>
           </div>
         </div>
@@ -276,15 +279,28 @@ const Footer = () => (
 );
 
 class App extends Component {
+  state = {
+    activeCat: myCats[0],
+    myCats,
+    changeActiveCat: token => {
+      console.log(token, myCats, myCats.find(cat => cat.token === token))
+      this.setState({ activeCat: myCats.find(cat => cat.token === token) });
+    }
+  };
   render() {
+    const { activeCat, myCats, changeActiveCat } = this.state;
     return (
       <Router>
         <React.Fragment>
           <div className="main">
-            <Navigation />
+            <Navigation activeCat={activeCat} myCats={myCats} changeActiveCat={changeActiveCat} />
             <Switch>
-              <Route exact path="/:catId" component={ShowCat} />
-              <Route exact path="/" component={Index} />
+              <Route exact path="/:catId">
+                {props => <ShowCat {...props} activeCat={activeCat} />}
+              </Route>
+              <Route exact path="/">
+                {props => <Index {...props} activeCat={activeCat} />}
+              </Route>
             </Switch>
           </div>
           <Footer />
