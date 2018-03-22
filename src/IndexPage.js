@@ -21,7 +21,7 @@ class Index extends Component {
     const { activeCat, changeActiveCatToNext, changeActiveCatToPrevious, catsInfo, getCatInfo } = this.props;
 
     return (
-      <Link to={activeCat.token}>
+      <Link to={`/cryptopurr/${activeCat.token}`}>
         <div style={{ position: 'relative' }}>
           <KittyAvatar catId={activeCat.token} catsInfo={catsInfo} getCatInfo={getCatInfo} />
           <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
@@ -35,7 +35,7 @@ class Index extends Component {
   staticAvatar = ({ catId }) => {
     const { catsInfo, getCatInfo } = this.props;
     return (
-      <Link to={catId}>
+      <Link to={`/cryptopurr/${catId}`}>
         <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
         <p>Kitty #{catId}</p>
       </Link>

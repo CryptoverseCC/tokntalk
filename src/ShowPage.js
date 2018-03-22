@@ -44,7 +44,7 @@ class ShowCat extends Component {
             {!catIsOwned && !purrs.length ? null : (
               <PurrGroup
                 Avatar={() => (
-                  <Link to={`${catId}`}>
+                  <Link to={`/cryptopurr/${catId}`}>
                     <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
                     <p>Kitty #{catId}</p>
                   </Link>

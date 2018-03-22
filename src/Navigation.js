@@ -72,7 +72,7 @@ class Dropdown extends Component {
 }
 
 const DropdownItem = ({ children, to, closeDropdown }) => (
-  <Link to={to} className="dropdown-item" onClick={closeDropdown}>
+  <Link to={`/cryptopurr/${to}`} className="dropdown-item" onClick={closeDropdown}>
     {children}
   </Link>
 );
