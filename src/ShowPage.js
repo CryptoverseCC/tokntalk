@@ -13,7 +13,7 @@ class ShowCat extends Component {
     fetch(
       `https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${
         this.props.match.params.catId
-      }`
+      }/filter_sort;by=created_at;order=desc`
     )
       .then(res => res.json())
       .then(({ items: purrs }) => {
