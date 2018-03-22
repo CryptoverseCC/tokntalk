@@ -8,7 +8,7 @@ class Index extends Component {
   state = {
     purrs: []
   };
-  
+
   componentDidMount() {
     fetch(`https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`)
       .then(res => res.json())
@@ -17,8 +17,40 @@ class Index extends Component {
       });
   }
 
+  changableAvatar = () => {
+    const { activeCat, changeActiveCatToNext, changeActiveCatToPrevious, catsInfo, getCatInfo } = this.props;
+
+    return (
+      <Link to={activeCat.token}>
+        <div style={{ position: 'relative' }}>
+          <KittyAvatar catId={activeCat.token} catsInfo={catsInfo} getCatInfo={getCatInfo} />
+          <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
+          <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
+        </div>
+        <p>Kitty #{activeCat.token}</p>
+      </Link>
+    );
+  };
+
+  staticAvatar = ({ catId }) => {
+    const { catsInfo, getCatInfo } = this.props;
+    return (
+      <Link to={catId}>
+        <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
+        <p>Kitty #{catId}</p>
+      </Link>
+    );
+  };
+
+  PurrsList = ({ purrs }) =>
+    transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
+      <PurrGroup key={groupIndex} catId={catId} Avatar={this.staticAvatar}>
+        {purrs.map(({ message, created_at }, purrIndex) => <Purr key={purrIndex} message={message} date={created_at} />)}
+      </PurrGroup>
+    ));
+
   render() {
-    const { activeCat, changeActiveCatToNext, changeActiveCatToPrevious } = this.props;
+    const { activeCat } = this.props;
     const { purrs } = this.state;
     return (
       <React.Fragment>
@@ -43,38 +75,11 @@ class Index extends Component {
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
             {activeCat && (
-              <PurrGroup
-                catId={activeCat.token}
-                Avatar={() => (
-                  <Link to={`${activeCat.token}`}>
-                    <div style={{ position: 'relative' }}>
-                      <KittyAvatar catId={activeCat.token} />
-                      <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
-                      <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
-                    </div>
-                    <p>Kitty #{activeCat.token}</p>
-                  </Link>
-                )}
-              >
+              <PurrGroup Avatar={this.changableAvatar}>
                 <PurrForm />
               </PurrGroup>
             )}
-            {transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
-              <PurrGroup
-                key={groupIndex}
-                catId={catId}
-                Avatar={() => (
-                  <Link to={`${catId}`}>
-                    <KittyAvatar catId={catId} />
-                    <p>Kitty #{catId}</p>
-                  </Link>
-                )}
-              >
-                {purrs.map(({ message, sequence }, purrIndex) => (
-                  <Purr key={purrIndex} message={message} date={sequence} />
-                ))}
-              </PurrGroup>
-            ))}
+            <this.PurrsList purrs={purrs} />
           </div>
         </section>
       </React.Fragment>

@@ -245,6 +245,7 @@ a:hover {
 .purr--message {
   font-size: 1.8rem;
   display: inline-block;
+  word-break: break-all;
 }
 
 .purr--date {
@@ -303,7 +304,7 @@ a:hover {
   width: 110px;
   position: absolute;
   left: 55%;
-  top: 75%;
+  top: 85%;
   transform: translate(-50%, -50%);
   max-width: none;
 }

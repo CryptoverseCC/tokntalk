@@ -1,21 +1,30 @@
 import React from 'react';
+import colors from './colors';
 
-const KittyAvatar = ({ catId }) => {
+const KittyAvatar = ({ catId, catsInfo, getCatInfo }) => {
+  const backgroundColor = catsInfo[catId] ? colors[catsInfo[catId].color] : '';
   return (
-    <div className="kitten--img-container">
-      <KittyImg catId={catId} />
+    <div className="kitten--img-container" style={{background: backgroundColor}}>
+      <KittyImg catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
     </div>
   );
 };
 
-export const KittyImg = ({ catId, ...restProps }) => {
-  return (
-    <img
-      src={`https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/${catId}.svg`}
-      alt={catId}
-      {...restProps}
-    />
-  );
-};
+export class KittyImg extends React.Component {
+  componentDidMount() {
+    this.props.getCatInfo(this.props.catId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.catId !== this.props.catId) {
+      this.props.getCatInfo(nextProps.catId);
+    }
+  }
+
+  render() {
+    const { catId, getCatInfo, catsInfo, ...restProps } = this.props;
+    return catsInfo[catId] ? <img src={catsInfo[catId].image_url} {...restProps} /> : null;
+  }
+}
 
 export default KittyAvatar;

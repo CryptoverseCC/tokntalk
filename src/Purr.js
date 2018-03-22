@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SplitString } from "./utils";
 import metamask from './img/metamask.png';
+import timeago from 'timeago.js';
 
 export class PurrForm extends Component {
   state = {
@@ -35,17 +36,17 @@ export class PurrForm extends Component {
   }
 }
 
-export const Purr = ({ message, date }) => (
-  <div className="purr" style={{ display: 'flex', alignItems: 'center' }}>
-    <h3 className="purr--message">{message}</h3>
-    <span className="purr--date">{date}</span>
+export const Purr = ({ message, date }) => {
+  return <div className="purr" style={{ display: 'flex', alignItems: 'center' }}>
+    <p className="purr--message">{message}</p>
+    <span className="purr--date">{timeago().format(date)}</span>
   </div>
-);
+};
 
-export const PurrGroup = ({ Avatar, children }) => (
+export const PurrGroup = ({ Avatar, children, catId }) => (
   <div className="columns link-group">
     <div className="kitten column is-3 has-text-centered">
-      <Avatar />
+      <Avatar catId={catId} />
     </div>
     <div className="column is-9" style={{ paddingTop: 0, paddingBottom: 0 }}>
       {children}

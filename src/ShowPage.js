@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import KittyAvatar, { KittyImg } from './KittyAvatar';
 import { PurrGroup, PurrForm, Purr } from './Purr';
+import colors from './colors';
 
 class ShowCat extends Component {
   state = {
@@ -21,17 +22,18 @@ class ShowCat extends Component {
   }
 
   render() {
-    const { match: { params: { catId } }, myCats } = this.props;
+    const { match: { params: { catId } }, myCats, catsInfo, getCatInfo } = this.props;
     const { purrs } = this.state;
     const catIsOwned = !!myCats.find(({ token }) => catId === token);
+    const backgroundColor = catsInfo[catId] ? colors[catsInfo[catId].color] : '';
     return (
       <React.Fragment>
-        <section className="hero hero-kitten is-small">
+        <section className="hero hero-kitten is-small" style={{ backgroundColor }}>
           <div className="hero-body">
             <div className="columns">
               <div className="column is-12 has-text-centered">
                 <div className="your-kitten">
-                  <KittyImg catId={catId} style={{ width: '450px' }} />
+                  <KittyImg catsInfo={catsInfo} getCatInfo={getCatInfo} catId={catId} style={{ width: '450px' }} />
                 </div>
               </div>
             </div>
@@ -39,11 +41,11 @@ class ShowCat extends Component {
         </section>
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
-            {(!catIsOwned && !purrs.length) ? null : (
+            {!catIsOwned && !purrs.length ? null : (
               <PurrGroup
                 Avatar={() => (
                   <Link to={`${catId}`}>
-                    <KittyAvatar catId={catId} />
+                    <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
                     <p>Kitty #{catId}</p>
                   </Link>
                 )}

@@ -9,18 +9,32 @@ export default class App extends Component {
   state = {
     activeCat: undefined,
     myCats: [],
-    purrs: [],
+    catsInfo: JSON.parse(localStorage.getItem('catsInfo') || '[]')
   };
+
+  catInfoRequests = {};
 
   componentDidMount() {
     fetch(
-      `https://api-dev.userfeeds.io/ranking/tokens;identity=0x223edbc8166ba1b514729261ff53fb8c73ab4d79;asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
+      `https://api-dev.userfeeds.io/ranking/tokens;identity=0x79bd592415ff6c91cfe69a7f9cd091354fc65a18;asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
     )
       .then(res => res.json())
-      .then(myCats => {
+      .then(({ items: myCats }) => {
         this.setState({ myCats, activeCat: myCats[0] });
       });
   }
+
+  getCatInfo = catId => {
+    if (this.state.catsInfo[catId] || this.catInfoRequests[catId]) return;
+    this.catInfoRequests[catId] = fetch(`https://api.cryptokitties.co/kitties/${catId}`)
+      .then(res => res.json())
+      .then(catData => {
+        this.setState({ catsInfo: { ...this.state.catsInfo, [catId]: catData } }, () => {
+          delete this.catInfoRequests[catId];
+          localStorage.setItem('catsInfo', JSON.stringify(this.state.catsInfo));
+        });
+      });
+  };
 
   changeActiveCatToNext = () => {
     const { myCats, activeCat } = this.state;
@@ -37,8 +51,8 @@ export default class App extends Component {
   };
 
   render() {
-    const { changeActiveCatToPrevious, changeActiveCatToNext } = this;
-    const { activeCat, myCats, purrs } = this.state;
+    const { changeActiveCatToPrevious, changeActiveCatToNext, getCatInfo } = this;
+    const { activeCat, myCats, purrs, catsInfo } = this.state;
     return (
       <Router>
         <React.Fragment>
@@ -46,7 +60,9 @@ export default class App extends Component {
             <Navigation activeCat={activeCat} myCats={myCats} />
             <Switch>
               <Route exact path="/:catId">
-                {props => <ShowPage {...props} purrs={purrs} myCats={myCats} />}
+                {props => (
+                  <ShowPage {...props} purrs={purrs} myCats={myCats} catsInfo={catsInfo} getCatInfo={getCatInfo} />
+                )}
               </Route>
               <Route exact path="/">
                 {props => (
@@ -56,6 +72,8 @@ export default class App extends Component {
                     activeCat={activeCat}
                     changeActiveCatToPrevious={changeActiveCatToPrevious}
                     changeActiveCatToNext={changeActiveCatToNext}
+                    catsInfo={catsInfo}
+                    getCatInfo={getCatInfo}
                   />
                 )}
               </Route>
