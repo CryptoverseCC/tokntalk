@@ -51,8 +51,8 @@ class ShowCat extends Component {
                 )}
               >
                 {myCats.find(({ token }) => catId === token) && <PurrForm />}
-                {purrs.map(({ message, sequence }, purrIndex) => (
-                  <Purr key={purrIndex} message={message} date={sequence} />
+                {purrs.map(({ message, created_at }, purrIndex) => (
+                  <Purr key={purrIndex} message={message} date={created_at} />
                 ))}
               </PurrGroup>
             )}

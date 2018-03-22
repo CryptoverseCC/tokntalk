@@ -10,7 +10,7 @@ class Index extends Component {
   };
 
   componentDidMount() {
-    fetch(`https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`)
+    fetch(`https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d/filter_sort;by=created_at;order=desc`)
       .then(res => res.json())
       .then(({ items: purrs }) => {
         this.setState({ purrs });
@@ -76,7 +76,7 @@ class Index extends Component {
           <div className="container">
             {activeCat && (
               <PurrGroup Avatar={this.changableAvatar}>
-                <PurrForm />
+                <PurrForm catId={activeCat.token} />
               </PurrGroup>
             )}
             <this.PurrsList purrs={purrs} />

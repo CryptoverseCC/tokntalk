@@ -4,6 +4,7 @@ import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
 import Footer from './Footer';
 import Navigation from './Navigation';
+import getWeb3 from './web3';
 
 export default class App extends Component {
   state = {
@@ -15,12 +16,18 @@ export default class App extends Component {
   catInfoRequests = {};
 
   componentDidMount() {
-    fetch(
-      `https://api-dev.userfeeds.io/ranking/tokens;identity=0x79bd592415ff6c91cfe69a7f9cd091354fc65a18;asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
-    )
-      .then(res => res.json())
-      .then(({ items: myCats }) => {
-        this.setState({ myCats, activeCat: myCats[0] });
+    getWeb3()
+      .then(web3 => {
+        return web3.eth.getAccounts();
+      })
+      .then(([from]) => {
+        fetch(
+          `https://api-dev.userfeeds.io/ranking/tokens;identity=${from.toLowerCase()};asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
+        )
+          .then(res => res.json())
+          .then(({ items: myCats }) => {
+            this.setState({ myCats, activeCat: myCats[0] });
+          });
       });
   }
 

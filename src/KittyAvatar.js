@@ -23,7 +23,7 @@ export class KittyImg extends React.Component {
 
   render() {
     const { catId, getCatInfo, catsInfo, ...restProps } = this.props;
-    return catsInfo[catId] ? <img src={catsInfo[catId].image_url} {...restProps} /> : null;
+    return catsInfo[catId] ? <img alt="" src={catsInfo[catId].image_url} {...restProps} /> : null;
   }
 }
 
