@@ -4,13 +4,23 @@ import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
 import Footer from './Footer';
 import Navigation from './Navigation';
-import { myCats } from './db.json';
 
 export default class App extends Component {
   state = {
-    activeCat: myCats[0],
-    myCats
+    activeCat: undefined,
+    myCats: [],
+    purrs: [],
   };
+
+  componentDidMount() {
+    fetch(
+      `https://api-dev.userfeeds.io/ranking/tokens;identity=0x223edbc8166ba1b514729261ff53fb8c73ab4d79;asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
+    )
+      .then(res => res.json())
+      .then(myCats => {
+        this.setState({ myCats, activeCat: myCats[0] });
+      });
+  }
 
   changeActiveCatToNext = () => {
     const { myCats, activeCat } = this.state;
@@ -28,7 +38,7 @@ export default class App extends Component {
 
   render() {
     const { changeActiveCatToPrevious, changeActiveCatToNext } = this;
-    const { activeCat, myCats } = this.state;
+    const { activeCat, myCats, purrs } = this.state;
     return (
       <Router>
         <React.Fragment>
@@ -36,12 +46,13 @@ export default class App extends Component {
             <Navigation activeCat={activeCat} myCats={myCats} />
             <Switch>
               <Route exact path="/:catId">
-                {props => <ShowPage {...props} activeCat={activeCat} />}
+                {props => <ShowPage {...props} purrs={purrs} myCats={myCats} />}
               </Route>
               <Route exact path="/">
                 {props => (
                   <IndexPage
                     {...props}
+                    purrs={purrs}
                     activeCat={activeCat}
                     changeActiveCatToPrevious={changeActiveCatToPrevious}
                     changeActiveCatToNext={changeActiveCatToNext}

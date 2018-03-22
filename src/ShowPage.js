@@ -1,47 +1,64 @@
-import React from "react";
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import kitty1 from './img/1.png';
-import { purrs } from './db.json';
-import { transformPurrsToPurrGroups } from './utils';
-import kitten from './img/kitten.svg';
+import KittyAvatar, { KittyImg } from './KittyAvatar';
 import { PurrGroup, PurrForm, Purr } from './Purr';
 
-const ShowCat = ({ match: { params: { catId } }, activeCat }) => (
-  <React.Fragment>
-    <section className="hero hero-kitten is-small">
-      <div className="hero-body">
-        <div className="columns">
-          <div className="column is-12 has-text-centered">
-            <div className="your-kitten">
-              <img style={{ width: '450px', height: 'auto' }} src={kitten} alt={catId} />
+class ShowCat extends Component {
+  state = {
+    purrs: []
+  };
+
+  componentDidMount() {
+    fetch(
+      `https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${
+        this.props.match.params.catId
+      }`
+    )
+      .then(res => res.json())
+      .then(({ items: purrs }) => {
+        this.setState({ purrs });
+      });
+  }
+
+  render() {
+    const { match: { params: { catId } }, myCats } = this.props;
+    const { purrs } = this.state;
+    const catIsOwned = !!myCats.find(({ token }) => catId === token);
+    return (
+      <React.Fragment>
+        <section className="hero hero-kitten is-small">
+          <div className="hero-body">
+            <div className="columns">
+              <div className="column is-12 has-text-centered">
+                <div className="your-kitten">
+                  <KittyImg catId={catId} style={{ width: '450px' }} />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-    <section style={{ paddingTop: '4rem' }}>
-      <div className="container">
-        {transformPurrsToPurrGroups(purrs.filter(purr => purr.token_id === catId)).map(
-          ({ catId, purrs }, groupIndex) => (
-            <PurrGroup
-              key={groupIndex}
-              Avatar={() => (
-                <Link to={`${catId}`}>
-                  <img style={{ width: '50px', height: 'auto' }} src={kitty1} alt={catId} />
-                  <p>Kitty #{catId}</p>
-                </Link>
-              )}
-            >
-              {activeCat && activeCat.token === catId && <PurrForm />}
-              {purrs.map(({ message, sequence }, purrIndex) => (
-                <Purr key={purrIndex} message={message} date={sequence} />
-              ))}
-            </PurrGroup>
-          )
-        )}
-      </div>
-    </section>
-  </React.Fragment>
-);
+        </section>
+        <section style={{ paddingTop: '4rem' }}>
+          <div className="container">
+            {(!catIsOwned && !purrs.length) ? null : (
+              <PurrGroup
+                Avatar={() => (
+                  <Link to={`${catId}`}>
+                    <KittyAvatar catId={catId} />
+                    <p>Kitty #{catId}</p>
+                  </Link>
+                )}
+              >
+                {myCats.find(({ token }) => catId === token) && <PurrForm />}
+                {purrs.map(({ message, sequence }, purrIndex) => (
+                  <Purr key={purrIndex} message={message} date={sequence} />
+                ))}
+              </PurrGroup>
+            )}
+          </div>
+        </section>
+      </React.Fragment>
+    );
+  }
+}
 
 export default ShowCat;

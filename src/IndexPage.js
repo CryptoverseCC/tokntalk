@@ -1,73 +1,86 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import KittyAvatar from './KittyAvatar';
 import { PurrGroup, PurrForm, Purr } from './Purr';
 import { SplitString, transformPurrsToPurrGroups } from './utils';
-import kitty1 from './img/1.png';
-import { purrs } from './db.json';
 
-const Index = ({ activeCat, changeActiveCatToNext, changeActiveCatToPrevious }) => (
-  <React.Fragment>
-    <section className="hero">
-      <div className="hero-body">
-        <div className="container">
-          <div className="columns">
-            <div className="column is-9 is-offset-3">
-              <h1 className="title txtwav slow">
-                <SplitString>Purr Purr</SplitString>
-              </h1>
-              <div className="subtitle">
-                <h2 className="txtwav slow">
-                  <SplitString>Make your cryptokitten talk with</SplitString>
-                </h2>
+class Index extends Component {
+  state = {
+    purrs: []
+  };
+  
+  componentDidMount() {
+    fetch(`https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`)
+      .then(res => res.json())
+      .then(({ items: purrs }) => {
+        this.setState({ purrs });
+      });
+  }
+
+  render() {
+    const { activeCat, changeActiveCatToNext, changeActiveCatToPrevious } = this.props;
+    const { purrs } = this.state;
+    return (
+      <React.Fragment>
+        <section className="hero">
+          <div className="hero-body">
+            <div className="container">
+              <div className="columns">
+                <div className="column is-9 is-offset-3">
+                  <h1 className="title txtwav slow">
+                    <SplitString>Purr Purr</SplitString>
+                  </h1>
+                  <div className="subtitle">
+                    <h2 className="txtwav slow">
+                      <SplitString>Make your cryptokitten talk with</SplitString>
+                    </h2>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-    <section style={{ paddingTop: '4rem' }}>
-      <div className="container">
-        {activeCat && (
-          <PurrGroup
-            catId={activeCat.token}
-            Avatar={() => (
-              <React.Fragment>
-                <div style={{ position: 'relative' }}>
+        </section>
+        <section style={{ paddingTop: '4rem' }}>
+          <div className="container">
+            {activeCat && (
+              <PurrGroup
+                catId={activeCat.token}
+                Avatar={() => (
                   <Link to={`${activeCat.token}`}>
-                    <img style={{ width: '50px', height: 'auto' }} src={kitty1} alt={activeCat.token} />
+                    <div style={{ position: 'relative' }}>
+                      <KittyAvatar catId={activeCat.token} />
+                      <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
+                      <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
+                    </div>
+                    <p>Kitty #{activeCat.token}</p>
                   </Link>
-                  <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
-                  <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
-                </div>
-                <Link to={`${activeCat.token}`}>
-                  <p>Kitty #{activeCat.token}</p>
-                </Link>
-              </React.Fragment>
+                )}
+              >
+                <PurrForm />
+              </PurrGroup>
             )}
-          >
-            <PurrForm />
-          </PurrGroup>
-        )}
-        {transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
-          <PurrGroup
-            key={groupIndex}
-            catId={catId}
-            Avatar={() => (
-              <Link to={`${catId}`}>
-                <img style={{ width: '50px', height: 'auto' }} src={kitty1} alt={catId} />
-                <p>Kitty #{catId}</p>
-              </Link>
-            )}
-          >
-            {purrs.map(({ message, sequence }, purrIndex) => (
-              <Purr key={purrIndex} message={message} date={sequence} />
+            {transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
+              <PurrGroup
+                key={groupIndex}
+                catId={catId}
+                Avatar={() => (
+                  <Link to={`${catId}`}>
+                    <KittyAvatar catId={catId} />
+                    <p>Kitty #{catId}</p>
+                  </Link>
+                )}
+              >
+                {purrs.map(({ message, sequence }, purrIndex) => (
+                  <Purr key={purrIndex} message={message} date={sequence} />
+                ))}
+              </PurrGroup>
             ))}
-          </PurrGroup>
-        ))}
-      </div>
-    </section>
-  </React.Fragment>
-);
+          </div>
+        </section>
+      </React.Fragment>
+    );
+  }
+}
 
 const ArrowButton = ({ direction, onClick }) => (
   <button
