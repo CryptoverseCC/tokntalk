@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import timeago from 'timeago.js';
-import sanitizeHtml from 'sanitize-html';
+import DOMPurify from 'dompurify';
 import { SplitString } from './utils';
 import metamask from './img/metamask.png';
 import getWeb3 from './web3';
@@ -73,7 +73,7 @@ export class PurrForm extends Component {
 }
 
 export const Purr = ({ message, date }) => {
-  const sanitizedMessage = sanitizeHtml(message);
+  const sanitizedMessage = DOMPurify.sanitize(message);
   const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
   const regex = new RegExp(expression);
   const replaceMatchWithLink = (match) => {
