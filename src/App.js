@@ -66,12 +66,12 @@ export default class App extends Component {
           <div className="main">
             <Navigation activeCat={activeCat} myCats={myCats} />
             <Switch>
-              <Route exact path="/:catId">
+              <Route exact path="/cryptopurr/:catId">
                 {props => (
                   <ShowPage {...props} purrs={purrs} myCats={myCats} catsInfo={catsInfo} getCatInfo={getCatInfo} />
                 )}
               </Route>
-              <Route exact path="/">
+              <Route exact path="/cryptopurr">
                 {props => (
                   <IndexPage
                     {...props}
