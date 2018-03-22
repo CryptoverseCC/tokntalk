@@ -6,7 +6,7 @@ const Navigation = ({ myCats, activeCat }) => (
     <div className="container">
       <div className="columns" style={{ alignItems: 'center' }}>
         <div className="column is-2">
-          <Link to="/">
+          <Link to="/cryptopurr">
             <h3 className="logo">Purrbook</h3>
           </Link>
         </div>
@@ -72,7 +72,7 @@ class Dropdown extends Component {
 }
 
 const DropdownItem = ({ children, to, closeDropdown }) => (
-  <Link to={`/${to}`} className="dropdown-item" onClick={closeDropdown}>
+  <Link to={to} className="dropdown-item" onClick={closeDropdown}>
     {children}
   </Link>
 );
