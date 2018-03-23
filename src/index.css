@@ -161,6 +161,26 @@ a:hover {
   position: relative;
 }
 
+.new-purrs--button {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f4f3fd;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding-top: 10;
+  font-size: 1.5rem;
+  color: #2f2670;
+}
+
+.new-purrs--button:hover {
+  background-color: #2f2670;
+  color: #f4f3fd;
+  cursor: pointer;
+}
+
 /* Footer */
 
 .fixed_footer .content {

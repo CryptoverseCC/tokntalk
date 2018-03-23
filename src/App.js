@@ -33,6 +33,7 @@ export default class App extends Component {
     allowPurr: false,
     purrs: [],
     temporaryPurrs: [],
+    newPurrs: []
   };
 
   catInfoRequests = {};
@@ -86,7 +87,6 @@ export default class App extends Component {
     const contractAddress = contractAddressesForNetworkId[networkId];
     const contract = new web3.eth.Contract(contractAbi, contractAddress);
     contract.setProvider(web3.currentProvider);
-    let confirmationCount = 0;
     let lastTransactionHash;
     return contract.methods
       .post(JSON.stringify(data))
@@ -99,32 +99,31 @@ export default class App extends Component {
           created_at: new Date().getTime(),
           id: `claim:${transactionHash}:0`,
           message,
-          sequence: await web3.eth.getBlockNumber() + 1,
+          sequence: (await web3.eth.getBlockNumber()) + 1,
           token_id: token
         };
         this.addTemporaryPurr(tempPurr);
       })
-      .on('confirmation', () => {
-        confirmationCount++;
-        if(confirmationCount > 3) {
-          this.removeTemporaryPurr(`claim:${lastTransactionHash}:0`);
-        }
-      })
       .on('error', () => {
-        this.removeTemporaryPurr(`claim:${lastTransactionHash}:0`)
+        this.removeTemporaryPurr(`claim:${lastTransactionHash}:0`);
       });
   };
 
-  addTemporaryPurr = (purr) => {
-    this.setState({temporaryPurrs: [purr, ...this.state.temporaryPurrs]})
-  }
+  addTemporaryPurr = purr => {
+    this.setState({ temporaryPurrs: [purr, ...this.state.temporaryPurrs] });
+  };
 
-  removeTemporaryPurr = (purrId) => {
-    this.setState({temporaryPurrs: this.state.temporaryPurrs.filter((tempPurr) => tempPurr.id !== purrId)})
-  }
+  removeTemporaryPurr = purrId => {
+    this.setState({ temporaryPurrs: this.state.temporaryPurrs.filter(tempPurr => tempPurr.id !== purrId) });
+  };
 
-  updatePurrs = purrs => {
-    this.setState({ purrs });
+  updatePurrs = (purrs, purge) => {
+    const newState = purge || this.state.purrs.length === 0 ? { purrs } : { newPurrs: purrs };
+    this.setState(newState);
+  };
+
+  showNewPurrs = () => {
+    this.setState({purrs: this.state.newPurrs});
   };
 
   changeActiveCatToNext = () => {
@@ -142,9 +141,9 @@ export default class App extends Component {
   };
 
   render() {
-    const { changeActiveCatToPrevious, changeActiveCatToNext, getCatInfo, updatePurrs, purr } = this;
-    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs } = this.state;
-    const allPurrs = uniqBy([...temporaryPurrs, ...purrs], (purr) => purr.id);
+    const { changeActiveCatToPrevious, changeActiveCatToNext, getCatInfo, updatePurrs, purr, showNewPurrs } = this;
+    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs } = this.state;
+    const allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
     return (
       <Router>
         <React.Fragment>
@@ -152,17 +151,24 @@ export default class App extends Component {
             <Navigation activeCat={activeCat} myCats={myCats} />
             <Switch>
               <Route exact path="/cryptopurr/:catId">
-                {props => (
-                  <ShowPage
-                    {...props}
-                    purr={purr}
-                    purrs={allPurrs}
-                    updatePurrs={updatePurrs}
-                    myCats={myCats}
-                    catsInfo={catsInfo}
-                    getCatInfo={getCatInfo}
-                  />
-                )}
+                {props => {
+                  const purrsForCat = allPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
+                  const newPurrsForCat = newPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
+                  const temporaryPurrsForCat = temporaryPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
+                  return (
+                    <ShowPage
+                      {...props}
+                      purr={purr}
+                      purrs={purrsForCat}
+                      newPurrsCount={newPurrsForCat.length - temporaryPurrsForCat.length - purrsForCat.length}
+                      showNewPurrs={showNewPurrs}
+                      updatePurrs={updatePurrs}
+                      myCats={myCats}
+                      catsInfo={catsInfo}
+                      getCatInfo={getCatInfo}
+                    />
+                  );
+                }}
               </Route>
               <Route exact path="/cryptopurr">
                 {props => (
@@ -170,7 +176,9 @@ export default class App extends Component {
                     {...props}
                     purr={purr}
                     purrs={allPurrs}
+                    newPurrsCount={newPurrs.length - temporaryPurrs.length - allPurrs.length}
                     updatePurrs={updatePurrs}
+                    showNewPurrs={showNewPurrs}
                     myCats={myCats}
                     activeCat={activeCat}
                     changeActiveCatToPrevious={changeActiveCatToPrevious}

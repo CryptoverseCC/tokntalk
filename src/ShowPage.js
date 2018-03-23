@@ -6,7 +6,7 @@ import colors from './colors';
 
 class ShowCat extends Component {
   componentDidMount() {
-    this.refreshPurrs();
+    this.refreshPurrs(true);
     this.refreshInterval = setInterval(this.refreshPurrs, 3000);
   }
 
@@ -14,7 +14,7 @@ class ShowCat extends Component {
     clearInterval(this.refreshInterval);
   }
 
-  refreshPurrs = async () => {
+  refreshPurrs = async (purge = false) => {
     const response = await fetch(
       `https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${
         this.props.match.params.catId
@@ -22,7 +22,7 @@ class ShowCat extends Component {
     );
     const { items: purrs } = await response.json();
     if (purrs) {
-      this.props.updatePurrs(purrs);
+      this.props.updatePurrs(purrs, purge);
     }
   };
 
@@ -37,10 +37,18 @@ class ShowCat extends Component {
   };
 
   render() {
-    const { match: { params: { catId } }, myCats, catsInfo, getCatInfo, purrs, purr } = this.props;
+    const {
+      match: { params: { catId } },
+      myCats,
+      catsInfo,
+      getCatInfo,
+      purrs,
+      purr,
+      newPurrsCount,
+      showNewPurrs
+    } = this.props;
     const catIsOwned = !!myCats.find(({ token }) => catId === token);
     const backgroundColor = catsInfo[catId] ? colors[catsInfo[catId].color] : '';
-    const catPurrs = purrs.filter(({token_id}) => token_id === catId)
     return (
       <React.Fragment>
         <section className="hero hero-kitten is-small" style={{ backgroundColor }}>
@@ -56,13 +64,22 @@ class ShowCat extends Component {
         </section>
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
-            {!catIsOwned && !catPurrs.length ? null : (
-              <PurrGroup Avatar={this.StaticAvatar} catId={catId} >
-                {myCats.find(({ token }) => catId === token) && <PurrForm catId={catId} purr={purr} />}
-                {catPurrs.map(({ message, created_at }, purrIndex) => (
-                  <Purr key={purrIndex} message={message} date={created_at} />
-                ))}
-              </PurrGroup>
+            {!catIsOwned && !purrs.length ? null : (
+              <React.Fragment>
+                <PurrGroup Avatar={this.StaticAvatar} catId={catId}>
+                  {myCats.find(({ token }) => catId === token) && <PurrForm catId={catId} purr={purr} />}
+                  {newPurrsCount > 0 && (
+                    <div className="columns">
+                      <button className="column is-12 new-purrs--button" onClick={showNewPurrs}>
+                        {newPurrsCount} new purrs. Click here to show them!
+                      </button>
+                    </div>
+                  )}
+                  {purrs.map(({ message, created_at }, purrIndex) => (
+                    <Purr key={purrIndex} message={message} date={created_at} />
+                  ))}
+                </PurrGroup>
+              </React.Fragment>
             )}
           </div>
         </section>

@@ -6,7 +6,7 @@ import { SplitString, transformPurrsToPurrGroups } from './utils';
 
 class Index extends Component {
   componentDidMount() {
-    this.refreshPurrs();
+    this.refreshPurrs(true);
     this.refreshInterval = setInterval(this.refreshPurrs, 3000);
   }
 
@@ -14,13 +14,13 @@ class Index extends Component {
     clearInterval(this.refreshInterval);
   }
 
-  refreshPurrs = async () => {
+  refreshPurrs = async (purge = false) => {
     const response = await fetch(
       `https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d/filter_sort;by=created_at;order=desc`
     );
     const { items: purrs } = await response.json();
     if (purrs) {
-      this.props.updatePurrs(purrs);
+      this.props.updatePurrs(purrs, purge);
     }
   };
 
@@ -63,7 +63,7 @@ class Index extends Component {
     ));
 
   render() {
-    const { activeCat, purrs, purr } = this.props;
+    const { activeCat, purrs, purr, newPurrsCount, showNewPurrs } = this.props;
     return (
       <React.Fragment>
         <section className="hero">
@@ -90,6 +90,13 @@ class Index extends Component {
               <PurrGroup Avatar={this.changableAvatar}>
                 <PurrForm catId={activeCat.token} purr={purr} />
               </PurrGroup>
+            )}
+            {newPurrsCount > 0 && (
+              <div className="columns">
+                <button className="column is-9 is-offset-3 new-purrs--button" onClick={showNewPurrs}>
+                  {newPurrsCount} new purrs. Click here to show them!
+                </button>
+              </div>
             )}
             <this.PurrsList purrs={purrs} />
           </div>
