@@ -5,17 +5,24 @@ import { PurrGroup, PurrForm, Purr } from './Purr';
 import { SplitString, transformPurrsToPurrGroups } from './utils';
 
 class Index extends Component {
-  state = {
-    purrs: []
-  };
-
   componentDidMount() {
-    fetch(`https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d/filter_sort;by=created_at;order=desc`)
-      .then(res => res.json())
-      .then(({ items: purrs }) => {
-        this.setState({ purrs });
-      });
+    this.refreshPurrs();
+    this.refreshInterval = setInterval(this.refreshPurrs, 3000);
   }
+
+  componentWillUnmount() {
+    clearInterval(this.refreshInterval);
+  }
+
+  refreshPurrs = async () => {
+    const response = await fetch(
+      `https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d/filter_sort;by=created_at;order=desc`
+    );
+    const { items: purrs } = await response.json();
+    if (purrs) {
+      this.props.updatePurrs(purrs);
+    }
+  };
 
   changableAvatar = () => {
     const { activeCat, changeActiveCatToNext, changeActiveCatToPrevious, catsInfo, getCatInfo } = this.props;
@@ -24,15 +31,19 @@ class Index extends Component {
       <Link to={`/cryptopurr/${activeCat.token}`}>
         <div style={{ position: 'relative' }}>
           <KittyAvatar catId={activeCat.token} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-          <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
-          <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
+          {this.props.myCats.length > 1 && (
+            <React.Fragment>
+              <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
+              <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
+            </React.Fragment>
+          )}
         </div>
         <p>Kitty #{activeCat.token}</p>
       </Link>
     );
   };
 
-  staticAvatar = ({ catId }) => {
+  StaticAvatar = ({ catId }) => {
     const { catsInfo, getCatInfo } = this.props;
     return (
       <Link to={`/cryptopurr/${catId}`}>
@@ -44,14 +55,15 @@ class Index extends Component {
 
   PurrsList = ({ purrs }) =>
     transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
-      <PurrGroup key={groupIndex} catId={catId} Avatar={this.staticAvatar}>
-        {purrs.map(({ message, created_at }, purrIndex) => <Purr key={purrIndex} message={message} date={created_at} />)}
+      <PurrGroup key={groupIndex} catId={catId} Avatar={this.StaticAvatar}>
+        {purrs.map(({ message, created_at }, purrIndex) => (
+          <Purr key={purrIndex} message={message} date={created_at} />
+        ))}
       </PurrGroup>
     ));
 
   render() {
-    const { activeCat } = this.props;
-    const { purrs } = this.state;
+    const { activeCat, purrs, purr } = this.props;
     return (
       <React.Fragment>
         <section className="hero">
@@ -76,7 +88,7 @@ class Index extends Component {
           <div className="container">
             {activeCat && (
               <PurrGroup Avatar={this.changableAvatar}>
-                <PurrForm catId={activeCat.token} />
+                <PurrForm catId={activeCat.token} purr={purr} />
               </PurrGroup>
             )}
             <this.PurrsList purrs={purrs} />

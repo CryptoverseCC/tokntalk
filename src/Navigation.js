@@ -11,7 +11,7 @@ const Navigation = ({ myCats, activeCat }) => (
           </Link>
         </div>
         <div className="column is-10 has-text-right">
-          <Dropdown>
+          <Dropdown disabled={myCats.length === 0}>
             {closeDropdown =>
               myCats.map(cat => (
                 <DropdownItem key={cat.token} to={cat.token} closeDropdown={closeDropdown}>
@@ -59,8 +59,8 @@ class Dropdown extends Component {
     return (
       <div className={`dropdown ${this.state.active ? 'is-active' : ''}`}>
         <div className="dropdown-trigger">
-          <button className="button" onClick={e => this.openDropdown(e)}>
-            <span>Your kitties</span>
+          <button className="button" onClick={e => this.openDropdown(e)} disabled={this.props.disabled}>
+            <span>{this.props.disabled ? 'No kitties found 😭' : 'Your kitties'}</span>
           </button>
         </div>
         <div className="dropdown-menu" ref={dropdown => (this.dropdownElement = dropdown)}>
