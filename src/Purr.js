@@ -10,9 +10,8 @@ export class PurrForm extends Component {
   };
 
   purr = async () => {
-    await this.props.purr(this.state.purr);
-    this.setState({purr: ''});
-  }
+    this.props.purr(this.state.purr, { onTransactionHash: () => this.setState({ purr: '' }) });
+  };
 
   render() {
     return (
@@ -42,14 +41,17 @@ export class PurrForm extends Component {
 
 export const Purr = ({ message, date }) => {
   const sanitizedMessage = DOMPurify.sanitize(message);
-  const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
+  const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
   const regex = new RegExp(expression);
-  const replaceMatchWithLink = (match) => {
-    return `<a href="${match}">${match}</a>`
-  }
+  const replaceMatchWithLink = match => {
+    return `<a href="${match}">${match}</a>`;
+  };
   return (
     <div className="purr" style={{ display: 'flex', alignItems: 'center' }}>
-      <p className="purr--message" dangerouslySetInnerHTML={{__html: sanitizedMessage.replace(regex, replaceMatchWithLink)}} />
+      <p
+        className="purr--message"
+        dangerouslySetInnerHTML={{ __html: sanitizedMessage.replace(regex, replaceMatchWithLink) }}
+      />
       <span className="purr--date">{timeago().format(date)}</span>
     </div>
   );

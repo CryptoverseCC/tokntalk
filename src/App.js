@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import uniqBy from 'lodash/uniqBy';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
 import Footer from './Footer';
@@ -10,7 +11,7 @@ const contractAddressesForNetworkId = {
   1: '0xFd74f0ce337fC692B8c124c094c1386A14ec7901',
   3: '0xC5De286677AC4f371dc791022218b1c13B72DbBd',
   4: '0x6f32a6F579CFEed1FFfDc562231C957ECC894001',
-  42: '0x139d658eD55b78e783DbE9bD4eb8F2b977b24153',
+  42: '0x139d658eD55b78e783DbE9bD4eb8F2b977b24153'
 };
 
 const contractAbi = [
@@ -20,8 +21,8 @@ const contractAbi = [
     name: 'post',
     outputs: [],
     payable: false,
-    type: 'function',
-  },
+    type: 'function'
+  }
 ];
 
 export default class App extends Component {
@@ -30,7 +31,8 @@ export default class App extends Component {
     myCats: [],
     catsInfo: JSON.parse(localStorage.getItem('catsInfo') || '[]'),
     allowPurr: false,
-    purrs: []
+    purrs: [],
+    temporaryPurrs: [],
   };
 
   catInfoRequests = {};
@@ -71,24 +73,39 @@ export default class App extends Component {
       });
   };
 
-  purr = async message => {
+  purr = async (message, { onTransactionHash }) => {
+    const token = this.state.activeCat.token;
     const data = {
       claim: {
         target: message
       },
-      context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${this.state.activeCat.token}`
+      context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`
     };
     const web3 = await getWeb3();
-    const [networkId, [from]] = await Promise.all([
-      web3.eth.net.getId(),
-      web3.eth.getAccounts()
-    ])
+    const [networkId, [from]] = await Promise.all([web3.eth.net.getId(), web3.eth.getAccounts()]);
     const contractAddress = contractAddressesForNetworkId[networkId];
     const contract = new web3.eth.Contract(contractAbi, contractAddress);
     contract.setProvider(web3.currentProvider);
-    return contract.methods.post(JSON.stringify(data)).send({from});
-  }
+    return contract.methods
+      .post(JSON.stringify(data))
+      .send({ from })
+      .on('transactionHash', async transactionHash => {
+        await onTransactionHash();
+        const tempPurr = {
+          author: from,
+          created_at: new Date().getTime(),
+          id: `claim:${transactionHash}:0`,
+          message,
+          sequence: await web3.eth.getBlockNumber() + 1,
+          token_id: token
+        };
+        this.addTemporaryPurr(tempPurr);
+      });
+  };
 
+  addTemporaryPurr = (purr) => {
+    this.setState({temporaryPurrs: [purr, ...this.state.temporaryPurrs]})
+  }
 
   updatePurrs = purrs => {
     this.setState({ purrs });
@@ -110,7 +127,8 @@ export default class App extends Component {
 
   render() {
     const { changeActiveCatToPrevious, changeActiveCatToNext, getCatInfo, updatePurrs, purr } = this;
-    const { activeCat, myCats, purrs, catsInfo } = this.state;
+    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs } = this.state;
+    const allPurrs = uniqBy([...temporaryPurrs, ...purrs], (purr) => purr.id);
     return (
       <Router>
         <React.Fragment>
@@ -122,7 +140,7 @@ export default class App extends Component {
                   <ShowPage
                     {...props}
                     purr={purr}
-                    purrs={purrs}
+                    purrs={allPurrs}
                     updatePurrs={updatePurrs}
                     myCats={myCats}
                     catsInfo={catsInfo}
@@ -135,7 +153,7 @@ export default class App extends Component {
                   <IndexPage
                     {...props}
                     purr={purr}
-                    purrs={purrs}
+                    purrs={allPurrs}
                     updatePurrs={updatePurrs}
                     myCats={myCats}
                     activeCat={activeCat}
