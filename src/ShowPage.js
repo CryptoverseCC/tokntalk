@@ -40,6 +40,7 @@ class ShowCat extends Component {
     const { match: { params: { catId } }, myCats, catsInfo, getCatInfo, purrs, purr } = this.props;
     const catIsOwned = !!myCats.find(({ token }) => catId === token);
     const backgroundColor = catsInfo[catId] ? colors[catsInfo[catId].color] : '';
+    const catPurrs = purrs.filter(({token_id}) => token_id === catId)
     return (
       <React.Fragment>
         <section className="hero hero-kitten is-small" style={{ backgroundColor }}>
@@ -55,10 +56,10 @@ class ShowCat extends Component {
         </section>
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
-            {!catIsOwned && !purrs.length ? null : (
+            {!catIsOwned && !catPurrs.length ? null : (
               <PurrGroup Avatar={this.StaticAvatar} catId={catId} >
                 {myCats.find(({ token }) => catId === token) && <PurrForm catId={catId} purr={purr} />}
-                {purrs.map(({ message, created_at }, purrIndex) => (
+                {catPurrs.map(({ message, created_at }, purrIndex) => (
                   <Purr key={purrIndex} message={message} date={created_at} />
                 ))}
               </PurrGroup>

@@ -86,10 +86,13 @@ export default class App extends Component {
     const contractAddress = contractAddressesForNetworkId[networkId];
     const contract = new web3.eth.Contract(contractAbi, contractAddress);
     contract.setProvider(web3.currentProvider);
+    let confirmationCount = 0;
+    let lastTransactionHash;
     return contract.methods
       .post(JSON.stringify(data))
       .send({ from })
       .on('transactionHash', async transactionHash => {
+        lastTransactionHash = transactionHash;
         await onTransactionHash();
         const tempPurr = {
           author: from,
@@ -100,11 +103,24 @@ export default class App extends Component {
           token_id: token
         };
         this.addTemporaryPurr(tempPurr);
+      })
+      .on('confirmation', () => {
+        confirmationCount++;
+        if(confirmationCount > 3) {
+          this.removeTemporaryPurr(`claim:${lastTransactionHash}:0`);
+        }
+      })
+      .on('error', () => {
+        this.removeTemporaryPurr(`claim:${lastTransactionHash}:0`)
       });
   };
 
   addTemporaryPurr = (purr) => {
     this.setState({temporaryPurrs: [purr, ...this.state.temporaryPurrs]})
+  }
+
+  removeTemporaryPurr = (purrId) => {
+    this.setState({temporaryPurrs: this.state.temporaryPurrs.filter((tempPurr) => tempPurr.id !== purrId)})
   }
 
   updatePurrs = purrs => {
