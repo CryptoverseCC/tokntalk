@@ -63,7 +63,7 @@ class Index extends Component {
     ));
 
   render() {
-    const { activeCat, purrs, purr, newPurrsCount, showNewPurrs } = this.props;
+    const { activeCat, purrs, purr, newPurrsCount, showNewPurrs, allowPurr } = this.props;
     return (
       <React.Fragment>
         <section className="hero">
@@ -86,7 +86,7 @@ class Index extends Component {
         </section>
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
-            {activeCat && (
+            {activeCat && allowPurr && (
               <PurrGroup Avatar={this.changableAvatar}>
                 <PurrForm catId={activeCat.token} purr={purr} />
               </PurrGroup>

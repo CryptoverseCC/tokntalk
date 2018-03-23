@@ -123,7 +123,7 @@ export default class App extends Component {
   };
 
   showNewPurrs = () => {
-    this.setState({purrs: this.state.newPurrs});
+    this.setState({ purrs: this.state.newPurrs });
   };
 
   changeActiveCatToNext = () => {
@@ -142,7 +142,7 @@ export default class App extends Component {
 
   render() {
     const { changeActiveCatToPrevious, changeActiveCatToNext, getCatInfo, updatePurrs, purr, showNewPurrs } = this;
-    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs } = this.state;
+    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs, allowPurr } = this.state;
     const allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
     return (
       <Router>
@@ -154,7 +154,9 @@ export default class App extends Component {
                 {props => {
                   const purrsForCat = allPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
                   const newPurrsForCat = newPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
-                  const temporaryPurrsForCat = temporaryPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
+                  const temporaryPurrsForCat = temporaryPurrs.filter(
+                    ({ token_id }) => token_id === props.match.params.catId
+                  );
                   return (
                     <ShowPage
                       {...props}
@@ -162,6 +164,7 @@ export default class App extends Component {
                       purrs={purrsForCat}
                       newPurrsCount={newPurrsForCat.length - temporaryPurrsForCat.length - purrsForCat.length}
                       showNewPurrs={showNewPurrs}
+                      allowPurr={allowPurr}
                       updatePurrs={updatePurrs}
                       myCats={myCats}
                       catsInfo={catsInfo}
@@ -179,6 +182,7 @@ export default class App extends Component {
                     newPurrsCount={newPurrs.length - temporaryPurrs.length - allPurrs.length}
                     updatePurrs={updatePurrs}
                     showNewPurrs={showNewPurrs}
+                    allowPurr={allowPurr}
                     myCats={myCats}
                     activeCat={activeCat}
                     changeActiveCatToPrevious={changeActiveCatToPrevious}

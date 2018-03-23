@@ -45,7 +45,8 @@ class ShowCat extends Component {
       purrs,
       purr,
       newPurrsCount,
-      showNewPurrs
+      showNewPurrs,
+      allowPurr
     } = this.props;
     const catIsOwned = !!myCats.find(({ token }) => catId === token);
     const backgroundColor = catsInfo[catId] ? colors[catsInfo[catId].color] : '';
@@ -67,7 +68,7 @@ class ShowCat extends Component {
             {!catIsOwned && !purrs.length ? null : (
               <React.Fragment>
                 <PurrGroup Avatar={this.StaticAvatar} catId={catId}>
-                  {myCats.find(({ token }) => catId === token) && <PurrForm catId={catId} purr={purr} />}
+                  {allowPurr && myCats.find(({ token }) => catId === token) && <PurrForm catId={catId} purr={purr} />}
                   {newPurrsCount > 0 && (
                     <div className="columns">
                       <button className="column is-12 new-purrs--button" onClick={showNewPurrs}>
