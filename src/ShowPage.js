@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import KittyAvatar, { KittyImg } from './KittyAvatar';
+import KittyAvatar from './KittyAvatar';
+import KittyImg from "./KittyImg";
 import { PurrGroup, PurrForm, Purr } from './Purr';
 import colors from './colors';
 
