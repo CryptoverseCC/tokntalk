@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import KittyAvatar from './KittyAvatar';
-import { PurrGroup, PurrForm, Purr } from './Purr';
+import { PurrGroup, PurrForm, Purr, PurrsList } from './Purr';
 import { transformPurrsToPurrGroups } from './utils';
 import Context from './Context';
 
@@ -47,25 +47,6 @@ class Index extends Component {
     );
   };
 
-  StaticAvatar = ({ catId }) => {
-    const { catsInfo, getCatInfo } = this.props;
-    return (
-      <Link to={`/cryptopurr/${catId}`}>
-        <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-        <p>{(catsInfo[catId] && catsInfo[catId].name) || `Kitty #${catId}`}</p>
-      </Link>
-    );
-  };
-
-  PurrsList = ({ purrs }) =>
-    transformPurrsToPurrGroups(purrs).map(({ catId, purrs }, groupIndex) => (
-      <PurrGroup key={groupIndex} catId={catId} Avatar={this.StaticAvatar}>
-        {purrs.map(({ message, created_at }, purrIndex) => (
-          <Purr key={purrIndex} message={message} date={created_at} />
-        ))}
-      </PurrGroup>
-    ));
-
   render() {
     const { purrs, purr, newPurrsCount, showNewPurrs, allowPurr } = this.props;
 
@@ -99,7 +80,7 @@ class Index extends Component {
                 </button>
               </div>
             )}
-            <this.PurrsList purrs={purrs} />
+            <PurrsList purrs={purrs} />
           </div>
         </section>
       </React.Fragment>

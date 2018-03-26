@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import timeago from 'timeago.js';
 import DOMPurify from 'dompurify';
+import { StaticAvatar } from './KittyAvatar';
 import metamask from './img/metamask.png';
+import Context from './Context';
 
 export class PurrForm extends Component {
   state = {
@@ -58,10 +60,21 @@ export const Purr = ({ message, date }) => {
 export const PurrGroup = ({ Avatar, children, catId }) => (
   <div className="columns link-group">
     <div className="kitten column is-3 has-text-centered">
-      <Avatar catId={catId} />
+      <Context.Consumer>
+        {({ catStore: { catsInfo, getCatInfo } }) => (
+          <Avatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
+        )}
+      </Context.Consumer>
     </div>
     <div className="column is-9" style={{ paddingTop: 0, paddingBottom: 0 }}>
       {children}
     </div>
   </div>
 );
+
+export const PurrsList = ({ purrs }) =>
+  purrs.map(({ token_id, catId, purrs, message, created_at }, purrIndex) => (
+    <PurrGroup key={purrIndex} catId={token_id} Avatar={StaticAvatar}>
+      <Purr key={purrIndex} message={message} date={created_at} />
+    </PurrGroup>
+  ));

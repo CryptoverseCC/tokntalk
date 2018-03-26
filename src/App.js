@@ -89,7 +89,7 @@ export default class App extends Component {
     const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs, allowPurr } = this.state;
     const allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
     return (
-      <Context.Provider value={{ catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat } }}>
+      <Context.Provider value={{ catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat, catsInfo, getCatInfo } }}>
         <Router>
           <React.Fragment>
             <div className="main">
