@@ -31,7 +31,7 @@ class ShowCat extends Component {
     return (
       <Link to={`/cryptopurr/${catId}`}>
         <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-        <p>Kitty #{catId}</p>
+        <p>{catsInfo[catId].name || `Kitty #${catId}`}</p>
       </Link>
     );
   };

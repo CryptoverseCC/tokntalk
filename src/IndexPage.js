@@ -24,9 +24,8 @@ class Index extends Component {
     }
   };
 
-  changableAvatar = () => {
+  ChangableAvatar = () => {
     const { activeCat, changeActiveCatToNext, changeActiveCatToPrevious, catsInfo, getCatInfo } = this.props;
-
     return (
       <Link to={`/cryptopurr/${activeCat.token}`}>
         <div style={{ position: 'relative' }}>
@@ -38,7 +37,7 @@ class Index extends Component {
             </React.Fragment>
           )}
         </div>
-        <p>Kitty #{activeCat.token}</p>
+        <p>{catsInfo[activeCat.token].name || `Kitty #${activeCat.token}`}</p>
       </Link>
     );
   };
@@ -48,7 +47,7 @@ class Index extends Component {
     return (
       <Link to={`/cryptopurr/${catId}`}>
         <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-        <p>Kitty #{catId}</p>
+        <p>{catsInfo[catId].name || `Kitty #${catId}`}</p>
       </Link>
     );
   };
@@ -87,7 +86,7 @@ class Index extends Component {
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
             {activeCat && allowPurr && (
-              <PurrGroup Avatar={this.changableAvatar}>
+              <PurrGroup Avatar={this.ChangableAvatar}>
                 <PurrForm catId={activeCat.token} purr={purr} />
               </PurrGroup>
             )}
