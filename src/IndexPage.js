@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import KittyAvatar from './KittyAvatar';
 import { PurrGroup, PurrForm, Purr } from './Purr';
 import { transformPurrsToPurrGroups } from './utils';
+import Context from './Context';
 
 class Index extends Component {
   componentDidMount() {
@@ -25,20 +26,24 @@ class Index extends Component {
   };
 
   ChangableAvatar = () => {
-    const { activeCat, changeActiveCatToNext, changeActiveCatToPrevious, catsInfo, getCatInfo } = this.props;
+    const { catsInfo, getCatInfo } = this.props;
     return (
-      <Link to={`/cryptopurr/${activeCat.token}`}>
-        <div style={{ position: 'relative' }}>
-          <KittyAvatar catId={activeCat.token} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-          {this.props.myCats.length > 1 && (
-            <React.Fragment>
-              <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
-              <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
-            </React.Fragment>
-          )}
-        </div>
-        <p>{catsInfo[activeCat.token].name || `Kitty #${activeCat.token}`}</p>
-      </Link>
+      <Context.Consumer>
+        {({ catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat } }) => (
+          <Link to={`/cryptopurr/${activeCat.token}`}>
+            <div style={{ position: 'relative' }}>
+              <KittyAvatar catId={activeCat.token} catsInfo={catsInfo} getCatInfo={getCatInfo} />
+              {myCats.length > 1 && (
+                <React.Fragment>
+                  <ArrowButton direction="back" onClick={changeActiveCatToPrevious} />
+                  <ArrowButton direction="forward" onClick={changeActiveCatToNext} />
+                </React.Fragment>
+              )}
+            </div>
+            <p>{catsInfo[activeCat.token].name || `Kitty #${activeCat.token}`}</p>
+          </Link>
+        )}
+      </Context.Consumer>
     );
   };
 
@@ -47,7 +52,7 @@ class Index extends Component {
     return (
       <Link to={`/cryptopurr/${catId}`}>
         <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-        <p>{catsInfo[catId].name || `Kitty #${catId}`}</p>
+        <p>{(catsInfo[catId] && catsInfo[catId].name) || `Kitty #${catId}`}</p>
       </Link>
     );
   };
@@ -62,7 +67,8 @@ class Index extends Component {
     ));
 
   render() {
-    const { activeCat, purrs, purr, newPurrsCount, showNewPurrs, allowPurr } = this.props;
+    const { purrs, purr, newPurrsCount, showNewPurrs, allowPurr } = this.props;
+
     return (
       <React.Fragment>
         <section className="hero">
@@ -81,12 +87,11 @@ class Index extends Component {
         </section>
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
-            {activeCat &&
-              allowPurr && (
-                <PurrGroup Avatar={this.ChangableAvatar}>
-                  <PurrForm catId={activeCat.token} purr={purr} />
-                </PurrGroup>
-              )}
+            {allowPurr && (
+              <PurrGroup Avatar={this.ChangableAvatar}>
+                <PurrForm purr={purr} />
+              </PurrGroup>
+            )}
             {newPurrsCount > 0 && (
               <div className="columns">
                 <button className="column is-9 is-offset-3 new-purrs--button" onClick={showNewPurrs}>

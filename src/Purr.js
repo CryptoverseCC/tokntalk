@@ -9,7 +9,8 @@ export class PurrForm extends Component {
   };
 
   purr = async () => {
-    this.props.purr(this.state.purr, { onTransactionHash: () => this.setState({ purr: '' }) });
+    await this.props.purr(this.state.purr);
+    this.setState({ purr: '' });
   };
 
   render() {

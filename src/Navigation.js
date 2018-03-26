@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
-const Navigation = ({ myCats, activeCat }) => (
+const Navigation = ({ myCats }) => (
   <nav className="navigation">
     <div className="container">
       <div className="columns" style={{ alignItems: 'center' }}>
