@@ -25,6 +25,8 @@ const contractAbi = [
   }
 ];
 
+const Context = React.createContext();
+
 export default class App extends Component {
   state = {
     activeCat: undefined,
@@ -147,58 +149,60 @@ export default class App extends Component {
     const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs, allowPurr } = this.state;
     const allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
     return (
-      <Router>
-        <React.Fragment>
-          <div className="main">
-            <Navigation activeCat={activeCat} myCats={myCats} />
-            <Switch>
-              <Route exact path="/cryptopurr/:catId">
-                {props => {
-                  const purrsForCat = allPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
-                  const newPurrsForCat = newPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
-                  const temporaryPurrsForCat = temporaryPurrs.filter(
-                    ({ token_id }) => token_id === props.match.params.catId
-                  );
-                  return (
-                    <ShowPage
+      <Context.Provider>
+        <Router>
+          <React.Fragment>
+            <div className="main">
+              <Navigation activeCat={activeCat} myCats={myCats} />
+              <Switch>
+                <Route exact path="/cryptopurr/:catId">
+                  {props => {
+                    const purrsForCat = allPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
+                    const newPurrsForCat = newPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
+                    const temporaryPurrsForCat = temporaryPurrs.filter(
+                      ({ token_id }) => token_id === props.match.params.catId
+                    );
+                    return (
+                      <ShowPage
+                        {...props}
+                        purr={purr}
+                        purrs={purrsForCat}
+                        newPurrsCount={newPurrsForCat.length - temporaryPurrsForCat.length - purrsForCat.length}
+                        showNewPurrs={showNewPurrs}
+                        allowPurr={allowPurr}
+                        updatePurrs={updatePurrs}
+                        myCats={myCats}
+                        catsInfo={catsInfo}
+                        getCatInfo={getCatInfo}
+                      />
+                    );
+                  }}
+                </Route>
+                <Route exact path="/cryptopurr">
+                  {props => (
+                    <IndexPage
                       {...props}
                       purr={purr}
-                      purrs={purrsForCat}
-                      newPurrsCount={newPurrsForCat.length - temporaryPurrsForCat.length - purrsForCat.length}
+                      purrs={allPurrs}
+                      newPurrsCount={newPurrs.length - temporaryPurrs.length - allPurrs.length}
+                      updatePurrs={updatePurrs}
                       showNewPurrs={showNewPurrs}
                       allowPurr={allowPurr}
-                      updatePurrs={updatePurrs}
                       myCats={myCats}
+                      activeCat={activeCat}
+                      changeActiveCatToPrevious={changeActiveCatToPrevious}
+                      changeActiveCatToNext={changeActiveCatToNext}
                       catsInfo={catsInfo}
                       getCatInfo={getCatInfo}
                     />
-                  );
-                }}
-              </Route>
-              <Route exact path="/cryptopurr">
-                {props => (
-                  <IndexPage
-                    {...props}
-                    purr={purr}
-                    purrs={allPurrs}
-                    newPurrsCount={newPurrs.length - temporaryPurrs.length - allPurrs.length}
-                    updatePurrs={updatePurrs}
-                    showNewPurrs={showNewPurrs}
-                    allowPurr={allowPurr}
-                    myCats={myCats}
-                    activeCat={activeCat}
-                    changeActiveCatToPrevious={changeActiveCatToPrevious}
-                    changeActiveCatToNext={changeActiveCatToNext}
-                    catsInfo={catsInfo}
-                    getCatInfo={getCatInfo}
-                  />
-                )}
-              </Route>
-            </Switch>
-          </div>
-          <Footer />
-        </React.Fragment>
-      </Router>
+                  )}
+                </Route>
+              </Switch>
+            </div>
+            <Footer />
+          </React.Fragment>
+        </Router>
+      </Context.Provider>
     );
   }
 }

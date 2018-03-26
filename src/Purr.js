@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import timeago from 'timeago.js';
 import DOMPurify from 'dompurify';
-import { SplitString } from './utils';
 import metamask from './img/metamask.png';
 
 export class PurrForm extends Component {
@@ -25,9 +24,7 @@ export class PurrForm extends Component {
           />
           <span className="highlight" />
           <span className="bar" />
-          <label className="txtwav bounce">
-            <SplitString>Purr about cat problems!</SplitString>
-          </label>
+          <label className="txtwav bounce">Purr about cat problems!</label>
         </div>
         <div className={this.state.purr ? '' : 'hidden'}>
           <a className="button purrit" onClick={this.purr}>

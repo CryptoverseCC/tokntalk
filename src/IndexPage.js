@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import KittyAvatar from './KittyAvatar';
 import { PurrGroup, PurrForm, Purr } from './Purr';
-import { SplitString, transformPurrsToPurrGroups } from './utils';
+import { transformPurrsToPurrGroups } from './utils';
 
 class Index extends Component {
   componentDidMount() {
@@ -70,13 +70,9 @@ class Index extends Component {
             <div className="container">
               <div className="columns">
                 <div className="column is-9 is-offset-3">
-                  <h1 className="title txtwav slow">
-                    <SplitString>Purr Purr</SplitString>
-                  </h1>
+                  <h1 className="title txtwav slow">Purr Purr</h1>
                   <div className="subtitle">
-                    <h2 className="txtwav slow">
-                      <SplitString>Make your cryptokitten talk with</SplitString>
-                    </h2>
+                    <h2 className="txtwav slow">Make your cryptokitten talk with</h2>
                   </div>
                 </div>
               </div>
@@ -85,11 +81,12 @@ class Index extends Component {
         </section>
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
-            {activeCat && allowPurr && (
-              <PurrGroup Avatar={this.ChangableAvatar}>
-                <PurrForm catId={activeCat.token} purr={purr} />
-              </PurrGroup>
-            )}
+            {activeCat &&
+              allowPurr && (
+                <PurrGroup Avatar={this.ChangableAvatar}>
+                  <PurrForm catId={activeCat.token} purr={purr} />
+                </PurrGroup>
+              )}
             {newPurrsCount > 0 && (
               <div className="columns">
                 <button className="column is-9 is-offset-3 new-purrs--button" onClick={showNewPurrs}>
