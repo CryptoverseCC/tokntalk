@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import KittyAvatar from './KittyAvatar';
-import KittyImg from "./KittyImg";
-import { PurrGroup, PurrForm, Purr } from './Purr';
+import KittyImg from './KittyImg';
+import { PurrGroup, PurrForm, Purr, PurrGroupWithForm, PurrsList, ShowNewPurrs } from './Purr';
 import colors from './colors';
 
 class ShowCat extends Component {
@@ -66,23 +66,9 @@ class ShowCat extends Component {
         </section>
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
-            {!catIsOwned && !purrs.length ? null : (
-              <React.Fragment>
-                <PurrGroup Avatar={this.StaticAvatar} catId={catId}>
-                  {allowPurr && myCats.find(({ token }) => catId === token) && <PurrForm catId={catId} purr={purr} />}
-                  {newPurrsCount > 0 && (
-                    <div className="columns">
-                      <button className="column is-12 new-purrs--button" onClick={showNewPurrs}>
-                        {newPurrsCount} new purrs. Click here to show them!
-                      </button>
-                    </div>
-                  )}
-                  {purrs.map(({ message, created_at }, purrIndex) => (
-                    <Purr key={purrIndex} message={message} date={created_at} />
-                  ))}
-                </PurrGroup>
-              </React.Fragment>
-            )}
+            <PurrGroupWithForm />
+            <ShowNewPurrs forCat={catId} />
+            <PurrsList purrs={purrs} />
           </div>
         </section>
       </React.Fragment>

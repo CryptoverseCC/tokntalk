@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import timeago from 'timeago.js';
 import DOMPurify from 'dompurify';
-import { StaticAvatar } from './KittyAvatar';
+import { StaticAvatar, ChangableAvatar } from './KittyAvatar';
 import metamask from './img/metamask.png';
 import Context from './Context';
 
@@ -60,16 +60,50 @@ export const Purr = ({ message, date }) => {
 export const PurrGroup = ({ Avatar, children, catId }) => (
   <div className="columns link-group">
     <div className="kitten column is-3 has-text-centered">
-      <Context.Consumer>
-        {({ catStore: { catsInfo, getCatInfo } }) => (
-          <Avatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-        )}
-      </Context.Consumer>
+      <Avatar catId={catId} />
     </div>
     <div className="column is-9" style={{ paddingTop: 0, paddingBottom: 0 }}>
       {children}
     </div>
   </div>
+);
+
+export const ShowNewPurrs = ({ forCat }) => (
+  <Context.Consumer>
+    {({ purrStore: { purrs, newPurrs, temporaryPurrs, showNewPurrs } }) => {
+      let newPurrsCount;
+      if (forCat) {
+        const purrsForCat = purrs.filter(({ token_id }) => token_id === forCat);
+        const newPurrsForCat = newPurrs.filter(({ token_id }) => token_id === forCat);
+        const temporaryPurrsForCat = temporaryPurrs.filter(({ token_id }) => token_id === forCat);
+        newPurrsCount = newPurrsForCat.length - temporaryPurrsForCat.length - purrsForCat.length;
+      } else {
+        newPurrsCount = newPurrs.length - temporaryPurrs.length - purrs.length;
+      }
+
+      return (
+        newPurrsCount > 0 && (
+          <div className="columns">
+            <button className="column is-9 is-offset-3 new-purrs--button" onClick={showNewPurrs}>
+              {newPurrsCount} new purrs. Click here to show them!
+            </button>
+          </div>
+        )
+      );
+    }}
+  </Context.Consumer>
+);
+
+export const PurrGroupWithForm = () => (
+  <Context.Consumer>
+    {({ purrStore: { purr, allowPurr } }) =>
+      allowPurr && (
+        <PurrGroup Avatar={ChangableAvatar}>
+          <PurrForm purr={purr} />
+        </PurrGroup>
+      )
+    }
+  </Context.Consumer>
 );
 
 export const PurrsList = ({ purrs }) =>
