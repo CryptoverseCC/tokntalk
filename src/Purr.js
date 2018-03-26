@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import timeago from 'timeago.js';
 import DOMPurify from 'dompurify';
+import uniqBy from 'lodash/uniqBy';
 import { StaticAvatar, ChangableAvatar } from './KittyAvatar';
 import metamask from './img/metamask.png';
 import Context from './Context';
@@ -106,9 +107,20 @@ export const PurrGroupWithForm = () => (
   </Context.Consumer>
 );
 
-export const PurrsList = ({ purrs }) =>
-  purrs.map(({ token_id, catId, purrs, message, created_at }, purrIndex) => (
-    <PurrGroup key={purrIndex} catId={token_id} Avatar={StaticAvatar}>
-      <Purr key={purrIndex} message={message} date={created_at} />
-    </PurrGroup>
-  ));
+export const PurrsList = ({ forCat }) => (
+  <Context.Consumer>
+    {({ purrStore: { purrs, temporaryPurrs } }) => {
+      let allPurrs;
+      if (forCat) {
+        allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).filter(({ token_id }) => token_id === forCat);
+      } else {
+        allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
+      }
+      return allPurrs.map(({ token_id, catId, purrs, message, created_at }, purrIndex) => (
+        <PurrGroup key={purrIndex} catId={token_id} Avatar={StaticAvatar}>
+          <Purr key={purrIndex} message={message} date={created_at} />
+        </PurrGroup>
+      ));
+    }}
+  </Context.Consumer>
+);

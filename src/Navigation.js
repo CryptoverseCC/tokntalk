@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Context from './Context';
 
 const Navigation = ({ myCats }) => (
   <nav className="navigation">
@@ -11,15 +12,19 @@ const Navigation = ({ myCats }) => (
           </Link>
         </div>
         <div className="column is-10 has-text-right">
-          <Dropdown disabled={myCats.length === 0}>
-            {closeDropdown =>
-              myCats.map(cat => (
-                <DropdownItem key={cat.token} to={cat.token} closeDropdown={closeDropdown}>
-                  Kitty {cat.token}
-                </DropdownItem>
-              ))
-            }
-          </Dropdown>
+          <Context.Consumer>
+            {({ catStore: { myCats } }) => (
+              <Dropdown disabled={myCats.length === 0}>
+                {closeDropdown =>
+                  myCats.map(cat => (
+                    <DropdownItem key={cat.token} to={cat.token} closeDropdown={closeDropdown}>
+                      Kitty {cat.token}
+                    </DropdownItem>
+                  ))
+                }
+              </Dropdown>
+            )}
+          </Context.Consumer>
         </div>
       </div>
     </div>

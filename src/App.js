@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import uniqBy from 'lodash/uniqBy';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
 import Footer from './Footer';
 import Navigation from './Navigation';
-import getWeb3 from './web3';
 import { downloadCats, downloadWeb3State, getCatData, purr } from './api';
 
 export default class App extends Component {
@@ -87,7 +85,6 @@ export default class App extends Component {
   render() {
     const { changeActiveCatToPrevious, changeActiveCatToNext, getCatInfo, updatePurrs, purr, showNewPurrs } = this;
     const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs, allowPurr } = this.state;
-    const allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
     return (
       <Context.Provider
         value={{
@@ -98,35 +95,13 @@ export default class App extends Component {
         <Router>
           <React.Fragment>
             <div className="main">
-              <Context.Consumer>{({ catStore: { myCats } }) => <Navigation myCats={myCats} />}</Context.Consumer>
+              <Navigation myCats={myCats} />
               <Switch>
                 <Route exact path="/cryptopurr/:catId">
-                  {props => {
-                    const purrsForCat = allPurrs.filter(({ token_id }) => token_id === props.match.params.catId);
-                    return (
-                      <ShowPage
-                        {...props}
-                        purrs={purrsForCat}
-                        myCats={myCats}
-                        allowPurr={allowPurr}
-                        updatePurrs={updatePurrs}
-                        catsInfo={catsInfo}
-                        getCatInfo={getCatInfo}
-                      />
-                    );
-                  }}
+                  {props => <ShowPage {...props} updatePurrs={updatePurrs} catsInfo={catsInfo} getCatInfo={getCatInfo} />}
                 </Route>
                 <Route exact path="/cryptopurr">
-                  {props => (
-                    <IndexPage
-                      {...props}
-                      purrs={allPurrs}
-                      updatePurrs={updatePurrs}
-                      allowPurr={allowPurr}
-                      catsInfo={catsInfo}
-                      getCatInfo={getCatInfo}
-                    />
-                  )}
+                  {props => <IndexPage {...props} updatePurrs={updatePurrs} />}
                 </Route>
               </Switch>
             </div>

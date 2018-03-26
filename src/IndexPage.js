@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import KittyAvatar, { ChangableAvatar } from './KittyAvatar';
-import { PurrGroup, PurrForm, Purr, PurrsList, PurrGroupWithForm, ShowNewPurrs } from './Purr';
-import { transformPurrsToPurrGroups } from './utils';
-import Context from './Context';
+import { PurrsList, PurrGroupWithForm, ShowNewPurrs } from './Purr';
 
 class Index extends Component {
   componentDidMount() {
@@ -26,8 +22,6 @@ class Index extends Component {
   };
 
   render() {
-    const { purrs, purr, newPurrsCount, showNewPurrs, allowPurr } = this.props;
-
     return (
       <React.Fragment>
         <section className="hero">
@@ -48,7 +42,7 @@ class Index extends Component {
           <div className="container">
             <PurrGroupWithForm />
             <ShowNewPurrs />
-            <PurrsList purrs={purrs} />
+            <PurrsList />
           </div>
         </section>
       </React.Fragment>

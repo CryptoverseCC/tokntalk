@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import KittyAvatar from './KittyAvatar';
 import KittyImg from './KittyImg';
-import { PurrGroup, PurrForm, Purr, PurrGroupWithForm, PurrsList, ShowNewPurrs } from './Purr';
+import { PurrGroupWithForm, PurrsList, ShowNewPurrs } from './Purr';
 import colors from './colors';
 
 class ShowCat extends Component {
@@ -27,29 +25,8 @@ class ShowCat extends Component {
     }
   };
 
-  StaticAvatar = ({ catId }) => {
-    const { catsInfo, getCatInfo } = this.props;
-    return (
-      <Link to={`/cryptopurr/${catId}`}>
-        <KittyAvatar catId={catId} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-        <p>{catsInfo[catId].name || `Kitty #${catId}`}</p>
-      </Link>
-    );
-  };
-
   render() {
-    const {
-      match: { params: { catId } },
-      myCats,
-      catsInfo,
-      getCatInfo,
-      purrs,
-      purr,
-      newPurrsCount,
-      showNewPurrs,
-      allowPurr
-    } = this.props;
-    const catIsOwned = !!myCats.find(({ token }) => catId === token);
+    const { match: { params: { catId } }, catsInfo, getCatInfo } = this.props;
     const backgroundColor = catsInfo[catId] ? colors[catsInfo[catId].color] : '';
     return (
       <React.Fragment>
@@ -68,7 +45,7 @@ class ShowCat extends Component {
           <div className="container">
             <PurrGroupWithForm />
             <ShowNewPurrs forCat={catId} />
-            <PurrsList purrs={purrs} />
+            <PurrsList forCat={catId} />
           </div>
         </section>
       </React.Fragment>
