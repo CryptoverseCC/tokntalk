@@ -53,7 +53,9 @@ export default class App extends Component {
       `https://api-dev.userfeeds.io/ranking/tokens;identity=${from.toLowerCase()};asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
     );
     const { items: myCats } = await response.json();
-    this.setState({ myCats, activeCat: myCats[0] });
+    const { activeCat } = this.state;
+    const newActiveCat = (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) || myCats[0];
+    this.setState({ myCats, activeCat: newActiveCat });
   };
 
   refreshWeb3State = async () => {
