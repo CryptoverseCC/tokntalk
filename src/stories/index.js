@@ -84,6 +84,75 @@ const Header = ({ status }) => {
   );
 };
 
+class CommentForm extends React.Component {
+  state = {
+    comment: ''
+  };
+
+  submitForm = () => {
+    this.setState({comment: ''})
+  }
+
+  render() {
+    return (
+      <form
+        style={{ position: 'relative' }}
+        onSubmit={e => {
+          e.preventDefault();
+          this.submitForm();
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'Rubik',
+            fontSize: '18px',
+            fontWeight: '500',
+            color: '#623CEA'
+          }}
+        >
+          {this.props.id}
+        </div>
+        <TextArea
+          className="cp-textarea"
+          style={{
+            fontFamily: 'Rubik',
+            fontSize: '24px',
+            fontWeight: '500',
+            color: '#1B2437',
+            border: 'none',
+            resize: 'none',
+            width: 'calc(100% - 50px)',
+            outline: 'none',
+            overflow: 'auto'
+          }}
+          placeholder="Purr your story"
+          value={this.state.comment}
+          onChange={e => this.setState({ comment: e.target.value })}
+          onKeyPress={e => e.key === 'Enter' && e.ctrlKey && this.submitForm()}
+        />
+        <button
+          type="submit"
+          className={`cp-metamask-submit ${this.state.comment ? 'cp-metamask-submit--active' : ''}`}
+          style={{
+            position: 'absolute',
+            right: 0,
+            bottom: 0,
+            height: '50px',
+            width: '50px',
+            backgroundColor: '#fff',
+            borderRadius: '50%',
+            outline: 'none',
+            border: 'none',
+            transition: 'all 0.15s ease-in-out'
+          }}
+        >
+          <img src={Metamask} style={{ width: '70%' }} />
+        </button>
+      </form>
+    );
+  }
+}
+
 const Hero = ({ id }) => {
   return id ? (
     <div
@@ -94,56 +163,14 @@ const Hero = ({ id }) => {
       <div className="container" style={{ padding: '40px 0' }}>
         <div className="columns">
           <div className="column is-6 is-offset-3">
-            <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', cursor: 'text' }}>
+            <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)' }}>
               <article className="media">
                 <div className="media-left">
                   <IdentityAvatar size="large" />
                 </div>
                 <div className="media-content">
                   <div className="content">
-                    <div style={{ position: 'relative' }}>
-                      <div
-                        style={{
-                          fontFamily: 'Rubik',
-                          fontSize: '18px',
-                          fontWeight: '500',
-                          color: '#623CEA'
-                        }}
-                      >
-                        {id}
-                      </div>
-                      <TextArea
-                        className="cp-textarea"
-                        style={{
-                          fontFamily: 'Rubik',
-                          fontSize: '24px',
-                          fontWeight: '500',
-                          color: '#1B2437',
-                          border: 'none',
-                          resize: 'none',
-                          width: 'calc(100% - 50px)',
-                          outline: 'none',
-                          overflow: 'auto'
-                        }}
-                        placeholder="Purr your story"
-                      />
-                      <button
-                        style={{
-                          position: 'absolute',
-                          right: 0,
-                          bottom: 0,
-                          height: '50px',
-                          width: '50px',
-                          backgroundColor: '#fff',
-                          borderRadius: '50%',
-                          boxShadow: '0 3px 10px rgba(98,60,234,0.2)',
-                          outline: 'none',
-                          border: 'none'
-                        }}
-                      >
-                        <img src={Metamask} style={{ width: '70%' }} />
-                      </button>
-                    </div>
+                    <CommentForm id={id} />
                   </div>
                 </div>
               </article>
