@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { PurrsList, PurrGroupWithForm, ShowNewPurrs } from './Purr';
+import Hero from './Hero';
 
-class Index extends Component {
+export default class IndexPage extends Component {
   componentDidMount() {
     this.refreshPurrs(true);
     this.refreshInterval = setInterval(this.refreshPurrs, 3000);
@@ -24,20 +25,7 @@ class Index extends Component {
   render() {
     return (
       <React.Fragment>
-        <section className="hero">
-          <div className="hero-body">
-            <div className="container">
-              <div className="columns">
-                <div className="column is-9 is-offset-3">
-                  <h1 className="title txtwav slow">Purr Purr</h1>
-                  <div className="subtitle">
-                    <h2 className="txtwav slow">Make your cryptokitten talk with</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <Hero />
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
             <PurrGroupWithForm />
@@ -49,5 +37,3 @@ class Index extends Component {
     );
   }
 }
-
-export default Index;

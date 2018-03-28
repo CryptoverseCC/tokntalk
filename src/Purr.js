@@ -110,11 +110,9 @@ export const PurrGroupWithForm = () => (
 export const PurrsList = ({ forCat }) => (
   <Context.Consumer>
     {({ purrStore: { purrs, temporaryPurrs } }) => {
-      let allPurrs;
+      let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
       if (forCat) {
-        allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).filter(({ token_id }) => token_id === forCat);
-      } else {
-        allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
+        allPurrs = allPurrs.filter(({ token_id }) => token_id === forCat);
       }
       return allPurrs.map(({ token_id, catId, purrs, message, created_at }, purrIndex) => (
         <PurrGroup key={purrIndex} catId={token_id} Avatar={StaticAvatar}>

@@ -5,7 +5,7 @@ export const downloadCats = async () => {
   const [from] = await web3.eth.getAccounts();
   if (!from) return;
   const response = await fetch(
-    `https://api-dev.userfeeds.io/ranking/tokens;identity=${from.toLowerCase()};asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
+    `https://api-dev.userfeeds.io/ranking/tokens;identity=${from.toLowerCase()};asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d/filter_sort;by=sequence`
   );
   const { items: myCats } = await response.json();
   return myCats;

@@ -15,7 +15,8 @@ export default class App extends Component {
     allowPurr: false,
     purrs: [],
     temporaryPurrs: [],
-    newPurrs: []
+    newPurrs: [],
+    from: undefined
   };
 
   componentDidMount() {
@@ -27,6 +28,7 @@ export default class App extends Component {
 
   refreshMyCats = async () => {
     const myCats = await downloadCats();
+    if (!myCats) return;
     const { activeCat } = this.state;
     const newActiveCat = (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) || myCats[0];
     this.setState({ myCats, activeCat: newActiveCat });
@@ -34,7 +36,10 @@ export default class App extends Component {
 
   refreshWeb3State = async () => {
     const { from, isListening } = await downloadWeb3State();
-    this.setState({ allowPurr: !!(isListening && from && this.state.activeCat) });
+    if (this.state.from !== from) {
+      this.refreshMyCats();
+    }
+    this.setState({ allowPurr: !!(isListening && from && this.state.activeCat), from });
   };
 
   getCatInfo = async catId => {
@@ -98,7 +103,9 @@ export default class App extends Component {
               <Navigation myCats={myCats} />
               <Switch>
                 <Route exact path="/cryptopurr/:catId">
-                  {props => <ShowPage {...props} updatePurrs={updatePurrs} catsInfo={catsInfo} getCatInfo={getCatInfo} />}
+                  {props => (
+                    <ShowPage {...props} updatePurrs={updatePurrs} catsInfo={catsInfo} getCatInfo={getCatInfo} />
+                  )}
                 </Route>
                 <Route exact path="/cryptopurr">
                   {props => <IndexPage {...props} updatePurrs={updatePurrs} />}

@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import KittyImg from './KittyImg';
+import Hero from './Hero';
 import { PurrGroupWithForm, PurrsList, ShowNewPurrs } from './Purr';
-import colors from './colors';
 
-class ShowCat extends Component {
+export default class ShowPage extends Component {
   componentDidMount() {
     this.refreshPurrs(true);
     this.refreshInterval = setInterval(this.refreshPurrs, 3000);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.catId !== this.props.match.params.catId) {
+      this.refreshPurrs(true);
+    }
   }
 
   componentWillUnmount() {
@@ -21,26 +26,16 @@ class ShowCat extends Component {
     );
     const { items: purrs } = await response.json();
     if (purrs) {
+      console.log(purge)
       this.props.updatePurrs(purrs, purge);
     }
   };
 
   render() {
-    const { match: { params: { catId } }, catsInfo, getCatInfo } = this.props;
-    const backgroundColor = catsInfo[catId] ? colors[catsInfo[catId].color] : '';
+    const { match: { params: { catId } } } = this.props;
     return (
       <React.Fragment>
-        <section className="hero hero-kitten is-small" style={{ backgroundColor }}>
-          <div className="hero-body">
-            <div className="columns">
-              <div className="column is-12 has-text-centered">
-                <div className="your-kitten">
-                  <KittyImg catsInfo={catsInfo} getCatInfo={getCatInfo} catId={catId} style={{ width: '450px' }} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <Hero forCat={catId} />
         <section style={{ paddingTop: '4rem' }}>
           <div className="container">
             <PurrGroupWithForm />
@@ -52,5 +47,3 @@ class ShowCat extends Component {
     );
   }
 }
-
-export default ShowCat;
