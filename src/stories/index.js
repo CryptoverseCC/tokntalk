@@ -267,42 +267,38 @@ const Label = ({ className, icon, text, count, colors, style = {} }) => {
         >
           {icon}
         </div>
-        <span className='cp-label-text' style={{ marginLeft: '10px' }}/>
+        <span className="cp-label-text" style={{ marginLeft: '10px' }} />
         <span style={{ marginLeft: 'auto', marginRight: '8px', color: colors.count }}>{count}</span>
       </div>
     </button>
   );
 };
 
-const Card = () => {
+const Card = ({ feedItem }) => {
   const familyPrefix = feedItem.family === 'ethereum' ? '' : `${feedItem.family}.`;
   const etherscanUrl = `https://${familyPrefix}etherscan.io/tx/${feedItem.id.split(':')[1]}`;
   return (
     <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
       <article className="media">
-        <div className="media-left">
+        <div className="media-left" style={{ width: '54px' }}>
           <IdentityAvatar size="medium" />
         </div>
         <div className="media-content">
-          <div
-            style={{
-              fontSize: '18px',
-              fontWeight: '500',
-              color: '#623CEA'
-            }}
-          >
-            Cpt. Barbossa
-          </div>
+          <a>
+            <div style={{ fontSize: '18px' }}>
+              <b>Cpt. Barbossa</b>
+            </div>
+          </a>
           <div>
             <small style={{ color: '#928F9B' }}>
               {timeago().format(feedItem.created_at)}{' '}
-              <a href={etherscanUrl} style={{ marginLeft: '10px', textTransform: 'capitalize' }}>
+              <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
                 {feedItem.family}
               </a>
             </small>
           </div>
           <p style={{ marginTop: '20px', fontSize: '18px' }}>{feedItem.target.id}</p>
-          <div style={{ marginTop: '40px', display: 'flex' }}>
+          <div style={{ marginTop: '20px', display: 'flex' }}>
             <Label
               className="cp-like cp-label--done"
               icon={<img src={Like} />}
@@ -321,6 +317,63 @@ const Card = () => {
           </div>
         </div>
       </article>
+      {feedItem.abouted.map(reply => (
+        <article className="media" style={{ borderTop: 'none' }}>
+          <div className="media-left">
+            <div
+              style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <svg width="16px" height="16px" version="1.1">
+                <g fill="#e1dfec" fill-rule="nonzero">
+                  <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div className="media-content columns">
+            <div className="column is-narrow">
+              <IdentityAvatar size="medium" />
+            </div>
+            <div className="column">
+              <div
+                style={{
+                  backgroundColor: 'rgba(246,244,255,0.7)',
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '12px'
+                }}
+              >
+                <a>
+                  <b>{reply.context.split(':')[2]}</b>
+                </a>{' '}
+                {reply.target.id}
+              </div>
+              <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
+                <small style={{ color: '#928F9B' }}>
+                  <button
+                    style={{
+                      border: 'none',
+                      background: 'none',
+                      display: 'inline-block',
+                      padding: 0,
+                      margin: 0,
+                      color: '#ffa6d8',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Like
+                  </button>
+                  <span style={{ marginLeft: '10px' }}>{timeago().format(reply.created_at)}</span>{' '}
+                  <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+                    {reply.family}
+                  </a>
+                </small>
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
     </div>
   );
 };
@@ -344,7 +397,7 @@ storiesOf('Card', module).add('Comment', () => (
     <div className="container" style={{ padding: '40px 0' }}>
       <div className="columns">
         <div className="column is-6 is-offset-3">
-          <Card />
+          <Card feedItem={feedItem} />
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 .cp-textarea::placeholder {
-  transition: color 0.15s ease-in-out;  
+  transition: color 0.15s ease-in-out;
   color: #1b2437;
 }
 
@@ -12,15 +12,15 @@
 }
 
 .cp-textarea:hover::placeholder {
-  color: #928F9B;
+  color: #928f9b;
 }
 
 .cp-textarea:hover:-ms-input-placeholder {
-  color: #928F9B;
+  color: #928f9b;
 }
 
 .cp-textarea:hover::-ms-input-placeholder {
-  color: #928F9B;
+  color: #928f9b;
 }
 
 /* .cp-box:hover .cp-textarea::placeholder {
@@ -41,13 +41,13 @@
 
 .cp-metamask-submit--active {
   opacity: 1;
-  box-shadow: 0 3px 10px rgba(98,60,234,0.2);
+  box-shadow: 0 3px 10px rgba(98, 60, 234, 0.2);
   cursor: pointer;
 }
 
 .cp-metamask-submit--active:hover,
 .cp-metamask-submit--active:focus {
-  box-shadow: 0 3px 6px rgba(98,60,234,0.4);
+  box-shadow: 0 3px 6px rgba(98, 60, 234, 0.4);
 }
 
 .cp-label:not(.cp-label--done):hover {
@@ -55,11 +55,11 @@
 }
 
 .cp-label.cp-like:not(.cp-label--done):hover .cp-label-container {
-  box-shadow: 0 5px 20px rgba(255,166,216,0.4);
+  box-shadow: 0 5px 20px rgba(255, 166, 216, 0.4);
 }
 
 .cp-label.cp-reply:hover .cp-label-container {
-  box-shadow: 0 5px 20px rgba(98,60,234,0.4);
+  box-shadow: 0 5px 20px rgba(98, 60, 234, 0.4);
 }
 
 .cp-label.cp-like .cp-label-text:before {
@@ -72,7 +72,7 @@
 }
 
 .cp-label.cp-like.cp-label--done .cp-label-icon_container {
-  box-shadow: 0 5px 20px 2px rgba(255,166,216,0.4);
+  box-shadow: 0 5px 20px 2px rgba(255, 166, 216, 0.4);
 }
 
 .cp-label.cp-reply .cp-label-text:before {
@@ -85,12 +85,16 @@
 }
 
 body {
-  color: #2f2670;
+  color: #1b2437;
   font-family: 'Rubik', sans-serif;
 }
 
 a {
-  color: #ffa08d;
+  color: #623cea;
+}
+
+b {
+  font-weight: 500;
 }
 
 a:hover {
