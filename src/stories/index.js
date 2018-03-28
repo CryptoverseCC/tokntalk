@@ -222,6 +222,58 @@ const feedItem = {
   type: 'regular'
 };
 
+const Label = ({ className, icon, text, count, colors, style = {} }) => {
+  return (
+    <button
+      className={`cp-label ${className ? className : ''}`}
+      style={{
+        outline: 'none',
+        border: 'none',
+        background: 'none',
+        padding: 0,
+        margin: 0
+      }}
+    >
+      <div
+        className="cp-label-container"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          height: '50px',
+          width: '140px',
+          borderRadius: '25px',
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          borderColor: colors.border,
+          padding: '4px',
+          boxSizing: 'border-box',
+          fontSize: '16px',
+          transition: 'all 0.15s ease-in-out',
+          ...style
+        }}
+      >
+        <div
+          className="cp-label-icon_container"
+          style={{
+            height: '40px',
+            width: '40px',
+            backgroundColor: colors.iconBackground,
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.15s ease-in-out'
+          }}
+        >
+          {icon}
+        </div>
+        <span className='cp-label-text' style={{ marginLeft: '10px' }}/>
+        <span style={{ marginLeft: 'auto', marginRight: '8px', color: colors.count }}>{count}</span>
+      </div>
+    </button>
+  );
+};
+
 const Card = () => {
   const familyPrefix = feedItem.family === 'ethereum' ? '' : `${feedItem.family}.`;
   const etherscanUrl = `https://${familyPrefix}etherscan.io/tx/${feedItem.id.split(':')[1]}`;
@@ -250,35 +302,22 @@ const Card = () => {
             </small>
           </div>
           <p style={{ marginTop: '20px', fontSize: '18px' }}>{feedItem.target.id}</p>
-          <div style={{ marginTop: '40px' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                height: '50px',
-                width: '140px',
-                borderRadius: '25px',
-                border: '1px solid #ffe4f3',
-                padding: '4px',
-                boxSizing: 'border-box'
-              }}
-            >
-              <div
-                style={{
-                  height: '40px',
-                  width: '40px',
-                  backgroundColor: '#FFA6D8',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <img src={Like} />
-              </div>
-              <span style={{ marginLeft: '10px' }}>Like</span>
-              <span style={{ marginLeft: 'auto', marginRight: '16px', color: '#FFA6D8' }}>12</span>
-            </div>
+          <div style={{ marginTop: '40px', display: 'flex' }}>
+            <Label
+              className="cp-like cp-label--done"
+              icon={<img src={Like} />}
+              text={'Like'}
+              count={feedItem.targeted.length}
+              colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
+            />
+            <Label
+              className="cp-reply"
+              icon={<img src={Reply} />}
+              text={'Reply'}
+              count={feedItem.abouted.length}
+              style={{ marginLeft: '30px' }}
+              colors={{ border: '#cfc4f8', iconBackground: '#623CEA', count: '#623CEA' }}
+            />
           </div>
         </div>
       </article>
