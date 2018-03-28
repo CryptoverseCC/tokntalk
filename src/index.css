@@ -1,3 +1,39 @@
+.cp-textarea::placeholder {
+  color: #1b2437;
+}
+
+.cp-textarea:-ms-input-placeholder {
+  color: #1b2437;
+}
+
+.cp-textarea::-ms-input-placeholder {
+  color: #1b2437;
+}
+
+.cp-textarea:hover::placeholder {
+  color: #928F9B;
+}
+
+.cp-textarea:hover:-ms-input-placeholder {
+  color: #928F9B;
+}
+
+.cp-textarea:hover::-ms-input-placeholder {
+  color: #928F9B;
+}
+
+.cp-box:hover .cp-textarea::placeholder {
+  color: #928F9B;
+}
+
+.cp-box:hover .cp-textarea:-ms-input-placeholder {
+  color: #928F9B;
+}
+
+.cp-box:hover .cp-textarea::-ms-input-placeholder {
+  color: #928F9B;
+}
+
 ::selection {
   color: white;
   background: #ffa08d;
