@@ -4,6 +4,21 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
+const IdentityStatus = ({ id }) => (
+  <div className="level-right has-text-right column" style={{ color: '#1B2437' }}>
+    {id}
+  </div>
+);
+
+const ErrorStatus = ({ message }) => (
+  <div
+    className="level-right has-text-right column"
+    style={{ color: '#FC0035', textShadow: '0 0 10px rgba(252,0,53,0.3)' }}
+  >
+    {message}
+  </div>
+);
+
 const Header = ({ status }) => {
   return (
     <div
@@ -25,18 +40,14 @@ const Header = ({ status }) => {
         >
           Purrbook
         </h1>
-        <div
-          className="level-right has-text-right column"
-          style={{ color: '#FC0035', textShadow: '0 0 10px rgba(252,0,53,0.3)' }}
-        >
-          {status}
-        </div>
+        {status}
       </div>
     </div>
   );
 };
 
 storiesOf('NewHeader', module)
-  .add('No Metamask', () => <Header status="No Metamask" />)
-  .add('No identity detected', () => <Header status="No identity detected" />)
-  .add('Metamask locked', () => <Header status="Metamask locked" />);
+  .add('No Metamask', () => <Header status={<ErrorStatus message={"No Metamask"} />} />)
+  .add('No identity detected', () => <Header status={<ErrorStatus message={"No identity detected"} />} />)
+  .add('Metamask locked', () => <Header status={<ErrorStatus message={'Metamask locked'} />} />)
+  .add('with identity', () => <Header status={<IdentityStatus id={'Cpt. Barbossa'} />} />);
