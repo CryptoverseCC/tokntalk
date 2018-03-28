@@ -38,4 +38,5 @@ const Header = ({ status }) => {
 
 storiesOf('NewHeader', module)
   .add('No Metamask', () => <Header status="No Metamask" />)
-  .add('No identity detected', () => <Header status="No identity detected" />);
+  .add('No identity detected', () => <Header status="No identity detected" />)
+  .add('Metamask locked', () => <Header status="Metamask locked" />);
