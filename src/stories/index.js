@@ -1,7 +1,10 @@
 import React from 'react';
 import TextArea from 'react-autosize-textarea';
+import timeago from 'timeago.js';
 import '../index.css';
 import Metamask from '../img/metamask.png';
+import Like from '../img/like.svg';
+import Reply from '../img/reply.svg';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
@@ -90,8 +93,8 @@ class CommentForm extends React.Component {
   };
 
   submitForm = () => {
-    this.setState({comment: ''})
-  }
+    this.setState({ comment: '' });
+  };
 
   render() {
     return (
@@ -102,16 +105,6 @@ class CommentForm extends React.Component {
           this.submitForm();
         }}
       >
-        <div
-          style={{
-            fontFamily: 'Rubik',
-            fontSize: '18px',
-            fontWeight: '500',
-            color: '#623CEA'
-          }}
-        >
-          {this.props.id}
-        </div>
         <TextArea
           className="cp-textarea"
           style={{
@@ -170,6 +163,16 @@ const Hero = ({ id }) => {
                 </div>
                 <div className="media-content">
                   <div className="content">
+                    <div
+                      style={{
+                        fontFamily: 'Rubik',
+                        fontSize: '18px',
+                        fontWeight: '500',
+                        color: '#623CEA'
+                      }}
+                    >
+                      {id}
+                    </div>
                     <CommentForm id={id} />
                   </div>
                 </div>
@@ -182,6 +185,107 @@ const Hero = ({ id }) => {
   ) : null;
 };
 
+const feedItem = {
+  about: null,
+  abouted: [
+    {
+      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+      created_at: 1521787620000,
+      family: 'kovan',
+      id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
+      sequence: 6516195,
+      target: {
+        id: 'There are so many things that connect us... Bun in owen?'
+      }
+    }
+  ],
+  author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
+  context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
+  created_at: 1521748632000,
+  family: 'kovan',
+  id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+  sequence: 6509052,
+  target: {
+    id: 'I ❤ catnip'
+  },
+  targeted: [
+    {
+      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+      created_at: 1521787260000,
+      family: 'kovan',
+      id: 'claim:0x20565864419442c5d58dbbe912d17b97fceaed71b1710944d907619a9358f637:0',
+      sequence: 6516128
+    }
+  ],
+  type: 'regular'
+};
+
+const Card = () => {
+  const familyPrefix = feedItem.family === 'ethereum' ? '' : `${feedItem.family}.`;
+  const etherscanUrl = `https://${familyPrefix}etherscan.io/tx/${feedItem.id.split(':')[1]}`;
+  return (
+    <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
+      <article className="media">
+        <div className="media-left">
+          <IdentityAvatar size="medium" />
+        </div>
+        <div className="media-content">
+          <div
+            style={{
+              fontSize: '18px',
+              fontWeight: '500',
+              color: '#623CEA'
+            }}
+          >
+            Cpt. Barbossa
+          </div>
+          <div>
+            <small style={{ color: '#928F9B' }}>
+              {timeago().format(feedItem.created_at)}{' '}
+              <a href={etherscanUrl} style={{ marginLeft: '10px', textTransform: 'capitalize' }}>
+                {feedItem.family}
+              </a>
+            </small>
+          </div>
+          <p style={{ marginTop: '20px', fontSize: '18px' }}>{feedItem.target.id}</p>
+          <div style={{ marginTop: '40px' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                height: '50px',
+                width: '140px',
+                borderRadius: '25px',
+                border: '1px solid #ffe4f3',
+                padding: '4px',
+                boxSizing: 'border-box'
+              }}
+            >
+              <div
+                style={{
+                  height: '40px',
+                  width: '40px',
+                  backgroundColor: '#FFA6D8',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <img src={Like} />
+              </div>
+              <span style={{ marginLeft: '10px' }}>Like</span>
+              <span style={{ marginLeft: 'auto', marginRight: '16px', color: '#FFA6D8' }}>12</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  );
+};
+
 storiesOf('Header', module)
   .add('No Metamask', () => <Header status={<ErrorStatus message={'No Metamask'} />} />)
   .add('No identity detected', () => <Header status={<ErrorStatus message={'No identity detected'} />} />)
@@ -191,3 +295,19 @@ storiesOf('Header', module)
 storiesOf('Hero', module)
   .add('without identity', () => <Hero />)
   .add('with identity', () => <Hero id={'Cpt. Barbossa'} />);
+
+storiesOf('Card', module).add('Comment', () => (
+  <div
+    style={{
+      backgroundColor: '#f9fbfd'
+    }}
+  >
+    <div className="container" style={{ padding: '40px 0' }}>
+      <div className="columns">
+        <div className="column is-6 is-offset-3">
+          <Card />
+        </div>
+      </div>
+    </div>
+  </div>
+));
