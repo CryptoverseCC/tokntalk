@@ -99,24 +99,26 @@ class CommentForm extends React.Component {
   render() {
     return (
       <form
-        style={{ position: 'relative' }}
+        style={{ position: 'relative', display: 'flex', ...(this.props.style || {}) }}
         onSubmit={e => {
           e.preventDefault();
           this.submitForm();
         }}
       >
         <TextArea
-          className="cp-textarea"
+          className={`cp-textarea ${this.props.inputClassName ? this.props.inputClassName : ''}`}
           style={{
+            background: 'transparent',
             fontFamily: 'Rubik',
             fontSize: '24px',
             fontWeight: '500',
             color: '#1B2437',
             border: 'none',
             resize: 'none',
-            width: 'calc(100% - 50px)',
+            width: 'calc(100% - 60px)',
             outline: 'none',
-            overflow: 'auto'
+            overflow: 'auto',
+            ...(this.props.inputStyle || {})
           }}
           placeholder="Purr your story"
           value={this.state.comment}
@@ -128,15 +130,14 @@ class CommentForm extends React.Component {
           className={`cp-metamask-submit ${this.state.comment ? 'cp-metamask-submit--active' : ''}`}
           style={{
             position: 'absolute',
-            right: 0,
-            bottom: 0,
-            height: '50px',
-            width: '50px',
-            backgroundColor: '#fff',
+            right: '10px',
+            bottom: '5px',
+            height: '40px',
+            width: '40px',
             borderRadius: '50%',
             outline: 'none',
             border: 'none',
-            transition: 'all 0.15s ease-in-out'
+            transition: 'all 0.15s ease-in-out',
           }}
         >
           <img src={Metamask} style={{ width: '70%' }} />
@@ -374,6 +375,41 @@ const Card = ({ feedItem }) => {
           </div>
         </article>
       ))}
+      <article className="media" style={{ borderTop: 'none' }}>
+        <div className="media-left">
+          <div
+            style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <svg width="16px" height="16px" version="1.1">
+              <g fill="#e1dfec" fill-rule="nonzero">
+                <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div className="media-content columns">
+          <div className="column is-narrow">
+            <IdentityAvatar size="medium" />
+          </div>
+          <div className="column">
+            <CommentForm
+              style={{
+                backgroundColor: 'rgba(246,244,255,0.7)',
+                width: '100%',
+                padding: '16px',
+                borderRadius: '12px',
+                alignItems: 'center'
+              }}
+              inputStyle={{
+                fontSize: '16px',
+                fontWeight: 'normal'
+              }}
+              inputClassName="cp-textarea--reply"
+            />
+          </div>
+        </div>
+      </article>
     </div>
   );
 };
