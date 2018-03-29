@@ -3,7 +3,7 @@ import TextArea from 'react-autosize-textarea';
 import timeago from 'timeago.js';
 import '../index.css';
 import Metamask from '../img/metamask.png';
-import Like from '../img/like.svg';
+import LikeIcon from '../img/like.svg';
 import ReplyIcon from '../img/reply.svg';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
@@ -252,26 +252,14 @@ const Post = ({ from, createdAt, etherscanUrl, family, message, reactions, repli
         <IdentityAvatar size="medium" />
       </div>
       <div className="media-content">
-        <a>
-          <div style={{ fontSize: '18px' }}>
-            <b>{from}</b>
-          </div>
-        </a>
-        <div>
-          <small style={{ color: '#928F9B' }}>
-            {timeago().format(createdAt)}{' '}
-            <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
-              {family}
-            </a>
-          </small>
-        </div>
+        <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} />
         <p style={{ marginTop: '20px', fontSize: '18px' }}>{message}</p>
         {reactions &&
           replies && (
             <div style={{ marginTop: '20px', display: 'flex' }}>
               <Label
                 className="cp-like cp-label--done"
-                icon={<img src={Like} />}
+                icon={<img src={LikeIcon} />}
                 text={'Like'}
                 count={reactions.length}
                 colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
@@ -396,84 +384,151 @@ const ReplyForm = () => (
   </article>
 );
 
+const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
+  return (
+    <React.Fragment>
+      <div>
+        <a style={{ fontSize: '18px' }}>
+          <b>{from}</b>
+        </a>{' '}
+        {suffix}
+      </div>
+      <div>
+        <small style={{ color: '#928F9B' }}>
+          {timeago().format(createdAt)}{' '}
+          <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+            {family}
+          </a>
+        </small>
+      </div>
+    </React.Fragment>
+  );
+};
+
+const Reaction = ({ backgroundColor, boxShadow, Icon }) => (
+  <div
+    style={{
+      height: '30px',
+      width: '30px',
+      backgroundColor: backgroundColor,
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: boxShadow
+    }}
+  >
+    <img src={Icon} style={{ width: '12px' }} />
+  </div>
+);
+
+const LikeReaction = () => (
+  <Reaction backgroundColor="#ffa6d8" boxShadow="0 4px 15px 4px rgba(255,166,216,0.4)" Icon={LikeIcon} />
+);
+
+const ReplyReaction = () => (
+  <Reaction backgroundColor="#623cea" boxShadow="0 4px 15px 4px rgba(98,60,234,0.3)" Icon={ReplyIcon} />
+);
+
 const Card = ({ feedItem }) => {
-  if (feedItem.type === 'regular') {
-    return (
-      <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
-        <Post
-          from={feedItem.context.split(':')[2]}
-          createdAt={feedItem.created_at}
-          etherscanUrl={createEtherscanUrl(feedItem)}
-          family={feedItem.family}
-          message={feedItem.target.id}
-          reactions={feedItem.targeted}
-          replies={feedItem.abouted}
-        />
-        {feedItem.abouted.map(reply => (
-          <Reply
-            from={reply.context.split(':')[2]}
-            createdAt={reply.created_at}
-            message={reply.target.id}
-            family={reply.family}
-            etherscanUrl={createEtherscanUrl(reply)}
-          />
-        ))}
-        <ReplyForm />
-      </div>
-    );
-  } else {
-    return (
-      <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
-        <article className="media">
-          <div className="media-left" style={{ width: '54px' }}>
-            <IdentityAvatar
-              size="medium"
-              reaction={
-                <div
-                  style={{
-                    height: '30px',
-                    width: '30px',
-                    backgroundColor: '#ffa6d8',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 15px 4px rgba(255,166,216,0.4)'
-                  }}
-                >
-                  <img src={Like} style={{ width: '12px' }} />
-                </div>
-              }
+  const renderItem = () => {
+    switch (feedItem.type) {
+      case 'regular': {
+        return (
+          <React.Fragment>
+            <Post
+              from={feedItem.context.split(':')[2]}
+              createdAt={feedItem.created_at}
+              etherscanUrl={createEtherscanUrl(feedItem)}
+              family={feedItem.family}
+              message={feedItem.target.id}
+              reactions={feedItem.targeted}
+              replies={feedItem.abouted}
             />
-          </div>
-          <div className="media-content">
-            <div>
-              <a style={{ fontSize: '18px' }}>
-                <b>Cpt. Barbossa</b>
-              </a>{' '}
-              reacted on <b>Post</b>
-            </div>
-            <div>
-              <small style={{ color: '#928F9B' }}>
-                {timeago().format(feedItem.created_at)}{' '}
-                <a href={createEtherscanUrl(feedItem)} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
-                  {feedItem.family}
-                </a>
-              </small>
-            </div>
-          </div>
-        </article>
-        <Post
-          from={feedItem.target.context.split(':')[2]}
-          createdAt={feedItem.target.created_at}
-          etherscanUrl={createEtherscanUrl(feedItem.target)}
-          family={feedItem.target.family}
-          message={feedItem.target.target.id}
-          style={{ marginTop: '20px' }}
-        />
-      </div>
-    );
-  }
+            {feedItem.abouted.map(reply => (
+              <Reply
+                from={reply.context.split(':')[2]}
+                createdAt={reply.created_at}
+                message={reply.target.id}
+                family={reply.family}
+                etherscanUrl={createEtherscanUrl(reply)}
+              />
+            ))}
+            <ReplyForm />
+          </React.Fragment>
+        );
+      }
+      case 'like': {
+        return (
+          <React.Fragment>
+            <article className="media">
+              <div className="media-left" style={{ width: '54px' }}>
+                <IdentityAvatar size="medium" reaction={<LikeReaction />} />
+              </div>
+              <div className="media-content">
+                <CardTitle
+                  from={feedItem.context.split(':')[2]}
+                  createdAt={feedItem.created_at}
+                  etherscanUrl={createEtherscanUrl(feedItem)}
+                  family={feedItem.family}
+                  suffix={
+                    <React.Fragment>
+                      reacted on <b>Post</b>
+                    </React.Fragment>
+                  }
+                />
+              </div>
+            </article>
+            <Post
+              from={feedItem.target.context.split(':')[2]}
+              createdAt={feedItem.target.created_at}
+              etherscanUrl={createEtherscanUrl(feedItem.target)}
+              family={feedItem.target.family}
+              message={feedItem.target.target.id}
+              style={{ marginTop: '20px' }}
+            />
+          </React.Fragment>
+        );
+      }
+      case 'response': {
+        return (
+          <React.Fragment>
+            <article className="media">
+              <div className="media-left" style={{ width: '54px' }}>
+                <IdentityAvatar size="medium" reaction={<ReplyReaction />} />
+              </div>
+              <div className="media-content">
+                <CardTitle
+                  from={feedItem.context.split(':')[2]}
+                  createdAt={feedItem.created_at}
+                  etherscanUrl={createEtherscanUrl(feedItem)}
+                  family={feedItem.family}
+                  suffix={
+                    <React.Fragment>
+                      responded to <b>Post</b>
+                    </React.Fragment>
+                  }
+                />
+              </div>
+            </article>
+            <Post
+              from={feedItem.about.context.split(':')[2]}
+              createdAt={feedItem.about.created_at}
+              etherscanUrl={createEtherscanUrl(feedItem.about)}
+              family={feedItem.about.family}
+              message={feedItem.about.target.id}
+              style={{ marginTop: '20px' }}
+            />
+          </React.Fragment>
+        );
+      }
+    }
+  };
+  return (
+    <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
+      {renderItem()}
+    </div>
+  );
 };
 
 storiesOf('Header', module)
@@ -606,6 +661,49 @@ storiesOf('Card', module)
       },
       targeted: [],
       type: 'like'
+    };
+
+    return (
+      <div
+        style={{
+          backgroundColor: '#f9fbfd'
+        }}
+      >
+        <div className="container" style={{ padding: '40px 0' }}>
+          <div className="columns">
+            <div className="column is-6 is-offset-3">
+              <Card feedItem={feedItem} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  })
+  .add('Reply', () => {
+    const feedItem = {
+      about: {
+        author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+        context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+        created_at: 1521787620000,
+        family: 'kovan',
+        id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+        sequence: 6516195,
+        target: {
+          id: 'I ❤ catnip'
+        }
+      },
+      abouted: [],
+      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+      created_at: 1521787620000,
+      family: 'kovan',
+      id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
+      sequence: 6516195,
+      target: {
+        id: 'There are so many things that connect us... Bun in owen?'
+      },
+      targeted: [],
+      type: 'response'
     };
 
     return (
