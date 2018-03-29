@@ -9,7 +9,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
-const IdentityAvatar = ({ size, reaction, style = {} }) => {
+const IdentityAvatar = ({ size, reaction, style = {}, catId }) => {
   const { containerSize, imgSize, imgTopOffset } = {
     verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%' },
     small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%' },
@@ -38,7 +38,7 @@ const IdentityAvatar = ({ size, reaction, style = {} }) => {
             maxWidth: 'none'
           }}
           alt=""
-          src="https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/635286.svg"
+          src={`https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/${catId}.svg`}
         />
       </div>
       {reaction && (
@@ -53,7 +53,7 @@ const IdentityAvatar = ({ size, reaction, style = {} }) => {
 const IdentityStatus = ({ id }) => (
   <div className="level-right column" style={{ color: '#1B2437' }}>
     <div className="level-right">
-      <IdentityAvatar size="small" />
+      <IdentityAvatar size="small" catId={id} />
       <div style={{ marginLeft: '8px' }}>{id}</div>
     </div>
   </div>
@@ -168,7 +168,7 @@ const Hero = ({ id }) => {
             <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)' }}>
               <article className="media">
                 <div className="media-left">
-                  <IdentityAvatar size="large" />
+                  <IdentityAvatar size="large" catId={id} />
                 </div>
                 <div className="media-content">
                   <div className="content">
@@ -250,7 +250,7 @@ const Post = ({ from, createdAt, etherscanUrl, family, message, reactions, react
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
-        <IdentityAvatar size="medium" reaction={reaction} />
+        <IdentityAvatar size="medium" reaction={reaction} catId={from} />
       </div>
       <div className="media-content">
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
@@ -293,7 +293,7 @@ const Reply = ({ highlighted, from, createdAt, etherscanUrl, family, message, st
 
     <div className="media-content columns">
       <div className="column is-narrow">
-        <IdentityAvatar size="medium" />
+        <IdentityAvatar size="medium" catId={from} />
       </div>
       <div className="column">
         <div
@@ -341,7 +341,7 @@ const createEtherscanUrl = item => {
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
 
-const ReplyForm = () => (
+const ReplyForm = ({from}) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left">
       <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -355,7 +355,7 @@ const ReplyForm = () => (
 
     <div className="media-content columns">
       <div className="column is-narrow">
-        <IdentityAvatar size="medium" />
+        <IdentityAvatar size="medium" catId={from} />
       </div>
       <div className="column">
         <CommentForm
@@ -430,7 +430,7 @@ const Card = ({ feedItem }) => {
         <React.Fragment>
           <article className="media">
             <div className="media-left" style={{ width: '54px' }}>
-              <IdentityAvatar size="medium" reaction={<LikeReaction />} />
+              <IdentityAvatar size="medium" reaction={<LikeReaction />} catId={feedItem.context.split(':')[2]} />
             </div>
             <div className="media-content">
               <CardTitle
@@ -460,13 +460,13 @@ const Card = ({ feedItem }) => {
       const suffix = {
         response: () => (
           <span style={{ marginLeft: '10px' }}>
-            replied to <b>⬆</b>
+            replied to
           </span>
         ),
-        post_to: () => (
+        post_to: (catId) => (
           <React.Fragment>
             <span style={{ marginLeft: '10px' }}>wrote to</span>
-            <IdentityAvatar size="verySmall" style={{ marginLeft: '10px' }} />{' '}
+            <IdentityAvatar size="verySmall" style={{ marginLeft: '10px' }} catId={feedItem.about.id.split(':')[2]} />
             <a style={{ marginLeft: '10px' }}>
               <b>{feedItem.about.id.split(':')[2]}</b>
             </a>
@@ -505,7 +505,7 @@ const Card = ({ feedItem }) => {
               etherscanUrl={createEtherscanUrl(reply)}
             />
           ))}{' '}
-          <ReplyForm />
+          <ReplyForm from={1234}/>
         </React.Fragment>
       );
     }
@@ -520,34 +520,16 @@ const Card = ({ feedItem }) => {
     </div>
   );
 };
-// <article className="media">
-//               <div className="media-left" style={{ width: '54px' }}>
-//                 <IdentityAvatar size="medium" reaction={<ReplyReaction />} />
-//               </div>
-//               <div className="media-content">
-//                 <CardTitle
-//                   from={feedItem.context.split(':')[2]}
-//                   createdAt={feedItem.created_at}
-//                   etherscanUrl={createEtherscanUrl(feedItem)}
-//                   family={feedItem.family}
-//                   suffix={
-//                     <React.Fragment>
-//                       responded to <b>Post</b>
-//                     </React.Fragment>
-//                   }
-//                 />
-//               </div>
-//             </article>
 
 storiesOf('Header', module)
   .add('No Metamask', () => <Header status={<ErrorStatus message={'No Metamask'} />} />)
   .add('No identity detected', () => <Header status={<ErrorStatus message={'No identity detected'} />} />)
   .add('Metamask locked', () => <Header status={<ErrorStatus message={'Metamask locked'} />} />)
-  .add('with identity', () => <Header status={<IdentityStatus id={'Cpt. Barbossa'} />} />);
+  .add('with identity', () => <Header status={<IdentityStatus id={1234} />} />);
 
 storiesOf('Hero', module)
   .add('without identity', () => <Hero />)
-  .add('with identity', () => <Hero id={'Cpt. Barbossa'} />);
+  .add('with identity', () => <Hero id={1234} />);
 
 storiesOf('Card', module)
   .add('Comment with replies and like', () => {
