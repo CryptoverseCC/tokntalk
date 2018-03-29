@@ -533,7 +533,10 @@ const Card = ({ feedItem }) => {
     }
   };
   return (
-    <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik', overflow: 'hidden' }}>
+    <div
+      className="box cp-box"
+      style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik', overflow: 'hidden' }}
+    >
       {renderItem()}
     </div>
   );
@@ -730,3 +733,130 @@ storiesOf('Card', module)
       </div>
     );
   });
+
+storiesOf('Feed', module).add('Multiple cards', () => {
+  const feedItems = [
+    {
+      about: null,
+      abouted: [
+        {
+          author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+          created_at: 1521787620000,
+          family: 'kovan',
+          id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
+          sequence: 6516195,
+          target: {
+            id: 'There are so many things that connect us... Bun in owen?'
+          }
+        },
+        {
+          author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+          created_at: 1521787620000,
+          family: 'kovan',
+          id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
+          sequence: 6516195,
+          target: {
+            id: 'There are so many things that connect us... Bun in owen?'
+          }
+        }
+      ],
+      author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
+      created_at: 1521748632000,
+      family: 'kovan',
+      id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+      sequence: 6509052,
+      target: {
+        id: 'I ❤ catnip'
+      },
+      targeted: [
+        {
+          author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+          created_at: 1521787260000,
+          family: 'kovan',
+          id: 'claim:0x20565864419442c5d58dbbe912d17b97fceaed71b1710944d907619a9358f637:0',
+          sequence: 6516128
+        }
+      ],
+      type: 'regular'
+    },
+    {
+      about: null,
+      abouted: [],
+      author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
+      created_at: 1521748632000,
+      family: 'kovan',
+      id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+      sequence: 6509052,
+      target: {
+        id: 'I ❤ catnip'
+      },
+      targeted: [],
+      type: 'regular'
+    },
+    {
+      about: null,
+      abouted: [],
+      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+      created_at: 1521787260000,
+      family: 'kovan',
+      id: 'claim:0x20565864419442c5d58dbbe912d17b97fceaed71b1710944d907619a9358f637:0',
+      sequence: 6516128,
+      target: {
+        author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
+        context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
+        created_at: 1521748632000,
+        family: 'kovan',
+        id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+        sequence: 6509052,
+        target: { id: 'I \u2764 catnip' }
+      },
+      targeted: [],
+      type: 'like'
+    },
+    {
+      about: {
+        author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+        context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+        created_at: 1521787620000,
+        family: 'kovan',
+        id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+        sequence: 6516195,
+        target: {
+          id: 'I ❤ catnip'
+        }
+      },
+      abouted: [],
+      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+      created_at: 1521787620000,
+      family: 'kovan',
+      id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
+      sequence: 6516195,
+      target: {
+        id: 'There are so many things that connect us... Bun in owen?'
+      },
+      targeted: [],
+      type: 'response'
+    }
+  ];
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#f9fbfd'
+      }}
+    >
+      <div className="container" style={{ padding: '40px 0' }}>
+        <div className="columns">
+          <div className="column is-6 is-offset-3">{feedItems.map(feedItem => <Card feedItem={feedItem} />)}</div>
+        </div>
+      </div>
+    </div>
+  );
+});
