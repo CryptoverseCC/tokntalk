@@ -9,35 +9,42 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
-const IdentityAvatar = ({ size }) => {
+const IdentityAvatar = ({ size, reaction }) => {
   const { containerSize, imgSize, imgTopOffset } = {
     small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%' },
     medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%' },
     large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%' }
   }[size];
   return (
-    <div
-      style={{
-        overflow: 'hidden',
-        width: containerSize,
-        height: containerSize,
-        position: 'relative',
-        borderRadius: '50%',
-        backgroundColor: '#CDF5D4'
-      }}
-    >
-      <img
+    <div style={{ position: 'relative' }}>
+      <div
         style={{
-          width: imgSize,
-          position: 'absolute',
-          left: '55%',
-          top: imgTopOffset,
-          transform: 'translate(-50%, -50%)',
-          maxWidth: 'none'
+          overflow: 'hidden',
+          position: 'relative',
+          width: containerSize,
+          height: containerSize,
+          borderRadius: '50%',
+          backgroundColor: '#CDF5D4'
         }}
-        alt=""
-        src="https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/635286.svg"
-      />
+      >
+        <img
+          style={{
+            width: imgSize,
+            position: 'absolute',
+            left: '55%',
+            top: imgTopOffset,
+            transform: 'translate(-50%, -50%)',
+            maxWidth: 'none'
+          }}
+          alt=""
+          src="https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/635286.svg"
+        />
+      </div>
+      {reaction && (
+        <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
+          {reaction}
+        </div>
+      )}
     </div>
   );
 };
@@ -137,7 +144,7 @@ class CommentForm extends React.Component {
             borderRadius: '50%',
             outline: 'none',
             border: 'none',
-            transition: 'all 0.15s ease-in-out',
+            transition: 'all 0.15s ease-in-out'
           }}
         >
           <img src={Metamask} style={{ width: '70%' }} />
@@ -184,43 +191,6 @@ const Hero = ({ id }) => {
       </div>
     </div>
   ) : null;
-};
-
-const feedItem = {
-  about: null,
-  abouted: [
-    {
-      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
-      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
-      created_at: 1521787620000,
-      family: 'kovan',
-      id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
-      sequence: 6516195,
-      target: {
-        id: 'There are so many things that connect us... Bun in owen?'
-      }
-    }
-  ],
-  author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
-  context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
-  created_at: 1521748632000,
-  family: 'kovan',
-  id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
-  sequence: 6509052,
-  target: {
-    id: 'I ❤ catnip'
-  },
-  targeted: [
-    {
-      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
-      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
-      created_at: 1521787260000,
-      family: 'kovan',
-      id: 'claim:0x20565864419442c5d58dbbe912d17b97fceaed71b1710944d907619a9358f637:0',
-      sequence: 6516128
-    }
-  ],
-  type: 'regular'
 };
 
 const Label = ({ className, icon, text, count, colors, style = {} }) => {
@@ -278,47 +248,110 @@ const Label = ({ className, icon, text, count, colors, style = {} }) => {
 const Card = ({ feedItem }) => {
   const familyPrefix = feedItem.family === 'ethereum' ? '' : `${feedItem.family}.`;
   const etherscanUrl = `https://${familyPrefix}etherscan.io/tx/${feedItem.id.split(':')[1]}`;
-  return (
-    <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
-      <article className="media">
-        <div className="media-left" style={{ width: '54px' }}>
-          <IdentityAvatar size="medium" />
-        </div>
-        <div className="media-content">
-          <a>
-            <div style={{ fontSize: '18px' }}>
-              <b>Cpt. Barbossa</b>
+  if (feedItem.type === 'regular') {
+    return (
+      <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
+        <article className="media">
+          <div className="media-left" style={{ width: '54px' }}>
+            <IdentityAvatar size="medium" />
+          </div>
+          <div className="media-content">
+            <a>
+              <div style={{ fontSize: '18px' }}>
+                <b>Cpt. Barbossa</b>
+              </div>
+            </a>
+            <div>
+              <small style={{ color: '#928F9B' }}>
+                {timeago().format(feedItem.created_at)}{' '}
+                <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+                  {feedItem.family}
+                </a>
+              </small>
             </div>
-          </a>
-          <div>
-            <small style={{ color: '#928F9B' }}>
-              {timeago().format(feedItem.created_at)}{' '}
-              <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
-                {feedItem.family}
-              </a>
-            </small>
+            <p style={{ marginTop: '20px', fontSize: '18px' }}>{feedItem.target.id}</p>
+            <div style={{ marginTop: '20px', display: 'flex' }}>
+              <Label
+                className="cp-like cp-label--done"
+                icon={<img src={Like} />}
+                text={'Like'}
+                count={feedItem.targeted.length}
+                colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
+              />
+              <Label
+                className="cp-reply"
+                icon={<img src={Reply} />}
+                text={'Reply'}
+                count={feedItem.abouted.length}
+                style={{ marginLeft: '30px' }}
+                colors={{ border: '#cfc4f8', iconBackground: '#623CEA', count: '#623CEA' }}
+              />
+            </div>
           </div>
-          <p style={{ marginTop: '20px', fontSize: '18px' }}>{feedItem.target.id}</p>
-          <div style={{ marginTop: '20px', display: 'flex' }}>
-            <Label
-              className="cp-like cp-label--done"
-              icon={<img src={Like} />}
-              text={'Like'}
-              count={feedItem.targeted.length}
-              colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
-            />
-            <Label
-              className="cp-reply"
-              icon={<img src={Reply} />}
-              text={'Reply'}
-              count={feedItem.abouted.length}
-              style={{ marginLeft: '30px' }}
-              colors={{ border: '#cfc4f8', iconBackground: '#623CEA', count: '#623CEA' }}
-            />
-          </div>
-        </div>
-      </article>
-      {feedItem.abouted.map(reply => (
+        </article>
+        {feedItem.abouted.map(reply => (
+          <article className="media" style={{ borderTop: 'none' }}>
+            <div className="media-left">
+              <div
+                style={{
+                  height: '54px',
+                  width: '54px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <svg width="16px" height="16px" version="1.1">
+                  <g fill="#e1dfec" fill-rule="nonzero">
+                    <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <div className="media-content columns">
+              <div className="column is-narrow">
+                <IdentityAvatar size="medium" />
+              </div>
+              <div className="column">
+                <div
+                  style={{
+                    backgroundColor: 'rgba(246,244,255,0.7)',
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '12px'
+                  }}
+                >
+                  <a>
+                    <b>{reply.context.split(':')[2]}</b>
+                  </a>{' '}
+                  {reply.target.id}
+                </div>
+                <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
+                  <small style={{ color: '#928F9B' }}>
+                    <button
+                      style={{
+                        border: 'none',
+                        background: 'none',
+                        display: 'inline-block',
+                        padding: 0,
+                        margin: 0,
+                        color: '#ffa6d8',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Like
+                    </button>
+                    <span style={{ marginLeft: '10px' }}>{timeago().format(reply.created_at)}</span>{' '}
+                    <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+                      {reply.family}
+                    </a>
+                  </small>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
         <article className="media" style={{ borderTop: 'none' }}>
           <div className="media-left">
             <div
@@ -337,81 +370,91 @@ const Card = ({ feedItem }) => {
               <IdentityAvatar size="medium" />
             </div>
             <div className="column">
-              <div
+              <CommentForm
                 style={{
                   backgroundColor: 'rgba(246,244,255,0.7)',
                   width: '100%',
-                  padding: '12px',
-                  borderRadius: '12px'
+                  padding: '16px',
+                  borderRadius: '12px',
+                  alignItems: 'center'
                 }}
-              >
-                <a>
-                  <b>{reply.context.split(':')[2]}</b>
-                </a>{' '}
-                {reply.target.id}
-              </div>
-              <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
-                <small style={{ color: '#928F9B' }}>
-                  <button
-                    style={{
-                      border: 'none',
-                      background: 'none',
-                      display: 'inline-block',
-                      padding: 0,
-                      margin: 0,
-                      color: '#ffa6d8',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Like
-                  </button>
-                  <span style={{ marginLeft: '10px' }}>{timeago().format(reply.created_at)}</span>{' '}
-                  <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
-                    {reply.family}
-                  </a>
-                </small>
-              </div>
+                inputStyle={{
+                  fontSize: '16px',
+                  fontWeight: 'normal'
+                }}
+                inputClassName="cp-textarea--reply"
+              />
             </div>
           </div>
         </article>
-      ))}
-      <article className="media" style={{ borderTop: 'none' }}>
-        <div className="media-left">
-          <div
-            style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            <svg width="16px" height="16px" version="1.1">
-              <g fill="#e1dfec" fill-rule="nonzero">
-                <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
-              </g>
-            </svg>
-          </div>
-        </div>
-
-        <div className="media-content columns">
-          <div className="column is-narrow">
-            <IdentityAvatar size="medium" />
-          </div>
-          <div className="column">
-            <CommentForm
-              style={{
-                backgroundColor: 'rgba(246,244,255,0.7)',
-                width: '100%',
-                padding: '16px',
-                borderRadius: '12px',
-                alignItems: 'center'
-              }}
-              inputStyle={{
-                fontSize: '16px',
-                fontWeight: 'normal'
-              }}
-              inputClassName="cp-textarea--reply"
+      </div>
+    );
+  } else {
+    return (
+      <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
+        <article className="media">
+          <div className="media-left" style={{ width: '54px' }}>
+            <IdentityAvatar
+              size="medium"
+              reaction={
+                <div
+                  style={{
+                    height: '30px',
+                    width: '30px',
+                    backgroundColor: '#ffa6d8',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 15px 4px rgba(255,166,216,0.4)'
+                  }}
+                >
+                  <img src={Like} style={{ width: '12px' }} />
+                </div>
+              }
             />
           </div>
-        </div>
-      </article>
-    </div>
-  );
+          <div className="media-content">
+            <div>
+              <a style={{ fontSize: '18px' }}>
+                <b>Cpt. Barbossa</b>
+              </a>{' '}
+              reacted on <b>Post</b>
+            </div>
+            <div>
+              <small style={{ color: '#928F9B' }}>
+                {timeago().format(feedItem.created_at)}{' '}
+                <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+                  {feedItem.family}
+                </a>
+              </small>
+            </div>
+          </div>
+        </article>
+        <article className="media" style={{marginTop: '20px'}}>
+          <div className="media-left" style={{ width: '54px' }}>
+            <IdentityAvatar size="medium" />
+          </div>
+          <div className="media-content">
+            <a>
+              <div style={{ fontSize: '18px' }}>
+                <b>{feedItem.target.context.split(':')[2]}</b>
+              </div>
+            </a>
+            <div>
+              <small style={{ color: '#928F9B' }}>
+                {timeago().format(feedItem.created_at)}{' '}
+                <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+                  {feedItem.target.family}
+                </a>
+              </small>
+            </div>
+            <p style={{ marginTop: '20px', fontSize: '18px' }}>{feedItem.target.target.id}</p>
+          </div>
+        </article>
+      </div>
+    );
+  }
 };
 
 storiesOf('Header', module)
@@ -424,18 +467,141 @@ storiesOf('Hero', module)
   .add('without identity', () => <Hero />)
   .add('with identity', () => <Hero id={'Cpt. Barbossa'} />);
 
-storiesOf('Card', module).add('Comment', () => (
-  <div
-    style={{
-      backgroundColor: '#f9fbfd'
-    }}
-  >
-    <div className="container" style={{ padding: '40px 0' }}>
-      <div className="columns">
-        <div className="column is-6 is-offset-3">
-          <Card feedItem={feedItem} />
+storiesOf('Card', module)
+  .add('Comment with replies and like', () => {
+    const feedItem = {
+      about: null,
+      abouted: [
+        {
+          author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+          created_at: 1521787620000,
+          family: 'kovan',
+          id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
+          sequence: 6516195,
+          target: {
+            id: 'There are so many things that connect us... Bun in owen?'
+          }
+        },
+        {
+          author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+          created_at: 1521787620000,
+          family: 'kovan',
+          id: 'claim:0x4999436ecf49984576651c7586dc95d4b59766e00c779cc2fdeade6ffc0bf8e8:0',
+          sequence: 6516195,
+          target: {
+            id: 'There are so many things that connect us... Bun in owen?'
+          }
+        }
+      ],
+      author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
+      created_at: 1521748632000,
+      family: 'kovan',
+      id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+      sequence: 6509052,
+      target: {
+        id: 'I ❤ catnip'
+      },
+      targeted: [
+        {
+          author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+          created_at: 1521787260000,
+          family: 'kovan',
+          id: 'claim:0x20565864419442c5d58dbbe912d17b97fceaed71b1710944d907619a9358f637:0',
+          sequence: 6516128
+        }
+      ],
+      type: 'regular'
+    };
+
+    return (
+      <div
+        style={{
+          backgroundColor: '#f9fbfd'
+        }}
+      >
+        <div className="container" style={{ padding: '40px 0' }}>
+          <div className="columns">
+            <div className="column is-6 is-offset-3">
+              <Card feedItem={feedItem} />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-));
+    );
+  })
+  .add('Comment without replies or likes', () => {
+    const feedItem = {
+      about: null,
+      abouted: [],
+      author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
+      created_at: 1521748632000,
+      family: 'kovan',
+      id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+      sequence: 6509052,
+      target: {
+        id: 'I ❤ catnip'
+      },
+      targeted: [],
+      type: 'regular'
+    };
+
+    return (
+      <div
+        style={{
+          backgroundColor: '#f9fbfd'
+        }}
+      >
+        <div className="container" style={{ padding: '40px 0' }}>
+          <div className="columns">
+            <div className="column is-6 is-offset-3">
+              <Card feedItem={feedItem} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  })
+  .add('Like a post', () => {
+    const feedItem = {
+      about: null,
+      abouted: [],
+      author: '0x223edbc8166ba1b514729261ff53fb8c73ab4d79',
+      context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:341605',
+      created_at: 1521787260000,
+      family: 'kovan',
+      id: 'claim:0x20565864419442c5d58dbbe912d17b97fceaed71b1710944d907619a9358f637:0',
+      sequence: 6516128,
+      target: {
+        author: '0x6b7eb2e2084ad4f3606a5f082195c0121c0efa3b',
+        context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:587035',
+        created_at: 1521748632000,
+        family: 'kovan',
+        id: 'claim:0xd87fbe04e51c55bbd90b3dcfbd48046311427038dfbb5597c533f85c5a85e7bf:0',
+        sequence: 6509052,
+        target: { id: 'I \u2764 catnip' }
+      },
+      targeted: [],
+      type: 'like'
+    };
+
+    return (
+      <div
+        style={{
+          backgroundColor: '#f9fbfd'
+        }}
+      >
+        <div className="container" style={{ padding: '40px 0' }}>
+          <div className="columns">
+            <div className="column is-6 is-offset-3">
+              <Card feedItem={feedItem} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  });
