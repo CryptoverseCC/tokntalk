@@ -98,6 +98,16 @@
   content: 'Reply';
 }
 
+.cp-reply--highlighted:before {
+  content: '';
+  position: absolute;
+  left: -25px;
+  width: 10px;
+  height: 100%;
+  background-color: #623cea;
+  border-radius: 10px
+}
+
 ::selection {
   color: white;
   background: #ffa08d;

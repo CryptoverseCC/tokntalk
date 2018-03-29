@@ -279,9 +279,9 @@ const Post = ({ from, createdAt, etherscanUrl, family, message, reactions, repli
   );
 };
 
-const Reply = ({ from, createdAt, etherscanUrl, family, message, style = {} }) => (
+const Reply = ({ highlighted, from, createdAt, etherscanUrl, family, message, style = {} }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
-    <div className="media-left">
+    <div className={`media-left ${highlighted ? 'cp-reply--highlighted' : ''}`} style={{ position: 'relative' }}>
       <div
         style={{
           height: '54px',
@@ -519,13 +519,21 @@ const Card = ({ feedItem }) => {
               message={feedItem.about.target.id}
               style={{ marginTop: '20px' }}
             />
+            <Reply
+              highlighted
+              from={feedItem.context.split(':')[2]}
+              createdAt={feedItem.created_at}
+              message={feedItem.target.id}
+              family={feedItem.family}
+              etherscanUrl={createEtherscanUrl(feedItem)}
+            />
           </React.Fragment>
         );
       }
     }
   };
   return (
-    <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik' }}>
+    <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', fontFamily: 'Rubik', overflow: 'hidden' }}>
       {renderItem()}
     </div>
   );
