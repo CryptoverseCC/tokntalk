@@ -69,16 +69,9 @@
   box-shadow: 0 3px 6px rgba(98, 60, 234, 0.4);
 }
 
-.cp-label:not(.cp-label--done):hover {
-  cursor: pointer;
-}
-
 .cp-label.cp-like:not(.cp-label--done):hover .cp-label-container {
+  cursor: pointer;
   box-shadow: 0 5px 20px rgba(255, 166, 216, 0.4);
-}
-
-.cp-label.cp-reply:hover .cp-label-container {
-  box-shadow: 0 5px 20px rgba(98, 60, 234, 0.4);
 }
 
 .cp-label.cp-like .cp-label-text:before {
@@ -95,7 +88,7 @@
 }
 
 .cp-label.cp-reply .cp-label-text:before {
-  content: 'Reply';
+  content: 'Replies';
 }
 
 .cp-reply--highlighted:before {
