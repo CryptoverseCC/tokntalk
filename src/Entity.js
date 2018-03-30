@@ -20,13 +20,24 @@ export const EntityAvatar = ({ id, ...props }) => (
 );
 
 export const ActiveEntityName = () => (
-  <Context.Consumer>
-    {({ catStore: { activeCat } }) => <EntityName id={activeCat.token} />}
-  </Context.Consumer>
-)
+  <Context.Consumer>{({ catStore: { activeCat } }) => <EntityName id={activeCat.token} />}</Context.Consumer>
+);
 
 export const ActiveEntityAvatar = props => (
   <Context.Consumer>
     {({ catStore: { activeCat } }) => <EntityAvatar id={activeCat.token} {...props} />}
+  </Context.Consumer>
+);
+
+export const IfActiveEntityLiked = ({ id, children, then, other }) => (
+  <Context.Consumer>
+    {({ catStore: { activeCat }, purrStore: { purrs, temporaryReactions } }) => {
+      if(!activeCat) return false;
+      const liked = purrs
+        .find(({ id: claimId }) => claimId === id)
+        .targeted
+        .find(({ context }) => context.split(':')[2] === activeCat.token);
+      return liked ? then || children : other;
+    }}
   </Context.Consumer>
 );

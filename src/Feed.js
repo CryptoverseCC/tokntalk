@@ -3,7 +3,7 @@ import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
-import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar } from './Entity';
+import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 
@@ -71,18 +71,32 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         <p style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }}>{message}</p>
         {reactions && (
           <div style={{ marginTop: '20px', display: 'flex' }}>
-            <Context.Consumer>
-              {({ purrStore: { react } }) => (
+            <IfActiveEntityLiked
+              id={id}
+              other={
+                <Context.Consumer>
+                  {({ purrStore: { react } }) => (
+                    <Label
+                      onClick={() => react(id)}
+                      className="cp-like"
+                      icon={<img alt="" src={LikeIcon} />}
+                      text={'Like'}
+                      count={reactions.length}
+                      colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
+                    />
+                  )}
+                </Context.Consumer>
+              }
+              then={
                 <Label
-                  onClick={() => react(id)}
-                  className="cp-like"
+                  className="cp-like cp-label--done"
                   icon={<img alt="" src={LikeIcon} />}
                   text={'Like'}
                   count={reactions.length}
                   colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
                 />
-              )}
-            </Context.Consumer>
+              }
+            />
           </div>
         )}
       </div>
@@ -131,24 +145,30 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
         </div>
         <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
           <small style={{ color: '#928F9B' }}>
-            <Context.Consumer>
-              {({ purrStore: { react } }) => (
-                <button
-                  onClick={() => react(id)}
-                  style={{
-                    border: 'none',
-                    background: 'none',
-                    display: 'inline-block',
-                    padding: 0,
-                    margin: 0,
-                    color: '#ffa6d8',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Like
-                </button>
-              )}
-            </Context.Consumer>
+            <IfActiveEntityLiked
+              id={id}
+              other={
+                <Context.Consumer>
+                  {({ purrStore: { react } }) => (
+                    <button
+                      onClick={() => react(id)}
+                      style={{
+                        border: 'none',
+                        background: 'none',
+                        display: 'inline-block',
+                        padding: 0,
+                        margin: 0,
+                        color: '#ffa6d8',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Like
+                    </button>
+                  )}
+                </Context.Consumer>
+              }
+              then={<span style={{ color: '#ffa6d8' }}>Liked</span>}
+            />
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
             <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
               {family}
@@ -327,6 +347,7 @@ const Card = ({ feedItem, replies, reactions }) => {
           />
           {replies.map(reply => (
             <Reply
+              id={reply.id}
               key={reply.id}
               from={reply.context.split(':')[2]}
               createdAt={reply.created_at}
