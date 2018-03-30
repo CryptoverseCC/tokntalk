@@ -32,10 +32,10 @@ export const ActiveEntityAvatar = props => (
 export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ catStore: { activeCat }, purrStore: { purrs, temporaryReactions } }) => {
-      if(!activeCat) return false;
+      if (!activeCat) return false;
       const liked = purrs
         .find(({ id: claimId }) => claimId === id)
-        .targeted
+        .targeted.concat(temporaryReactions[id] || [])
         .find(({ context }) => context.split(':')[2] === activeCat.token);
       return liked ? then || children : other;
     }}
