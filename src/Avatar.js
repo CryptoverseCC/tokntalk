@@ -1,8 +1,7 @@
 import React from 'react';
 import Context from './Context';
-import colors from "./colors";
 
-const IdentityAvatar = ({ size, reaction, style = {}, catId }) => {
+const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src }) => {
   return (
     <Context.Consumer>
       {({entityStore: { getEntity }}) => {
@@ -21,7 +20,7 @@ const IdentityAvatar = ({ size, reaction, style = {}, catId }) => {
                 width: containerSize,
                 height: containerSize,
                 borderRadius: '50%',
-                backgroundColor: colors[getEntity(catId).color]
+                backgroundColor
               }}
             >
               <img
@@ -34,7 +33,7 @@ const IdentityAvatar = ({ size, reaction, style = {}, catId }) => {
                   maxWidth: 'none'
                 }}
                 alt=""
-                src={getEntity(catId).image_url}
+                src={src}
               />
             </div>
             {reaction && (
@@ -48,11 +47,5 @@ const IdentityAvatar = ({ size, reaction, style = {}, catId }) => {
     </Context.Consumer>
   );
 };
-
-export const ActiveCatAvatar = (props) => (
-  <Context.Consumer>
-    {({catStore: { activeCat }}) => (<IdentityAvatar catId={activeCat && activeCat.token} {...props} />)}
-  </Context.Consumer>
-)
 
 export default IdentityAvatar;

@@ -3,8 +3,7 @@ import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
 import Context from './Context';
 import CommentForm from './CommentForm';
-import IdentityAvatar, { ActiveCatAvatar } from './Avatar';
-import { EntityName, IfActiveCat } from './Entity';
+import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar } from './Entity';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 
@@ -64,7 +63,7 @@ const Post = ({ from, createdAt, etherscanUrl, family, message, reactions, react
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
-        <IdentityAvatar size="medium" reaction={reaction} catId={from} />
+        <EntityAvatar size="medium" reaction={reaction} id={from} />
       </div>
       <div className="media-content">
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
@@ -107,7 +106,7 @@ const Reply = ({ highlighted, from, createdAt, etherscanUrl, family, message, st
 
     <div className="media-content columns">
       <div className="column is-narrow">
-        <IdentityAvatar size="medium" catId={from} />
+        <EntityAvatar size="medium" id={from} />
       </div>
       <div className="column">
         <div
@@ -169,7 +168,7 @@ const ReplyForm = () => (
 
     <div className="media-content columns">
       <div className="column is-narrow">
-        <ActiveCatAvatar size="medium" />
+        <ActiveEntityAvatar size="medium" />
       </div>
       <div className="column">
         <CommentForm
@@ -246,7 +245,7 @@ const Card = ({ feedItem }) => {
         <React.Fragment>
           <article className="media">
             <div className="media-left" style={{ width: '54px' }}>
-              <IdentityAvatar size="medium" reaction={<LikeReaction />} catId={feedItem.context.split(':')[2]} />
+              <EntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context.split(':')[2]} />
             </div>
             <div className="media-content">
               <CardTitle
@@ -279,7 +278,7 @@ const Card = ({ feedItem }) => {
           const id = feedItem.about.id.split(':')[2];
           <React.Fragment>
             <span style={{ marginLeft: '10px' }}>wrote to</span>
-            <IdentityAvatar size="verySmall" style={{ marginLeft: '10px' }} catId={id} />
+            <EntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
             <a style={{ marginLeft: '10px' }}>
               <b>
                 <EntityName id={id} />

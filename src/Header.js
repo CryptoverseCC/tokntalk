@@ -1,6 +1,5 @@
 import React from 'react';
-import { ActiveCatAvatar } from './Avatar';
-import { EntityName } from './Entity';
+import { EntityName, ActiveEntityAvatar } from './Entity';
 
 const Header = ({ status }) => {
   return (
@@ -35,7 +34,7 @@ export default Header;
 export const IdentityStatus = ({ id }) => (
   <div className="level-right column" style={{ color: '#1B2437' }}>
     <div className="level-right">
-      <ActiveCatAvatar size="small" catId={id} />
+      <ActiveEntityAvatar size="small" />
       <div style={{ marginLeft: '8px' }}>
         <EntityName id={id} />
       </div>

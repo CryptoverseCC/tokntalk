@@ -1,9 +1,10 @@
 import React from 'react';
 import IdentityAvatar from './Avatar';
 import CommentForm from './CommentForm';
+import { ActiveEntityAvatar, IfActiveCat } from './Entity';
 
-const Hero = ({ id }) => {
-  return id ? (
+const Hero = ({ id }) => (
+  <IfActiveCat>
     <div
       style={{
         backgroundColor: '#f9fbfd'
@@ -15,7 +16,7 @@ const Hero = ({ id }) => {
             <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}>
               <article className="media">
                 <div className="media-left">
-                  <IdentityAvatar size="large" catId={id} />
+                  <ActiveEntityAvatar size="large" />
                 </div>
                 <div className="media-content">
                   <div className="content">
@@ -38,7 +39,7 @@ const Hero = ({ id }) => {
         </div>
       </div>
     </div>
-  ) : null;
-};
+  </IfActiveCat>
+);
 
 export default Hero;
