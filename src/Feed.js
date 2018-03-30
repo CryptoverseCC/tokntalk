@@ -2,7 +2,7 @@ import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
 import Context from './Context';
-import { ConnectedCommentForm, ConnectedReplyForm } from './CommentForm';
+import { ConnectedReplyForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar } from './Entity';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
@@ -154,7 +154,7 @@ const createEtherscanUrl = item => {
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
 
-const ReplyForm = () => (
+const ReplyForm = ({ about }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left">
       <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -172,6 +172,7 @@ const ReplyForm = () => (
       </div>
       <div className="column">
         <ConnectedReplyForm
+          about={about}
           style={{
             backgroundColor: 'rgba(246,244,255,0.7)',
             width: '100%',
@@ -238,7 +239,7 @@ const ReplyReaction = () => (
   <Reaction backgroundColor="#623cea" boxShadow="0 4px 15px 4px rgba(98,60,234,0.3)" Icon={ReplyIcon} />
 );
 
-const Card = ({ feedItem }) => {
+const Card = ({ feedItem, replies }) => {
   const renderItem = () => {
     if (feedItem.type === 'like') {
       return (
@@ -312,8 +313,9 @@ const Card = ({ feedItem }) => {
             suffix={suffix[feedItem.type] && suffix[feedItem.type]()}
             reaction={feedItem.type === 'response' && <ReplyReaction />}
           />
-          {feedItem.abouted.map(reply => (
+          {replies.map(reply => (
             <Reply
+              key={reply.id}
               from={reply.context.split(':')[2]}
               createdAt={reply.created_at}
               message={reply.target.id}
@@ -322,7 +324,7 @@ const Card = ({ feedItem }) => {
             />
           ))}{' '}
           <IfActiveCat>
-            <ReplyForm />
+            <ReplyForm about={feedItem.id} />
           </IfActiveCat>
         </React.Fragment>
       );
@@ -344,11 +346,15 @@ const Card = ({ feedItem }) => {
   );
 };
 
-const Feed = ({ feedItems }) => (
+const Feed = ({ feedItems, temporaryReplies }) => (
   <div className="container" style={{ padding: '40px 0' }}>
     <div className="columns">
       <div className="column is-6 is-offset-3">
-        {feedItems.map(feedItem => <Card feedItem={feedItem} key={feedItem.id} />)}
+        {feedItems.map(feedItem => {
+          const temporaryRepliesForItem = temporaryReplies[feedItem.id];
+          const replies = uniqBy([...temporaryRepliesForItem || [], ...feedItem.abouted || []], about => about.id);
+          return <Card feedItem={feedItem} replies={replies} key={feedItem.id} />;
+        })}
       </div>
     </div>
   </div>
@@ -358,12 +364,12 @@ export default Feed;
 
 export const ConnectedFeed = ({ forId }) => (
   <Context.Consumer>
-    {({ purrStore: { purrs, temporaryPurrs } }) => {
-      let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).slice(0, 5);
+    {({ purrStore: { purrs, temporaryPurrs, temporaryReplies } }) => {
+      let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).slice(0, 20);
       if (forId) {
         allPurrs = allPurrs.filter(({ token_id }) => token_id === forId);
       }
-      return <Feed feedItems={allPurrs} />;
+      return <Feed feedItems={allPurrs} temporaryReplies={temporaryReplies} />;
     }}
   </Context.Consumer>
 );

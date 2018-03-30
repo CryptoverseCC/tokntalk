@@ -70,8 +70,8 @@ export const ConnectedCommentForm = props => (
   </Context.Consumer>
 );
 
-export const ConnectedReplyForm = props => (
+export const ConnectedReplyForm = ({about, ...props}) => (
   <Context.Consumer>
-    {({ purrStore: { reply } }) => <CommentForm sendMessage={reply} {...props} />}
+    {({ purrStore: { reply } }) => <CommentForm sendMessage={(message) => reply(message, about)} {...props} />}
   </Context.Consumer>
 );

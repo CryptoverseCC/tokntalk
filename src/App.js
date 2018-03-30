@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { downloadCats, downloadWeb3State, getCatData, sendMessage } from './api';
+import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply } from './api';
 import Header from './Header';
 import Hero from './Hero';
 
@@ -16,6 +16,7 @@ export default class App extends Component {
     purrs: [],
     temporaryPurrs: [],
     newPurrs: [],
+    temporaryReplies: {},
     from: undefined
   };
 
@@ -64,12 +65,15 @@ export default class App extends Component {
     return temporaryPurr;
   };
 
-  addTemporaryPurr = purr => {
-    this.setState({ temporaryPurrs: [purr, ...this.state.temporaryPurrs] });
+  reply = async (message, about) => {
+    const temporaryReply = await reply(this.state.activeCat.token, message, about);
+    const itemTemporaryReplies = this.state.temporaryReplies[about] || [];
+    const newTemporaryReplies = {...this.state.temporaryReplies, [about]: [...itemTemporaryReplies, temporaryReply] };
+    this.setState({ temporaryReplies: newTemporaryReplies });
   };
 
-  removeTemporaryPurr = purrId => {
-    this.setState({ temporaryPurrs: this.state.temporaryPurrs.filter(tempPurr => tempPurr.id !== purrId) });
+  addTemporaryPurr = purr => {
+    this.setState({ temporaryPurrs: [purr, ...this.state.temporaryPurrs] });
   };
 
   updatePurrs = (purrs, purge) => {
@@ -102,16 +106,17 @@ export default class App extends Component {
       getCatInfo,
       updatePurrs,
       sendMessage,
+      reply,
       showNewPurrs,
       getEntity
     } = this;
-    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs, allowPurr } = this.state;
+    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, temporaryReplies, newPurrs, allowPurr } = this.state;
     return (
       <Context.Provider
         value={{
           entityStore: { getEntity },
           catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat, catsInfo, getCatInfo },
-          purrStore: { sendMessage, purrs, newPurrs, temporaryPurrs, allowPurr, showNewPurrs }
+          purrStore: { sendMessage, reply, purrs, newPurrs, temporaryPurrs, temporaryReplies, allowPurr, showNewPurrs }
         }}
       >
         <Router>

@@ -36,6 +36,8 @@ export const getCatData = catId => {
   return catInfoRequests[catId];
 };
 
+const getCreditsData = () => [{ type: 'interface', value: window.location.href }];
+
 export const sendMessage = async (token, message) => {
   const web3 = await getWeb3();
   const { from, networkId } = await downloadWeb3State();
@@ -47,7 +49,8 @@ export const sendMessage = async (token, message) => {
     claim: {
       target: message
     },
-    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`
+    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+    credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
     contract.methods
@@ -66,6 +69,45 @@ export const sendMessage = async (token, message) => {
           target: { id: message },
           targeted: [],
           type: 'regular'
+        });
+      })
+      .on('error', error => {
+        reject(error);
+      });
+  });
+};
+
+export const reply = async (token, message, about) => {
+  const web3 = await getWeb3();
+  const { from, networkId } = await downloadWeb3State();
+  const contractAddress = contractAddressesForNetworkId[networkId];
+  const networkName = networkNameForNetworkId[networkId];
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  const data = {
+    type: ['about'],
+    claim: {
+      target: message,
+      about
+    },
+    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+    credits: getCreditsData()
+  };
+  return new Promise((resolve, reject) => {
+    contract.methods
+      .post(JSON.stringify(data))
+      .send({ from })
+      .on('transactionHash', async transactionHash => {
+        resolve({
+          author: from,
+          context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+          created_at: new Date().getTime(),
+          family: networkName,
+          id: `claim:${transactionHash}:0`,
+          target: {
+            id: message
+          },
+          sequence: (await web3.eth.getBlockNumber()) + 1
         });
       })
       .on('error', error => {
