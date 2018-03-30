@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { downloadCats, downloadWeb3State, getCatData, purr } from './api';
+import { downloadCats, downloadWeb3State, getCatData, sendMessage } from './api';
 import Header from './Header';
 import Hero from './Hero';
 
@@ -58,8 +58,8 @@ export default class App extends Component {
     }
   };
 
-  purr = async message => {
-    const temporaryPurr = await purr(this.state.activeCat.token, message);
+  sendMessage = async message => {
+    const temporaryPurr = await sendMessage(this.state.activeCat.token, message);
     this.addTemporaryPurr(temporaryPurr);
     return temporaryPurr;
   };
@@ -101,7 +101,7 @@ export default class App extends Component {
       changeActiveCatToNext,
       getCatInfo,
       updatePurrs,
-      purr,
+      sendMessage,
       showNewPurrs,
       getEntity
     } = this;
@@ -111,7 +111,7 @@ export default class App extends Component {
         value={{
           entityStore: { getEntity },
           catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat, catsInfo, getCatInfo },
-          purrStore: { purr, purrs, newPurrs, temporaryPurrs, allowPurr, showNewPurrs }
+          purrStore: { sendMessage, purrs, newPurrs, temporaryPurrs, allowPurr, showNewPurrs }
         }}
       >
         <Router>

@@ -66,12 +66,12 @@ export default class CommentForm extends React.Component {
 
 export const ConnectedCommentForm = props => (
   <Context.Consumer>
-    {({ purrStore: { purr: sendMessage } }) => <CommentForm sendMessage={sendMessage} {...props} />}
+    {({ purrStore: { sendMessage } }) => <CommentForm sendMessage={sendMessage} {...props} />}
   </Context.Consumer>
 );
 
 export const ConnectedReplyForm = props => (
   <Context.Consumer>
-    {({ purrStore: { purr: sendMessage } }) => <CommentForm sendMessage={sendMessage} {...props} />}
+    {({ purrStore: { reply } }) => <CommentForm sendMessage={reply} {...props} />}
   </Context.Consumer>
 );

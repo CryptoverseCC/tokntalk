@@ -36,7 +36,7 @@ export const getCatData = catId => {
   return catInfoRequests[catId];
 };
 
-export const purr = async (token, message) => {
+export const sendMessage = async (token, message) => {
   const web3 = await getWeb3();
   const { from, networkId } = await downloadWeb3State();
   const contractAddress = contractAddressesForNetworkId[networkId];
