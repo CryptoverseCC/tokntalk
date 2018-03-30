@@ -3,15 +3,15 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import Footer from './Footer';
-import Navigation from './Navigation';
 import { downloadCats, downloadWeb3State, getCatData, purr } from './api';
+import Header, { IdentityStatus, ErrorStatus } from './Header';
+import Hero from './Hero';
 
 export default class App extends Component {
   state = {
     activeCat: undefined,
     myCats: [],
-    catsInfo: JSON.parse(localStorage.getItem('catsInfo') || '[]'),
+    entityInfo: JSON.parse(localStorage.getItem('entityInfo') || '[]'),
     allowPurr: false,
     purrs: [],
     temporaryPurrs: [],
@@ -43,11 +43,19 @@ export default class App extends Component {
   };
 
   getCatInfo = async catId => {
-    if (this.state.catsInfo[catId]) return;
     const catData = await getCatData(catId);
-    this.setState({ catsInfo: { ...this.state.catsInfo, [catId]: catData } }, () => {
-      localStorage.setItem('catsInfo', JSON.stringify(this.state.catsInfo));
+    this.setState({ entityInfo: { ...this.state.entityInfo, [catId]: catData } }, () => {
+      localStorage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
     });
+  };
+
+  getEntity = entityId => {
+    if (this.state.entityInfo[entityId]) {
+      return this.state.entityInfo[entityId];
+    } else {
+      this.getCatInfo(entityId);
+      return { image_url: '', color: '' };
+    }
   };
 
   purr = async message => {
@@ -88,31 +96,38 @@ export default class App extends Component {
   };
 
   render() {
-    const { changeActiveCatToPrevious, changeActiveCatToNext, getCatInfo, updatePurrs, purr, showNewPurrs } = this;
+    const {
+      changeActiveCatToPrevious,
+      changeActiveCatToNext,
+      getCatInfo,
+      updatePurrs,
+      purr,
+      showNewPurrs,
+      getEntity
+    } = this;
     const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, newPurrs, allowPurr } = this.state;
     return (
       <Context.Provider
         value={{
+          entityStore: { getEntity },
           catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat, catsInfo, getCatInfo },
           purrStore: { purr, purrs, newPurrs, temporaryPurrs, allowPurr, showNewPurrs }
         }}
       >
         <Router>
           <React.Fragment>
-            <div className="main">
-              <Navigation myCats={myCats} />
-              <Switch>
-                <Route exact path="/cryptopurr/:catId">
-                  {props => (
-                    <ShowPage {...props} updatePurrs={updatePurrs} catsInfo={catsInfo} getCatInfo={getCatInfo} />
-                  )}
-                </Route>
-                <Route exact path="/cryptopurr">
-                  {props => <IndexPage {...props} updatePurrs={updatePurrs} />}
-                </Route>
-              </Switch>
-            </div>
-            <Footer />
+            <Header
+              status={activeCat ? <IdentityStatus id={activeCat.token} /> : <ErrorStatus message="No cats found" />}
+            />
+            <Hero id={activeCat && activeCat.token} />
+            <Switch>
+              <Route exact path="/cryptopurr/:catId">
+                {props => <ShowPage {...props} updatePurrs={updatePurrs} catsInfo={catsInfo} getCatInfo={getCatInfo} />}
+              </Route>
+              <Route exact path="/cryptopurr">
+                {props => <IndexPage {...props} updatePurrs={updatePurrs} />}
+              </Route>
+            </Switch>
           </React.Fragment>
         </Router>
       </Context.Provider>

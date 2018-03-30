@@ -1,48 +1,44 @@
 import React from 'react';
-import Context from './Context';
-import KittyImg from './KittyImg';
-import colors from './colors';
+import IdentityAvatar from './Avatar';
+import CommentForm from './CommentForm';
 
-const Hero = ({ forCat }) => {
-  if (forCat) {
-    return (
-      <Context.Consumer>
-        {({ catStore: { catsInfo, getCatInfo } }) => {
-          const backgroundColor = catsInfo[forCat] ? colors[catsInfo[forCat].color] : '';
-          return (
-            <section className="hero hero-kitten is-small" style={{ backgroundColor }}>
-              <div className="hero-body">
-                <div className="columns">
-                  <div className="column is-12 has-text-centered">
-                    <div className="your-kitten">
-                      <KittyImg catsInfo={catsInfo} getCatInfo={getCatInfo} catId={forCat} style={{ width: '450px' }} />
+const Hero = ({ id }) => {
+  return id ? (
+    <div
+      style={{
+        backgroundColor: '#f9fbfd'
+      }}
+    >
+      <div className="container" style={{ padding: '40px 0' }}>
+        <div className="columns">
+          <div className="column is-6 is-offset-3">
+            <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}>
+              <article className="media">
+                <div className="media-left">
+                  <IdentityAvatar size="large" catId={id} />
+                </div>
+                <div className="media-content">
+                  <div className="content">
+                    <div
+                      style={{
+                        fontFamily: 'Rubik',
+                        fontSize: '18px',
+                        fontWeight: '500',
+                        color: '#623CEA'
+                      }}
+                    >
+                      {id}
                     </div>
+                    <CommentForm id={id} />
                   </div>
                 </div>
-              </div>
-            </section>
-          );
-        }}
-      </Context.Consumer>
-    );
-  } else {
-    return (
-      <section className="hero">
-        <div className="hero-body">
-          <div className="container">
-            <div className="columns">
-              <div className="column is-9 is-offset-3">
-                <h1 className="title txtwav slow">Purr Purr</h1>
-                <div className="subtitle">
-                  <h2 className="txtwav slow">Make your cryptokitten talk with</h2>
-                </div>
-              </div>
+              </article>
             </div>
           </div>
         </div>
-      </section>
-    );
-  }
+      </div>
+    </div>
+  ) : null;
 };
 
 export default Hero;

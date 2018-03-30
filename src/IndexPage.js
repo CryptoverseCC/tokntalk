@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { PurrsList, PurrGroupWithForm, ShowNewPurrs } from './Purr';
-import Hero from './Hero';
+import { ConnectedFeed } from './Feed';
 
 export default class IndexPage extends Component {
   componentDidMount() {
     this.refreshPurrs(true);
-    this.refreshInterval = setInterval(this.refreshPurrs, 3000);
+    this.refreshInterval = setInterval(this.refreshPurrs, 15000);
   }
 
   componentWillUnmount() {
@@ -14,7 +13,7 @@ export default class IndexPage extends Component {
 
   refreshPurrs = async (purge = false) => {
     const response = await fetch(
-      `https://api-dev.userfeeds.io/ranking/posts;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d/filter_sort;by=created_at;order=desc`
+      `https://api-dev.userfeeds.io/ranking/feed;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
     );
     const { items: purrs } = await response.json();
     if (purrs) {
@@ -23,17 +22,6 @@ export default class IndexPage extends Component {
   };
 
   render() {
-    return (
-      <React.Fragment>
-        <Hero />
-        <section style={{ paddingTop: '4rem' }}>
-          <div className="container">
-            <PurrGroupWithForm />
-            <ShowNewPurrs />
-            <PurrsList />
-          </div>
-        </section>
-      </React.Fragment>
-    );
+    return <ConnectedFeed />;
   }
 }
