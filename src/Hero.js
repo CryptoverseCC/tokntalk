@@ -1,5 +1,5 @@
 import React from 'react';
-import CommentForm from './CommentForm';
+import { ConnectedCommentForm } from './CommentForm';
 import { ActiveEntityAvatar, IfActiveCat, ActiveEntityName } from './Entity';
 
 const Hero = () => (
@@ -29,7 +29,7 @@ const Hero = () => (
                     >
                       <ActiveEntityName />
                     </div>
-                    <CommentForm />
+                    <ConnectedCommentForm />
                   </div>
                 </div>
               </article>

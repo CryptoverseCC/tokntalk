@@ -1,5 +1,5 @@
 import getWeb3 from './web3';
-import { contractAddressesForNetworkId, contractAbi } from './contract';
+import { contractAddressesForNetworkId, contractAbi, networkNameForNetworkId } from './contract';
 export const downloadCats = async () => {
   const web3 = await getWeb3();
   const [from] = await web3.eth.getAccounts();
@@ -40,6 +40,7 @@ export const purr = async (token, message) => {
   const web3 = await getWeb3();
   const { from, networkId } = await downloadWeb3State();
   const contractAddress = contractAddressesForNetworkId[networkId];
+  const networkName = networkNameForNetworkId[networkId];
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
   contract.setProvider(web3.currentProvider);
   const data = {
@@ -54,12 +55,17 @@ export const purr = async (token, message) => {
       .send({ from })
       .on('transactionHash', async transactionHash => {
         resolve({
+          about: null,
+          abouted: [],
           author: from,
+          context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
           created_at: new Date().getTime(),
+          family: networkName,
           id: `claim:${transactionHash}:0`,
-          message,
           sequence: (await web3.eth.getBlockNumber()) + 1,
-          token_id: token
+          target: { id: message },
+          targeted: [],
+          type: 'regular'
         });
       })
       .on('error', error => {

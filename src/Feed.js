@@ -2,7 +2,7 @@ import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
 import Context from './Context';
-import CommentForm from './CommentForm';
+import { ConnectedCommentForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar } from './Entity';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
@@ -171,7 +171,7 @@ const ReplyForm = () => (
         <ActiveEntityAvatar size="medium" />
       </div>
       <div className="column">
-        <CommentForm
+        <ConnectedCommentForm
           style={{
             backgroundColor: 'rgba(246,244,255,0.7)',
             width: '100%',

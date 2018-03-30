@@ -5,6 +5,13 @@ export const contractAddressesForNetworkId = {
   42: '0x139d658eD55b78e783DbE9bD4eb8F2b977b24153'
 };
 
+export const networkNameForNetworkId = {
+  1: 'ethereum',
+  3: 'ropsten',
+  4: 'rinkeby',
+  42: 'kovan'
+} 
+
 export const contractAbi = [
   {
     constant: false,

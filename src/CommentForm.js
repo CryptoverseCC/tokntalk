@@ -1,5 +1,6 @@
-import React from "react";
+import React from 'react';
 import TextArea from 'react-autosize-textarea';
+import Context from './Context';
 import Metamask from './img/metamask.png';
 
 export default class CommentForm extends React.Component {
@@ -7,7 +8,8 @@ export default class CommentForm extends React.Component {
     comment: ''
   };
 
-  submitForm = () => {
+  submitForm = async () => {
+    await this.props.sendMessage(this.state.comment);
     this.setState({ comment: '' });
   };
 
@@ -61,3 +63,15 @@ export default class CommentForm extends React.Component {
     );
   }
 }
+
+export const ConnectedCommentForm = props => (
+  <Context.Consumer>
+    {({ purrStore: { purr: sendMessage } }) => <CommentForm sendMessage={sendMessage} {...props} />}
+  </Context.Consumer>
+);
+
+export const ConnectedReplyForm = props => (
+  <Context.Consumer>
+    {({ purrStore: { purr: sendMessage } }) => <CommentForm sendMessage={sendMessage} {...props} />}
+  </Context.Consumer>
+);
