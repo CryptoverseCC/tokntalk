@@ -90,7 +90,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
   );
 };
 
-const Reply = ({ highlighted, from, createdAt, etherscanUrl, family, message, style = {} }) => (
+const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message, style = {} }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
     <div className={`media-left ${highlighted ? 'cp-reply--highlighted' : ''}`} style={{ position: 'relative' }}>
       <div
@@ -131,19 +131,24 @@ const Reply = ({ highlighted, from, createdAt, etherscanUrl, family, message, st
         </div>
         <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
           <small style={{ color: '#928F9B' }}>
-            <button
-              style={{
-                border: 'none',
-                background: 'none',
-                display: 'inline-block',
-                padding: 0,
-                margin: 0,
-                color: '#ffa6d8',
-                cursor: 'pointer'
-              }}
-            >
-              Like
-            </button>
+            <Context.Consumer>
+              {({ purrStore: { react } }) => (
+                <button
+                  onClick={() => react(id)}
+                  style={{
+                    border: 'none',
+                    background: 'none',
+                    display: 'inline-block',
+                    padding: 0,
+                    margin: 0,
+                    color: '#ffa6d8',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Like
+                </button>
+              )}
+            </Context.Consumer>
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
             <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
               {family}
@@ -300,6 +305,7 @@ const Card = ({ feedItem, replies, reactions }) => {
         <React.Fragment>
           {feedItem.type === 'response' && (
             <Reply
+              id={feedItem.about.id}
               from={feedItem.about.context.split(':')[2]}
               createdAt={feedItem.about.created_at}
               etherscanUrl={createEtherscanUrl(feedItem.about)}
@@ -312,7 +318,7 @@ const Card = ({ feedItem, replies, reactions }) => {
             style={{ borderTop: 'none' }}
             from={feedItem.context.split(':')[2]}
             createdAt={feedItem.created_at}
-            message={feedItem.target.id}
+            message={feedItem.type === 'post_to' ? feedItem.target.target.id : feedItem.target.id}
             family={feedItem.family}
             etherscanUrl={createEtherscanUrl(feedItem)}
             reactions={reactions}
