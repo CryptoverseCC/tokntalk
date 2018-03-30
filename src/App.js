@@ -4,7 +4,7 @@ import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
 import { downloadCats, downloadWeb3State, getCatData, purr } from './api';
-import Header, { IdentityStatus, ErrorStatus } from './Header';
+import Header from './Header';
 import Hero from './Hero';
 
 export default class App extends Component {
@@ -116,10 +116,8 @@ export default class App extends Component {
       >
         <Router>
           <React.Fragment>
-            <Header
-              status={activeCat ? <IdentityStatus id={activeCat.token} /> : <ErrorStatus message="No cats found" />}
-            />
-            <Hero id={activeCat && activeCat.token} />
+            <Header />
+            <Hero />
             <Switch>
               <Route exact path="/cryptopurr/:catId">
                 {props => <ShowPage {...props} updatePurrs={updatePurrs} catsInfo={catsInfo} getCatInfo={getCatInfo} />}

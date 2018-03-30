@@ -72,7 +72,7 @@ const Post = ({ from, createdAt, etherscanUrl, family, message, reactions, react
           <div style={{ marginTop: '20px', display: 'flex' }}>
             <Label
               className="cp-like"
-              icon={<img src={LikeIcon} />}
+              icon={<img alt="" src={LikeIcon} />}
               text={'Like'}
               count={reactions.length}
               colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
@@ -97,7 +97,7 @@ const Reply = ({ highlighted, from, createdAt, etherscanUrl, family, message, st
         }}
       >
         <svg width="16px" height="16px" version="1.1">
-          <g fill="#e1dfec" fill-rule="nonzero">
+          <g fill="#e1dfec" fillRule="nonzero">
             <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
           </g>
         </svg>
@@ -159,7 +159,7 @@ const ReplyForm = () => (
     <div className="media-left">
       <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <svg width="16px" height="16px" version="1.1">
-          <g fill="#e1dfec" fill-rule="nonzero">
+          <g fill="#e1dfec" fillRule="nonzero">
             <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
           </g>
         </svg>
@@ -226,7 +226,7 @@ const Reaction = ({ backgroundColor, boxShadow, Icon }) => (
       boxShadow: boxShadow
     }}
   >
-    <img src={Icon} style={{ width: '12px' }} />
+    <img alt="" src={Icon} style={{ width: '12px' }} />
   </div>
 );
 
@@ -276,15 +276,17 @@ const Card = ({ feedItem }) => {
         response: () => <span style={{ marginLeft: '10px' }}>replied</span>,
         post_to: () => {
           const id = feedItem.about.id.split(':')[2];
-          <React.Fragment>
-            <span style={{ marginLeft: '10px' }}>wrote to</span>
-            <EntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
-            <a style={{ marginLeft: '10px' }}>
-              <b>
-                <EntityName id={id} />
-              </b>
-            </a>
-          </React.Fragment>;
+          return (
+            <React.Fragment>
+              <span style={{ marginLeft: '10px' }}>wrote to</span>
+              <EntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
+              <a style={{ marginLeft: '10px' }}>
+                <b>
+                  <EntityName id={id} />
+                </b>
+              </a>
+            </React.Fragment>
+          );
         }
       };
       return (
@@ -324,7 +326,6 @@ const Card = ({ feedItem }) => {
           </IfActiveCat>
         </React.Fragment>
       );
-      EntityName;
     }
   };
 
@@ -346,7 +347,9 @@ const Card = ({ feedItem }) => {
 const Feed = ({ feedItems }) => (
   <div className="container" style={{ padding: '40px 0' }}>
     <div className="columns">
-      <div className="column is-6 is-offset-3">{feedItems.map(feedItem => <Card feedItem={feedItem} />)}</div>
+      <div className="column is-6 is-offset-3">
+        {feedItems.map(feedItem => <Card feedItem={feedItem} key={feedItem.id} />)}
+      </div>
     </div>
   </div>
 );

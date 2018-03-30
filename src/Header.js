@@ -1,7 +1,7 @@
 import React from 'react';
-import { EntityName, ActiveEntityAvatar } from './Entity';
+import { ActiveEntityAvatar, ActiveEntityName, IfActiveCat } from './Entity';
 
-const Header = ({ status }) => {
+const Header = () => {
   return (
     <div
       className="level"
@@ -23,7 +23,7 @@ const Header = ({ status }) => {
         >
           Purrbook
         </h1>
-        {status}
+        <IfActiveCat then={<IdentityStatus />} other={<ErrorStatus message="No cats found" />} />
       </div>
     </div>
   );
@@ -31,12 +31,12 @@ const Header = ({ status }) => {
 
 export default Header;
 
-export const IdentityStatus = ({ id }) => (
+export const IdentityStatus = () => (
   <div className="level-right column" style={{ color: '#1B2437' }}>
     <div className="level-right">
       <ActiveEntityAvatar size="small" />
       <div style={{ marginLeft: '8px' }}>
-        <EntityName id={id} />
+        <ActiveEntityName />
       </div>
     </div>
   </div>

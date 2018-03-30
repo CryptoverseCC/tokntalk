@@ -1,9 +1,8 @@
 import React from 'react';
-import IdentityAvatar from './Avatar';
 import CommentForm from './CommentForm';
-import { ActiveEntityAvatar, IfActiveCat } from './Entity';
+import { ActiveEntityAvatar, IfActiveCat, ActiveEntityName } from './Entity';
 
-const Hero = ({ id }) => (
+const Hero = () => (
   <IfActiveCat>
     <div
       style={{
@@ -28,9 +27,9 @@ const Hero = ({ id }) => (
                         color: '#623CEA'
                       }}
                     >
-                      {id}
+                      <ActiveEntityName />
                     </div>
-                    <CommentForm id={id} />
+                    <CommentForm />
                   </div>
                 </div>
               </article>

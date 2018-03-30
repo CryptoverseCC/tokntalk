@@ -3,8 +3,8 @@ import Context from './Context';
 import colors from './colors';
 import IdentityAvatar from './Avatar';
 
-export const IfActiveCat = ({ children }) => (
-  <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat ? children : null)}</Context.Consumer>
+export const IfActiveCat = ({ children, then, other }) => (
+  <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat ? then || children : other || null)}</Context.Consumer>
 );
 
 export const EntityName = ({ id }) => (
@@ -18,6 +18,12 @@ export const EntityAvatar = ({ id, ...props }) => (
     )}
   </Context.Consumer>
 );
+
+export const ActiveEntityName = () => (
+  <Context.Consumer>
+    {({ catStore: { activeCat } }) => <EntityName id={activeCat.token} />}
+  </Context.Consumer>
+)
 
 export const ActiveEntityAvatar = props => (
   <Context.Consumer>

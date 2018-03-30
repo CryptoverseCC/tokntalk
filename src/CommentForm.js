@@ -55,7 +55,7 @@ export default class CommentForm extends React.Component {
             transition: 'all 0.15s ease-in-out'
           }}
         >
-          <img src={Metamask} style={{ width: '70%' }} />
+          <img alt="" src={Metamask} style={{ width: '70%' }} />
         </button>
       </form>
     );
