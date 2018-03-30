@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply } from './api';
+import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react } from './api';
 import Header from './Header';
 import Hero from './Hero';
 
@@ -17,6 +17,7 @@ export default class App extends Component {
     temporaryPurrs: [],
     newPurrs: [],
     temporaryReplies: {},
+    temporaryReactions: {},
     from: undefined
   };
 
@@ -68,8 +69,18 @@ export default class App extends Component {
   reply = async (message, about) => {
     const temporaryReply = await reply(this.state.activeCat.token, message, about);
     const itemTemporaryReplies = this.state.temporaryReplies[about] || [];
-    const newTemporaryReplies = {...this.state.temporaryReplies, [about]: [...itemTemporaryReplies, temporaryReply] };
+    const newTemporaryReplies = { ...this.state.temporaryReplies, [about]: [...itemTemporaryReplies, temporaryReply] };
     this.setState({ temporaryReplies: newTemporaryReplies });
+  };
+
+  react = async to => {
+    const temporaryReaction = await react(this.state.activeCat.token, to);
+    const itemTemporaryReactions = this.state.temporaryReactions[to] || [];
+    const newTemporaryReactions = {
+      ...this.state.temporaryReactions,
+      [to]: [...itemTemporaryReactions, temporaryReaction]
+    };
+    this.setState({ temporaryReactions: newTemporaryReactions });
   };
 
   addTemporaryPurr = purr => {
@@ -107,16 +118,38 @@ export default class App extends Component {
       updatePurrs,
       sendMessage,
       reply,
+      react,
       showNewPurrs,
       getEntity
     } = this;
-    const { activeCat, myCats, purrs, catsInfo, temporaryPurrs, temporaryReplies, newPurrs, allowPurr } = this.state;
+    const {
+      activeCat,
+      myCats,
+      purrs,
+      catsInfo,
+      temporaryPurrs,
+      temporaryReplies,
+      temporaryReactions,
+      newPurrs,
+      allowPurr
+    } = this.state;
     return (
       <Context.Provider
         value={{
           entityStore: { getEntity },
           catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat, catsInfo, getCatInfo },
-          purrStore: { sendMessage, reply, purrs, newPurrs, temporaryPurrs, temporaryReplies, allowPurr, showNewPurrs }
+          purrStore: {
+            sendMessage,
+            reply,
+            react,
+            purrs,
+            newPurrs,
+            temporaryPurrs,
+            temporaryReplies,
+            temporaryReactions,
+            allowPurr,
+            showNewPurrs
+          }
         }}
       >
         <Router>

@@ -115,3 +115,43 @@ export const reply = async (token, message, about) => {
       });
   });
 };
+
+
+export const react = async (token, to) => {
+  const web3 = await getWeb3();
+  const { from, networkId } = await downloadWeb3State();
+  const contractAddress = contractAddressesForNetworkId[networkId];
+  const networkName = networkNameForNetworkId[networkId];
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  const data = {
+    type: ['labels'],
+    claim: {
+      target: to,
+      labels: ['like']
+    },
+    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+    credits: getCreditsData()
+  };
+  return new Promise((resolve, reject) => {
+    contract.methods
+      .post(JSON.stringify(data))
+      .send({ from })
+      .on('transactionHash', async transactionHash => {
+        resolve({
+          author: from,
+          context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+          created_at: new Date().getTime(),
+          family: networkName,
+          id: `claim:${transactionHash}:0`,
+          target: {
+            id: to
+          },
+          sequence: (await web3.eth.getBlockNumber()) + 1
+        });
+      })
+      .on('error', error => {
+        reject(error);
+      });
+  });
+};

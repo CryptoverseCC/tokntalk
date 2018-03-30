@@ -7,9 +7,10 @@ import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar } from './Ent
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 
-const Label = ({ className, icon, text, count, colors, style = {} }) => {
+const Label = ({ onClick, className, icon, text, count, colors, style = {} }) => {
   return (
     <button
+      onClick={onClick}
       className={`cp-label ${className ? className : ''}`}
       style={{
         outline: 'none',
@@ -59,7 +60,7 @@ const Label = ({ className, icon, text, count, colors, style = {} }) => {
   );
 };
 
-const Post = ({ from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
+const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
@@ -70,13 +71,18 @@ const Post = ({ from, createdAt, etherscanUrl, family, message, reactions, react
         <p style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }}>{message}</p>
         {reactions && (
           <div style={{ marginTop: '20px', display: 'flex' }}>
-            <Label
-              className="cp-like"
-              icon={<img alt="" src={LikeIcon} />}
-              text={'Like'}
-              count={reactions.length}
-              colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
-            />
+            <Context.Consumer>
+              {({ purrStore: { react } }) => (
+                <Label
+                  onClick={() => react(id)}
+                  className="cp-like"
+                  icon={<img alt="" src={LikeIcon} />}
+                  text={'Like'}
+                  count={reactions.length}
+                  colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
+                />
+              )}
+            </Context.Consumer>
           </div>
         )}
       </div>
@@ -239,7 +245,7 @@ const ReplyReaction = () => (
   <Reaction backgroundColor="#623cea" boxShadow="0 4px 15px 4px rgba(98,60,234,0.3)" Icon={ReplyIcon} />
 );
 
-const Card = ({ feedItem, replies }) => {
+const Card = ({ feedItem, replies, reactions }) => {
   const renderItem = () => {
     if (feedItem.type === 'like') {
       return (
@@ -302,14 +308,14 @@ const Card = ({ feedItem, replies }) => {
             />
           )}
           <Post
+            id={feedItem.id}
             style={{ borderTop: 'none' }}
             from={feedItem.context.split(':')[2]}
             createdAt={feedItem.created_at}
             message={feedItem.target.id}
             family={feedItem.family}
             etherscanUrl={createEtherscanUrl(feedItem)}
-            reactions={feedItem.targeted}
-            replies={feedItem.abouted}
+            reactions={reactions}
             suffix={suffix[feedItem.type] && suffix[feedItem.type]()}
             reaction={feedItem.type === 'response' && <ReplyReaction />}
           />
@@ -346,14 +352,19 @@ const Card = ({ feedItem, replies }) => {
   );
 };
 
-const Feed = ({ feedItems, temporaryReplies }) => (
+const Feed = ({ feedItems, temporaryReplies, temporaryReactions }) => (
   <div className="container" style={{ padding: '40px 0' }}>
     <div className="columns">
       <div className="column is-6 is-offset-3">
         {feedItems.map(feedItem => {
           const temporaryRepliesForItem = temporaryReplies[feedItem.id];
-          const replies = uniqBy([...temporaryRepliesForItem || [], ...feedItem.abouted || []], about => about.id);
-          return <Card feedItem={feedItem} replies={replies} key={feedItem.id} />;
+          const replies = uniqBy([...(temporaryRepliesForItem || []), ...(feedItem.abouted || [])], about => about.id);
+          const temporaryReactionsForItem = temporaryReactions[feedItem.id];
+          const reactions = uniqBy(
+            [...(temporaryReactionsForItem || []), ...(feedItem.targeted || [])],
+            target => target.id
+          );
+          return <Card feedItem={feedItem} replies={replies} reactions={reactions} key={feedItem.id} />;
         })}
       </div>
     </div>
@@ -364,12 +375,12 @@ export default Feed;
 
 export const ConnectedFeed = ({ forId }) => (
   <Context.Consumer>
-    {({ purrStore: { purrs, temporaryPurrs, temporaryReplies } }) => {
+    {({ purrStore: { purrs, temporaryPurrs, temporaryReplies, temporaryReactions } }) => {
       let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).slice(0, 20);
       if (forId) {
         allPurrs = allPurrs.filter(({ token_id }) => token_id === forId);
       }
-      return <Feed feedItems={allPurrs} temporaryReplies={temporaryReplies} />;
+      return <Feed feedItems={allPurrs} temporaryReplies={temporaryReplies} temporaryReactions={temporaryReactions} />;
     }}
   </Context.Consumer>
 );
