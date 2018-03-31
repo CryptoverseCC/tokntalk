@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import isEqual from 'lodash/isEqual';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
@@ -23,14 +24,14 @@ export default class App extends Component {
 
   componentDidMount() {
     this.refreshWeb3State();
-    setInterval(this.refreshWeb3State, 1000);
+    setInterval(this.refreshWeb3State, 300);
     this.refreshMyCats();
     setInterval(this.refreshMyCats, 15000);
   }
 
   refreshMyCats = async () => {
     const myCats = await downloadCats();
-    if (!myCats) return;
+    if (!myCats || isEqual(myCats, this.state.myCats)) return;
     const { activeCat } = this.state;
     const newActiveCat = (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) || myCats[0];
     this.setState({ myCats, activeCat: newActiveCat });
@@ -41,7 +42,9 @@ export default class App extends Component {
     if (this.state.from !== from) {
       this.refreshMyCats();
     }
-    this.setState({ allowPurr: !!(isListening && from && this.state.activeCat), from });
+    if (this.state.from !== from || this.state.isListening !== isListening) {
+      this.setState({ allowPurr: !!(isListening && from && this.state.activeCat), from, isListening });
+    }
   };
 
   getCatInfo = async catId => {
@@ -88,6 +91,7 @@ export default class App extends Component {
   };
 
   updatePurrs = (purrs, purge) => {
+    if(isEqual(purrs, this.state.purrs)) return;
     const newState = purge || this.state.purrs.length === 0 ? { purrs } : { newPurrs: purrs };
     this.setState(newState);
   };
@@ -109,6 +113,8 @@ export default class App extends Component {
     const previousCat = currentCatIndex === 0 ? myCats[myCats.length - 1] : myCats[currentCatIndex - 1];
     this.setState({ activeCat: previousCat });
   };
+
+  renderIndexPage = props => <IndexPage {...props} updatePurrs={this.updatePurrs} />;
 
   render() {
     const {
@@ -152,21 +158,20 @@ export default class App extends Component {
           }
         }}
       >
-        <Router>
-          <React.Fragment>
-            <Header />
-            <Hero />
-            <Switch>
-              <Route exact path="/cryptopurr/:catId">
-                {props => <ShowPage {...props} updatePurrs={updatePurrs} catsInfo={catsInfo} getCatInfo={getCatInfo} />}
-              </Route>
-              <Route exact path="/cryptopurr">
-                {props => <IndexPage {...props} updatePurrs={updatePurrs} />}
-              </Route>
-            </Switch>
-          </React.Fragment>
-        </Router>
+        <Main renderIndexPage={this.renderIndexPage} />
       </Context.Provider>
     );
   }
 }
+
+const Main = ({ renderIndexPage }) => (
+  <Router>
+    <React.Fragment>
+      <Header />
+      <Hero />
+      <Switch>
+        <Route exact path="/cryptopurr" component={renderIndexPage} />
+      </Switch>
+    </React.Fragment>
+  </Router>
+);
