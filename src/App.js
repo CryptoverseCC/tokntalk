@@ -21,6 +21,8 @@ export default class App extends Component {
     from: undefined
   };
 
+  catInfoRequests = {};
+
   componentDidMount() {
     this.refreshWeb3State();
     setInterval(this.refreshWeb3State, 300);
@@ -47,7 +49,10 @@ export default class App extends Component {
   };
 
   getCatInfo = async catId => {
-    const catData = await getCatData(catId);
+    if (this.catInfoRequests[catId]) return;
+    const catInfoRequest = getCatData(catId);
+    this.catInfoRequests[catId] = catInfoRequest;
+    const catData = await catInfoRequest;
     this.setState({ entityInfo: { ...this.state.entityInfo, [catId]: catData } }, () => {
       localStorage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
     });
@@ -58,7 +63,7 @@ export default class App extends Component {
       return this.state.entityInfo[entityId];
     } else {
       this.getCatInfo(entityId);
-      return { image_url: '', color: '' };
+      return { image_url: undefined, color: undefined };
     }
   };
 

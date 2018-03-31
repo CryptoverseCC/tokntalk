@@ -21,20 +21,9 @@ export const downloadWeb3State = async () => {
   return { from, isListening, networkId };
 };
 
-const catInfoRequests = {};
-
-export const getCatData = catId => {
-  if (!catInfoRequests[catId]) {
-    catInfoRequests[catId] = new Promise((resolve, reject) => {
-      catInfoRequests[catId] = fetch(`https://api.cryptokitties.co/kitties/${catId}`)
-        .then(res => res.json())
-        .then(catData => {
-          resolve(catData);
-        });
-    });
-  }
-  return catInfoRequests[catId];
-};
+export const getCatData = catId => (
+  fetch(`https://api.cryptokitties.co/kitties/${catId}`).then(res => res.json())
+);
 
 const getCreditsData = () => [{ type: 'interface', value: window.location.href }];
 

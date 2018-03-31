@@ -338,7 +338,7 @@ const Card = ({ feedItem, replies, reactions }) => {
             style={{ borderTop: 'none' }}
             from={feedItem.context.split(':')[2]}
             createdAt={feedItem.created_at}
-            message={feedItem.type === 'post_to' ? feedItem.target.target.id : feedItem.target.id}
+            message={feedItem.target.id}
             family={feedItem.family}
             etherscanUrl={createEtherscanUrl(feedItem)}
             reactions={reactions}
@@ -403,7 +403,7 @@ export default Feed;
 export const ConnectedFeed = ({ forId }) => (
   <Context.Consumer>
     {({ purrStore: { purrs, temporaryPurrs, temporaryReplies, temporaryReactions } }) => {
-      let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).slice(0, 20);
+      let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
       if (forId) {
         allPurrs = allPurrs.filter(({ token_id }) => token_id === forId);
       }
