@@ -139,7 +139,7 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
           }}
         >
           <a>
-            <b>{from}</b>
+            <b><EntityName id={from} /></b>
           </a>{' '}
           {message}
         </div>
