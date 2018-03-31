@@ -91,7 +91,7 @@ export default class App extends Component {
   };
 
   updatePurrs = (purrs, purge) => {
-    if(isEqual(purrs, this.state.purrs)) return;
+    if (isEqual(purrs, this.state.purrs)) return;
     const newState = purge || this.state.purrs.length === 0 ? { purrs } : { newPurrs: purrs };
     this.setState(newState);
   };
@@ -118,6 +118,7 @@ export default class App extends Component {
 
   render() {
     const {
+      renderIndexPage,
       changeActiveCatToPrevious,
       changeActiveCatToNext,
       getCatInfo,
@@ -158,20 +159,16 @@ export default class App extends Component {
           }
         }}
       >
-        <Main renderIndexPage={this.renderIndexPage} />
+        <Router>
+          <React.Fragment>
+            <Header />
+            <Hero />
+            <Switch>
+              <Route exact path="/cryptopurr" component={renderIndexPage} />
+            </Switch>
+          </React.Fragment>
+        </Router>{' '}
       </Context.Provider>
     );
   }
 }
-
-const Main = ({ renderIndexPage }) => (
-  <Router>
-    <React.Fragment>
-      <Header />
-      <Hero />
-      <Switch>
-        <Route exact path="/cryptopurr" component={renderIndexPage} />
-      </Switch>
-    </React.Fragment>
-  </Router>
-);
