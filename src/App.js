@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import Context from './Context';
 import IndexPage from './IndexPage';
-import ShowPage from './ShowPage';
 import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react } from './api';
 import Header from './Header';
 import Hero from './Hero';
@@ -122,7 +121,6 @@ export default class App extends Component {
       changeActiveCatToPrevious,
       changeActiveCatToNext,
       getCatInfo,
-      updatePurrs,
       sendMessage,
       reply,
       react,
