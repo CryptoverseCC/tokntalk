@@ -6,13 +6,17 @@ const Header = () => {
     <div
       className="level"
       style={{
-        height: '65px',
         backgroundColor: '#f9fbfd',
         borderBottom: '1px solid #e8e8f1',
         fontFamily: 'Rubik',
         fontSize: '14px',
         fontWeight: '500',
-        marginBottom: 0
+        marginBottom: 0,
+        position: 'fixed',
+        width: '100%',
+        zIndex: '999',
+        height: '65px',
+        top: 0,
       }}
     >
       <div className="container is-fluid level-item level columns">
