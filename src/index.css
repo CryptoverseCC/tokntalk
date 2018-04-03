@@ -41,6 +41,20 @@
   color: #928f9b;
 }
 
+@keyframes blink {
+  0% {
+    background-color: #623cea;
+  }
+  
+  100% {
+    background-color: transparent;
+  }
+}
+
+.cp-box--added {
+  animation: blink 1s ease-out 1;
+}
+
 /* .cp-box:hover .cp-textarea::placeholder {
   color: #928F9B;
 }

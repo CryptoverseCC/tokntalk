@@ -95,8 +95,9 @@ export default class App extends Component {
   };
 
   updatePurrs = (purrs, purge) => {
-    if (isEqual(purrs, this.state.purrs)) return;
-    const newState = purge || this.state.purrs.length === 0 ? { purrs } : { newPurrs: purrs };
+    if (purrs.length === this.state.purrs.length) return;
+    const previousPurrs = this.state.purrs.reduce((acc, purr) => ({...acc, [purr.id]: purr}), {});
+    const newState = { purrs: purrs.map((purr) => ({...purr, added: this.state.purrs.length > 0 && !previousPurrs[purr.id]})) };
     this.setState(newState);
   };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
+import ReactVisibilitySensor from 'react-visibility-sensor';
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
@@ -139,7 +140,9 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
           }}
         >
           <a>
-            <b><EntityName id={from} /></b>
+            <b>
+              <EntityName id={from} />
+            </b>
           </a>{' '}
           {message}
         </div>
@@ -270,8 +273,13 @@ const ReplyReaction = () => (
   <Reaction backgroundColor="#623cea" boxShadow="0 4px 15px 4px rgba(98,60,234,0.3)" Icon={ReplyIcon} />
 );
 
-const Card = ({ feedItem, replies, reactions }) => {
-  const renderItem = () => {
+class Card extends React.Component {
+  state = {
+    wasShown: !this.props.added
+  };
+
+  renderItem = () => {
+    const { feedItem, replies, reactions } = this.props;
     if (feedItem.type === 'like') {
       return (
         <React.Fragment>
@@ -364,20 +372,29 @@ const Card = ({ feedItem, replies, reactions }) => {
     }
   };
 
-  return (
-    <div
-      className="box cp-box"
-      style={{
-        boxShadow: '0 4px 10px rgba(98,60,234,0.07)',
-        fontFamily: 'Rubik',
-        overflow: 'hidden',
-        borderRadius: '12px'
-      }}
-    >
-      {renderItem()}
-    </div>
-  );
-};
+  onItemVisibilityChange = isVisible => {
+    if (isVisible) {
+      this.setState({ wasShown: true });
+    }
+  };
+
+  render() {
+    return (
+      <div
+        className={`box cp-box ${this.props.added && this.state.wasShown ? 'cp-box--added' : ''}`}
+        style={{
+          boxShadow: '0 4px 10px rgba(98,60,234,0.07)',
+          fontFamily: 'Rubik',
+          overflow: 'hidden',
+          borderRadius: '12px'
+        }}
+      >
+        {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
+        {this.renderItem()}
+      </div>
+    );
+  }
+}
 
 const Feed = ({ feedItems, temporaryReplies, temporaryReactions }) => (
   <div className="container" style={{ padding: '40px 0' }}>
@@ -391,7 +408,15 @@ const Feed = ({ feedItems, temporaryReplies, temporaryReactions }) => (
             [...(temporaryReactionsForItem || []), ...(feedItem.targeted || [])],
             target => target.id
           );
-          return <Card feedItem={feedItem} replies={replies} reactions={reactions} key={feedItem.id} />;
+          return (
+            <Card
+              feedItem={feedItem}
+              replies={replies}
+              reactions={reactions}
+              key={feedItem.id}
+              added={feedItem.added}
+            />
+          );
         })}
       </div>
     </div>
