@@ -101,6 +101,11 @@
   border-radius: 10px
 }
 
+.cp-dropdown-item:hover {
+  background-color: #F4F1FF !important;
+  color: #623cea;
+}
+
 ::selection {
   color: white;
   background: #ffa08d;

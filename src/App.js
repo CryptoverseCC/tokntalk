@@ -104,18 +104,10 @@ export default class App extends Component {
     this.setState({ purrs: this.state.newPurrs });
   };
 
-  changeActiveCatToNext = () => {
-    const { myCats, activeCat } = this.state;
-    const currentCatIndex = myCats.indexOf(activeCat);
-    const nextCat = currentCatIndex === myCats.length - 1 ? myCats[0] : myCats[currentCatIndex + 1];
-    this.setState({ activeCat: nextCat });
-  };
-
-  changeActiveCatToPrevious = () => {
-    const { myCats, activeCat } = this.state;
-    const currentCatIndex = myCats.indexOf(activeCat);
-    const previousCat = currentCatIndex === 0 ? myCats[myCats.length - 1] : myCats[currentCatIndex - 1];
-    this.setState({ activeCat: previousCat });
+  changeActiveCatTo = (id) => {
+    const { myCats } = this.state;
+    const newActiveCat = myCats.find((myCat) => myCat.token === id.toString());
+    this.setState({ activeCat: newActiveCat });
   };
 
   renderIndexPage = props => <IndexPage {...props} updatePurrs={this.updatePurrs} />;
@@ -123,8 +115,7 @@ export default class App extends Component {
   render() {
     const {
       renderIndexPage,
-      changeActiveCatToPrevious,
-      changeActiveCatToNext,
+      changeActiveCatTo,
       getCatInfo,
       sendMessage,
       reply,
@@ -147,7 +138,7 @@ export default class App extends Component {
       <Context.Provider
         value={{
           entityStore: { getEntity },
-          catStore: { myCats, changeActiveCatToNext, changeActiveCatToPrevious, activeCat, catsInfo, getCatInfo },
+          catStore: { myCats, changeActiveCatTo, activeCat, catsInfo, getCatInfo },
           purrStore: {
             sendMessage,
             reply,

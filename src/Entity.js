@@ -19,6 +19,15 @@ export const EntityAvatar = ({ id, ...props }) => (
   </Context.Consumer>
 );
 
+export const Entities = ({children}) => (
+  <Context.Consumer>
+    {({ catStore: { myCats, changeActiveCatTo }, entityStore: { getEntity } }) => {
+      const catEntities = myCats.map((myCat) => getEntity(myCat.token));
+      return children({entities: catEntities, changeActiveEntityTo: changeActiveCatTo});
+    }}
+  </Context.Consumer>
+)
+
 export const ActiveEntityName = () => (
   <Context.Consumer>{({ catStore: { activeCat } }) => <EntityName id={activeCat.token} />}</Context.Consumer>
 );

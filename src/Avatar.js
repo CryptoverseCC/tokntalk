@@ -1,7 +1,7 @@
 import React from 'react';
 import LazyLoad from 'react-lazyload';
 
-const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src }) => {
+const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy = true }) => {
   const { containerSize, imgSize, imgTopOffset } = {
     verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%' },
     small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%' },
@@ -20,7 +20,22 @@ const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src }) =>
           backgroundColor
         }}
       >
-        <LazyLoad once>
+        {lazy ? (
+          <LazyLoad once>
+            <img
+              style={{
+                width: imgSize,
+                position: 'absolute',
+                left: '55%',
+                top: imgTopOffset,
+                transform: 'translate(-50%, -50%)',
+                maxWidth: 'none'
+              }}
+              alt=""
+              src={src}
+            />
+          </LazyLoad>
+        ) : (
           <img
             style={{
               width: imgSize,
@@ -33,7 +48,7 @@ const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src }) =>
             alt=""
             src={src}
           />
-        </LazyLoad>
+        )}
       </div>
       {reaction && (
         <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
