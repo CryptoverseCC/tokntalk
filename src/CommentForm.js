@@ -43,6 +43,7 @@ export default class CommentForm extends React.Component {
           onKeyPress={e => e.key === 'Enter' && e.ctrlKey && this.submitForm()}
         />
         <button
+          disabled={!this.state.comment}
           type="submit"
           className={`cp-metamask-submit ${this.state.comment ? 'cp-metamask-submit--active' : ''}`}
           style={{
