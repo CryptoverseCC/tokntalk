@@ -25,7 +25,7 @@ export const getCatData = catId => (
   fetch(`https://api.cryptokitties.co/kitties/${catId}`).then(res => res.json())
 );
 
-const getCreditsData = () => [{ type: 'interface', value: window.location.href }];
+const getCreditsData = () => [{ type: 'interface', value: "crypropurr.co" }];
 
 export const sendMessage = async (token, message) => {
   const web3 = await getWeb3();
