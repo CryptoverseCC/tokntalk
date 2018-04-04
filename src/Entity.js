@@ -43,8 +43,9 @@ export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ catStore: { activeCat }, purrStore: { purrs, temporaryPurrs, temporaryReactions } }) => {
       if (!activeCat) return false;
-      const liked = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id)
+      const claim = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id)
         .find(({ id: claimId }) => claimId === id)
+      const liked = claim && claim
         .targeted.concat(temporaryReactions[id] || [])
         .find(({ context }) => context.split(':')[2] === activeCat.token);
       return liked ? then || children : other;

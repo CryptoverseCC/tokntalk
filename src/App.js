@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import Context from './Context';
 import IndexPage from './IndexPage';
+import ShowPage from './ShowPage';
 import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react } from './api';
 import Header from './Header';
 import Hero from './Hero';
@@ -96,8 +97,15 @@ export default class App extends Component {
 
   updatePurrs = (purrs, purge) => {
     if (purrs.length === this.state.purrs.length) return;
-    const previousPurrs = this.state.purrs.reduce((acc, purr) => ({...acc, [purr.id]: purr}), {});
-    const newState = { purrs: purrs.map((purr) => ({...purr, added: this.state.purrs.length > 0 && !previousPurrs[purr.id]})) };
+    let newState;
+    if (purge) {
+      newState = { purrs };
+    } else {
+      const previousPurrs = this.state.purrs.reduce((acc, purr) => ({ ...acc, [purr.id]: purr }), {});
+      const newState = {
+        purrs: purrs.map(purr => ({ ...purr, added: this.state.purrs.length > 0 && !previousPurrs[purr.id] }))
+      };
+    }
     this.setState(newState);
   };
 
@@ -105,17 +113,20 @@ export default class App extends Component {
     this.setState({ purrs: this.state.newPurrs });
   };
 
-  changeActiveCatTo = (id) => {
+  changeActiveCatTo = id => {
     const { myCats } = this.state;
-    const newActiveCat = myCats.find((myCat) => myCat.token === id.toString());
+    const newActiveCat = myCats.find(myCat => myCat.token === id.toString());
     this.setState({ activeCat: newActiveCat });
   };
 
   renderIndexPage = props => <IndexPage {...props} updatePurrs={this.updatePurrs} />;
 
+  renderShowPage = props => <ShowPage {...props} updatePurrs={this.updatePurrs} />;
+
   render() {
     const {
       renderIndexPage,
+      renderShowPage,
       changeActiveCatTo,
       getCatInfo,
       sendMessage,
@@ -159,10 +170,11 @@ export default class App extends Component {
             <Header />
             <Hero />
             <Switch>
+              <Route exact path="/cryptopurr/:entityId" component={renderShowPage} />
               <Route exact path="/cryptopurr" component={renderIndexPage} />
             </Switch>
           </React.Fragment>
-        </Router>{' '}
+        </Router>
       </Context.Provider>
     );
   }
