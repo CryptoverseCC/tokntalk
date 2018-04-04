@@ -168,7 +168,6 @@ export default class App extends Component {
         <Router>
           <React.Fragment>
             <Header />
-            <Hero />
             <Switch>
               <Route exact path="/cryptopurr/:entityId" component={renderShowPage} />
               <Route exact path="/cryptopurr" component={renderIndexPage} />

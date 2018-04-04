@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ConnectedFeed } from './Feed';
+import Hero from './Hero';
 
 export default class IndexPage extends Component {
   componentDidMount() {
@@ -17,11 +18,19 @@ export default class IndexPage extends Component {
     );
     const { items: purrs } = await response.json();
     if (purrs) {
-      this.props.updatePurrs(purrs.filter((purr) => ['regular', 'like', 'post_to', 'response'].includes(purr.type)), purge);
+      this.props.updatePurrs(
+        purrs.filter(purr => ['regular', 'like', 'post_to', 'response'].includes(purr.type)),
+        purge
+      );
     }
   };
 
   render() {
-    return <ConnectedFeed />;
+    return (
+      <React.Fragment>
+        <Hero />
+        <ConnectedFeed />
+      </React.Fragment>
+    );
   }
 }

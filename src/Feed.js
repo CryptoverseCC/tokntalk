@@ -2,6 +2,7 @@ import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
+import { Link } from "react-router-dom";
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
@@ -139,11 +140,11 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
             wordBreak: 'break-word'
           }}
         >
-          <a>
+          <Link to={`/cryptopurr/${from}`}>
             <b>
               <EntityName id={from} />
             </b>
-          </a>{' '}
+          </Link>{' '}
           {message}
         </div>
         <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
@@ -229,11 +230,11 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
   return (
     <React.Fragment>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <a style={{ fontSize: '18px' }}>
+        <Link to={`/cryptopurr/${from}`} style={{ fontSize: '18px' }}>
           <b>
             <EntityName id={from} />
           </b>
-        </a>{' '}
+        </Link>{' '}
         {suffix}
       </div>
       <div>
@@ -320,11 +321,11 @@ class Card extends React.Component {
             <React.Fragment>
               <span style={{ marginLeft: '10px' }}>wrote to</span>
               <EntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
-              <a style={{ marginLeft: '10px' }}>
+              <Link to={`/cryptopurr/${id}`} style={{ marginLeft: '10px' }}>
                 <b>
                   <EntityName id={id} />
                 </b>
-              </a>
+              </Link>
             </React.Fragment>
           );
         }

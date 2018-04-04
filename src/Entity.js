@@ -1,11 +1,15 @@
 import React from 'react';
-import uniqBy from "lodash/uniqBy";
+import uniqBy from 'lodash/uniqBy';
 import Context from './Context';
 import colors from './colors';
 import IdentityAvatar from './Avatar';
 
 export const IfActiveCat = ({ children, then, other }) => (
   <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat ? then || children : other || null)}</Context.Consumer>
+);
+
+export const Entity = ({ id, children }) => (
+  <Context.Consumer>{({ entityStore: { getEntity } }) => children(getEntity(id))}</Context.Consumer>
 );
 
 export const EntityName = ({ id }) => (
@@ -43,11 +47,12 @@ export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ catStore: { activeCat }, purrStore: { purrs, temporaryPurrs, temporaryReactions } }) => {
       if (!activeCat) return false;
-      const claim = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id)
-        .find(({ id: claimId }) => claimId === id)
-      const liked = claim && claim
-        .targeted.concat(temporaryReactions[id] || [])
-        .find(({ context }) => context.split(':')[2] === activeCat.token);
+      const claim = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).find(({ id: claimId }) => claimId === id);
+      const liked =
+        claim &&
+        claim.targeted
+          .concat(temporaryReactions[id] || [])
+          .find(({ context }) => context.split(':')[2] === activeCat.token);
       return liked ? then || children : other;
     }}
   </Context.Consumer>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { ActiveEntityAvatar, ActiveEntityName, IfActiveCat, Entities, EntityAvatar, EntityName } from './Entity';
 
 const Header = () => {
@@ -16,17 +17,17 @@ const Header = () => {
         width: '100%',
         zIndex: '999',
         height: '65px',
-        top: 0,
+        top: 0
       }}
     >
       <div className="container is-fluid level-item level columns">
-        <div className="level-left column">Feed</div>
-        <h1
-          className="level-item column has-text-centered"
-          style={{ color: '#1B2437', fontWeight: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}
-        >
-          Purrbook
-        </h1>
+        <Link to="/cryptopurr" className="level-item column is-column-4 is-offset-4 has-text-centered">
+          <h1
+            style={{ color: '#1B2437', fontWeight: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}
+          >
+            Purrbook
+          </h1>
+        </Link>
         <IfActiveCat then={<CatDropdown />} other={<ErrorStatus message="No cats found" />} />
       </div>
     </div>
