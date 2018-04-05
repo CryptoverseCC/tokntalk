@@ -120,6 +120,18 @@
   color: #623cea;
 }
 
+.cp-inline-button {
+  outline: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #623cea;
+}
+
+.cp-inline-button:hover {
+  color: #2f2670;
+}
+
 ::selection {
   color: white;
   background: #ffa08d;

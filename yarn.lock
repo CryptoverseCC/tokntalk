@@ -3813,6 +3813,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
+framesync@^3.0.2, framesync@^3.1.7:
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/framesync/-/framesync-3.1.7.tgz#9b9aa3eff8598625302597851a428f40c3dc1c6b"
+
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
@@ -4718,7 +4722,7 @@ is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
 
-is-extendable@^1.0.1:
+is-extendable@^1.0.0, is-extendable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-1.0.1.tgz#a7470f9e426733d81bd81e1155264e3a3507cab4"
   dependencies:
@@ -6166,6 +6170,12 @@ object.omit@^2.0.0:
     for-own "^0.1.4"
     is-extendable "^0.1.1"
 
+object.omit@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/object.omit/-/object.omit-3.0.0.tgz#0e3edc2fce2ba54df5577ff529f6d97bd8a522af"
+  dependencies:
+    is-extendable "^1.0.0"
+
 object.pick@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/object.pick/-/object.pick-1.3.0.tgz#87a10ac4c1694bd2e1cbf53591a66141fb5dd747"
@@ -6508,6 +6518,20 @@ pkg-dir@^2.0.0:
 pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
+
+popmotion-pose@^1.0.25:
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/popmotion-pose/-/popmotion-pose-1.0.25.tgz#8e97932a7889929f4944fb8ac397a9d2c1ab4a5e"
+  dependencies:
+    popmotion "^8.1.22"
+
+popmotion@^8.1.22:
+  version "8.1.22"
+  resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-8.1.22.tgz#71857484546ae5b7335b0704423a3a761de1fe67"
+  dependencies:
+    framesync "^3.1.7"
+    style-value-types "^1.0.4"
+    stylefire "^1.2.9"
 
 portfinder@^1.0.9:
   version "1.0.13"
@@ -7137,6 +7161,14 @@ react-fuzzy@^0.5.1:
     fuse.js "^3.0.1"
     prop-types "^15.5.9"
 
+react-hover-observer@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-hover-observer/-/react-hover-observer-2.1.0.tgz#7a211a4236c76232328c9ddaf316d01626ca49d7"
+  dependencies:
+    object-assign "^4.1.1"
+    object.omit "^3.0.0"
+    prop-types "^15.6.0"
+
 react-html-attributes@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-html-attributes/-/react-html-attributes-1.4.1.tgz#97b5ec710da68833598c8be6f89ac436216840a5"
@@ -7171,6 +7203,12 @@ react-modal@^3.1.10:
     exenv "^1.2.0"
     prop-types "^15.5.10"
     warning "^3.0.0"
+
+react-pose@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-pose/-/react-pose-1.1.1.tgz#98a3ec0a6c2b4f848bdcedf1591d6093810ba6f3"
+  dependencies:
+    popmotion-pose "^1.0.25"
 
 react-router-dom@^4.2.2:
   version "4.2.2"
@@ -8298,6 +8336,17 @@ style-loader@^0.19.1:
   dependencies:
     loader-utils "^1.0.2"
     schema-utils "^0.3.0"
+
+style-value-types@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-1.0.4.tgz#58df3a09281d719d981ee4a317addc434eecc877"
+
+stylefire@^1.2.9:
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/stylefire/-/stylefire-1.2.12.tgz#b021e3ebf2a311ff96ffa32d8500a9d7277a9799"
+  dependencies:
+    framesync "^3.0.2"
+    style-value-types "^1.0.4"
 
 supports-color@^2.0.0:
   version "2.0.0"

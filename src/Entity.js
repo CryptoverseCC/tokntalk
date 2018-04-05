@@ -8,6 +8,12 @@ export const IfActiveCat = ({ children, then, other }) => (
   <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat ? then || children : other || null)}</Context.Consumer>
 );
 
+export const IfOwnerOfEntity = ({ id, children, then, other }) => (
+  <Context.Consumer>
+    {({ catStore: { myCats } }) => (!!myCats.find(cat => id.toString() === cat.token) ? then || children : other || null)}
+  </Context.Consumer>
+);
+
 export const Entity = ({ id, children }) => (
   <Context.Consumer>{({ entityStore: { getEntity } }) => children(getEntity(id))}</Context.Consumer>
 );

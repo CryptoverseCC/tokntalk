@@ -6,7 +6,6 @@ import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
 import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react, getCatLabels } from './api';
 import Header from './Header';
-import Hero from './Hero';
 
 export default class App extends Component {
   state = {
@@ -34,8 +33,10 @@ export default class App extends Component {
   }
 
   refreshMyCats = async () => {
+    console.log('sciungam');
     const myCats = await downloadCats();
     if (!myCats || isEqual(myCats, this.state.myCats)) return;
+    console.log(myCats);
     const { activeCat } = this.state;
     const newActiveCat = (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) || myCats[0];
     this.setState({ myCats, activeCat: newActiveCat });
@@ -122,7 +123,7 @@ export default class App extends Component {
       newState = { purrs };
     } else {
       const previousPurrs = this.state.purrs.reduce((acc, purr) => ({ ...acc, [purr.id]: purr }), {});
-      const newState = {
+      newState = {
         purrs: purrs.map(purr => ({ ...purr, added: this.state.purrs.length > 0 && !previousPurrs[purr.id] }))
       };
     }
