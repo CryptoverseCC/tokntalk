@@ -4,6 +4,7 @@ import Hero from './Hero';
 
 export default class IndexPage extends Component {
   componentDidMount() {
+    window.scrollTo(0, 0);
     this.refreshPurrs(true);
     this.refreshInterval = setInterval(this.refreshPurrs, 15000);
   }

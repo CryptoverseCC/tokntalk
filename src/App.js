@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react } from './api';
+import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react, getCatLabels } from './api';
 import Header from './Header';
 import Hero from './Hero';
 
@@ -12,7 +12,8 @@ export default class App extends Component {
   state = {
     activeCat: undefined,
     myCats: [],
-    entityInfo: JSON.parse(localStorage.getItem('entityInfo') || '[]'),
+    entityInfo: JSON.parse(localStorage.getItem('entityInfo') || '{}'),
+    entityLabels: {},
     allowPurr: false,
     purrs: [],
     temporaryPurrs: [],
@@ -23,6 +24,7 @@ export default class App extends Component {
   };
 
   catInfoRequests = {};
+  entityLabelRequests = {};
 
   componentDidMount() {
     this.refreshWeb3State();
@@ -49,6 +51,18 @@ export default class App extends Component {
     }
   };
 
+  getEntityLabels = async entityId => {
+    if (this.entityLabelRequests[entityId]) return;
+    const entityLabelRequest = getCatLabels(entityId);
+    this.entityLabelRequests[entityId] = entityLabelRequest;
+    const { items: labelData } = await entityLabelRequest;
+    const github = labelData.find(({ label }) => label === 'github');
+    const twitter = labelData.find(({ label }) => label === 'twitter');
+    const facebook = labelData.find(({ label }) => label === 'facebook');
+    const labels = { github, twitter, facebook };
+    this.setState({ entityLabels: { ...this.state.entityLabels, [entityId]: labels } });
+  };
+
   getCatInfo = async catId => {
     if (this.catInfoRequests[catId]) return;
     const catInfoRequest = getCatData(catId);
@@ -60,12 +74,18 @@ export default class App extends Component {
   };
 
   getEntity = entityId => {
-    if (this.state.entityInfo[entityId]) {
-      return this.state.entityInfo[entityId];
-    } else {
-      this.getCatInfo(entityId);
-      return { image_url: undefined, color: undefined };
-    }
+    const entityInfo = this.state.entityInfo[entityId];
+    if (!entityInfo) this.getCatInfo(entityId);
+    const entityLabels = this.state.entityLabels[entityId];
+    if (!entityLabels) this.getEntityLabels(entityId);
+    return {
+      image_url: undefined,
+      color: undefined,
+      id: entityId,
+      name: undefined,
+      ...entityInfo,
+      ...entityLabels
+    };
   };
 
   sendMessage = async message => {

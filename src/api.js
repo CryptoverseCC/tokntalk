@@ -21,11 +21,14 @@ export const downloadWeb3State = async () => {
   return { from, isListening, networkId };
 };
 
-export const getCatData = catId => (
-  fetch(`https://api.cryptokitties.co/kitties/${catId}`).then(res => res.json())
-);
+export const getCatData = catId => fetch(`https://api.cryptokitties.co/kitties/${catId}`).then(res => res.json());
 
-const getCreditsData = () => [{ type: 'interface', value: "crypropurr.co" }];
+export const getCatLabels = catId =>
+  fetch(
+    `https://api-dev.userfeeds.io/ranking/labels721;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${catId};labels=github;labels=facebook;labels=twitter/`
+  ).then(res => res.json());
+
+const getCreditsData = () => [{ type: 'interface', value: 'crypropurr.co' }];
 
 export const sendMessage = async (token, message) => {
   const web3 = await getWeb3();
@@ -104,7 +107,6 @@ export const reply = async (token, message, about) => {
       });
   });
 };
-
 
 export const react = async (token, to) => {
   const web3 = await getWeb3();
