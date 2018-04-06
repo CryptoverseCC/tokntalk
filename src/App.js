@@ -36,8 +36,13 @@ export default class App extends Component {
     const myCats = await downloadCats();
     if (!myCats || isEqual(myCats, this.state.myCats)) return;
     const { activeCat } = this.state;
-    const newActiveCat = (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) || myCats[0];
-    this.setState({ myCats, activeCat: newActiveCat });
+    const newActiveCat =
+      (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) ||
+      (JSON.parse(localStorage.getItem('activeCat')) &&
+        myCats.find(myCat => myCat.token === JSON.parse(localStorage.getItem('activeCat')).token)) ||
+      myCats[0];
+    this.setState({myCats});
+    this.changeActiveCatTo(newActiveCat.token);
   };
 
   refreshWeb3State = async () => {
@@ -143,7 +148,10 @@ export default class App extends Component {
   changeActiveCatTo = id => {
     const { myCats } = this.state;
     const newActiveCat = myCats.find(myCat => myCat.token === id.toString());
-    this.setState({ activeCat: newActiveCat });
+    this.setState({ activeCat: newActiveCat }, () => {
+      localStorage.removeItem('activeCat');
+      if (newActiveCat) localStorage.setItem('activeCat', JSON.stringify(newActiveCat));
+    });
   };
 
   renderIndexPage = props => <IndexPage {...props} updatePurrs={this.updatePurrs} />;
