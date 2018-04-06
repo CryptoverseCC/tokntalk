@@ -6,6 +6,7 @@ import { Entity, EntityName, IfIsActiveCat } from './Entity';
 import colors from './colors';
 import Modal from './Modal';
 import { ConnectedLabelForm } from './CommentForm';
+import etherDiamond from "./img/ether-diamond.gif";
 
 const Hoverable = ({ element, ...props }) => {
   const HoverablePose = element({ initialPose: 'default' });
@@ -102,36 +103,38 @@ class Badge extends React.Component {
           <BadgeLink href={href} backgroundColor={backgroundColor}>
             {Icon}
           </BadgeLink>
-          <IfIsActiveCat id={id.toString()}>
-            <EditButton
-              onClick={this.props.edit}
-              className="cp-inline-button"
-              style={{
-                position: 'absolute',
-                top: '100%',
-                zIndex: 0,
-                width: '100%',
-                left: '0px',
-                fontSize: '16px'
-              }}
-            >
-              Edit
-            </EditButton>
-            {this.props.editing && (
-              <Modal onClose={this.props.stopEditing}>
-                <div
-                  style={{
-                    backgroundColor: '#fff',
-                    boxShadow: '0 20px 40px 0 rgba(6,3,16,0.09)',
-                    padding: '25px',
-                    borderRadius: '4px'
-                  }}
-                >
-                  {Form}
-                </div>
-              </Modal>
-            )}
-          </IfIsActiveCat>
+          {!this.props.constant && (
+            <IfIsActiveCat id={id.toString()}>
+              <EditButton
+                onClick={this.props.edit}
+                className="cp-inline-button"
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  zIndex: 0,
+                  width: '100%',
+                  left: '0px',
+                  fontSize: '16px'
+                }}
+              >
+                Edit
+              </EditButton>
+              {this.props.editing && (
+                <Modal onClose={this.props.stopEditing}>
+                  <div
+                    style={{
+                      backgroundColor: '#fff',
+                      boxShadow: '0 20px 40px 0 rgba(6,3,16,0.09)',
+                      padding: '25px',
+                      borderRadius: '4px'
+                    }}
+                  >
+                    {Form}
+                  </div>
+                </Modal>
+              )}
+            </IfIsActiveCat>
+          )}
         </div>
       </Hoverable>
     );
@@ -203,15 +206,20 @@ export default class ShowPage extends Component {
               <div className="container" style={{ padding: '20px 0' }}>
                 <div className="columns">
                   <div className="column is-6 is-offset-3">
-                    <a href={`https://cryptokitties.co/kitty/${entity.id}`}>
-                      <h1 style={{ fontSize: '3rem', display: 'inline' }}>
-                        <EntityName id={entity.id} />
-                      </h1>
-                    </a>
+                    <h1 style={{ fontSize: '3rem', display: 'inline' }}>
+                      <EntityName id={entity.id} />
+                    </h1>
                   </div>
                 </div>
                 <div className="columns">
                   <div className="column is-6 is-offset-3" style={{ display: 'flex' }}>
+                    <Badge
+                      constant
+                      id={entity.id}
+                      Icon={<img src={etherDiamond} style={{ height: '70%' }} alt={entity.id} />}
+                      href={`https://cryptokitties.co/kitty/${entity.id}`}
+                      backgroundColor={colors[entity.color]}
+                    />
                     <Badge
                       edit={() => this.setState({ editing: 'facebook' })}
                       stopEditing={() => this.setState({ editing: undefined })}
@@ -221,6 +229,7 @@ export default class ShowPage extends Component {
                       href={entity.facebook && entity.facebook.target}
                       Form={<LabelForm labelType="facebook" onSubmit={() => this.setState({ editing: undefined })} />}
                       backgroundColor="#4167B2"
+                      style={{ marginLeft: '20px' }}
                     />
                     <Badge
                       edit={() => this.setState({ editing: 'github' })}
