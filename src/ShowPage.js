@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import posed from 'react-pose';
 import ReactHoverObserver from 'react-hover-observer';
 import { ConnectedFeed } from './Feed';
-import { Entity, EntityName, IfOwnerOfEntity } from './Entity';
+import { Entity, EntityName, IfIsActiveCat } from './Entity';
 import colors from './colors';
+import Modal from './Modal';
+import { ConnectedLabelForm } from './CommentForm';
 
 const Hoverable = ({ element, ...props }) => {
   const HoverablePose = element({ initialPose: 'default' });
@@ -47,74 +49,116 @@ const TwitterIcon = () => (
   </svg>
 );
 
-const BadgeButton = ({ hoverColor, ...props }) => {
-  const PosedButton = posed.button({
-    initialPose: 'default',
-    hovering: { color: '#fff', background: hoverColor },
-    default: { color: '#94919c', background: '#EEF2F5' }
-  });
+const BadgeLink = ({ backgroundColor, ...props }) => {
+  const style = props.href
+    ? { color: '#fff', background: backgroundColor, cursor: 'pointer' }
+    : { color: '#94919c', background: '#EEF2F5' };
 
   return (
-    <PosedButton
+    // eslint-disable-next-line
+    <a
       style={{
         width: '100%',
         height: '100%',
         outline: 'none',
         border: 'none',
         borderRadius: '50%',
-        cursor: 'pointer',
         position: 'relative',
-        zIndex: 1
+        zIndex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...style
       }}
       {...props}
     />
   );
 };
 
-const Badge = ({ id, hoverColor, style = {}, Icon }) => {
-  const EditButton = posed.button({
-    initialPose: 'default',
-    hovering: { opacity: 1, y: '0%' },
-    default: { opacity: 0, y: '-100%' }
-  });
+class Badge extends React.Component {
+  render() {
+    const { id, backgroundColor, style = {}, href, Icon, Form } = this.props;
+    const EditButton = posed.button({
+      initialPose: 'default',
+      hovering: { opacity: 1, y: '0%' },
+      default: { opacity: 0, y: '-110%' }
+    });
 
-  return (
-    <Hoverable
-      element={posed.div}
-      style={{
-        position: 'relative',
-        textAlign: 'center',
-        ...style
-      }}
-    >
-      <div
+    return (
+      <Hoverable
+        element={posed.div}
         style={{
-          height: '60px',
-          width: '60px'
+          position: 'relative',
+          textAlign: 'center',
+          ...style
         }}
       >
-        <BadgeButton hoverColor={hoverColor}>{Icon}</BadgeButton>
-        <IfOwnerOfEntity id={id}>
-          <EditButton
-            className="cp-inline-button"
-            style={{
-              position: 'absolute',
-              top: '100%',
-              zIndex: 0,
-              width: '100%',
-              left: '0px',
-              fontSize: '16px'
-            }}
-          >
-            Edit
-          </EditButton>
-        </IfOwnerOfEntity>
-      </div>
-    </Hoverable>
-  );
-};
+        <div
+          style={{
+            height: '60px',
+            width: '60px'
+          }}
+        >
+          <BadgeLink href={href} backgroundColor={backgroundColor}>
+            {Icon}
+          </BadgeLink>
+          <IfIsActiveCat id={id.toString()}>
+            <EditButton
+              onClick={this.props.edit}
+              className="cp-inline-button"
+              style={{
+                position: 'absolute',
+                top: '100%',
+                zIndex: 0,
+                width: '100%',
+                left: '0px',
+                fontSize: '16px'
+              }}
+            >
+              Edit
+            </EditButton>
+            {this.props.editing && (
+              <Modal onClose={this.props.stopEditing}>
+                <div
+                  style={{
+                    backgroundColor: '#fff',
+                    boxShadow: '0 20px 40px 0 rgba(6,3,16,0.09)',
+                    padding: '25px',
+                    borderRadius: '4px'
+                  }}
+                >
+                  {Form}
+                </div>
+              </Modal>
+            )}
+          </IfIsActiveCat>
+        </div>
+      </Hoverable>
+    );
+  }
+}
+
+const LabelForm = props => (
+  <ConnectedLabelForm
+    style={{
+      backgroundColor: 'rgba(246,244,255,0.7)',
+      width: '100%',
+      padding: '16px',
+      borderRadius: '12px',
+      alignItems: 'center'
+    }}
+    inputStyle={{
+      fontSize: '16px',
+      fontWeight: 'normal'
+    }}
+    inputClassName="cp-textarea--reply"
+    {...props}
+  />
+);
 
 export default class ShowPage extends Component {
+  state = { editing: undefined };
+
   componentDidMount() {
     window.scrollTo(0, 0);
     this.refreshPurrs(true);
@@ -152,13 +196,13 @@ export default class ShowPage extends Component {
           {entity => (
             <React.Fragment>
               <div className="has-text-centered" style={{ backgroundColor: colors[entity.color], height: '30rem' }}>
-                <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id}/>
+                <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id} />
               </div>
               <div className="container" style={{ padding: '20px 0' }}>
                 <div className="columns">
                   <div className="column is-6 is-offset-3">
                     <a href={`https://cryptokitties.co/kitty/${entity.id}`}>
-                      <h1 style={{ fontSize: '3rem' }}>
+                      <h1 style={{ fontSize: '3rem', display: 'inline' }}>
                         <EntityName id={entity.id} />
                       </h1>
                     </a>
@@ -166,18 +210,47 @@ export default class ShowPage extends Component {
                 </div>
                 <div className="columns">
                   <div className="column is-6 is-offset-3" style={{ display: 'flex' }}>
-                    <Badge id={entity.id} Icon={<FacebookIcon />} hoverColor="#4167B2" />
-                    <Badge id={entity.id} Icon={<GithubIcon />} hoverColor="#24292e" style={{ marginLeft: '20px' }} />
                     <Badge
+                      edit={() => this.setState({ editing: 'facebook' })}
+                      stopEditing={() => this.setState({ editing: undefined })}
+                      editing={this.state.editing === 'facebook'}
                       id={entity.id}
-                      Icon={<TwitterIcon />}
-                      hoverColor="#1CA1F2"
+                      Icon={<FacebookIcon />}
+                      href={entity.facebook && entity.facebook.target}
+                      Form={<LabelForm labelType="facebook" onSubmit={() => this.setState({ editing: undefined })}  />}
+                      backgroundColor="#4167B2"
+                    />
+                    <Badge
+                      edit={() => this.setState({ editing: 'github' })}
+                      stopEditing={() => this.setState({ editing: undefined })}
+                      editing={this.state.editing === 'github'}
+                      id={entity.id}
+                      href={entity.github && entity.github.target}
+                      Icon={<GithubIcon />}
+                      Form={<LabelForm labelType="github" onSubmit={() => this.setState({ editing: undefined })} />}
+                      backgroundColor="#24292e"
                       style={{ marginLeft: '20px' }}
                     />
                     <Badge
+                      edit={() => this.setState({ editing: 'twitter' })}
+                      stopEditing={() => this.setState({ editing: undefined })}
+                      editing={this.state.editing === 'twitter'}
                       id={entity.id}
+                      href={entity.twitter && entity.twitter.target}
+                      Icon={<TwitterIcon />}
+                      Form={<LabelForm labelType="twitter" onSubmit={() => this.setState({ editing: undefined })}  />}
+                      backgroundColor="#1CA1F2"
+                      style={{ marginLeft: '20px' }}
+                    />
+                    <Badge
+                      edit={() => this.setState({ editing: 'instagram' })}
+                      stopEditing={() => this.setState({ editing: undefined })}
+                      editing={this.state.editing === 'instagram'}
+                      id={entity.id}
+                      href={entity.instagram && entity.instagram.target}
+                      Form={<LabelForm labelType="instagram" onSubmit={() => this.setState({ editing: undefined })}  />}
                       Icon={<InstagramIcon />}
-                      hoverColor="#F41476"
+                      backgroundColor="#F41476"
                       style={{ marginLeft: '20px' }}
                     />
                   </div>

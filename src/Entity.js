@@ -5,7 +5,11 @@ import colors from './colors';
 import IdentityAvatar from './Avatar';
 
 export const IfActiveCat = ({ children, then, other }) => (
-  <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat ? then || children : other || null)}</Context.Consumer>
+  <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat ? (then && then(activeCat)) || children(activeCat) : other || null)}</Context.Consumer>
+);
+
+export const IfIsActiveCat = ({ id, children, then, other }) => (
+  <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat && (activeCat.token === id) ? then || children : other || null)}</Context.Consumer>
 );
 
 export const IfOwnerOfEntity = ({ id, children, then, other }) => (
@@ -19,7 +23,7 @@ export const Entity = ({ id, children }) => (
 );
 
 export const EntityName = ({ id }) => (
-  <Context.Consumer>{({ entityStore: { getEntity } }) => getEntity(id).name || getEntity(id).id}</Context.Consumer>
+  <Context.Consumer>{({ entityStore: { getEntity } }) => getEntity(id).name || `Kitty #${getEntity(id).id}`}</Context.Consumer>
 );
 
 export const EntityAvatar = ({ id, ...props }) => (

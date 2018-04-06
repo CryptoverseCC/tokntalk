@@ -11,6 +11,7 @@ export default class CommentForm extends React.Component {
   submitForm = async () => {
     await this.props.sendMessage(this.state.comment);
     this.setState({ comment: '' });
+    this.props.onSubmit && this.props.onSubmit();
   };
 
   render() {
@@ -37,7 +38,7 @@ export default class CommentForm extends React.Component {
             overflow: 'auto',
             ...(this.props.inputStyle || {})
           }}
-          placeholder="Purr your story"
+          placeholder={this.props.placeholder}
           value={this.state.comment}
           onChange={e => this.setState({ comment: e.target.value })}
           onKeyPress={e => e.key === 'Enter' && e.ctrlKey && this.submitForm()}
@@ -67,12 +68,18 @@ export default class CommentForm extends React.Component {
 
 export const ConnectedCommentForm = props => (
   <Context.Consumer>
-    {({ purrStore: { sendMessage } }) => <CommentForm sendMessage={sendMessage} {...props} />}
+    {({ purrStore: { sendMessage } }) => <CommentForm sendMessage={sendMessage} placeholder="Purr your story" {...props} />}
   </Context.Consumer>
 );
 
 export const ConnectedReplyForm = ({about, ...props}) => (
   <Context.Consumer>
-    {({ purrStore: { reply } }) => <CommentForm sendMessage={(message) => reply(message, about)} {...props} />}
+    {({ purrStore: { reply } }) => <CommentForm sendMessage={(message) => reply(message, about)} placeholder="Purr your reply" {...props} />}
   </Context.Consumer>
 );
+
+export const ConnectedLabelForm = ({labelType, ...props}) => (
+  <Context.Consumer>
+    {({ purrStore: { label } }) => <CommentForm sendMessage={(message) => label(message, labelType)} placeholder={`Set your ${labelType}`} {...props} />}
+  </Context.Consumer>
+)

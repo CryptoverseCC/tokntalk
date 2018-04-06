@@ -132,6 +132,15 @@
   color: #2f2670;
 }
 
+.cp-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 450px;
+}
+
 ::selection {
   color: white;
   background: #ffa08d;
@@ -144,14 +153,16 @@ body {
 
 a {
   color: #623cea;
+  cursor: default;
 }
 
 b {
   font-weight: 500;
 }
 
-a:hover {
+a:hover[href] {
   color: #2f2670;
+  cursor: pointer;
 }
 
 .hidden {

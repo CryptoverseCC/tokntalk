@@ -2,7 +2,7 @@ import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
@@ -365,9 +365,7 @@ class Card extends React.Component {
               etherscanUrl={createEtherscanUrl(reply)}
             />
           ))}{' '}
-          <IfActiveCat>
-            <ReplyForm about={feedItem.id} />
-          </IfActiveCat>
+          <IfActiveCat>{() => <ReplyForm about={feedItem.id} />}</IfActiveCat>
         </React.Fragment>
       );
     }

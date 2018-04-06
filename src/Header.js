@@ -28,7 +28,7 @@ const Header = () => {
             Purrbook
           </h1>
         </Link>
-        <IfActiveCat then={<CatDropdown />} other={<ErrorStatus message="No cats found" />} />
+        <IfActiveCat then={() => <CatDropdown />} other={<ErrorStatus message="No cats found" />} />
       </div>
     </div>
   );

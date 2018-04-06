@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react, getCatLabels } from './api';
+import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react, label, getCatLabels } from './api';
 import Header from './Header';
 
 export default class App extends Component {
@@ -27,16 +27,14 @@ export default class App extends Component {
 
   componentDidMount() {
     this.refreshWeb3State();
-    setInterval(this.refreshWeb3State, 300);
+    setInterval(this.refreshWeb3State, 2000);
     this.refreshMyCats();
     setInterval(this.refreshMyCats, 15000);
   }
 
   refreshMyCats = async () => {
-    console.log('sciungam');
     const myCats = await downloadCats();
     if (!myCats || isEqual(myCats, this.state.myCats)) return;
-    console.log(myCats);
     const { activeCat } = this.state;
     const newActiveCat = (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) || myCats[0];
     this.setState({ myCats, activeCat: newActiveCat });
@@ -56,11 +54,13 @@ export default class App extends Component {
     if (this.entityLabelRequests[entityId]) return;
     const entityLabelRequest = getCatLabels(entityId);
     this.entityLabelRequests[entityId] = entityLabelRequest;
-    const { items: labelData } = await entityLabelRequest;
+    const labelData = await entityLabelRequest;
     const github = labelData.find(({ label }) => label === 'github');
     const twitter = labelData.find(({ label }) => label === 'twitter');
     const facebook = labelData.find(({ label }) => label === 'facebook');
-    const labels = { github, twitter, facebook };
+    const instagram = labelData.find(({ label }) => label === 'instagram');
+    const labels = { github, twitter, facebook, instagram };
+    if ((!github && !twitter && !facebook) || isEqual(this.state.entityLabels[entityId], labels)) return;
     this.setState({ entityLabels: { ...this.state.entityLabels, [entityId]: labels } });
   };
 
@@ -112,6 +112,12 @@ export default class App extends Component {
     this.setState({ temporaryReactions: newTemporaryReactions });
   };
 
+  label = async (message, labelType) => {
+    const temporaryLabel = await label(this.state.activeCat.token, message, labelType);
+    const newEntityLabels = { ...this.state.entityLabels[this.state.activeCat.token], [labelType]: temporaryLabel };
+    this.setState({ entityLabels: { ...this.state.entityLabels, [this.state.activeCat.token]: newEntityLabels } });
+  };
+
   addTemporaryPurr = purr => {
     this.setState({ temporaryPurrs: [purr, ...this.state.temporaryPurrs] });
   };
@@ -153,6 +159,7 @@ export default class App extends Component {
       sendMessage,
       reply,
       react,
+      label,
       showNewPurrs,
       getEntity
     } = this;
@@ -176,6 +183,7 @@ export default class App extends Component {
             sendMessage,
             reply,
             react,
+            label,
             purrs,
             newPurrs,
             temporaryPurrs,
