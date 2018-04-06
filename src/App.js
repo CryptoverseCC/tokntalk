@@ -156,7 +156,7 @@ export default class App extends Component {
 
   renderIndexPage = props => <IndexPage {...props} updatePurrs={this.updatePurrs} />;
 
-  renderShowPage = props => <ShowPage {...props} updatePurrs={this.updatePurrs} />;
+  renderShowPage = props => <ShowPage {...props} updatePurrs={this.updatePurrs} getCatInfo={this.getCatInfo} />;
 
   render() {
     const {

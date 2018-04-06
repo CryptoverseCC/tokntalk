@@ -162,12 +162,14 @@ export default class ShowPage extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.refreshPurrs(true);
+    this.props.getCatInfo(this.props.match.params.entityId);
     this.refreshInterval = setInterval(this.refreshPurrs, 15000);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.entityId !== this.props.match.params.entityId) {
       this.refreshPurrs(true, nextProps.match.params.entityId);
+      this.props.getCatInfo(nextProps.match.params.entityId);
       window.scrollTo(0, 0);
     }
   }
@@ -217,7 +219,7 @@ export default class ShowPage extends Component {
                       id={entity.id}
                       Icon={<FacebookIcon />}
                       href={entity.facebook && entity.facebook.target}
-                      Form={<LabelForm labelType="facebook" onSubmit={() => this.setState({ editing: undefined })}  />}
+                      Form={<LabelForm labelType="facebook" onSubmit={() => this.setState({ editing: undefined })} />}
                       backgroundColor="#4167B2"
                     />
                     <Badge
@@ -238,7 +240,7 @@ export default class ShowPage extends Component {
                       id={entity.id}
                       href={entity.twitter && entity.twitter.target}
                       Icon={<TwitterIcon />}
-                      Form={<LabelForm labelType="twitter" onSubmit={() => this.setState({ editing: undefined })}  />}
+                      Form={<LabelForm labelType="twitter" onSubmit={() => this.setState({ editing: undefined })} />}
                       backgroundColor="#1CA1F2"
                       style={{ marginLeft: '20px' }}
                     />
@@ -248,7 +250,7 @@ export default class ShowPage extends Component {
                       editing={this.state.editing === 'instagram'}
                       id={entity.id}
                       href={entity.instagram && entity.instagram.target}
-                      Form={<LabelForm labelType="instagram" onSubmit={() => this.setState({ editing: undefined })}  />}
+                      Form={<LabelForm labelType="instagram" onSubmit={() => this.setState({ editing: undefined })} />}
                       Icon={<InstagramIcon />}
                       backgroundColor="#F41476"
                       style={{ marginLeft: '20px' }}
