@@ -77,9 +77,12 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
       </div>
       <div className="media-content">
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
-        <p style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizedMessage.replace(regex, replaceMatchWithLink) }} />
+        <p
+          style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }}
+          dangerouslySetInnerHTML={{ __html: sanitizedMessage.replace(regex, replaceMatchWithLink) }}
+        />
         {reactions && (
-          <div style={{ marginTop: '20px', display: 'flex' }}>
+          <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
             <IfActiveEntityLiked
               id={id}
               other={
@@ -106,6 +109,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
                 />
               }
             />
+            {reactions.map(reaction => <EntityAvatar id={reaction.context.split(':')[2]} size="verySmall" style={{marginLeft: '8px'}} />)}
           </div>
         )}
       </div>
