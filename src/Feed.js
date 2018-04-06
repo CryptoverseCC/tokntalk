@@ -3,6 +3,7 @@ import uniqBy from 'lodash/uniqBy';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 import { Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
@@ -63,6 +64,12 @@ const Label = ({ onClick, className, icon, text, count, colors, style = {} }) =>
 };
 
 const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
+  const sanitizedMessage = DOMPurify.sanitize(message);
+  const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+  const regex = new RegExp(expression);
+  const replaceMatchWithLink = match => {
+    return `<a href="${match}">${match}</a>`;
+  };
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
@@ -70,7 +77,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
       </div>
       <div className="media-content">
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
-        <p style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }}>{message}</p>
+        <p style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: sanitizedMessage.replace(regex, replaceMatchWithLink) }} />
         {reactions && (
           <div style={{ marginTop: '20px', display: 'flex' }}>
             <IfActiveEntityLiked
