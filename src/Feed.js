@@ -109,7 +109,14 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
                 />
               }
             />
-            {reactions.map(reaction => <EntityAvatar id={reaction.context.split(':')[2]} size="verySmall" style={{marginLeft: '8px'}} />)}
+            {reactions.map((reaction, index) => {
+              const id = reaction.context.split(':')[2];
+              return (
+                <Link to={`/cryptopurr/${id}`}>
+                  <EntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
