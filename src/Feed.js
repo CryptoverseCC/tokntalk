@@ -7,6 +7,7 @@ import DOMPurify from 'dompurify';
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
+import { InfiniteScroll } from 'react-simple-infinite-scroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 
@@ -109,11 +110,11 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
                 />
               }
             />
-            {reactions.map((reaction, index) => {
+            {reactions.map(reaction => {
               const id = reaction.context.split(':')[2];
               return (
-                <Link to={`/cryptopurr/${id}`}>
-                  <EntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />
+                <Link to={`/cryptopurr/${id}`} key={id}>
+                  <EntityAvatar id={id} size="verySmall" style={{ marginLeft: '8px' }} />
                 </Link>
               );
             })}
@@ -413,28 +414,33 @@ class Card extends React.Component {
   }
 }
 
-const Feed = ({ feedItems, temporaryReplies, temporaryReactions }) => (
+const Feed = ({ feedItems, temporaryReplies, temporaryReactions, showMorePurrs }) => (
   <div className="container" style={{ padding: '40px 0' }}>
     <div className="columns">
       <div className="column is-6 is-offset-3">
-        {feedItems.map(feedItem => {
-          const temporaryRepliesForItem = temporaryReplies[feedItem.id];
-          const replies = uniqBy([...(temporaryRepliesForItem || []), ...(feedItem.abouted || [])], about => about.id);
-          const temporaryReactionsForItem = temporaryReactions[feedItem.id];
-          const reactions = uniqBy(
-            [...(temporaryReactionsForItem || []), ...(feedItem.targeted || [])],
-            target => target.id
-          );
-          return (
-            <Card
-              feedItem={feedItem}
-              replies={replies}
-              reactions={reactions}
-              key={feedItem.id}
-              added={feedItem.added}
-            />
-          );
-        })}
+        <InfiniteScroll hasMore={true} onLoadMore={showMorePurrs} throttle={100} threshold={300} isLoading={false}>
+          {feedItems.map(feedItem => {
+            const temporaryRepliesForItem = temporaryReplies[feedItem.id];
+            const replies = uniqBy(
+              [...(temporaryRepliesForItem || []), ...(feedItem.abouted || [])],
+              about => about.id
+            );
+            const temporaryReactionsForItem = temporaryReactions[feedItem.id];
+            const reactions = uniqBy(
+              [...(temporaryReactionsForItem || []), ...(feedItem.targeted || [])],
+              target => target.id
+            );
+            return (
+              <Card
+                feedItem={feedItem}
+                replies={replies}
+                reactions={reactions}
+                key={feedItem.id}
+                added={feedItem.added}
+              />
+            );
+          })}
+        </InfiniteScroll>
       </div>
     </div>
   </div>
@@ -444,12 +450,22 @@ export default Feed;
 
 export const ConnectedFeed = ({ forId }) => (
   <Context.Consumer>
-    {({ purrStore: { purrs, temporaryPurrs, temporaryReplies, temporaryReactions } }) => {
+    {({
+      purrStore: { purrs, temporaryPurrs, temporaryReplies, temporaryReactions, shownPurrsCount, showMorePurrs }
+    }) => {
       let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
       if (forId) {
         allPurrs = allPurrs.filter(({ token_id }) => token_id === forId);
       }
-      return <Feed feedItems={allPurrs} temporaryReplies={temporaryReplies} temporaryReactions={temporaryReactions} />;
+      allPurrs = allPurrs.slice(0, shownPurrsCount);
+      return (
+        <Feed
+          feedItems={allPurrs}
+          temporaryReplies={temporaryReplies}
+          temporaryReactions={temporaryReactions}
+          showMorePurrs={showMorePurrs}
+        />
+      );
     }}
   </Context.Consumer>
 );

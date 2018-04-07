@@ -21,7 +21,7 @@ const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy
         }}
       >
         {lazy ? (
-          <LazyLoad once>
+          <LazyLoad height={containerSize} once>
             <img
               style={{
                 width: imgSize,

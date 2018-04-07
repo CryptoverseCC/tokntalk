@@ -15,8 +15,8 @@ export default class App extends Component {
     entityLabels: {},
     allowPurr: false,
     purrs: [],
+    shownPurrsCount: 10,
     temporaryPurrs: [],
-    newPurrs: [],
     temporaryReplies: {},
     temporaryReactions: {},
     from: undefined
@@ -41,7 +41,7 @@ export default class App extends Component {
       (JSON.parse(localStorage.getItem('activeCat')) &&
         myCats.find(myCat => myCat.token === JSON.parse(localStorage.getItem('activeCat')).token)) ||
       myCats[0];
-    this.setState({myCats});
+    this.setState({ myCats });
     this.changeActiveCatTo(newActiveCat.token);
   };
 
@@ -131,18 +131,19 @@ export default class App extends Component {
     if (purrs.length === this.state.purrs.length) return;
     let newState;
     if (purge) {
-      newState = { purrs };
+      newState = { purrs, shownPurrsCount: 10 };
     } else {
       const previousPurrs = this.state.purrs.reduce((acc, purr) => ({ ...acc, [purr.id]: purr }), {});
+      const newPurrs = purrs.map(purr => ({ ...purr, added: this.state.purrs.length > 0 && !previousPurrs[purr.id] }));
       newState = {
-        purrs: purrs.map(purr => ({ ...purr, added: this.state.purrs.length > 0 && !previousPurrs[purr.id] }))
+        purrs: newPurrs
       };
     }
     this.setState(newState);
   };
 
-  showNewPurrs = () => {
-    this.setState({ purrs: this.state.newPurrs });
+  showMorePurrs = (count = 5) => {
+    this.setState({ shownPurrsCount: this.state.shownPurrsCount + count });
   };
 
   changeActiveCatTo = id => {
@@ -168,18 +169,18 @@ export default class App extends Component {
       reply,
       react,
       label,
-      showNewPurrs,
-      getEntity
+      getEntity,
+      showMorePurrs
     } = this;
     const {
       activeCat,
       myCats,
       purrs,
+      shownPurrsCount,
       catsInfo,
       temporaryPurrs,
       temporaryReplies,
       temporaryReactions,
-      newPurrs,
       allowPurr
     } = this.state;
     return (
@@ -193,12 +194,12 @@ export default class App extends Component {
             react,
             label,
             purrs,
-            newPurrs,
+            shownPurrsCount,
+            showMorePurrs,
             temporaryPurrs,
             temporaryReplies,
             temporaryReactions,
-            allowPurr,
-            showNewPurrs
+            allowPurr
           }
         }}
       >
