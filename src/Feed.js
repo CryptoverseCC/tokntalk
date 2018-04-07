@@ -65,7 +65,7 @@ const Label = ({ onClick, className, icon, text, count, colors, style = {} }) =>
 
 const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
   const sanitizedMessage = DOMPurify.sanitize(message);
-  const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+  const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@;:%_+.~#?&//=]*)/;
   const regex = new RegExp(expression);
   const replaceMatchWithLink = match => {
     return `<a href="${match}">${match}</a>`;
