@@ -51,7 +51,7 @@ export const getCatLabels = async catId => {
   }
 };
 
-const getCreditsData = () => [{ type: 'interface', value: 'crypropurr.co' }];
+const getCreditsData = () => [{ type: 'interface', value: 'cryptopurr.co' }];
 
 export const sendMessage = async (token, message) => {
   const web3 = await getWeb3();
