@@ -7,7 +7,7 @@ import DOMPurify from 'dompurify';
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
 import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
-import { InfiniteScroll } from 'react-simple-infinite-scroll';
+import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 
@@ -64,13 +64,17 @@ const Label = ({ onClick, className, icon, text, count, colors, style = {} }) =>
   );
 };
 
-const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
+const decorateMessage = (message, style = "") => {
   const sanitizedMessage = DOMPurify.sanitize(message);
   const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@;:%_+.~#?&//=]*)/;
   const regex = new RegExp(expression);
   const replaceMatchWithLink = match => {
-    return `<a href="${match}">${match}</a>`;
+    return `<a href="${match}" style="${style}">${match}</a>`;
   };
+  return sanitizedMessage.replace(regex, replaceMatchWithLink);
+};
+
+const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
@@ -80,7 +84,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
         <p
           style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }}
-          dangerouslySetInnerHTML={{ __html: sanitizedMessage.replace(regex, replaceMatchWithLink) }}
+          dangerouslySetInnerHTML={{ __html: decorateMessage(message) }}
         />
         {reactions && (
           <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
@@ -347,7 +351,23 @@ class Card extends React.Component {
               </Link>
             </React.Fragment>
           );
-        }
+        },
+        post_about: () => (
+          <React.Fragment>
+            <span style={{ marginLeft: '10px'}}>wrote about</span>
+            <b
+              style={{
+                marginLeft: '10px',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                maxWidth: '300px',
+                display: 'inline-block',
+                whiteSpace: 'nowrap'
+              }}
+              dangerouslySetInnerHTML={{ __html: decorateMessage(feedItem.about.id) }}
+            />
+          </React.Fragment>
+        )
       };
       return (
         <React.Fragment>

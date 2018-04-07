@@ -20,7 +20,7 @@ export default class IndexPage extends Component {
     const { items: purrs } = await response.json();
     if (purrs) {
       this.props.updatePurrs(
-        purrs.filter(purr => ['regular', 'like', 'post_to', 'response'].includes(purr.type)),
+        purrs.filter(purr => ['regular', 'like', 'post_to', 'response', 'post_about'].includes(purr.type)),
         purge
       );
     }
