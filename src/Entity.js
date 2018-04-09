@@ -4,17 +4,27 @@ import Context from './Context';
 import colors from './colors';
 import IdentityAvatar from './Avatar';
 
-export const IfActiveCat = ({ children, then, other }) => (
-  <Context.Consumer>{({ catStore: { activeEntity } }) => (activeEntity ? (then && then(activeEntity)) || children(activeEntity) : other || null)}</Context.Consumer>
+export const IfActiveEntity = ({ children, then, other }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) =>
+      activeEntity ? (then && then(activeEntity)) || children(activeEntity) : other || null
+    }
+  </Context.Consumer>
 );
 
-export const IfIsActiveCat = ({ id, children, then, other }) => (
-  <Context.Consumer>{({ catStore: { activeEntity } }) => (activeEntity && (activeEntity.token === id) ? then || children : other || null)}</Context.Consumer>
+export const IfIsActiveEntity = ({ id, children, then, other }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) =>
+      activeEntity && activeEntity.token === id ? then || children : other || null
+    }
+  </Context.Consumer>
 );
 
 export const IfOwnerOfEntity = ({ id, children, then, other }) => (
   <Context.Consumer>
-    {({ catStore: { myCats } }) => (!!myCats.find(cat => id.toString() === cat.token) ? then || children : other || null)}
+    {({ entityStore: { myEntities } }) =>
+      !!myEntities.find(entity => id.toString() === entity.token) ? then || children : other || null
+    }
   </Context.Consumer>
 );
 
@@ -23,7 +33,9 @@ export const Entity = ({ id, children }) => (
 );
 
 export const EntityName = ({ id }) => (
-  <Context.Consumer>{({ entityStore: { getEntity } }) => getEntity(id).name || `Kitty #${getEntity(id).id}`}</Context.Consumer>
+  <Context.Consumer>
+    {({ entityStore: { getEntity } }) => getEntity(id).name || `Kitty #${getEntity(id).id}`}
+  </Context.Consumer>
 );
 
 export const EntityAvatar = ({ id, ...props }) => (
@@ -36,26 +48,26 @@ export const EntityAvatar = ({ id, ...props }) => (
 
 export const Entities = ({ children }) => (
   <Context.Consumer>
-    {({ catStore: { myCats, changeActiveEntityTo }, entityStore: { getEntity } }) => {
-      const catEntities = myCats.map(myCat => getEntity(myCat.token));
-      return children({ entities: catEntities, changeActiveEntityTo: changeActiveEntityTo });
+    {({ entityStore: { myEntities, changeActiveEntityTo }, entityStore: { getEntity } }) => {
+      const entities = myEntities.map(myEntity => getEntity(myEntity.token));
+      return children({ entities, changeActiveEntityTo });
     }}
   </Context.Consumer>
 );
 
 export const ActiveEntityName = () => (
-  <Context.Consumer>{({ catStore: { activeEntity } }) => <EntityName id={activeEntity.token} />}</Context.Consumer>
+  <Context.Consumer>{({ entityStore: { activeEntity } }) => <EntityName id={activeEntity.token} />}</Context.Consumer>
 );
 
 export const ActiveEntityAvatar = props => (
   <Context.Consumer>
-    {({ catStore: { activeEntity } }) => <EntityAvatar id={activeEntity.token} {...props} />}
+    {({ entityStore: { activeEntity } }) => <EntityAvatar id={activeEntity.token} {...props} />}
   </Context.Consumer>
 );
 
 export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
-    {({ catStore: { activeEntity }, purrStore: { purrs, temporaryPurrs, temporaryReactions } }) => {
+    {({ entityStore: { activeEntity }, purrStore: { purrs, temporaryPurrs, temporaryReactions } }) => {
       if (!activeEntity) return other;
       const claim = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).find(({ id: claimId }) => claimId === id);
       const liked =

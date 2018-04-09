@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { ActiveEntityAvatar, ActiveEntityName, IfActiveCat, Entities, EntityAvatar, EntityName } from './Entity';
+import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityAvatar, EntityName } from './Entity';
 
 const Header = () => {
   return (
@@ -28,7 +28,7 @@ const Header = () => {
             Purrbook
           </h1>
         </Link>
-        <IfActiveCat then={() => <CatDropdown />} other={<ErrorStatus message="No cats found" />} />
+        <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus message="No cats found" />} />
       </div>
     </div>
   );

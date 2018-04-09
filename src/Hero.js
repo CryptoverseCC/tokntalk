@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ConnectedCommentForm } from './CommentForm';
-import { ActiveEntityAvatar, IfActiveCat, ActiveEntityName } from './Entity';
+import { ActiveEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
 
 const Hero = () => (
-  <IfActiveCat>
+  <IfActiveEntity>
     {({token}) => (
       <div
         style={{
@@ -45,7 +45,7 @@ const Hero = () => (
         </div>
       </div>
     )}
-  </IfActiveCat>
+  </IfActiveEntity>
 );
 
 export default Hero;

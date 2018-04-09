@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import Context from './Context';
 import { ConnectedReplyForm } from './CommentForm';
-import { EntityName, IfActiveCat, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
+import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
@@ -402,7 +402,7 @@ class Card extends React.Component {
               etherscanUrl={createEtherscanUrl(reply)}
             />
           ))}{' '}
-          <IfActiveCat>{() => <ReplyForm about={feedItem.id} />}</IfActiveCat>
+          <IfActiveEntity>{() => <ReplyForm about={feedItem.id} />}</IfActiveEntity>
         </React.Fragment>
       );
     }

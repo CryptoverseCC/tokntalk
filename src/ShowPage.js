@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import posed from 'react-pose';
 import ReactHoverObserver from 'react-hover-observer';
 import { ConnectedFeed } from './Feed';
-import { Entity, EntityName, IfIsActiveCat } from './Entity';
+import { Entity, EntityName, IfIsActiveEntity } from './Entity';
 import colors from './colors';
 import Modal from './Modal';
 import { ConnectedLabelForm } from './CommentForm';
@@ -104,7 +104,7 @@ class Badge extends React.Component {
             {Icon}
           </BadgeLink>
           {!this.props.constant && (
-            <IfIsActiveCat id={id.toString()}>
+            <IfIsActiveEntity id={id.toString()}>
               <EditButton
                 onClick={this.props.edit}
                 className="cp-inline-button"
@@ -133,7 +133,7 @@ class Badge extends React.Component {
                   </div>
                 </Modal>
               )}
-            </IfIsActiveCat>
+            </IfIsActiveEntity>
           )}
         </div>
       </Hoverable>
@@ -165,14 +165,14 @@ export default class ShowPage extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.refreshPurrs(true);
-    this.props.getCatInfo(this.props.match.params.entityId);
+    this.props.getEntityInfo(this.props.match.params.entityId);
     this.refreshInterval = setInterval(this.refreshPurrs, 15000);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.entityId !== this.props.match.params.entityId) {
       this.refreshPurrs(true, nextProps.match.params.entityId);
-      this.props.getCatInfo(nextProps.match.params.entityId);
+      this.props.getEntityInfo(nextProps.match.params.entityId);
       window.scrollTo(0, 0);
     }
   }

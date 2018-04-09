@@ -10,7 +10,7 @@ import Header from './Header';
 export default class App extends Component {
   state = {
     activeEntity: undefined,
-    myCats: [],
+    myEntities: [],
     entityInfo: JSON.parse(localStorage.getItem('entityInfo') || '{}'),
     entityLabels: {},
     allowPurr: false,
@@ -22,34 +22,34 @@ export default class App extends Component {
     from: undefined
   };
 
-  catInfoRequests = {};
+  entityInfoRequests = {};
   entityLabelRequests = {};
 
   componentDidMount() {
     this.refreshWeb3State();
     setInterval(this.refreshWeb3State, 2000);
-    this.refreshMyCats();
-    setInterval(this.refreshMyCats, 15000);
+    this.refreshMyEntities();
+    setInterval(this.refreshMyEntities, 15000);
   }
 
-  refreshMyCats = async () => {
-    const myCats = await downloadCats();
-    if (!myCats || isEqual(myCats, this.state.myCats)) return;
+  refreshMyEntities = async () => {
+    const myEntities = await downloadCats();
+    if (!myEntities || isEqual(myEntities, this.state.myEntities)) return;
     const { activeEntity } = this.state;
     const newActiveEntity =
-      (activeEntity && myCats.find(myCat => myCat.token === activeEntity.token)) ||
+      (activeEntity && myEntities.find(myEntity => myEntity.token === activeEntity.token)) ||
       (JSON.parse(localStorage.getItem('activeEntity')) &&
-        myCats.find(myCat => myCat.token === JSON.parse(localStorage.getItem('activeEntity')).token)) ||
-      myCats[0];
+        myEntities.find(myEntity => myEntity.token === JSON.parse(localStorage.getItem('activeEntity')).token)) ||
+      myEntities[0];
     if(!newActiveEntity) return;
-    this.setState({ myCats });
+    this.setState({ myEntities });
     this.changeActiveEntityTo(newActiveEntity.token);
   };
 
   refreshWeb3State = async () => {
     const { from, isListening } = await downloadWeb3State();
     if (this.state.from !== from) {
-      this.refreshMyCats();
+      this.refreshMyEntities();
     }
     if (this.state.from !== from || this.state.isListening !== isListening) {
       this.setState({ allowPurr: !!(isListening && from && this.state.activeEntity), from, isListening });
@@ -70,19 +70,19 @@ export default class App extends Component {
     this.setState({ entityLabels: { ...this.state.entityLabels, [entityId]: labels } });
   };
 
-  getCatInfo = async catId => {
-    if (this.catInfoRequests[catId]) return;
-    const catInfoRequest = getCatData(catId);
-    this.catInfoRequests[catId] = catInfoRequest;
-    const catData = await catInfoRequest;
-    this.setState({ entityInfo: { ...this.state.entityInfo, [catId]: catData } }, () => {
+  getEntityInfo = async entityId => {
+    if (this.entityInfoRequests[entityId]) return;
+    const entityInfoRequest = getCatData(entityId);
+    this.entityInfoRequests[entityId] = entityInfoRequest;
+    const entityData = await entityInfoRequest;
+    this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, () => {
       localStorage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
     });
   };
 
   getEntity = entityId => {
     const entityInfo = this.state.entityInfo[entityId];
-    if (!entityInfo) this.getCatInfo(entityId);
+    if (!entityInfo) this.getEntityInfo(entityId);
     const entityLabels = this.state.entityLabels[entityId];
     if (!entityLabels) this.getEntityLabels(entityId);
     return {
@@ -148,8 +148,8 @@ export default class App extends Component {
   };
 
   changeActiveEntityTo = id => {
-    const { myCats } = this.state;
-    const newActiveEntity = myCats.find(myCat => myCat.token === id.toString());
+    const { myEntities } = this.state;
+    const newActiveEntity = myEntities.find(myEntity => myEntity.token === id.toString());
     this.setState({ activeEntity: newActiveEntity }, () => {
       localStorage.removeItem('activeEntity');
       if (newActiveEntity) localStorage.setItem('activeEntity', JSON.stringify(newActiveEntity));
@@ -158,14 +158,14 @@ export default class App extends Component {
 
   renderIndexPage = props => <IndexPage {...props} updatePurrs={this.updatePurrs} />;
 
-  renderShowPage = props => <ShowPage {...props} updatePurrs={this.updatePurrs} getCatInfo={this.getCatInfo} />;
+  renderShowPage = props => <ShowPage {...props} updatePurrs={this.updatePurrs} getEntityInfo={this.getEntityInfo} />;
 
   render() {
     const {
       renderIndexPage,
       renderShowPage,
       changeActiveEntityTo,
-      getCatInfo,
+      getEntityInfo,
       sendMessage,
       reply,
       react,
@@ -175,10 +175,10 @@ export default class App extends Component {
     } = this;
     const {
       activeEntity,
-      myCats,
+      myEntities,
       purrs,
       shownPurrsCount,
-      catsInfo,
+      entityInfo,
       temporaryPurrs,
       temporaryReplies,
       temporaryReactions,
@@ -187,8 +187,7 @@ export default class App extends Component {
     return (
       <Context.Provider
         value={{
-          entityStore: { getEntity },
-          catStore: { myCats, changeActiveEntityTo, activeEntity, catsInfo, getCatInfo },
+          entityStore: { getEntity, myEntities, changeActiveEntityTo, activeEntity, entityInfo, getEntityInfo },
           purrStore: {
             sendMessage,
             reply,

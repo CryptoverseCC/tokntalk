@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Context from './Context';
 
-const Navigation = ({ myCats }) => (
+const Navigation = () => (
   <nav className="navigation">
     <div className="container">
       <div className="columns" style={{ alignItems: 'center' }}>
@@ -13,12 +13,12 @@ const Navigation = ({ myCats }) => (
         </div>
         <div className="column is-10 has-text-right">
           <Context.Consumer>
-            {({ catStore: { myCats } }) => (
-              <Dropdown disabled={myCats.length === 0}>
+            {({ entityStore: { myEntities } }) => (
+              <Dropdown disabled={myEntities.length === 0}>
                 {closeDropdown =>
-                  myCats.map(cat => (
-                    <DropdownItem key={cat.token} to={cat.token} closeDropdown={closeDropdown}>
-                      Kitty {cat.token}
+                  myEntities.map(entity => (
+                    <DropdownItem key={entity.token} to={entity.token} closeDropdown={closeDropdown}>
+                      Kitty {entity.token}
                     </DropdownItem>
                   ))
                 }
