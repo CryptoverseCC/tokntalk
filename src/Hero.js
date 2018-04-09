@@ -25,7 +25,7 @@ const Hero = () => (
                   <div className="media-content">
                     <div className="content">
                       <Link
-                        to={`/cryptopurr/${token}`}
+                        to={`/${token}`}
                         style={{
                           fontFamily: 'Rubik',
                           fontSize: '18px',

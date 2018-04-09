@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityAvatar, EntityName } from './Entity';
+import TranslationsContext from './Translations';
 
 const Header = () => {
   return (
@@ -22,13 +23,18 @@ const Header = () => {
     >
       <div className="container is-fluid level-item level columns">
         <Link to="/" className="level-item column is-column-4 is-offset-4 has-text-centered">
-          <h1
-            style={{ color: '#1B2437', fontWeight: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}
-          >
+          <h1 style={{ color: '#1B2437', fontWeight: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}>
             Purrbook
           </h1>
         </Link>
-        <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus message="No cats found" />} />
+        <IfActiveEntity
+          then={() => <CatDropdown />}
+          other={
+            <TranslationsContext.Consumer>
+              {({ noEntitiesError }) => <ErrorStatus message={noEntitiesError} />}
+            </TranslationsContext.Consumer>
+          }
+        />
       </div>
     </div>
   );

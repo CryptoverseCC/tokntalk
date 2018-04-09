@@ -2,6 +2,7 @@ import React from 'react';
 import TextArea from 'react-autosize-textarea';
 import Context from './Context';
 import Metamask from './img/metamask.png';
+import TranslationsContext from './Translations';
 
 export default class CommentForm extends React.Component {
   state = {
@@ -68,18 +69,36 @@ export default class CommentForm extends React.Component {
 
 export const ConnectedCommentForm = props => (
   <Context.Consumer>
-    {({ feedStore: { sendMessage } }) => <CommentForm sendMessage={sendMessage} placeholder="Purr your story" {...props} />}
+    {({ feedStore: { sendMessage } }) => (
+      <TranslationsContext.Consumer>
+        {({ commentPlaceholder }) => (
+          <CommentForm sendMessage={sendMessage} placeholder={commentPlaceholder} {...props} />
+        )}
+      </TranslationsContext.Consumer>
+    )}
   </Context.Consumer>
 );
 
-export const ConnectedReplyForm = ({about, ...props}) => (
+export const ConnectedReplyForm = ({ about, ...props }) => (
   <Context.Consumer>
-    {({ feedStore: { reply } }) => <CommentForm sendMessage={(message) => reply(message, about)} placeholder="Purr your reply" {...props} />}
+    {({ feedStore: { reply } }) => (
+      <TranslationsContext.Consumer>
+        {({ replyPlaceholder }) => (
+          <CommentForm sendMessage={message => reply(message, about)} placeholder={replyPlaceholder} {...props} />
+        )}
+      </TranslationsContext.Consumer>
+    )}
   </Context.Consumer>
 );
 
-export const ConnectedLabelForm = ({labelType, ...props}) => (
+export const ConnectedLabelForm = ({ labelType, ...props }) => (
   <Context.Consumer>
-    {({ feedStore: { label } }) => <CommentForm sendMessage={(message) => label(message, labelType)} placeholder={`Set your ${labelType}`} {...props} />}
+    {({ feedStore: { label } }) => (
+      <CommentForm
+        sendMessage={message => label(message, labelType)}
+        placeholder={`Set your ${labelType}`}
+        {...props}
+      />
+    )}
   </Context.Consumer>
-)
+);
