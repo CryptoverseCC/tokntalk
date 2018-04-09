@@ -25,6 +25,7 @@ export const getEntityData = async catId => {
     const res = await fetch(`https://api.cryptokitties.co/kitties/${catId}`);
     const data = await res.json();
     data.color = colors[data.color];
+    data.url = `https://cryptokitties.co/kitty/${catId}`;
     return data;
   } catch (e) {
     return undefined;
