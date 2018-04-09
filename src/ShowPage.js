@@ -8,6 +8,7 @@ import Modal from './Modal';
 import { ConnectedLabelForm } from './CommentForm';
 import { getFeedItems } from './api';
 import etherDiamond from './img/ether-diamond.gif';
+import { EntityIcon } from './entityApi';
 
 const Hoverable = ({ element, ...props }) => {
   const HoverablePose = element({ initialPose: 'default' });
@@ -211,7 +212,7 @@ export default class ShowPage extends Component {
                     <Badge
                       constant
                       id={entity.id}
-                      Icon={<img src={etherDiamond} style={{ height: '70%' }} alt={entity.id} />}
+                      Icon={<EntityIcon entityId={entity.id} />}
                       href={entity.url}
                       backgroundColor={entity.color}
                     />

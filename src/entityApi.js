@@ -1,3 +1,6 @@
+import React from "react";
+import etherDiamond from './img/ether-diamond.gif';
+
 const colors = {
   babypuke: '#eff1e0',
   bubblegum: '#fadff4',
@@ -30,4 +33,8 @@ export const getEntityData = async catId => {
   } catch (e) {
     return undefined;
   }
+};
+
+export const EntityIcon = (entityId) => {
+  return <img src={etherDiamond} style={{ height: '70%' }} alt={entityId} />;
 };
