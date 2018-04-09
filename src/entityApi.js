@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import etherDiamond from './img/ether-diamond.gif';
 
 const colors = {
@@ -35,6 +35,12 @@ export const getEntityData = async catId => {
   }
 };
 
-export const EntityIcon = (entityId) => {
+export const EntityIcon = entityId => {
   return <img src={etherDiamond} style={{ height: '70%' }} alt={entityId} />;
+};
+
+export const entityTranslations = {
+  commentPlaceholder: 'Purr your story',
+  replyPlaceholder: 'Purr your reply',
+  noEntitiesError: 'No cats found'
 };

@@ -1,4 +1,4 @@
-import React from "react";
-import translations from "./translations.json"
-const TranslationsContext = React.createContext(translations);
+import React from 'react';
+import { entityTranslations } from './entityApi';
+const TranslationsContext = React.createContext(entityTranslations);
 export default TranslationsContext;
