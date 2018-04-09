@@ -5,11 +5,11 @@ import colors from './colors';
 import IdentityAvatar from './Avatar';
 
 export const IfActiveCat = ({ children, then, other }) => (
-  <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat ? (then && then(activeCat)) || children(activeCat) : other || null)}</Context.Consumer>
+  <Context.Consumer>{({ catStore: { activeEntity } }) => (activeEntity ? (then && then(activeEntity)) || children(activeEntity) : other || null)}</Context.Consumer>
 );
 
 export const IfIsActiveCat = ({ id, children, then, other }) => (
-  <Context.Consumer>{({ catStore: { activeCat } }) => (activeCat && (activeCat.token === id) ? then || children : other || null)}</Context.Consumer>
+  <Context.Consumer>{({ catStore: { activeEntity } }) => (activeEntity && (activeEntity.token === id) ? then || children : other || null)}</Context.Consumer>
 );
 
 export const IfOwnerOfEntity = ({ id, children, then, other }) => (
@@ -44,25 +44,25 @@ export const Entities = ({ children }) => (
 );
 
 export const ActiveEntityName = () => (
-  <Context.Consumer>{({ catStore: { activeCat } }) => <EntityName id={activeCat.token} />}</Context.Consumer>
+  <Context.Consumer>{({ catStore: { activeEntity } }) => <EntityName id={activeEntity.token} />}</Context.Consumer>
 );
 
 export const ActiveEntityAvatar = props => (
   <Context.Consumer>
-    {({ catStore: { activeCat } }) => <EntityAvatar id={activeCat.token} {...props} />}
+    {({ catStore: { activeEntity } }) => <EntityAvatar id={activeEntity.token} {...props} />}
   </Context.Consumer>
 );
 
 export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
-    {({ catStore: { activeCat }, purrStore: { purrs, temporaryPurrs, temporaryReactions } }) => {
-      if (!activeCat) return other;
+    {({ catStore: { activeEntity }, purrStore: { purrs, temporaryPurrs, temporaryReactions } }) => {
+      if (!activeEntity) return other;
       const claim = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).find(({ id: claimId }) => claimId === id);
       const liked =
         claim &&
         claim.targeted
           .concat(temporaryReactions[id] || [])
-          .find(({ context }) => context.split(':')[2] === activeCat.token);
+          .find(({ context }) => context.split(':')[2] === activeEntity.token);
       return liked ? then || children : other;
     }}
   </Context.Consumer>

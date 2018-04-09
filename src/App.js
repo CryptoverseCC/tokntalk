@@ -9,7 +9,7 @@ import Header from './Header';
 
 export default class App extends Component {
   state = {
-    activeCat: undefined,
+    activeEntity: undefined,
     myCats: [],
     entityInfo: JSON.parse(localStorage.getItem('entityInfo') || '{}'),
     entityLabels: {},
@@ -35,14 +35,15 @@ export default class App extends Component {
   refreshMyCats = async () => {
     const myCats = await downloadCats();
     if (!myCats || isEqual(myCats, this.state.myCats)) return;
-    const { activeCat } = this.state;
-    const newActiveCat =
-      (activeCat && myCats.find(myCat => myCat.token === activeCat.token)) ||
-      (JSON.parse(localStorage.getItem('activeCat')) &&
-        myCats.find(myCat => myCat.token === JSON.parse(localStorage.getItem('activeCat')).token)) ||
+    const { activeEntity } = this.state;
+    const newActiveEntity =
+      (activeEntity && myCats.find(myCat => myCat.token === activeEntity.token)) ||
+      (JSON.parse(localStorage.getItem('activeEntity')) &&
+        myCats.find(myCat => myCat.token === JSON.parse(localStorage.getItem('activeEntity')).token)) ||
       myCats[0];
+    if(!newActiveEntity) return;
     this.setState({ myCats });
-    this.changeActiveCatTo(newActiveCat.token);
+    this.changeActiveCatTo(newActiveEntity.token);
   };
 
   refreshWeb3State = async () => {
@@ -51,7 +52,7 @@ export default class App extends Component {
       this.refreshMyCats();
     }
     if (this.state.from !== from || this.state.isListening !== isListening) {
-      this.setState({ allowPurr: !!(isListening && from && this.state.activeCat), from, isListening });
+      this.setState({ allowPurr: !!(isListening && from && this.state.activeEntity), from, isListening });
     }
   };
 
@@ -95,20 +96,20 @@ export default class App extends Component {
   };
 
   sendMessage = async message => {
-    const temporaryPurr = await sendMessage(this.state.activeCat.token, message);
+    const temporaryPurr = await sendMessage(this.state.activeEntity.token, message);
     this.addTemporaryPurr(temporaryPurr);
     return temporaryPurr;
   };
 
   reply = async (message, about) => {
-    const temporaryReply = await reply(this.state.activeCat.token, message, about);
+    const temporaryReply = await reply(this.state.activeEntity.token, message, about);
     const itemTemporaryReplies = this.state.temporaryReplies[about] || [];
     const newTemporaryReplies = { ...this.state.temporaryReplies, [about]: [...itemTemporaryReplies, temporaryReply] };
     this.setState({ temporaryReplies: newTemporaryReplies });
   };
 
   react = async to => {
-    const temporaryReaction = await react(this.state.activeCat.token, to);
+    const temporaryReaction = await react(this.state.activeEntity.token, to);
     const itemTemporaryReactions = this.state.temporaryReactions[to] || [];
     const newTemporaryReactions = {
       ...this.state.temporaryReactions,
@@ -118,9 +119,9 @@ export default class App extends Component {
   };
 
   label = async (message, labelType) => {
-    const temporaryLabel = await label(this.state.activeCat.token, message, labelType);
-    const newEntityLabels = { ...this.state.entityLabels[this.state.activeCat.token], [labelType]: temporaryLabel };
-    this.setState({ entityLabels: { ...this.state.entityLabels, [this.state.activeCat.token]: newEntityLabels } });
+    const temporaryLabel = await label(this.state.activeEntity.token, message, labelType);
+    const newEntityLabels = { ...this.state.entityLabels[this.state.activeEntity.token], [labelType]: temporaryLabel };
+    this.setState({ entityLabels: { ...this.state.entityLabels, [this.state.activeEntity.token]: newEntityLabels } });
   };
 
   addTemporaryPurr = purr => {
@@ -148,10 +149,10 @@ export default class App extends Component {
 
   changeActiveCatTo = id => {
     const { myCats } = this.state;
-    const newActiveCat = myCats.find(myCat => myCat.token === id.toString());
-    this.setState({ activeCat: newActiveCat }, () => {
-      localStorage.removeItem('activeCat');
-      if (newActiveCat) localStorage.setItem('activeCat', JSON.stringify(newActiveCat));
+    const newActiveEntity = myCats.find(myCat => myCat.token === id.toString());
+    this.setState({ activeEntity: newActiveEntity }, () => {
+      localStorage.removeItem('activeEntity');
+      if (newActiveEntity) localStorage.setItem('activeEntity', JSON.stringify(newActiveEntity));
     });
   };
 
@@ -173,7 +174,7 @@ export default class App extends Component {
       showMorePurrs
     } = this;
     const {
-      activeCat,
+      activeEntity,
       myCats,
       purrs,
       shownPurrsCount,
@@ -187,7 +188,7 @@ export default class App extends Component {
       <Context.Provider
         value={{
           entityStore: { getEntity },
-          catStore: { myCats, changeActiveCatTo, activeCat, catsInfo, getCatInfo },
+          catStore: { myCats, changeActiveCatTo, activeEntity, catsInfo, getCatInfo },
           purrStore: {
             sendMessage,
             reply,
