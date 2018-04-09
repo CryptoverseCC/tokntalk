@@ -7,7 +7,6 @@ import { Entity, EntityName, IfIsActiveEntity } from './Entity';
 import Modal from './Modal';
 import { ConnectedLabelForm } from './CommentForm';
 import { getFeedItems } from './api';
-import etherDiamond from './img/ether-diamond.gif';
 import { EntityIcon } from './entityApi';
 
 const Hoverable = ({ element, ...props }) => {

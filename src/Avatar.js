@@ -2,11 +2,11 @@ import React from 'react';
 import LazyLoad from 'react-lazyload';
 
 const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy = true }) => {
-  const { containerSize, imgSize, imgTopOffset } = {
-    verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%' },
-    small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%' },
-    medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%' },
-    large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%' }
+  const { containerSize, imgSize, imgTopOffset, imgLeftOffset } = {
+    verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%', imgLeftOffset: '55%' },
+    small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%', imgLeftOffset: '55%' },
+    medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%', imgLeftOffset: '55%' },
+    large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%', imgLeftOffset: '55%' }
   }[size];
   return (
     <div style={{ position: 'relative', ...style }}>
@@ -26,7 +26,7 @@ const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy
               style={{
                 width: imgSize,
                 position: 'absolute',
-                left: '55%',
+                left: imgLeftOffset,
                 top: imgTopOffset,
                 transform: 'translate(-50%, -50%)',
                 maxWidth: 'none'
@@ -40,7 +40,7 @@ const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy
             style={{
               width: imgSize,
               position: 'absolute',
-              left: '55%',
+              left: imgLeftOffset,
               top: imgTopOffset,
               transform: 'translate(-50%, -50%)',
               maxWidth: 'none'
