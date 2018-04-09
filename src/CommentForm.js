@@ -68,18 +68,18 @@ export default class CommentForm extends React.Component {
 
 export const ConnectedCommentForm = props => (
   <Context.Consumer>
-    {({ purrStore: { sendMessage } }) => <CommentForm sendMessage={sendMessage} placeholder="Purr your story" {...props} />}
+    {({ feedStore: { sendMessage } }) => <CommentForm sendMessage={sendMessage} placeholder="Purr your story" {...props} />}
   </Context.Consumer>
 );
 
 export const ConnectedReplyForm = ({about, ...props}) => (
   <Context.Consumer>
-    {({ purrStore: { reply } }) => <CommentForm sendMessage={(message) => reply(message, about)} placeholder="Purr your reply" {...props} />}
+    {({ feedStore: { reply } }) => <CommentForm sendMessage={(message) => reply(message, about)} placeholder="Purr your reply" {...props} />}
   </Context.Consumer>
 );
 
 export const ConnectedLabelForm = ({labelType, ...props}) => (
   <Context.Consumer>
-    {({ purrStore: { label } }) => <CommentForm sendMessage={(message) => label(message, labelType)} placeholder={`Set your ${labelType}`} {...props} />}
+    {({ feedStore: { label } }) => <CommentForm sendMessage={(message) => label(message, labelType)} placeholder={`Set your ${labelType}`} {...props} />}
   </Context.Consumer>
 )

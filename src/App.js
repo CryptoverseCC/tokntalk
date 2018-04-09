@@ -13,10 +13,9 @@ export default class App extends Component {
     myEntities: [],
     entityInfo: JSON.parse(localStorage.getItem('entityInfo') || '{}'),
     entityLabels: {},
-    allowPurr: false,
-    purrs: [],
-    shownPurrsCount: 10,
-    temporaryPurrs: [],
+    feedItems: [],
+    shownFeedItemsCount: 10,
+    temporaryFeedItems: [],
     temporaryReplies: {},
     temporaryReactions: {},
     from: undefined
@@ -52,7 +51,7 @@ export default class App extends Component {
       this.refreshMyEntities();
     }
     if (this.state.from !== from || this.state.isListening !== isListening) {
-      this.setState({ allowPurr: !!(isListening && from && this.state.activeEntity), from, isListening });
+      this.setState({ from, isListening });
     }
   };
 
@@ -96,9 +95,9 @@ export default class App extends Component {
   };
 
   sendMessage = async message => {
-    const temporaryPurr = await sendMessage(this.state.activeEntity.token, message);
-    this.addTemporaryPurr(temporaryPurr);
-    return temporaryPurr;
+    const temporaryFeedItem = await sendMessage(this.state.activeEntity.token, message);
+    this.addTemporaryFeedItem(temporaryFeedItem);
+    return temporaryFeedItem;
   };
 
   reply = async (message, about) => {
@@ -124,27 +123,27 @@ export default class App extends Component {
     this.setState({ entityLabels: { ...this.state.entityLabels, [this.state.activeEntity.token]: newEntityLabels } });
   };
 
-  addTemporaryPurr = purr => {
-    this.setState({ temporaryPurrs: [purr, ...this.state.temporaryPurrs] });
+  addTemporaryFeedItem = feedItem => {
+    this.setState({ temporaryFeedItems: [feedItem, ...this.state.temporaryFeedItems] });
   };
 
-  updatePurrs = (purrs, purge) => {
-    if (purrs.length === this.state.purrs.length) return;
+  updateFeedItems = (feedItems, purge) => {
+    if (feedItems.length === this.state.feedItems.length) return;
     let newState;
     if (purge) {
-      newState = { purrs, shownPurrsCount: 10 };
+      newState = { feedItems, shownFeedItemsCount: 10 };
     } else {
-      const previousPurrs = this.state.purrs.reduce((acc, purr) => ({ ...acc, [purr.id]: purr }), {});
-      const newPurrs = purrs.map(purr => ({ ...purr, added: this.state.purrs.length > 0 && !previousPurrs[purr.id] }));
+      const previousFeedItems = this.state.feedItems.reduce((acc, feedItem) => ({ ...acc, [feedItem.id]: feedItem }), {});
+      const newFeedItems = feedItems.map(feedItem => ({ ...feedItem, added: this.state.feedItems.length > 0 && !previousFeedItems[feedItem.id] }));
       newState = {
-        purrs: newPurrs
+        feedItems: newFeedItems
       };
     }
     this.setState(newState);
   };
 
-  showMorePurrs = (count = 5) => {
-    this.setState({ shownPurrsCount: this.state.shownPurrsCount + count });
+  showMoreFeedItems = (count = 5) => {
+    this.setState({ shownFeedItemsCount: this.state.shownFeedItemsCount + count });
   };
 
   changeActiveEntityTo = id => {
@@ -156,9 +155,9 @@ export default class App extends Component {
     });
   };
 
-  renderIndexPage = props => <IndexPage {...props} updatePurrs={this.updatePurrs} />;
+  renderIndexPage = props => <IndexPage {...props} updateFeedItems={this.updateFeedItems} />;
 
-  renderShowPage = props => <ShowPage {...props} updatePurrs={this.updatePurrs} getEntityInfo={this.getEntityInfo} />;
+  renderShowPage = props => <ShowPage {...props} updateFeedItems={this.updateFeedItems} getEntityInfo={this.getEntityInfo} />;
 
   render() {
     const {
@@ -171,35 +170,35 @@ export default class App extends Component {
       react,
       label,
       getEntity,
-      showMorePurrs
+      showMoreFeedItems
     } = this;
     const {
       activeEntity,
       myEntities,
-      purrs,
-      shownPurrsCount,
+      feedItems,
+      shownFeedItemsCount,
       entityInfo,
-      temporaryPurrs,
+      temporaryFeedItems,
       temporaryReplies,
       temporaryReactions,
-      allowPurr
+      allowAddingFeedItem
     } = this.state;
     return (
       <Context.Provider
         value={{
           entityStore: { getEntity, myEntities, changeActiveEntityTo, activeEntity, entityInfo, getEntityInfo },
-          purrStore: {
+          feedStore: {
             sendMessage,
             reply,
             react,
             label,
-            purrs,
-            shownPurrsCount,
-            showMorePurrs,
-            temporaryPurrs,
+            feedItems,
+            shownFeedItemsCount,
+            showMoreFeedItems,
+            temporaryFeedItems,
             temporaryReplies,
             temporaryReactions,
-            allowPurr
+            allowAddingFeedItem
           }
         }}
       >

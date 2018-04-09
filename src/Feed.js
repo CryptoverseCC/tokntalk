@@ -100,7 +100,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
               }
               other={
                 <Context.Consumer>
-                  {({ purrStore: { react } }) => (
+                  {({ feedStore: { react } }) => (
                     <Label
                       onClick={() => react(id)}
                       className="cp-like"
@@ -174,7 +174,7 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
               id={id}
               other={
                 <Context.Consumer>
-                  {({ purrStore: { react } }) => (
+                  {({ feedStore: { react } }) => (
                     <button
                       onClick={() => react(id)}
                       style={{
@@ -432,11 +432,11 @@ class Card extends React.Component {
   }
 }
 
-const Feed = ({ feedItems, temporaryReplies, temporaryReactions, showMorePurrs }) => (
+const Feed = ({ feedItems, temporaryReplies, temporaryReactions, showMoreFeedItems }) => (
   <div className="container" style={{ padding: '40px 0' }}>
     <div className="columns">
       <div className="column is-6 is-offset-3">
-        <InfiniteScroll hasMore={true} onLoadMore={showMorePurrs} throttle={100} threshold={300} isLoading={false}>
+        <InfiniteScroll hasMore={true} onLoadMore={showMoreFeedItems} throttle={100} threshold={300} isLoading={false}>
           {feedItems.map(feedItem => {
             const temporaryRepliesForItem = temporaryReplies[feedItem.id];
             const replies = uniqBy(
@@ -469,19 +469,19 @@ export default Feed;
 export const ConnectedFeed = ({ forId }) => (
   <Context.Consumer>
     {({
-      purrStore: { purrs, temporaryPurrs, temporaryReplies, temporaryReactions, shownPurrsCount, showMorePurrs }
+      feedStore: { feedItems, temporaryFeedItems, temporaryReplies, temporaryReactions, shownFeedItemsCount, showMoreFeedItems }
     }) => {
-      let allPurrs = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id);
+      let allFeedItems = uniqBy([...temporaryFeedItems, ...feedItems], feedItem => feedItem.id);
       if (forId) {
-        allPurrs = allPurrs.filter(({ token_id }) => token_id === forId);
+        allFeedItems = allFeedItems.filter(({ token_id }) => token_id === forId);
       }
-      allPurrs = allPurrs.slice(0, shownPurrsCount);
+      allFeedItems = allFeedItems.slice(0, shownFeedItemsCount);
       return (
         <Feed
-          feedItems={allPurrs}
+          feedItems={allFeedItems}
           temporaryReplies={temporaryReplies}
           temporaryReactions={temporaryReactions}
-          showMorePurrs={showMorePurrs}
+          showMoreFeedItems={showMoreFeedItems}
         />
       );
     }}

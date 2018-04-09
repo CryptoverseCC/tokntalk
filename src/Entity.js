@@ -67,9 +67,9 @@ export const ActiveEntityAvatar = props => (
 
 export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity }, purrStore: { purrs, temporaryPurrs, temporaryReactions } }) => {
+    {({ entityStore: { activeEntity }, feedStore: { feedItems, temporaryFeedItems, temporaryReactions } }) => {
       if (!activeEntity) return other;
-      const claim = uniqBy([...temporaryPurrs, ...purrs], purr => purr.id).find(({ id: claimId }) => claimId === id);
+      const claim = uniqBy([...temporaryFeedItems, ...feedItems], feedItem => feedItem.id).find(({ id: claimId }) => claimId === id);
       const liked =
         claim &&
         claim.targeted

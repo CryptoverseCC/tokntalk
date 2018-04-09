@@ -164,14 +164,14 @@ export default class ShowPage extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.refreshPurrs(true);
+    this.refreshFeedItems(true);
     this.props.getEntityInfo(this.props.match.params.entityId);
-    this.refreshInterval = setInterval(this.refreshPurrs, 15000);
+    this.refreshInterval = setInterval(this.refreshFeedItems, 15000);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.entityId !== this.props.match.params.entityId) {
-      this.refreshPurrs(true, nextProps.match.params.entityId);
+      this.refreshFeedItems(true, nextProps.match.params.entityId);
       this.props.getEntityInfo(nextProps.match.params.entityId);
       window.scrollTo(0, 0);
     }
@@ -181,14 +181,14 @@ export default class ShowPage extends Component {
     clearInterval(this.refreshInterval);
   }
 
-  refreshPurrs = async (purge = false, entityId = this.props.match.params.entityId) => {
+  refreshFeedItems = async (purge = false, entityId = this.props.match.params.entityId) => {
     const response = await fetch(
       `https://api-dev.userfeeds.io/ranking/feed;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${entityId}`
     );
-    const { items: purrs } = await response.json();
-    if (purrs) {
-      this.props.updatePurrs(
-        purrs.filter(purr => ['regular', 'like', 'post_to', 'response', 'post_about'].includes(purr.type)),
+    const { items: feedItems } = await response.json();
+    if (feedItems) {
+      this.props.updateFeedItems(
+        feedItems.filter(feedItem => ['regular', 'like', 'post_to', 'response', 'post_about'].includes(feedItem.type)),
         purge
       );
     }
