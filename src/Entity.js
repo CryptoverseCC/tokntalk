@@ -1,7 +1,6 @@
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import Context from './Context';
-import colors from './colors';
 import IdentityAvatar from './Avatar';
 
 export const IfActiveEntity = ({ children, then, other }) => (
@@ -41,7 +40,7 @@ export const EntityName = ({ id }) => (
 export const EntityAvatar = ({ id, ...props }) => (
   <Context.Consumer>
     {({ entityStore: { getEntity } }) => (
-      <IdentityAvatar {...props} backgroundColor={colors[getEntity(id).color]} src={getEntity(id).image_url} />
+      <IdentityAvatar {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} />
     )}
   </Context.Consumer>
 );

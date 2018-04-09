@@ -3,7 +3,6 @@ import posed from 'react-pose';
 import ReactHoverObserver from 'react-hover-observer';
 import { ConnectedFeed } from './Feed';
 import { Entity, EntityName, IfIsActiveEntity } from './Entity';
-import colors from './colors';
 import Modal from './Modal';
 import { ConnectedLabelForm } from './CommentForm';
 import { getFeedItems } from './api';
@@ -193,7 +192,7 @@ export default class ShowPage extends Component {
         <Entity id={this.props.match.params.entityId}>
           {entity => (
             <React.Fragment>
-              <div className="has-text-centered" style={{ backgroundColor: colors[entity.color], height: '30rem' }}>
+              <div className="has-text-centered" style={{ backgroundColor: entity.color, height: '30rem' }}>
                 <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id} />
               </div>
               <div className="container" style={{ padding: '20px 0' }}>
@@ -211,7 +210,7 @@ export default class ShowPage extends Component {
                       id={entity.id}
                       Icon={<img src={etherDiamond} style={{ height: '70%' }} alt={entity.id} />}
                       href={`https://cryptokitties.co/kitty/${entity.id}`}
-                      backgroundColor={colors[entity.color]}
+                      backgroundColor={entity.color}
                     />
                     <Badge
                       edit={() => this.setState({ editing: 'facebook' })}

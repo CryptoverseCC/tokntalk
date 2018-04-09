@@ -4,7 +4,8 @@ import isEqual from 'lodash/isEqual';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { getMyEntities, getWeb3State, getCatData, sendMessage, reply, react, label, getLabels } from './api';
+import { getMyEntities, getWeb3State, sendMessage, reply, react, label, getLabels } from './api';
+import { getEntityData } from './entityApi';
 import Header from './Header';
 
 const { REACT_APP_BASENAME: BASENAME } = process.env;
@@ -73,7 +74,7 @@ export default class App extends Component {
 
   getEntityInfo = async entityId => {
     if (this.entityInfoRequests[entityId]) return;
-    const entityInfoRequest = getCatData(entityId);
+    const entityInfoRequest = getEntityData(entityId);
     this.entityInfoRequests[entityId] = entityInfoRequest;
     const entityData = await entityInfoRequest;
     this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, () => {

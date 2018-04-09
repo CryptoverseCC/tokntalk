@@ -60,16 +60,6 @@ export const getWeb3State = async () => {
   }
 };
 
-export const getCatData = async catId => {
-  try {
-    const res = await fetch(`https://api.cryptokitties.co/kitties/${catId}`);
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    return undefined;
-  }
-};
-
 export const getLabels = async entityId => {
   try {
     const res = await fetch(
