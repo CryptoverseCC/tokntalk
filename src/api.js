@@ -40,15 +40,23 @@ export const getMyEntities = async () => {
 export const getWeb3State = async () => {
   try {
     const web3 = await getWeb3();
-    const [[from], isListening, networkId] = await Promise.all([
+    const [[from], isListening, networkId, blockNumber] = await Promise.all([
       web3.eth.getAccounts(),
       web3.eth.net.isListening(),
-      web3.eth.net.getId()
+      web3.eth.net.getId(),
+      web3.eth.getBlockNumber()
     ]);
     const networkName = networkNameForNetworkId[networkId];
-    return { from, isListening, networkId, web3, networkName };
+    return { from, isListening, networkId, blockNumber, web3, networkName };
   } catch (e) {
-    return { from: undefined, isListening: false, networkId: undefined, web3: undefined, networkName: undefined };
+    return {
+      from: undefined,
+      isListening: false,
+      networkId: undefined,
+      blockNumber: undefined,
+      web3: undefined,
+      networkName: undefined
+    };
   }
 };
 
@@ -85,140 +93,79 @@ const getContract = async () => {
   return contract;
 };
 
-export const sendMessage = async (token, message) => {
-  const { from, web3, networkName } = await getWeb3State();
-  const contract = await getContract();
-  const data = {
-    claim: {
-      target: message
-    },
-    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
-    credits: getCreditsData()
+const createFeedItemBase = async (transactionHash, token) => {
+  const { from, blockNumber, networkName } = await getWeb3State();
+  return {
+    author: from,
+    created_at: new Date().getTime(),
+    family: networkName,
+    id: `claim:${transactionHash}:0`,
+    sequence: blockNumber + 1,
+    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`
   };
-  return new Promise((resolve, reject) => {
+};
+
+const claim = async data => {
+  const { from } = await getWeb3State();
+  const contract = await getContract();
+  return new Promise(resolve => {
     contract.methods
       .post(JSON.stringify(data))
       .send({ from })
-      .on('transactionHash', async transactionHash => {
-        resolve({
-          about: null,
-          abouted: [],
-          author: from,
-          context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
-          created_at: new Date().getTime(),
-          family: networkName,
-          id: `claim:${transactionHash}:0`,
-          sequence: (await web3.eth.getBlockNumber()) + 1,
-          target: { id: message },
-          targeted: [],
-          type: 'regular'
-        });
-      })
-      .on('error', error => {
-        reject(error);
-      });
+      .on('transactionHash', transactionHash => resolve(transactionHash));
   });
+};
+
+export const sendMessage = async (token, message) => {
+  const data = {
+    claim: { target: message },
+    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
+    credits: getCreditsData()
+  };
+  const transactionHash = await claim(data);
+  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  return {
+    ...feedItemBase,
+    about: null,
+    abouted: [],
+    target: { id: message },
+    targeted: [],
+    type: 'regular'
+  };
 };
 
 export const reply = async (token, message, about) => {
-  const { from, web3, networkName } = await getWeb3State();
-  const contract = await getContract();
   const data = {
     type: ['about'],
-    claim: {
-      target: message,
-      about
-    },
+    claim: { target: message, about },
     context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
-  return new Promise((resolve, reject) => {
-    contract.methods
-      .post(JSON.stringify(data))
-      .send({ from })
-      .on('transactionHash', async transactionHash => {
-        resolve({
-          author: from,
-          context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
-          created_at: new Date().getTime(),
-          family: networkName,
-          id: `claim:${transactionHash}:0`,
-          target: {
-            id: message
-          },
-          sequence: (await web3.eth.getBlockNumber()) + 1
-        });
-      })
-      .on('error', error => {
-        reject(error);
-      });
-  });
+  const transactionHash = await claim(data);
+  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  return { ...feedItemBase(transactionHash, token), target: { id: message } };
 };
 
 export const react = async (token, to) => {
-  const { from, web3, networkName } = await getWeb3State();
-  const contract = await getContract();
   const data = {
     type: ['labels'],
-    claim: {
-      target: to,
-      labels: ['like']
-    },
+    claim: { target: to, labels: ['like'] },
     context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
-  return new Promise((resolve, reject) => {
-    contract.methods
-      .post(JSON.stringify(data))
-      .send({ from })
-      .on('transactionHash', async transactionHash => {
-        resolve({
-          author: from,
-          context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
-          created_at: new Date().getTime(),
-          family: networkName,
-          id: `claim:${transactionHash}:0`,
-          target: {
-            id: to
-          },
-          sequence: (await web3.eth.getBlockNumber()) + 1
-        });
-      })
-      .on('error', error => {
-        reject(error);
-      });
-  });
+  const transactionHash = await claim(data);
+  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  return { ...feedItemBase(transactionHash, token), target: { id: to } };
 };
 
 export const label = async (token, message, labelType) => {
-  const { from, web3, networkName } = await getWeb3State();
-  const contract = await getContract();
   const data = {
     type: ['labels'],
-    claim: {
-      target: message,
-      labels: [labelType]
-    },
+    claim: { target: message, labels: [labelType] },
     context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
-  return new Promise((resolve, reject) => {
-    contract.methods
-      .post(JSON.stringify(data))
-      .send({ from })
-      .on('transactionHash', async transactionHash => {
-        resolve({
-          author: from,
-          created_at: new Date().getTime(),
-          family: networkName,
-          id: `claim:${transactionHash}:0`,
-          label: labelType,
-          sequence: (await web3.eth.getBlockNumber()) + 1,
-          target: message
-        });
-      })
-      .on('error', error => {
-        reject(error);
-      });
-  });
+  const transactionHash = await claim(data);
+  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  return { ...feedItemBase(transactionHash, token), label: labelType, target: message };
 };
