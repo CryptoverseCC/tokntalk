@@ -2,13 +2,16 @@ import getWeb3 from './web3';
 import { contractAddressesForNetworkId, contractAbi, networkNameForNetworkId } from './contract';
 const {
   REACT_APP_ERC_721_ADDRESS: ERC_721_ADDRESS,
-  REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS
+  REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS,
+  REACT_APP_ERC_721_NETWORK: ERC_721_NETWORK
 } = process.env;
 
 export const getFeedItems = async entityId => {
   try {
     const entitySuffix = entityId ? `:${entityId}` : '';
-    const response = await fetch(`${USERFEEDS_API_ADDRESS}/feed;context=ethereum:${ERC_721_ADDRESS}${entitySuffix}`);
+    const response = await fetch(
+      `${USERFEEDS_API_ADDRESS}/feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`
+    );
     let { items: feedItems } = await response.json();
     feedItems = feedItems.filter(feedItem =>
       ['regular', 'like', 'post_to', 'response', 'post_about'].includes(feedItem.type)
@@ -19,22 +22,22 @@ export const getFeedItems = async entityId => {
   }
 };
 
-export const downloadCats = async () => {
+export const getMyEntities = async () => {
   try {
     const web3 = await getWeb3();
     const [from] = await web3.eth.getAccounts();
     if (!from) return;
     const response = await fetch(
-      `${USERFEEDS_API_ADDRESS}/tokens;identity=${from.toLowerCase()};asset=ethereum:${ERC_721_ADDRESS}/`
+      `${USERFEEDS_API_ADDRESS}/tokens;identity=${from.toLowerCase()};asset=${ERC_721_NETWORK}:${ERC_721_ADDRESS}/`
     );
-    const { items: myCats } = await response.json();
-    return myCats;
+    const { items: myEntities } = await response.json();
+    return myEntities;
   } catch (e) {
     return [];
   }
 };
 
-export const downloadWeb3State = async () => {
+export const getWeb3State = async () => {
   try {
     const web3 = await getWeb3();
     const [[from], isListening, networkId] = await Promise.all([
@@ -42,9 +45,10 @@ export const downloadWeb3State = async () => {
       web3.eth.net.isListening(),
       web3.eth.net.getId()
     ]);
-    return { from, isListening, networkId };
+    const networkName = networkNameForNetworkId[networkId];
+    return { from, isListening, networkId, web3, networkName };
   } catch (e) {
-    return { from: undefined, isListening: false, networkId: undefined };
+    return { from: undefined, isListening: false, networkId: undefined, web3: undefined, networkName: undefined };
   }
 };
 
@@ -58,13 +62,13 @@ export const getCatData = async catId => {
   }
 };
 
-export const getCatLabels = async catId => {
+export const getLabels = async entityId => {
   try {
     const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/labels721;context=ethereum:${ERC_721_ADDRESS}:${catId};labels=github;labels=facebook;labels=twitter;labels=instagram/`
+      `${USERFEEDS_API_ADDRESS}/labels721;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId};labels=github;labels=facebook;labels=twitter;labels=instagram/`
     );
-    const { items: catLabels } = await res.json();
-    return catLabels;
+    const { items: labels } = await res.json();
+    return labels;
   } catch (e) {
     return [];
   }
@@ -72,18 +76,23 @@ export const getCatLabels = async catId => {
 
 const getCreditsData = () => [{ type: 'interface', value: 'cryptopurr.co' }];
 
-export const sendMessage = async (token, message) => {
+const getContract = async () => {
   const web3 = await getWeb3();
-  const { from, networkId } = await downloadWeb3State();
+  const { from, networkId } = await getWeb3State();
   const contractAddress = contractAddressesForNetworkId[networkId];
-  const networkName = networkNameForNetworkId[networkId];
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
   contract.setProvider(web3.currentProvider);
+  return contract;
+};
+
+export const sendMessage = async (token, message) => {
+  const { from, web3, networkName } = await getWeb3State();
+  const contract = await getContract();
   const data = {
     claim: {
       target: message
     },
-    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
+    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
@@ -95,7 +104,7 @@ export const sendMessage = async (token, message) => {
           about: null,
           abouted: [],
           author: from,
-          context: `ethereum:${ERC_721_ADDRESS}:${token}`,
+          context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
           created_at: new Date().getTime(),
           family: networkName,
           id: `claim:${transactionHash}:0`,
@@ -112,19 +121,15 @@ export const sendMessage = async (token, message) => {
 };
 
 export const reply = async (token, message, about) => {
-  const web3 = await getWeb3();
-  const { from, networkId } = await downloadWeb3State();
-  const contractAddress = contractAddressesForNetworkId[networkId];
-  const networkName = networkNameForNetworkId[networkId];
-  const contract = new web3.eth.Contract(contractAbi, contractAddress);
-  contract.setProvider(web3.currentProvider);
+  const { from, web3, networkName } = await getWeb3State();
+  const contract = await getContract();
   const data = {
     type: ['about'],
     claim: {
       target: message,
       about
     },
-    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
+    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
@@ -134,7 +139,7 @@ export const reply = async (token, message, about) => {
       .on('transactionHash', async transactionHash => {
         resolve({
           author: from,
-          context: `ethereum:${ERC_721_ADDRESS}:${token}`,
+          context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
           created_at: new Date().getTime(),
           family: networkName,
           id: `claim:${transactionHash}:0`,
@@ -151,19 +156,15 @@ export const reply = async (token, message, about) => {
 };
 
 export const react = async (token, to) => {
-  const web3 = await getWeb3();
-  const { from, networkId } = await downloadWeb3State();
-  const contractAddress = contractAddressesForNetworkId[networkId];
-  const networkName = networkNameForNetworkId[networkId];
-  const contract = new web3.eth.Contract(contractAbi, contractAddress);
-  contract.setProvider(web3.currentProvider);
+  const { from, web3, networkName } = await getWeb3State();
+  const contract = await getContract();
   const data = {
     type: ['labels'],
     claim: {
       target: to,
       labels: ['like']
     },
-    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
+    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
@@ -173,7 +174,7 @@ export const react = async (token, to) => {
       .on('transactionHash', async transactionHash => {
         resolve({
           author: from,
-          context: `ethereum:${ERC_721_ADDRESS}:${token}`,
+          context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
           created_at: new Date().getTime(),
           family: networkName,
           id: `claim:${transactionHash}:0`,
@@ -190,19 +191,15 @@ export const react = async (token, to) => {
 };
 
 export const label = async (token, message, labelType) => {
-  const web3 = await getWeb3();
-  const { from, networkId } = await downloadWeb3State();
-  const contractAddress = contractAddressesForNetworkId[networkId];
-  const networkName = networkNameForNetworkId[networkId];
-  const contract = new web3.eth.Contract(contractAbi, contractAddress);
-  contract.setProvider(web3.currentProvider);
+  const { from, web3, networkName } = await getWeb3State();
+  const contract = await getContract();
   const data = {
     type: ['labels'],
     claim: {
       target: message,
       labels: [labelType]
     },
-    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
+    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {

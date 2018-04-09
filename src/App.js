@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react, label, getCatLabels } from './api';
+import { getMyEntities, getWeb3State, getCatData, sendMessage, reply, react, label, getLabels } from './api';
 import Header from './Header';
 
 const { REACT_APP_BASENAME: BASENAME } = process.env;
@@ -34,7 +34,7 @@ export default class App extends Component {
   }
 
   refreshMyEntities = async () => {
-    const myEntities = await downloadCats();
+    const myEntities = await getMyEntities();
     if (!myEntities || isEqual(myEntities, this.state.myEntities)) return;
     const { activeEntity } = this.state;
     const newActiveEntity =
@@ -48,7 +48,7 @@ export default class App extends Component {
   };
 
   refreshWeb3State = async () => {
-    const { from, isListening } = await downloadWeb3State();
+    const { from, isListening } = await getWeb3State();
     if (this.state.from !== from) {
       this.refreshMyEntities();
     }
@@ -59,7 +59,7 @@ export default class App extends Component {
 
   getEntityLabels = async entityId => {
     if (this.entityLabelRequests[entityId]) return;
-    const entityLabelRequest = getCatLabels(entityId);
+    const entityLabelRequest = getLabels(entityId);
     this.entityLabelRequests[entityId] = entityLabelRequest;
     const labelData = await entityLabelRequest;
     const github = labelData.find(({ label }) => label === 'github');
