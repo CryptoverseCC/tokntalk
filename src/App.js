@@ -43,7 +43,7 @@ export default class App extends Component {
       myCats[0];
     if(!newActiveEntity) return;
     this.setState({ myCats });
-    this.changeActiveCatTo(newActiveEntity.token);
+    this.changeActiveEntityTo(newActiveEntity.token);
   };
 
   refreshWeb3State = async () => {
@@ -147,7 +147,7 @@ export default class App extends Component {
     this.setState({ shownPurrsCount: this.state.shownPurrsCount + count });
   };
 
-  changeActiveCatTo = id => {
+  changeActiveEntityTo = id => {
     const { myCats } = this.state;
     const newActiveEntity = myCats.find(myCat => myCat.token === id.toString());
     this.setState({ activeEntity: newActiveEntity }, () => {
@@ -164,7 +164,7 @@ export default class App extends Component {
     const {
       renderIndexPage,
       renderShowPage,
-      changeActiveCatTo,
+      changeActiveEntityTo,
       getCatInfo,
       sendMessage,
       reply,
@@ -188,7 +188,7 @@ export default class App extends Component {
       <Context.Provider
         value={{
           entityStore: { getEntity },
-          catStore: { myCats, changeActiveCatTo, activeEntity, catsInfo, getCatInfo },
+          catStore: { myCats, changeActiveEntityTo, activeEntity, catsInfo, getCatInfo },
           purrStore: {
             sendMessage,
             reply,

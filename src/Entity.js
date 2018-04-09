@@ -36,9 +36,9 @@ export const EntityAvatar = ({ id, ...props }) => (
 
 export const Entities = ({ children }) => (
   <Context.Consumer>
-    {({ catStore: { myCats, changeActiveCatTo }, entityStore: { getEntity } }) => {
+    {({ catStore: { myCats, changeActiveEntityTo }, entityStore: { getEntity } }) => {
       const catEntities = myCats.map(myCat => getEntity(myCat.token));
-      return children({ entities: catEntities, changeActiveEntityTo: changeActiveCatTo });
+      return children({ entities: catEntities, changeActiveEntityTo: changeActiveEntityTo });
     }}
   </Context.Consumer>
 );
