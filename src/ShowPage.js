@@ -8,6 +8,7 @@ import Modal from './Modal';
 import { ConnectedLabelForm } from './CommentForm';
 import { getFeedItems } from './api';
 import etherDiamond from './img/ether-diamond.gif';
+const { REACT_APP_ENTITY_REGISTRY_URL: ENTITY_REGISTRY_URL } = process.env;
 
 const Hoverable = ({ element, ...props }) => {
   const HoverablePose = element({ initialPose: 'default' });
@@ -212,7 +213,7 @@ export default class ShowPage extends Component {
                       constant
                       id={entity.id}
                       Icon={<img src={etherDiamond} style={{ height: '70%' }} alt={entity.id} />}
-                      href={`https://cryptokitties.co/kitty/${entity.id}`}
+                      href={`${ENTITY_REGISTRY_URL}/${entity.id}`}
                       backgroundColor={entity.color}
                     />
                     <Badge
