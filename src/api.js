@@ -78,7 +78,7 @@ const getCreditsData = () => [{ type: 'interface', value: 'cryptopurr.co' }];
 
 const getContract = async () => {
   const web3 = await getWeb3();
-  const { from, networkId } = await getWeb3State();
+  const { networkId } = await getWeb3State();
   const contractAddress = contractAddressesForNetworkId[networkId];
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
   contract.setProvider(web3.currentProvider);
