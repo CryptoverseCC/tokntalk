@@ -6,7 +6,8 @@ import { Entity, EntityName, IfIsActiveEntity } from './Entity';
 import colors from './colors';
 import Modal from './Modal';
 import { ConnectedLabelForm } from './CommentForm';
-import etherDiamond from "./img/ether-diamond.gif";
+import { getFeedItems } from './api';
+import etherDiamond from './img/ether-diamond.gif';
 
 const Hoverable = ({ element, ...props }) => {
   const HoverablePose = element({ initialPose: 'default' });
@@ -182,16 +183,8 @@ export default class ShowPage extends Component {
   }
 
   refreshFeedItems = async (purge = false, entityId = this.props.match.params.entityId) => {
-    const response = await fetch(
-      `https://api-dev.userfeeds.io/ranking/feed;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${entityId}`
-    );
-    const { items: feedItems } = await response.json();
-    if (feedItems) {
-      this.props.updateFeedItems(
-        feedItems.filter(feedItem => ['regular', 'like', 'post_to', 'response', 'post_about'].includes(feedItem.type)),
-        purge
-      );
-    }
+    const feedItems = await getFeedItems(entityId);
+    this.props.updateFeedItems(feedItems, purge);
   };
 
   render() {

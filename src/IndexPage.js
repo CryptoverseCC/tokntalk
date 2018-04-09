@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getFeedItems } from './api';
 import { ConnectedFeed } from './Feed';
 import Hero from './Hero';
 
@@ -13,17 +14,10 @@ export default class IndexPage extends Component {
     clearInterval(this.refreshInterval);
   }
 
+
   refreshFeedItems = async (purge = false) => {
-    const response = await fetch(
-      `https://api-dev.userfeeds.io/ranking/feed;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d`
-    );
-    const { items: feedItems } = await response.json();
-    if (feedItems) {
-      this.props.updateFeedItems(
-        feedItems.filter(feedItem => ['regular', 'like', 'post_to', 'response', 'post_about'].includes(feedItem.type)),
-        purge
-      );
-    }
+    const feedItems = await getFeedItems();
+    this.props.updateFeedItems(feedItems, purge);
   };
 
   render() {

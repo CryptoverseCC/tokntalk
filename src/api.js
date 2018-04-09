@@ -1,12 +1,31 @@
 import getWeb3 from './web3';
 import { contractAddressesForNetworkId, contractAbi, networkNameForNetworkId } from './contract';
+const {
+  REACT_APP_ERC_721_ADDRESS: ERC_721_ADDRESS,
+  REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS
+} = process.env;
+
+export const getFeedItems = async entityId => {
+  try {
+    const entitySuffix = entityId ? `:${entityId}` : '';
+    const response = await fetch(`${USERFEEDS_API_ADDRESS}/feed;context=ethereum:${ERC_721_ADDRESS}${entitySuffix}`);
+    let { items: feedItems } = await response.json();
+    feedItems = feedItems.filter(feedItem =>
+      ['regular', 'like', 'post_to', 'response', 'post_about'].includes(feedItem.type)
+    );
+    return feedItems;
+  } catch (e) {
+    return [];
+  }
+};
+
 export const downloadCats = async () => {
   try {
     const web3 = await getWeb3();
     const [from] = await web3.eth.getAccounts();
     if (!from) return;
     const response = await fetch(
-      `https://api-dev.userfeeds.io/ranking/tokens;identity=${from.toLowerCase()};asset=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d/`
+      `${USERFEEDS_API_ADDRESS}/tokens;identity=${from.toLowerCase()};asset=ethereum:${ERC_721_ADDRESS}/`
     );
     const { items: myCats } = await response.json();
     return myCats;
@@ -42,7 +61,7 @@ export const getCatData = async catId => {
 export const getCatLabels = async catId => {
   try {
     const res = await fetch(
-      `https://api-dev.userfeeds.io/ranking/labels721;context=ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${catId};labels=github;labels=facebook;labels=twitter;labels=instagram/`
+      `${USERFEEDS_API_ADDRESS}/labels721;context=ethereum:${ERC_721_ADDRESS}:${catId};labels=github;labels=facebook;labels=twitter;labels=instagram/`
     );
     const { items: catLabels } = await res.json();
     return catLabels;
@@ -64,7 +83,7 @@ export const sendMessage = async (token, message) => {
     claim: {
       target: message
     },
-    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
@@ -76,7 +95,7 @@ export const sendMessage = async (token, message) => {
           about: null,
           abouted: [],
           author: from,
-          context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+          context: `ethereum:${ERC_721_ADDRESS}:${token}`,
           created_at: new Date().getTime(),
           family: networkName,
           id: `claim:${transactionHash}:0`,
@@ -105,7 +124,7 @@ export const reply = async (token, message, about) => {
       target: message,
       about
     },
-    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
@@ -115,7 +134,7 @@ export const reply = async (token, message, about) => {
       .on('transactionHash', async transactionHash => {
         resolve({
           author: from,
-          context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+          context: `ethereum:${ERC_721_ADDRESS}:${token}`,
           created_at: new Date().getTime(),
           family: networkName,
           id: `claim:${transactionHash}:0`,
@@ -144,7 +163,7 @@ export const react = async (token, to) => {
       target: to,
       labels: ['like']
     },
-    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
@@ -154,7 +173,7 @@ export const react = async (token, to) => {
       .on('transactionHash', async transactionHash => {
         resolve({
           author: from,
-          context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+          context: `ethereum:${ERC_721_ADDRESS}:${token}`,
           created_at: new Date().getTime(),
           family: networkName,
           id: `claim:${transactionHash}:0`,
@@ -183,7 +202,7 @@ export const label = async (token, message, labelType) => {
       target: message,
       labels: [labelType]
     },
-    context: `ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:${token}`,
+    context: `ethereum:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
   return new Promise((resolve, reject) => {
