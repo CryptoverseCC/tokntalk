@@ -64,7 +64,7 @@ const Label = ({ onClick, className, icon, count, colors, style = {} }) => {
   );
 };
 
-const decorateMessage = (message, style = "") => {
+const decorateMessage = (message, style = '') => {
   const sanitizedMessage = DOMPurify.sanitize(message);
   const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@;:%_+.~#?&//=]*)/;
   const regex = new RegExp(expression);
@@ -115,7 +115,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
             {reactions.map(reaction => {
               const id = reaction.context.split(':')[2];
               return (
-                <Link to={`/cryptopurr/${id}`} key={id}>
+                <Link to={`/${id}`} key={id}>
                   <EntityAvatar id={id} size="verySmall" style={{ marginLeft: '8px' }} />
                 </Link>
               );
@@ -161,7 +161,7 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
             wordBreak: 'break-word'
           }}
         >
-          <Link to={`/cryptopurr/${from}`}>
+          <Link to={`/${from}`}>
             <b>
               <EntityName id={from} />
             </b>
@@ -251,7 +251,7 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
   return (
     <React.Fragment>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Link to={`/cryptopurr/${from}`} style={{ fontSize: '18px' }}>
+        <Link to={`/${from}`} style={{ fontSize: '18px' }}>
           <b>
             <EntityName id={from} />
           </b>
@@ -342,7 +342,7 @@ class Card extends React.Component {
             <React.Fragment>
               <span style={{ marginLeft: '10px' }}>wrote to</span>
               <EntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
-              <Link to={`/cryptopurr/${id}`} style={{ marginLeft: '10px' }}>
+              <Link to={`/${id}`} style={{ marginLeft: '10px' }}>
                 <b>
                   <EntityName id={id} />
                 </b>
@@ -352,7 +352,7 @@ class Card extends React.Component {
         },
         post_about: () => (
           <React.Fragment>
-            <span style={{ marginLeft: '10px'}}>wrote about</span>
+            <span style={{ marginLeft: '10px' }}>wrote about</span>
             <b
               style={{
                 marginLeft: '10px',
@@ -469,7 +469,14 @@ export default Feed;
 export const ConnectedFeed = ({ forId }) => (
   <Context.Consumer>
     {({
-      feedStore: { feedItems, temporaryFeedItems, temporaryReplies, temporaryReactions, shownFeedItemsCount, showMoreFeedItems }
+      feedStore: {
+        feedItems,
+        temporaryFeedItems,
+        temporaryReplies,
+        temporaryReactions,
+        shownFeedItemsCount,
+        showMoreFeedItems
+      }
     }) => {
       let allFeedItems = uniqBy([...temporaryFeedItems, ...feedItems], feedItem => feedItem.id);
       if (forId) {

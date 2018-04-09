@@ -7,6 +7,8 @@ import ShowPage from './ShowPage';
 import { downloadCats, downloadWeb3State, getCatData, sendMessage, reply, react, label, getCatLabels } from './api';
 import Header from './Header';
 
+const { REACT_APP_BASENAME: BASENAME } = process.env;
+
 export default class App extends Component {
   state = {
     activeEntity: undefined,
@@ -40,7 +42,7 @@ export default class App extends Component {
       (JSON.parse(localStorage.getItem('activeEntity')) &&
         myEntities.find(myEntity => myEntity.token === JSON.parse(localStorage.getItem('activeEntity')).token)) ||
       myEntities[0];
-    if(!newActiveEntity) return;
+    if (!newActiveEntity) return;
     this.setState({ myEntities });
     this.changeActiveEntityTo(newActiveEntity.token);
   };
@@ -133,8 +135,14 @@ export default class App extends Component {
     if (purge) {
       newState = { feedItems, shownFeedItemsCount: 10 };
     } else {
-      const previousFeedItems = this.state.feedItems.reduce((acc, feedItem) => ({ ...acc, [feedItem.id]: feedItem }), {});
-      const newFeedItems = feedItems.map(feedItem => ({ ...feedItem, added: this.state.feedItems.length > 0 && !previousFeedItems[feedItem.id] }));
+      const previousFeedItems = this.state.feedItems.reduce(
+        (acc, feedItem) => ({ ...acc, [feedItem.id]: feedItem }),
+        {}
+      );
+      const newFeedItems = feedItems.map(feedItem => ({
+        ...feedItem,
+        added: this.state.feedItems.length > 0 && !previousFeedItems[feedItem.id]
+      }));
       newState = {
         feedItems: newFeedItems
       };
@@ -157,7 +165,9 @@ export default class App extends Component {
 
   renderIndexPage = props => <IndexPage {...props} updateFeedItems={this.updateFeedItems} />;
 
-  renderShowPage = props => <ShowPage {...props} updateFeedItems={this.updateFeedItems} getEntityInfo={this.getEntityInfo} />;
+  renderShowPage = props => (
+    <ShowPage {...props} updateFeedItems={this.updateFeedItems} getEntityInfo={this.getEntityInfo} />
+  );
 
   render() {
     const {
@@ -202,12 +212,12 @@ export default class App extends Component {
           }
         }}
       >
-        <Router>
+        <Router basename={BASENAME}>
           <React.Fragment>
             <Header />
             <Switch>
-              <Route exact path="/cryptopurr/:entityId" component={renderShowPage} />
-              <Route exact path="/cryptopurr" component={renderIndexPage} />
+              <Route exact path="/:entityId" component={renderShowPage} />
+              <Route exact path="/" component={renderIndexPage} />
             </Switch>
           </React.Fragment>
         </Router>
