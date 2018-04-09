@@ -3,7 +3,8 @@ import { contractAddressesForNetworkId, contractAbi, networkNameForNetworkId } f
 const {
   REACT_APP_ERC_721_ADDRESS: ERC_721_ADDRESS,
   REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS,
-  REACT_APP_ERC_721_NETWORK: ERC_721_NETWORK
+  REACT_APP_ERC_721_NETWORK: ERC_721_NETWORK,
+  REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE,
 } = process.env;
 
 export const getFeedItems = async entityId => {
@@ -72,7 +73,7 @@ export const getLabels = async entityId => {
   }
 };
 
-const getCreditsData = () => [{ type: 'interface', value: 'cryptopurr.co' }];
+const getCreditsData = () => [{ type: 'interface', value: INTERFACE_VALUE }];
 
 const getContract = async () => {
   const web3 = await getWeb3();
