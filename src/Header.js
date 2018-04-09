@@ -24,7 +24,7 @@ const Header = () => {
       <div className="container is-fluid level-item level columns">
         <Link to="/" className="level-item column is-column-4 is-offset-4 has-text-centered">
           <h1 style={{ color: '#1B2437', fontWeight: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}>
-            Purrbook
+            {process.env.REACT_APP_NAME}
           </h1>
         </Link>
         <IfActiveEntity
