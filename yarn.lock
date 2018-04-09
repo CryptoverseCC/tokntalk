@@ -7161,6 +7161,13 @@ react-fuzzy@^0.5.1:
     fuse.js "^3.0.1"
     prop-types "^15.5.9"
 
+react-ga@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.4.1.tgz#dfbd5f028ed39a07067f7a8bf57dc0d240000767"
+  optionalDependencies:
+    prop-types "^15.6.0"
+    react "^15.6.2 || ^16.0"
+
 react-hover-observer@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-hover-observer/-/react-hover-observer-2.1.0.tgz#7a211a4236c76232328c9ddaf316d01626ca49d7"
@@ -7318,6 +7325,15 @@ react-visibility-sensor@^3.11.0:
   dependencies:
     create-react-class "^15.5.1"
     prop-types "^15.5.4"
+
+"react@^15.6.2 || ^16.0":
+  version "16.3.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.3.1.tgz#4a2da433d471251c69b6033ada30e2ed1202cfd8"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 react@^16.3.0:
   version "16.3.0"

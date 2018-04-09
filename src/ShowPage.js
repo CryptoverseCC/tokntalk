@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import posed from 'react-pose';
 import ReactHoverObserver from 'react-hover-observer';
+import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
 import { Entity, EntityName, IfIsActiveEntity } from './Entity';
 import Modal from './Modal';
@@ -163,6 +164,7 @@ export default class ShowPage extends Component {
   state = { editing: undefined };
 
   componentDidMount() {
+    pageView();
     window.scrollTo(0, 0);
     this.refreshFeedItems(true);
     this.props.getEntityInfo(this.props.match.params.entityId);
@@ -171,6 +173,7 @@ export default class ShowPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.entityId !== this.props.match.params.entityId) {
+      pageView();
       this.refreshFeedItems(true, nextProps.match.params.entityId);
       this.props.getEntityInfo(nextProps.match.params.entityId);
       window.scrollTo(0, 0);
