@@ -11,7 +11,7 @@ import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 
-const Label = ({ onClick, className, icon, text, count, colors, style = {} }) => {
+const Label = ({ onClick, className, icon, count, colors, style = {} }) => {
   return (
     <button
       onClick={onClick}
@@ -90,6 +90,14 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
           <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
             <IfActiveEntityLiked
               id={id}
+              then={
+                <Label
+                  className="cp-like cp-label--done"
+                  icon={<img alt="" src={LikeIcon} />}
+                  count={reactions.length}
+                  colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
+                />
+              }
               other={
                 <Context.Consumer>
                   {({ purrStore: { react } }) => (
@@ -97,21 +105,11 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
                       onClick={() => react(id)}
                       className="cp-like"
                       icon={<img alt="" src={LikeIcon} />}
-                      text={'Like'}
                       count={reactions.length}
                       colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
                     />
                   )}
                 </Context.Consumer>
-              }
-              then={
-                <Label
-                  className="cp-like cp-label--done"
-                  icon={<img alt="" src={LikeIcon} />}
-                  text={'Like'}
-                  count={reactions.length}
-                  colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
-                />
               }
             />
             {reactions.map(reaction => {
