@@ -44,3 +44,10 @@ export const entityTranslations = {
   replyPlaceholder: 'Purr your reply',
   noEntitiesError: 'No cats found'
 };
+
+export const avatarSizes = {
+  verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%', imgLeftOffset: '55%' },
+  small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%', imgLeftOffset: '55%' },
+  medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%', imgLeftOffset: '55%' },
+  large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%', imgLeftOffset: '55%' }
+};
