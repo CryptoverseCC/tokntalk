@@ -62,13 +62,8 @@ export default class App extends Component {
     if (this.entityLabelRequests[entityId]) return;
     const entityLabelRequest = getLabels(entityId);
     this.entityLabelRequests[entityId] = entityLabelRequest;
-    const labelData = await entityLabelRequest;
-    const github = labelData.find(({ label }) => label === 'github');
-    const twitter = labelData.find(({ label }) => label === 'twitter');
-    const facebook = labelData.find(({ label }) => label === 'facebook');
-    const instagram = labelData.find(({ label }) => label === 'instagram');
-    const labels = { github, twitter, facebook, instagram };
-    if ((!github && !twitter && !facebook) || isEqual(this.state.entityLabels[entityId], labels)) return;
+    const labels = await entityLabelRequest;
+    if (isEqual(this.state.entityLabels[entityId], labels)) return;
     this.setState({ entityLabels: { ...this.state.entityLabels, [entityId]: labels } });
   };
 

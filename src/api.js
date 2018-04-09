@@ -63,9 +63,9 @@ export const getWeb3State = async () => {
 export const getLabels = async entityId => {
   try {
     const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/labels721;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId};labels=github;labels=facebook;labels=twitter;labels=instagram/`
+      `${USERFEEDS_API_ADDRESS}/profile_erc721;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`
     );
-    const { items: labels } = await res.json();
+    const labels = await res.json();
     return labels;
   } catch (e) {
     return [];
@@ -133,7 +133,7 @@ export const reply = async (token, message, about) => {
   };
   const transactionHash = await claim(data);
   const feedItemBase = await createFeedItemBase(transactionHash, token);
-  return { ...feedItemBase(transactionHash, token), target: { id: message } };
+  return { ...feedItemBase, target: { id: message } };
 };
 
 export const react = async (token, to) => {
@@ -145,7 +145,7 @@ export const react = async (token, to) => {
   };
   const transactionHash = await claim(data);
   const feedItemBase = await createFeedItemBase(transactionHash, token);
-  return { ...feedItemBase(transactionHash, token), target: { id: to } };
+  return { ...feedItemBase, target: { id: to } };
 };
 
 export const label = async (token, message, labelType) => {
@@ -157,5 +157,5 @@ export const label = async (token, message, labelType) => {
   };
   const transactionHash = await claim(data);
   const feedItemBase = await createFeedItemBase(transactionHash, token);
-  return { ...feedItemBase(transactionHash, token), label: labelType, target: message };
+  return { ...feedItemBase, label: labelType, target: message };
 };

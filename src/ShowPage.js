@@ -218,7 +218,7 @@ export default class ShowPage extends Component {
                       editing={this.state.editing === 'facebook'}
                       id={entity.id}
                       Icon={<FacebookIcon />}
-                      href={entity.facebook && entity.facebook.target}
+                      href={entity.facebook}
                       Form={<LabelForm labelType="facebook" onSubmit={() => this.setState({ editing: undefined })} />}
                       backgroundColor="#4167B2"
                       style={{ marginLeft: '20px' }}
@@ -228,7 +228,7 @@ export default class ShowPage extends Component {
                       stopEditing={() => this.setState({ editing: undefined })}
                       editing={this.state.editing === 'github'}
                       id={entity.id}
-                      href={entity.github && entity.github.target}
+                      href={entity.github}
                       Icon={<GithubIcon />}
                       Form={<LabelForm labelType="github" onSubmit={() => this.setState({ editing: undefined })} />}
                       backgroundColor="#24292e"
@@ -239,7 +239,7 @@ export default class ShowPage extends Component {
                       stopEditing={() => this.setState({ editing: undefined })}
                       editing={this.state.editing === 'twitter'}
                       id={entity.id}
-                      href={entity.twitter && entity.twitter.target}
+                      href={entity.twitter}
                       Icon={<TwitterIcon />}
                       Form={<LabelForm labelType="twitter" onSubmit={() => this.setState({ editing: undefined })} />}
                       backgroundColor="#1CA1F2"
@@ -250,7 +250,7 @@ export default class ShowPage extends Component {
                       stopEditing={() => this.setState({ editing: undefined })}
                       editing={this.state.editing === 'instagram'}
                       id={entity.id}
-                      href={entity.instagram && entity.instagram.target}
+                      href={entity.instagram}
                       Form={<LabelForm labelType="instagram" onSubmit={() => this.setState({ editing: undefined })} />}
                       Icon={<InstagramIcon />}
                       backgroundColor="#F41476"
