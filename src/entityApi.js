@@ -42,7 +42,8 @@ export const EntityIcon = entityId => {
 export const entityTranslations = {
   commentPlaceholder: 'Purr your story',
   replyPlaceholder: 'Purr your reply',
-  noEntitiesError: 'No cats found'
+  noEntitiesError: 'No cats found',
+  entityName: 'Kitty'
 };
 
 export const avatarSizes = {

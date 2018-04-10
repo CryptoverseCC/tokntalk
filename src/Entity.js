@@ -2,6 +2,7 @@ import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import Context from './Context';
 import IdentityAvatar from './Avatar';
+import TranslationsContext from "./Translations";
 
 export const IfActiveEntity = ({ children, then, other }) => (
   <Context.Consumer>
@@ -33,7 +34,9 @@ export const Entity = ({ id, children }) => (
 
 export const EntityName = ({ id }) => (
   <Context.Consumer>
-    {({ entityStore: { getEntity } }) => getEntity(id).name || `Kitty #${getEntity(id).id}`}
+    {({ entityStore: { getEntity } }) => (
+      <TranslationsContext.Consumer>{({ entityName }) => getEntity(id).name || `${entityName} #${getEntity(id).id}`}</TranslationsContext.Consumer>
+    )}
   </Context.Consumer>
 );
 
@@ -68,7 +71,9 @@ export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity }, feedStore: { feedItems, temporaryFeedItems, temporaryReactions } }) => {
       if (!activeEntity) return other;
-      const claim = uniqBy([...temporaryFeedItems, ...feedItems], feedItem => feedItem.id).find(({ id: claimId }) => claimId === id);
+      const claim = uniqBy([...temporaryFeedItems, ...feedItems], feedItem => feedItem.id).find(
+        ({ id: claimId }) => claimId === id
+      );
       const liked =
         claim &&
         claim.targeted
