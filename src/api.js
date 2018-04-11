@@ -11,7 +11,7 @@ export const getFeedItems = async entityId => {
   try {
     const entitySuffix = entityId ? `:${entityId}` : '';
     const response = await fetch(
-      `${USERFEEDS_API_ADDRESS}/feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`
+      `${USERFEEDS_API_ADDRESS}/cryptopurr_feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`
     );
     let { items: feedItems } = await response.json();
     feedItems = feedItems.filter(feedItem =>
@@ -29,10 +29,22 @@ export const getMyEntities = async () => {
     const [from] = await web3.eth.getAccounts();
     if (!from) return;
     const response = await fetch(
-      `${USERFEEDS_API_ADDRESS}/tokens;identity=${from.toLowerCase()};asset=${ERC_721_NETWORK}:${ERC_721_ADDRESS}/`
+      `${USERFEEDS_API_ADDRESS}/experimental_tokens;identity=${from.toLowerCase()};asset=${ERC_721_NETWORK}:${ERC_721_ADDRESS}/`
     );
     const { items: myEntities } = await response.json();
     return myEntities;
+  } catch (e) {
+    return [];
+  }
+};
+
+export const getLabels = async entityId => {
+  try {
+    const res = await fetch(
+      `${USERFEEDS_API_ADDRESS}/cryptopurr_profile;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`
+    );
+    const labels = await res.json();
+    return labels;
   } catch (e) {
     return [];
   }
@@ -58,18 +70,6 @@ export const getWeb3State = async () => {
       web3: undefined,
       networkName: undefined
     };
-  }
-};
-
-export const getLabels = async entityId => {
-  try {
-    const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/profile_erc721;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`
-    );
-    const labels = await res.json();
-    return labels;
-  } catch (e) {
-    return [];
   }
 };
 
