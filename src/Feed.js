@@ -5,7 +5,7 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import Context from './Context';
-import { ConnectedReplyForm } from './CommentForm';
+import { ConnectedReplyForm, ReplyStyledTextArea, StyledReplyForm } from './CommentForm';
 import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
@@ -227,21 +227,7 @@ const ReplyForm = ({ about }) => (
         <ActiveEntityAvatar size="medium" />
       </div>
       <div className="column">
-        <ConnectedReplyForm
-          about={about}
-          style={{
-            backgroundColor: 'rgba(246,244,255,0.7)',
-            width: '100%',
-            padding: '16px',
-            borderRadius: '12px',
-            alignItems: 'center'
-          }}
-          inputStyle={{
-            fontSize: '16px',
-            fontWeight: 'normal'
-          }}
-          inputClassName="cp-textarea--reply"
-        />
+        <ConnectedReplyForm Form={StyledReplyForm} about={about} TextArea={ReplyStyledTextArea} />
       </div>
     </div>
   </article>

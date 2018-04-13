@@ -5,7 +5,7 @@ import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
 import { Entity, EntityName, IfIsActiveEntity } from './Entity';
 import Modal from './Modal';
-import { ConnectedLabelForm } from './CommentForm';
+import { ConnectedLabelForm, ReplyStyledTextArea, StyledReplyForm } from './CommentForm';
 import { getFeedItems } from './api';
 import { EntityIcon } from './entityApi';
 
@@ -142,23 +142,7 @@ class Badge extends React.Component {
   }
 }
 
-const LabelForm = props => (
-  <ConnectedLabelForm
-    style={{
-      backgroundColor: 'rgba(246,244,255,0.7)',
-      width: '100%',
-      padding: '16px',
-      borderRadius: '12px',
-      alignItems: 'center'
-    }}
-    inputStyle={{
-      fontSize: '16px',
-      fontWeight: 'normal'
-    }}
-    inputClassName="cp-textarea--reply"
-    {...props}
-  />
-);
+const LabelForm = props => <ConnectedLabelForm Form={StyledReplyForm} TextArea={ReplyStyledTextArea} {...props} />;
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
