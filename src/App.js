@@ -21,7 +21,8 @@ export default class App extends Component {
     temporaryFeedItems: [],
     temporaryReplies: {},
     temporaryReactions: {},
-    from: undefined
+    from: undefined,
+    provider: undefined
   };
 
   entityInfoRequests = {};
@@ -49,12 +50,12 @@ export default class App extends Component {
   };
 
   refreshWeb3State = async () => {
-    const { from, isListening } = await getWeb3State();
+    const { from, isListening, provider } = await getWeb3State();
     if (this.state.from !== from) {
       this.refreshMyEntities();
     }
-    if (this.state.from !== from || this.state.isListening !== isListening) {
-      this.setState({ from, isListening });
+    if (this.state.from !== from || this.state.isListening !== isListening || this.state.provider !== provider) {
+      this.setState({ from, isListening, provider });
     }
   };
 
@@ -187,7 +188,9 @@ export default class App extends Component {
       temporaryFeedItems,
       temporaryReplies,
       temporaryReactions,
-      allowAddingFeedItem
+      allowAddingFeedItem,
+      provider,
+      from
     } = this.state;
     return (
       <Context.Provider
@@ -205,6 +208,10 @@ export default class App extends Component {
             temporaryReplies,
             temporaryReactions,
             allowAddingFeedItem
+          },
+          web3Store: {
+            provider,
+            from
           }
         }}
       >

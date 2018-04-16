@@ -1,42 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityAvatar, EntityName } from './Entity';
 import TranslationsContext from './Translations';
+import Locked from './img/locked.svg';
+import NoMetamask from './img/no.svg';
+import NoIdentity from './img/noidentity.svg';
+import Context from './Context';
+
+const StyledHeader = styled.div`
+  background-color: #f9fbfd;
+  border-bottom: 1px solid #e8e8f1;
+  font-family: Rubik;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  height: 65px;
+  top: 0;
+`;
+
+const Title = styled.h1`
+  color: #1b2437;
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+`;
 
 const Header = () => {
   return (
-    <div
-      className="level"
-      style={{
-        backgroundColor: '#f9fbfd',
-        borderBottom: '1px solid #e8e8f1',
-        fontFamily: 'Rubik',
-        fontSize: '14px',
-        fontWeight: '500',
-        marginBottom: 0,
-        position: 'fixed',
-        width: '100%',
-        zIndex: '999',
-        height: '65px',
-        top: 0
-      }}
-    >
-      <div className="container is-fluid level-item level columns">
+    <StyledHeader className="level">
+      <div className="container is-fluid level-item columns">
         <Link to="/" className="level-item column is-column-4 is-offset-4 has-text-centered">
-          <h1 style={{ color: '#1B2437', fontWeight: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}>
-            {process.env.REACT_APP_NAME}
-          </h1>
+          <Title>{process.env.REACT_APP_NAME}</Title>
         </Link>
-        <IfActiveEntity
-          then={() => <CatDropdown />}
-          other={
-            <TranslationsContext.Consumer>
-              {({ noEntitiesError }) => <ErrorStatus message={noEntitiesError} />}
-            </TranslationsContext.Consumer>
-          }
-        />
+        <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
       </div>
-    </div>
+    </StyledHeader>
   );
 };
 
@@ -167,11 +169,46 @@ class Dropdown extends React.Component {
   }
 }
 
-export const ErrorStatus = ({ message }) => (
-  <div
-    className="level-right has-text-right column"
-    style={{ color: '#FC0035', textShadow: '0 0 10px rgba(252,0,53,0.3)' }}
-  >
-    {message}
-  </div>
+const NoMetamaskStatus = () => (
+  <StyledErrorContainer>
+    <img src={NoMetamask} alt="No metamask" />
+    No Metamask
+  </StyledErrorContainer>
 );
+
+const MetamaskLockedStatus = () => (
+  <StyledErrorContainer>
+    <img src={Locked} alt="Metamask locked" />
+    Metamask locked
+  </StyledErrorContainer>
+);
+
+const NoIdentitiesStatus = () => (
+  <StyledErrorContainer>
+    <img src={NoIdentity} style={{ marginRight: '10px' }} alt="No Identities found"/>
+    <TranslationsContext.Consumer>{({ noEntitiesError }) => noEntitiesError}</TranslationsContext.Consumer>
+  </StyledErrorContainer>
+);
+
+const ErrorContainer = ({ children, className }) => {
+  return <div className={`${className} level-right has-text-right column`}>{children}</div>;
+};
+
+const StyledErrorContainer = styled(ErrorContainer)`
+  color: #fc0035;
+  text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
+  display: flex;
+`;
+
+const ErrorStatus = () => {
+  const renderStatus = (provider, from) => {
+    if (!provider) {
+      return <NoMetamaskStatus />;
+    } else if (!from) {
+      return <MetamaskLockedStatus />;
+    } else {
+      return <NoIdentitiesStatus />;
+    }
+  };
+  return <Context.Consumer>{({ web3Store: { provider, from } }) => renderStatus(provider, from)}</Context.Consumer>;
+};

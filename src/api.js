@@ -60,7 +60,8 @@ export const getWeb3State = async () => {
       web3.eth.getBlockNumber()
     ]);
     const networkName = networkNameForNetworkId[networkId];
-    return { from, isListening, networkId, blockNumber, web3, networkName };
+    const provider = web3.currentProvider;
+    return { from, isListening, networkId, blockNumber, web3, networkName, provider };
   } catch (e) {
     return {
       from: undefined,
@@ -68,7 +69,8 @@ export const getWeb3State = async () => {
       networkId: undefined,
       blockNumber: undefined,
       web3: undefined,
-      networkName: undefined
+      networkName: undefined,
+      provider: undefined,
     };
   }
 };
