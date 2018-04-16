@@ -158,7 +158,6 @@ export const label = async (token, message, labelType) => {
     context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
     credits: getCreditsData()
   };
-  const transactionHash = await claim(data);
-  const feedItemBase = await createFeedItemBase(transactionHash, token);
-  return { ...feedItemBase, label: labelType, target: message };
+  await claim(data);
+  return message;
 };

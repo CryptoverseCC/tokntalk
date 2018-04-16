@@ -35,8 +35,8 @@ export const getEntityData = async catId => {
   }
 };
 
-export const EntityIcon = entityId => {
-  return <img src={etherDiamond} style={{ height: '70%' }} alt={entityId} />;
+export const EntityIcon = () => {
+  return <img src={etherDiamond} style={{ height: '70%' }} alt={entityTranslations.entityName} />;
 };
 
 export const entityTranslations = {

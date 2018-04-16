@@ -10,15 +10,6 @@ export const Form = styled.form`
   display: flex;
 `;
 
-
-export const StyledReplyForm = styled(Form)`
-  background-color: rgba(246, 244, 255, 0.7);
-  width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  align-items: center;
-`;
-
 export const StyledTextArea = styled(TextArea)`
   background: transparent;
   font-family: Rubik;
@@ -60,26 +51,6 @@ export const StyledTextArea = styled(TextArea)`
   }
 `;
 
-export const ReplyStyledTextArea = styled(StyledTextArea)`
-  font-size: 16px;
-  font-weight: normal;
-
-  &::placeholder {
-    font-weight: 500;
-    color: #623cea;
-  }
-
-  &:-ms-input-placeholder {
-    font-weight: 500;
-    color: #623cea;
-  }
-
-  &::-ms-input-placeholder {
-    font-weight: 500;
-    color: #623cea;
-  }
-`;
-
 const MetamaskButton = styled.button`
   position: absolute;
   right: 10px;
@@ -110,7 +81,7 @@ const MetamaskButton = styled.button`
         `};
 `;
 
-export default class CommentForm extends React.Component {
+export class CommentForm extends React.Component {
   state = {
     comment: ''
   };
@@ -122,59 +93,81 @@ export default class CommentForm extends React.Component {
   };
 
   render() {
-    const FormComponent = this.props.Form || Form;
-    const TextAreaComponent = this.props.TextArea || StyledTextArea;
+    const { placeholder, className } = this.props;
     return (
-      <FormComponent
+      <Form
         onSubmit={e => {
           e.preventDefault();
           this.submitForm();
         }}
+        className={className}
       >
-        <TextAreaComponent
-          placeholder={this.props.placeholder}
+        <StyledTextArea
+          placeholder={placeholder}
           value={this.state.comment}
           onChange={e => this.setState({ comment: e.target.value })}
           onKeyPress={e => e.key === 'Enter' && e.ctrlKey && this.submitForm()}
         />
         <MetamaskButton disabled={!this.state.comment} type="submit" />
-      </FormComponent>
+      </Form>
     );
   }
 }
 
-export const ConnectedCommentForm = props => (
+export const ReplyForm = styled(CommentForm)`
+  background-color: rgba(246, 244, 255, 0.7);
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  align-items: center;
+
+  ${StyledTextArea} {
+    font-size: 16px;
+    font-weight: normal;
+
+    &::placeholder {
+      font-weight: 500;
+      color: #623cea;
+    }
+
+    &:-ms-input-placeholder {
+      font-weight: 500;
+      color: #623cea;
+    }
+
+    &::-ms-input-placeholder {
+      font-weight: 500;
+      color: #623cea;
+    }
+  }
+`;
+
+export const ConnectedCommentForm = ({ Form, ...props }) => (
   <Context.Consumer>
     {({ feedStore: { sendMessage } }) => (
       <TranslationsContext.Consumer>
-        {({ commentPlaceholder }) => (
-          <CommentForm sendMessage={sendMessage} placeholder={commentPlaceholder} {...props} />
-        )}
+        {({ commentPlaceholder }) => <Form sendMessage={sendMessage} placeholder={commentPlaceholder} {...props} />}
       </TranslationsContext.Consumer>
     )}
   </Context.Consumer>
 );
 
-export const ConnectedReplyForm = ({ about, ...props }) => (
+export const ConnectedReplyForm = ({ Form, about, ...props }) => (
   <Context.Consumer>
     {({ feedStore: { reply } }) => (
       <TranslationsContext.Consumer>
         {({ replyPlaceholder }) => (
-          <CommentForm sendMessage={message => reply(message, about)} placeholder={replyPlaceholder} {...props} />
+          <Form sendMessage={message => reply(message, about)} placeholder={replyPlaceholder} {...props} />
         )}
       </TranslationsContext.Consumer>
     )}
   </Context.Consumer>
 );
 
-export const ConnectedLabelForm = ({ labelType, ...props }) => (
+export const ConnectedLabelForm = ({ Form, labelType, ...props }) => (
   <Context.Consumer>
     {({ feedStore: { label } }) => (
-      <CommentForm
-        sendMessage={message => label(message, labelType)}
-        placeholder={`Set your ${labelType}`}
-        {...props}
-      />
+      <Form sendMessage={message => label(message, labelType)} placeholder={`Set your ${labelType}`} {...props} />
     )}
   </Context.Consumer>
 );

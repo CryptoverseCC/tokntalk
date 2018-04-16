@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ConnectedCommentForm } from './CommentForm';
+import { ConnectedCommentForm, CommentForm } from './CommentForm';
 import { ActiveEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
 
 const Hero = () => (
@@ -35,7 +35,7 @@ const Hero = () => (
                       >
                         <ActiveEntityName />
                       </Link>
-                      <ConnectedCommentForm />
+                      <ConnectedCommentForm Form={CommentForm} />
                     </div>
                   </div>
                 </article>

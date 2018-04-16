@@ -5,7 +5,7 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import Context from './Context';
-import { ConnectedReplyForm, ReplyStyledTextArea, StyledReplyForm } from './CommentForm';
+import { ConnectedReplyForm, ReplyForm } from './CommentForm';
 import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
@@ -112,10 +112,10 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
                 </Context.Consumer>
               }
             />
-            {reactions.map(reaction => {
+            {reactions.map((reaction, index) => {
               const id = reaction.context.split(':')[2];
               return (
-                <Link to={`/${id}`} key={id}>
+                <Link to={`/${id}`} key={index}>
                   <EntityAvatar id={id} size="verySmall" style={{ marginLeft: '8px' }} />
                 </Link>
               );
@@ -210,7 +210,7 @@ const createEtherscanUrl = item => {
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
 
-const ReplyForm = ({ about }) => (
+const ReplyFormContainer = ({ about }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left">
       <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -227,7 +227,7 @@ const ReplyForm = ({ about }) => (
         <ActiveEntityAvatar size="medium" />
       </div>
       <div className="column">
-        <ConnectedReplyForm Form={StyledReplyForm} about={about} TextArea={ReplyStyledTextArea} />
+        <ConnectedReplyForm Form={ReplyForm} about={about} />
       </div>
     </div>
   </article>
@@ -388,7 +388,7 @@ class Card extends React.Component {
               etherscanUrl={createEtherscanUrl(reply)}
             />
           ))}{' '}
-          <IfActiveEntity>{() => <ReplyForm about={feedItem.id} />}</IfActiveEntity>
+          <IfActiveEntity>{() => <ReplyFormContainer about={feedItem.id} />}</IfActiveEntity>
         </React.Fragment>
       );
     }
