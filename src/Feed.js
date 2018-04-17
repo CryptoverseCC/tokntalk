@@ -1,4 +1,5 @@
 import React from 'react';
+import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
 import sortBy from 'lodash/fp/sortBy';
@@ -7,7 +8,6 @@ import reverse from 'lodash/fp/reverse';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 import { Link } from 'react-router-dom';
-import DOMPurify from 'dompurify';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
 import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
@@ -68,14 +68,15 @@ const Label = ({ onClick, className, icon, count, colors, style = {} }) => {
   );
 };
 
-const decorateMessage = (message, style = '') => {
-  const sanitizedMessage = DOMPurify.sanitize(message);
-  const expression = /https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@;:%_+.~#?&//=]*)/;
-  const regex = new RegExp(expression);
+export const sanitizeMessage = message => {
+  const expression = /(https:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b(?:[-a-zA-Z0-9@;:%_+.~#?&//=]*))/g;
   const replaceMatchWithLink = match => {
-    return `<a href="${match}" style="${style}">${match}</a>`;
+    return `<a href="${match}">${escapeHtml(match)}</a>`;
   };
-  return sanitizedMessage.replace(regex, replaceMatchWithLink);
+  return message
+    .split(expression)
+    .map((messagePart, index) => (index % 2 === 0 ? escapeHtml(messagePart) : replaceMatchWithLink(messagePart)))
+    .join('');
 };
 
 const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
@@ -88,7 +89,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
         <p
           style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }}
-          dangerouslySetInnerHTML={{ __html: decorateMessage(message) }}
+          dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
         {reactions && (
           <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
@@ -170,7 +171,7 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
               <EntityName id={from} />
             </b>
           </Link>{' '}
-          {message}
+          <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
         </div>
         <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
           <small style={{ color: '#928F9B' }}>
@@ -352,7 +353,7 @@ class Card extends React.Component {
                 display: 'inline-block',
                 whiteSpace: 'nowrap'
               }}
-              dangerouslySetInnerHTML={{ __html: decorateMessage(feedItem.about.id) }}
+              dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about.id) }}
             />
           </React.Fragment>
         )

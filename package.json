@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "http://userfeeds.github.io/cryptopurr",
   "dependencies": {
-    "dompurify": "^1.0.3",
     "gh-pages": "^1.1.0",
     "immer": "^1.2.1",
     "lodash": "^4.17.5",
