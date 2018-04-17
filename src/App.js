@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
+import find from 'lodash/fp/find';
+import keyBy from 'lodash/fp/keyBy';
+import produce from 'immer';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
@@ -9,6 +12,15 @@ import { getEntityData } from './entityApi';
 import Header from './Header';
 
 const { REACT_APP_BASENAME: BASENAME } = process.env;
+
+const previousActiveEntity = () => {
+  return JSON.parse(localStorage.getItem('activeEntity') || '');
+};
+
+export const produceEntities = (myEntities, previousActiveEntity) => {
+  const activeEntity = find(previousActiveEntity)(myEntities) || myEntities[0];
+  return { myEntities, activeEntity };
+};
 
 export default class App extends Component {
   state = {
@@ -35,28 +47,27 @@ export default class App extends Component {
     setInterval(this.refreshMyEntities, 15000);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.state, nextState);
+  }
+
   refreshMyEntities = async () => {
-    const myEntities = await getMyEntities();
-    if (!myEntities || isEqual(myEntities, this.state.myEntities)) return;
+    this.setState(produceEntities(await getMyEntities(), previousActiveEntity()), this.saveActiveEntity);
+  };
+
+  changeActiveEntityTo = newActiveEntity => {
+    this.setState({ activeEntity: newActiveEntity }, this.saveActiveEntity);
+  };
+
+  saveActiveEntity = () => {
     const { activeEntity } = this.state;
-    const newActiveEntity =
-      (activeEntity && myEntities.find(myEntity => myEntity.token === activeEntity.token)) ||
-      (JSON.parse(localStorage.getItem('activeEntity')) &&
-        myEntities.find(myEntity => myEntity.token === JSON.parse(localStorage.getItem('activeEntity')).token)) ||
-      myEntities[0];
-    if (!newActiveEntity) return;
-    this.setState({ myEntities });
-    this.changeActiveEntityTo(newActiveEntity.token);
+    if (activeEntity) localStorage.setItem('activeEntity', JSON.stringify(activeEntity));
   };
 
   refreshWeb3State = async () => {
     const { from, isListening, provider } = await getWeb3State();
-    if (this.state.from !== from) {
-      this.refreshMyEntities();
-    }
-    if (this.state.from !== from || this.state.isListening !== isListening || this.state.provider !== provider) {
-      this.setState({ from, isListening, provider });
-    }
+    if (this.state.from !== from) this.refreshMyEntities();
+    this.setState({ from, isListening, provider });
   };
 
   getEntityLabels = async entityId => {
@@ -64,7 +75,6 @@ export default class App extends Component {
     const entityLabelRequest = getLabels(entityId);
     this.entityLabelRequests[entityId] = entityLabelRequest;
     const labels = await entityLabelRequest;
-    if (isEqual(this.state.entityLabels[entityId], labels)) return;
     this.setState({ entityLabels: { ...this.state.entityLabels, [entityId]: labels } });
   };
 
@@ -95,69 +105,59 @@ export default class App extends Component {
 
   sendMessage = async message => {
     const temporaryFeedItem = await sendMessage(this.state.activeEntity.token, message);
-    this.addTemporaryFeedItem(temporaryFeedItem);
-    return temporaryFeedItem;
+    this.setState({ temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems] });
   };
 
   reply = async (message, about) => {
-    const temporaryReply = await reply(this.state.activeEntity.token, message, about);
-    const itemTemporaryReplies = this.state.temporaryReplies[about] || [];
-    const newTemporaryReplies = { ...this.state.temporaryReplies, [about]: [...itemTemporaryReplies, temporaryReply] };
-    this.setState({ temporaryReplies: newTemporaryReplies });
+    const { token } = this.state.activeEntity;
+    const temporaryReply = await reply(token, message, about);
+    this.setState(
+      produce(draft => {
+        draft.temporaryReplies[about] = [...(draft.temporaryReplies[about] || []), temporaryReply];
+      })
+    );
   };
 
   react = async to => {
-    const temporaryReaction = await react(this.state.activeEntity.token, to);
-    const itemTemporaryReactions = this.state.temporaryReactions[to] || [];
-    const newTemporaryReactions = {
-      ...this.state.temporaryReactions,
-      [to]: [...itemTemporaryReactions, temporaryReaction]
-    };
-    this.setState({ temporaryReactions: newTemporaryReactions });
+    const { token } = this.state.activeEntity;
+    const temporaryReaction = await react(token, to);
+    this.setState(
+      produce(draft => {
+        draft.temporaryReactions[to] = [...(draft.temporaryReactions[to] || []), temporaryReaction];
+      })
+    );
   };
 
   label = async (message, labelType) => {
-    const temporaryLabel = await label(this.state.activeEntity.token, message, labelType);
-    const newEntityLabels = { ...this.state.entityLabels[this.state.activeEntity.token], [labelType]: temporaryLabel };
-    this.setState({ entityLabels: { ...this.state.entityLabels, [this.state.activeEntity.token]: newEntityLabels } });
-  };
-
-  addTemporaryFeedItem = feedItem => {
-    this.setState({ temporaryFeedItems: [feedItem, ...this.state.temporaryFeedItems] });
+    const { token } = this.state.activeEntity;
+    const temporaryLabel = await label(token, message, labelType);
+    this.setState(
+      produce(draft => {
+        draft.entityLabels[token][labelType] = temporaryLabel;
+      })
+    );
   };
 
   updateFeedItems = (feedItems, purge) => {
-    if (feedItems.length === this.state.feedItems.length) return;
-    let newState;
-    if (purge) {
-      newState = { feedItems, shownFeedItemsCount: 10 };
-    } else {
-      const previousFeedItems = this.state.feedItems.reduce(
-        (acc, feedItem) => ({ ...acc, [feedItem.id]: feedItem }),
-        {}
-      );
-      const newFeedItems = feedItems.map(feedItem => ({
-        ...feedItem,
-        added: this.state.feedItems.length > 0 && !previousFeedItems[feedItem.id]
-      }));
-      newState = {
-        feedItems: newFeedItems
-      };
-    }
-    this.setState(newState);
+    this.setState(
+      produce(draft => {
+        if (purge) {
+          draft.feedItems = feedItems;
+          draft.shownFeedItemsCount = 10;
+        } else {
+          const previousFeedItems = keyBy('id')(draft.feedItems);
+          const previousFeedItemsLength = draft.feedItems.length;
+          draft.feedItems = feedItems.map(feedItem => ({
+            ...feedItem,
+            added: previousFeedItemsLength > 0 && !previousFeedItems[feedItem.id]
+          }));
+        }
+      })
+    );
   };
 
   showMoreFeedItems = (count = 5) => {
     this.setState({ shownFeedItemsCount: this.state.shownFeedItemsCount + count });
-  };
-
-  changeActiveEntityTo = id => {
-    const { myEntities } = this.state;
-    const newActiveEntity = myEntities.find(myEntity => myEntity.token === id.toString());
-    this.setState({ activeEntity: newActiveEntity }, () => {
-      localStorage.removeItem('activeEntity');
-      if (newActiveEntity) localStorage.setItem('activeEntity', JSON.stringify(newActiveEntity));
-    });
   };
 
   renderIndexPage = props => <IndexPage {...props} updateFeedItems={this.updateFeedItems} />;

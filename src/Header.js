@@ -85,7 +85,7 @@ const CatDropdown = () => {
                   key={entity.id}
                   className="dropdown-item cp-dropdown-item"
                   onClick={() => {
-                    changeActiveEntityTo(entity.id);
+                    changeActiveEntityTo(entity);
                     closeDropdown();
                   }}
                   style={{

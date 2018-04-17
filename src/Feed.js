@@ -1,5 +1,9 @@
 import React from 'react';
-import uniqBy from 'lodash/uniqBy';
+import pipe from 'lodash/fp/pipe';
+import uniqBy from 'lodash/fp/uniqBy';
+import sortBy from 'lodash/fp/sortBy';
+import take from 'lodash/fp/take';
+import reverse from 'lodash/fp/reverse';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 import { Link } from 'react-router-dom';
@@ -424,16 +428,14 @@ const Feed = ({ feedItems, temporaryReplies, temporaryReactions, showMoreFeedIte
       <div className="column is-6 is-offset-3">
         <InfiniteScroll hasMore={true} onLoadMore={showMoreFeedItems} throttle={100} threshold={300} isLoading={false}>
           {feedItems.map(feedItem => {
-            const temporaryRepliesForItem = temporaryReplies[feedItem.id];
-            const replies = uniqBy(
-              [...(temporaryRepliesForItem || []), ...(feedItem.abouted || [])],
-              about => about.id
-            );
-            const temporaryReactionsForItem = temporaryReactions[feedItem.id];
-            const reactions = uniqBy(
-              [...(temporaryReactionsForItem || []), ...(feedItem.targeted || [])],
-              target => target.id
-            );
+            const replies = uniqBy(about => about.id)([
+              ...(temporaryReplies[feedItem.id] || []),
+              ...(feedItem.abouted || [])
+            ]);
+            const reactions = uniqBy(target => target.id)([
+              ...(temporaryReactions[feedItem.id] || []),
+              ...(feedItem.targeted || [])
+            ]);
             return (
               <Card
                 feedItem={feedItem}
@@ -452,7 +454,7 @@ const Feed = ({ feedItems, temporaryReplies, temporaryReactions, showMoreFeedIte
 
 export default Feed;
 
-export const ConnectedFeed = ({ forId }) => (
+export const ConnectedFeed = () => (
   <Context.Consumer>
     {({
       feedStore: {
@@ -464,11 +466,10 @@ export const ConnectedFeed = ({ forId }) => (
         showMoreFeedItems
       }
     }) => {
-      let allFeedItems = uniqBy([...temporaryFeedItems, ...feedItems], feedItem => feedItem.id);
-      if (forId) {
-        allFeedItems = allFeedItems.filter(({ token_id }) => token_id === forId);
-      }
-      allFeedItems = allFeedItems.slice(0, shownFeedItemsCount);
+      const allFeedItems = pipe(uniqBy('id'), sortBy('created_at'), reverse, take(shownFeedItemsCount))([
+        ...feedItems,
+        ...temporaryFeedItems
+      ]);
       return (
         <Feed
           feedItems={allFeedItems}
