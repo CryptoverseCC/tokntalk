@@ -23,12 +23,12 @@ const colors = {
   twilightsparkle: '#ede2f5'
 };
 
-export const getEntityData = async catId => {
+export const getEntityData = async entityId => {
   try {
-    const res = await fetch(`https://api.cryptokitties.co/kitties/${catId}`);
+    const res = await fetch(`https://api.cryptokitties.co/kitties/${entityId}`);
     const data = await res.json();
     data.color = colors[data.color];
-    data.url = `https://cryptokitties.co/kitty/${catId}`;
+    data.url = `https://cryptokitties.co/kitty/${entityId}`;
     return data;
   } catch (e) {
     return undefined;
