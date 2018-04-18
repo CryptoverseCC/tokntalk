@@ -125,6 +125,13 @@ const LabelModal = styled(Modal)`
 `;
 
 export class SocialBadges extends React.Component {
+  static VALID_LABEL_EXPRESSIONS = {
+    facebook: /http(s)?:\/\/(www\.)?(facebook|fb)\.com\/(A-z 0-9 _ - \.)\/?/,
+    twitter: /http(s)?:\/\/(.*\.)?twitter\.com\/[A-z 0-9 _]+\/?/,
+    github: /http(s)?:\/\/(www\.)?github\.com\/[A-z 0-9 _ -]+\/?/,
+    instagram: /https?:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/
+  };
+
   state = {
     editing: undefined
   };
@@ -138,6 +145,11 @@ export class SocialBadges extends React.Component {
       {this.props.editable && 'Edit'}
     </InlineButton>
   );
+
+  validate = label => {
+    const { editing: labelType } = this.state;
+    return label === '' || SocialBadges.VALID_LABEL_EXPRESSIONS[labelType].test(label);
+  };
 
   render() {
     const {
@@ -169,7 +181,12 @@ export class SocialBadges extends React.Component {
         </SocialBadge>
         {this.state.editing && (
           <LabelModal onClose={this.editLabel(undefined)}>
-            <ConnectedLabelForm Form={ReplyForm} labelType={this.state.editing} onSubmit={this.editLabel(undefined)} />
+            <ConnectedLabelForm
+              Form={ReplyForm}
+              validate={this.validate}
+              labelType={this.state.editing}
+              onSubmit={this.editLabel(undefined)}
+            />
           </LabelModal>
         )}
       </div>

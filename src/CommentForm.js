@@ -5,7 +5,7 @@ import Context from './Context';
 import Metamask from './img/metamask.png';
 import TranslationsContext from './Translations';
 
-export const Form = styled.form`
+export const CommentForm = styled.form`
   position: relative;
   display: flex;
 `;
@@ -51,6 +51,35 @@ export const StyledTextArea = styled(TextArea)`
   }
 `;
 
+export const ReplyForm = styled(CommentForm)`
+  background-color: rgba(246, 244, 255, 0.7);
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  align-items: center;
+  border: 1px solid ${({valid}) => valid ? 'transparent' : 'red'};
+
+  ${StyledTextArea} {
+    font-size: 16px;
+    font-weight: normal;
+
+    &::placeholder {
+      font-weight: 500;
+      color: #623cea;
+    }
+
+    &:-ms-input-placeholder {
+      font-weight: 500;
+      color: #623cea;
+    }
+
+    &::-ms-input-placeholder {
+      font-weight: 500;
+      color: #623cea;
+    }
+  }
+`
+
 const MetamaskButton = styled.button`
   position: absolute;
   right: 10px;
@@ -81,19 +110,25 @@ const MetamaskButton = styled.button`
         `};
 `;
 
-export class CommentForm extends React.Component {
+export class TextAreaForm extends React.Component {
   state = {
-    comment: ''
+    comment: '',
+    submitting: false
+  };
+
+  validate = () => {
+    return this.props.validate ? this.props.validate(this.state.comment) : !!this.state.comment;
   };
 
   submitForm = async () => {
+    this.setState({ submitting: true });
     await this.props.sendMessage(this.state.comment);
-    this.setState({ comment: '' });
+    this.setState({ comment: '', submitting: false });
     this.props.onSubmit && this.props.onSubmit();
   };
 
   render() {
-    const { placeholder, className } = this.props;
+    const { placeholder, className, Form } = this.props;
     return (
       <Form
         onSubmit={e => {
@@ -101,6 +136,7 @@ export class CommentForm extends React.Component {
           this.submitForm();
         }}
         className={className}
+        valid={this.props.validate ? this.props.validate(this.state.comment) : true}
       >
         <StyledTextArea
           placeholder={placeholder}
@@ -108,66 +144,38 @@ export class CommentForm extends React.Component {
           onChange={e => this.setState({ comment: e.target.value })}
           onKeyPress={e => e.key === 'Enter' && e.ctrlKey && this.submitForm()}
         />
-        <MetamaskButton disabled={!this.state.comment} type="submit" />
+        <MetamaskButton disabled={!this.state.submitting && !this.validate()} type="submit" />
       </Form>
     );
   }
 }
 
-export const ReplyForm = styled(CommentForm)`
-  background-color: rgba(246, 244, 255, 0.7);
-  width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  align-items: center;
-
-  ${StyledTextArea} {
-    font-size: 16px;
-    font-weight: normal;
-
-    &::placeholder {
-      font-weight: 500;
-      color: #623cea;
-    }
-
-    &:-ms-input-placeholder {
-      font-weight: 500;
-      color: #623cea;
-    }
-
-    &::-ms-input-placeholder {
-      font-weight: 500;
-      color: #623cea;
-    }
-  }
-`;
-
-export const ConnectedCommentForm = ({ Form, ...props }) => (
+export const ConnectedCommentForm = ({ ...props }) => (
   <Context.Consumer>
     {({ feedStore: { sendMessage } }) => (
       <TranslationsContext.Consumer>
-        {({ commentPlaceholder }) => <Form sendMessage={sendMessage} placeholder={commentPlaceholder} {...props} />}
+        {({ commentPlaceholder }) => <TextAreaForm sendMessage={sendMessage} placeholder={commentPlaceholder} {...props} />}
       </TranslationsContext.Consumer>
     )}
   </Context.Consumer>
 );
 
-export const ConnectedReplyForm = ({ Form, about, ...props }) => (
+export const ConnectedReplyForm = ({ about, ...props }) => (
   <Context.Consumer>
     {({ feedStore: { reply } }) => (
       <TranslationsContext.Consumer>
         {({ replyPlaceholder }) => (
-          <Form sendMessage={message => reply(message, about)} placeholder={replyPlaceholder} {...props} />
+          <TextAreaForm sendMessage={message => reply(message, about)} placeholder={replyPlaceholder} {...props} />
         )}
       </TranslationsContext.Consumer>
     )}
   </Context.Consumer>
 );
 
-export const ConnectedLabelForm = ({ Form, labelType, ...props }) => (
+export const ConnectedLabelForm = ({ labelType, ...props }) => (
   <Context.Consumer>
     {({ feedStore: { label } }) => (
-      <Form sendMessage={message => label(message, labelType)} placeholder={`Set your ${labelType}`} {...props} />
+      <TextAreaForm sendMessage={message => label(message, labelType)} placeholder={`Set your ${labelType}`} {...props} />
     )}
   </Context.Consumer>
 );

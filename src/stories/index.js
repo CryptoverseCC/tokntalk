@@ -4,7 +4,7 @@ import { withKnobs, select, text, boolean, number, object } from '@storybook/add
 import { action } from '@storybook/addon-actions';
 import { MemoryRouter } from 'react-router-dom';
 import IdentityAvatar from '../Avatar';
-import { CommentForm, ReplyForm } from '../CommentForm';
+import { TextAreaForm, ReplyForm, CommentForm } from '../CommentForm';
 import Header from '../Header';
 import TranslationsContext from '../Translations';
 import EntityExample from '../img/entityExample.svg';
@@ -40,8 +40,8 @@ storiesOf('Components', module)
 
     return <IdentityAvatar size={size} src={EntityExample} backgroundColor={text('Background color')} />;
   })
-  .add('Comment Form', () => <CommentForm placeholder={text('Placeholder', 'Placeholder')} />)
-  .add('Reply Form', () => <ReplyForm placeholder={text('Placeholder', 'Placeholder')} />)
+  .add('Comment Form', () => <TextAreaForm Form={CommentForm} placeholder={text('Placeholder', 'Placeholder')} />)
+  .add('Reply Form', () => <TextAreaForm Form={ReplyForm} placeholder={text('Placeholder', 'Placeholder')} />)
   .add('Header', () => {
     const translations = {
       entityName: text('Entity Name', 'Kitty'),
