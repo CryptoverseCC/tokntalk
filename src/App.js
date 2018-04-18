@@ -147,10 +147,11 @@ export default class App extends Component {
 
   label = async (message, labelType) => {
     const { token } = this.state.activeEntity;
-    const temporaryLabel = await label(token, message, labelType);
+    const temporaryFeedItem = await label(token, message, labelType);
     this.setState(
       produce(draft => {
-        draft.entityLabels[token][labelType] = temporaryLabel;
+        draft.entityLabels[token][labelType] = temporaryFeedItem.target.id;
+        draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems]
       })
     );
   };

@@ -140,7 +140,7 @@ export const reply = async (token, message, to) => {
 };
 
 export const writeTo = async (token, message, tokenTo) => {
-  const entityUserfeedsId = createUserfeedsId(tokenTo)
+  const entityUserfeedsId = createUserfeedsId(tokenTo);
   const data = {
     type: ['about'],
     claim: { target: message, about: entityUserfeedsId },
@@ -149,7 +149,7 @@ export const writeTo = async (token, message, tokenTo) => {
   };
   const transactionHash = await claim(data);
   const feedItemBase = await createFeedItemBase(transactionHash, token);
-  return { 
+  return {
     ...feedItemBase,
     about: { id: entityUserfeedsId },
     abouted: [],
@@ -178,6 +178,15 @@ export const label = async (token, message, labelType) => {
     context: createUserfeedsId(token),
     credits: getCreditsData()
   };
-  await claim(data);
-  return message;
+  const transactionHash = await claim(data);
+  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  return {
+    ...feedItemBase,
+    about: null,
+    abouted: [],
+    target: { id: message },
+    targeted: [],
+    type: 'labels',
+    labels: [labelType]
+  };
 };
