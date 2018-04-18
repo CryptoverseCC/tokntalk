@@ -35,6 +35,7 @@ export default class ShowPage extends Component {
   }
 
   refreshFeedItems = async (purge = false, entityId = this.props.match.params.entityId) => {
+    if (purge) this.props.startFeedLoading();
     const feedItems = await getFeedItems(entityId);
     this.props.updateFeedItems(feedItems, purge);
   };

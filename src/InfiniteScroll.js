@@ -32,7 +32,7 @@ export default class InfiniteScroll extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={this.props.style}>
         {this.props.children}
         <div ref={i => (this.sentinel = i)} />
       </div>

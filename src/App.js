@@ -39,6 +39,7 @@ export default class App extends Component {
     entityLabels: {},
     feedItems: [],
     shownFeedItemsCount: 10,
+    feedLoading: false,
     temporaryFeedItems: [],
     temporaryReplies: {},
     temporaryReactions: {},
@@ -151,7 +152,7 @@ export default class App extends Component {
     this.setState(
       produce(draft => {
         draft.entityLabels[token][labelType] = temporaryFeedItem.target.id;
-        draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems]
+        draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems];
       })
     );
   };
@@ -159,6 +160,7 @@ export default class App extends Component {
   updateFeedItems = (feedItems, purge) => {
     this.setState(
       produce(draft => {
+        draft.feedLoading = false;
         if (purge) {
           draft.feedItems = feedItems;
           draft.shownFeedItemsCount = 10;
@@ -174,14 +176,25 @@ export default class App extends Component {
     );
   };
 
+  startFeedLoading = () => {
+    this.setState({ feedLoading: true });
+  };
+
   showMoreFeedItems = (count = 5) => {
     this.setState({ shownFeedItemsCount: this.state.shownFeedItemsCount + count });
   };
 
-  renderIndexPage = props => <IndexPage {...props} updateFeedItems={this.updateFeedItems} />;
+  renderIndexPage = props => (
+    <IndexPage {...props} updateFeedItems={this.updateFeedItems} startFeedLoading={this.startFeedLoading} />
+  );
 
   renderShowPage = props => (
-    <ShowPage {...props} updateFeedItems={this.updateFeedItems} getEntityInfo={this.getEntityInfo} />
+    <ShowPage
+      {...props}
+      updateFeedItems={this.updateFeedItems}
+      startFeedLoading={this.startFeedLoading}
+      getEntityInfo={this.getEntityInfo}
+    />
   );
 
   render() {
@@ -203,6 +216,7 @@ export default class App extends Component {
       myEntities,
       feedItems,
       shownFeedItemsCount,
+      feedLoading,
       entityInfo,
       temporaryFeedItems,
       temporaryReplies,
@@ -222,6 +236,7 @@ export default class App extends Component {
             react,
             label,
             feedItems,
+            feedLoading,
             shownFeedItemsCount,
             showMoreFeedItems,
             temporaryFeedItems,

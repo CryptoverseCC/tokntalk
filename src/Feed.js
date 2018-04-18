@@ -465,31 +465,106 @@ class Card extends React.Component {
   }
 }
 
-const Feed = ({ feedItems, temporaryReplies, temporaryReactions, showMoreFeedItems }) => (
+const Block = styled.div`
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: #623cea;
+  animation: blockAnimation 1s linear infinite;
+  border-radius: 6px;
+  will-change: transform;
+
+  @keyframes blockAnimation {
+    25% {
+      transform: translateY(9px) rotate(22.5deg);
+    }
+    50% {
+      transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+    }
+    75% {
+      transform: translateY(9px) rotate(67.5deg);
+    }
+    100% {
+      transform: translateY(0) rotate(90deg);
+    }
+  }
+`;
+
+const Shadow = styled.div`
+  width: 100px;
+  height: 10px;
+  background: #e9ebff;
+  opacity: 1;
+  position: absolute;
+  bottom: -30px;
+  left: 0px;
+  border-radius: 50%;
+  animation: shadowAnimation 1s linear infinite;
+  will-change: transform;
+  z-index: 2;
+
+  @keyframes shadowAnimation {
+    50% {
+      transform: scale(1.2, 1);
+    }
+  }
+`;
+
+const Bottom = styled.div`
+  height: 10px;
+  background-color: inherit;
+  width: 100px;
+  display: block;
+  position: absolute;
+  z-index: 1;
+  bottom: -40px;
+`;
+
+const LonelyBlock = styled.div`
+  position: relative;
+  background-color: inherit;
+`;
+
+const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, showMoreFeedItems }) => (
   <div className="container" style={{ padding: '40px 0' }}>
     <div className="columns">
-      <div className="column is-6 is-offset-3">
-        <InfiniteScroll hasMore={true} onLoadMore={showMoreFeedItems} throttle={100} threshold={300} isLoading={false}>
-          {feedItems.map(feedItem => {
-            const replies = uniqBy(about => about.id)([
-              ...(temporaryReplies[feedItem.id] || []),
-              ...(feedItem.abouted || [])
-            ]);
-            const reactions = uniqBy(target => target.id)([
-              ...(temporaryReactions[feedItem.id] || []),
-              ...(feedItem.targeted || [])
-            ]);
-            return (
-              <Card
-                feedItem={feedItem}
-                replies={replies}
-                reactions={reactions}
-                key={feedItem.id}
-                added={feedItem.added}
-              />
-            );
-          })}
-        </InfiniteScroll>
+      <div className="column is-6 is-offset-3" style={{ display: 'flex', justifyContent: 'center' }}>
+        {feedLoading ? (
+          <LonelyBlock>
+            <Block />
+            <Shadow />
+            <Bottom />
+          </LonelyBlock>
+        ) : (
+          <InfiniteScroll
+            style={{ width: '100%' }}
+            hasMore={true}
+            onLoadMore={showMoreFeedItems}
+            throttle={100}
+            threshold={300}
+            isLoading={false}
+          >
+            {feedItems.map(feedItem => {
+              const replies = uniqBy(about => about.id)([
+                ...(temporaryReplies[feedItem.id] || []),
+                ...(feedItem.abouted || [])
+              ]);
+              const reactions = uniqBy(target => target.id)([
+                ...(temporaryReactions[feedItem.id] || []),
+                ...(feedItem.targeted || [])
+              ]);
+              return (
+                <Card
+                  feedItem={feedItem}
+                  replies={replies}
+                  reactions={reactions}
+                  key={feedItem.id}
+                  added={feedItem.added}
+                />
+              );
+            })}
+          </InfiniteScroll>
+        )}
       </div>
     </div>
   </div>
@@ -502,6 +577,7 @@ export const ConnectedFeed = ({ forEntity }) => (
     {({
       feedStore: {
         feedItems,
+        feedLoading,
         temporaryFeedItems,
         temporaryReplies,
         temporaryReactions,
@@ -523,6 +599,7 @@ export const ConnectedFeed = ({ forEntity }) => (
       return (
         <Feed
           feedItems={allFeedItems}
+          feedLoading={feedLoading}
           temporaryReplies={temporaryReplies}
           temporaryReactions={temporaryReactions}
           showMoreFeedItems={showMoreFeedItems}
