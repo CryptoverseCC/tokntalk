@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
-import { Entity, EntityName, IfIsActiveEntity } from './Entity';
+import { Entity, EntityName, IfIsActiveEntity, IfActiveEntity, ActiveEntityAvatar, ActiveEntityName } from './Entity';
 import Modal from './Modal';
 import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon } from './Icons';
-import { ConnectedLabelForm, ReplyForm } from './CommentForm';
+import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm } from './CommentForm';
 import { getFeedItems } from './api';
 import { EntityIcon } from './entityApi';
+import { Link } from 'react-router-dom';
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -39,9 +40,10 @@ export default class ShowPage extends Component {
   };
 
   render() {
+    const { entityId } = this.props.match.params;
     return (
       <React.Fragment>
-        <Entity id={this.props.match.params.entityId}>
+        <Entity id={entityId}>
           {entity => (
             <React.Fragment>
               <div className="has-text-centered" style={{ backgroundColor: entity.color, height: '30rem' }}>
@@ -64,11 +66,45 @@ export default class ShowPage extends Component {
                     />
                   </div>
                 </div>
+                <IfActiveEntity>
+                  {({ token }) => (
+                    <div className="columns">
+                      <div className="column is-6 is-offset-3">
+                        <div
+                          className="box cp-box"
+                          style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}
+                        >
+                          <article className="media">
+                            <div className="media-left">
+                              <ActiveEntityAvatar size="large" />
+                            </div>
+                            <div className="media-content">
+                              <div className="content">
+                                <Link
+                                  to={`/${token}`}
+                                  style={{
+                                    fontFamily: 'Rubik',
+                                    fontSize: '18px',
+                                    fontWeight: '500',
+                                    color: '#623CEA'
+                                  }}
+                                >
+                                  <ActiveEntityName />
+                                </Link>
+                                <ConnectedWriteToForm to={entity} Form={CommentForm} />
+                              </div>
+                            </div>
+                          </article>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </IfActiveEntity>
               </div>
+              <ConnectedFeed forEntity={entity} />
             </React.Fragment>
           )}
         </Entity>
-        <ConnectedFeed />
       </React.Fragment>
     );
   }

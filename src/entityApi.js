@@ -27,6 +27,7 @@ export const getEntityData = async entityId => {
   try {
     const res = await fetch(`https://api.cryptokitties.co/kitties/${entityId}`);
     const data = await res.json();
+    data.name = data.name || `${entityTranslations.entityName} #${entityId}`;
     data.color = colors[data.color];
     data.url = `https://cryptokitties.co/kitty/${entityId}`;
     return data;

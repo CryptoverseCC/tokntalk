@@ -4,8 +4,10 @@ const {
   REACT_APP_ERC_721_ADDRESS: ERC_721_ADDRESS,
   REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS,
   REACT_APP_ERC_721_NETWORK: ERC_721_NETWORK,
-  REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE,
+  REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE
 } = process.env;
+
+export const createUserfeedsId = entityId => `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
 
 export const getFeedItems = async entityId => {
   try {
@@ -27,7 +29,7 @@ export const getMyEntities = async () => {
   try {
     const web3 = await getWeb3();
     const [from] = await web3.eth.getAccounts();
-    if (!from) return;
+    if (!from) return [];
     const response = await fetch(
       `${USERFEEDS_API_ADDRESS}/experimental_tokens;identity=${from.toLowerCase()};asset=${ERC_721_NETWORK}:${ERC_721_ADDRESS}/`
     );
@@ -40,9 +42,7 @@ export const getMyEntities = async () => {
 
 export const getLabels = async entityId => {
   try {
-    const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/cryptopurr_profile;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`
-    );
+    const res = await fetch(`${USERFEEDS_API_ADDRESS}/cryptopurr_profile;context=${createUserfeedsId(entityId)}`);
     const labels = await res.json();
     return labels;
   } catch (e) {
@@ -70,7 +70,7 @@ export const getWeb3State = async () => {
       blockNumber: undefined,
       web3: undefined,
       networkName: undefined,
-      provider: undefined,
+      provider: undefined
     };
   }
 };
@@ -94,7 +94,7 @@ const createFeedItemBase = async (transactionHash, token) => {
     family: networkName,
     id: `claim:${transactionHash}:0`,
     sequence: blockNumber + 1,
-    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`
+    context: createUserfeedsId(token)
   };
 };
 
@@ -112,7 +112,7 @@ const claim = async data => {
 export const sendMessage = async (token, message) => {
   const data = {
     claim: { target: message },
-    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
+    context: createUserfeedsId(token),
     credits: getCreditsData()
   };
   const transactionHash = await claim(data);
@@ -127,11 +127,11 @@ export const sendMessage = async (token, message) => {
   };
 };
 
-export const reply = async (token, message, about) => {
+export const reply = async (token, message, to) => {
   const data = {
     type: ['about'],
-    claim: { target: message, about },
-    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
+    claim: { target: message, about: to },
+    context: createUserfeedsId(token),
     credits: getCreditsData()
   };
   const transactionHash = await claim(data);
@@ -139,11 +139,31 @@ export const reply = async (token, message, about) => {
   return { ...feedItemBase, target: { id: message } };
 };
 
+export const writeTo = async (token, message, tokenTo) => {
+  const entityUserfeedsId = createUserfeedsId(tokenTo)
+  const data = {
+    type: ['about'],
+    claim: { target: message, about: entityUserfeedsId },
+    context: createUserfeedsId(token),
+    credits: getCreditsData()
+  };
+  const transactionHash = await claim(data);
+  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  return { 
+    ...feedItemBase,
+    about: { id: entityUserfeedsId },
+    abouted: [],
+    target: { id: message },
+    targeted: [],
+    type: 'post_to'
+  };
+};
+
 export const react = async (token, to) => {
   const data = {
     type: ['labels'],
     claim: { target: to, labels: ['like'] },
-    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
+    context: createUserfeedsId(token),
     credits: getCreditsData()
   };
   const transactionHash = await claim(data);
@@ -155,7 +175,7 @@ export const label = async (token, message, labelType) => {
   const data = {
     type: ['labels'],
     claim: { target: message, labels: [labelType] },
-    context: `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${token}`,
+    context: createUserfeedsId(token),
     credits: getCreditsData()
   };
   await claim(data);

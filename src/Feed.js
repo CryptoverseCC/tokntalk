@@ -14,6 +14,7 @@ import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveE
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
+import { createUserfeedsId } from './api';
 
 const Label = ({ onClick, className, icon, count, colors, style = {} }) => {
   return (
@@ -455,7 +456,7 @@ const Feed = ({ feedItems, temporaryReplies, temporaryReactions, showMoreFeedIte
 
 export default Feed;
 
-export const ConnectedFeed = () => (
+export const ConnectedFeed = ({ forEntity }) => (
   <Context.Consumer>
     {({
       feedStore: {
@@ -467,9 +468,16 @@ export const ConnectedFeed = () => (
         showMoreFeedItems
       }
     }) => {
+      let filteredTemporaryFeedItems = temporaryFeedItems;
+      if (forEntity) {
+        filteredTemporaryFeedItems = temporaryFeedItems.filter(({ context, about }) => {
+          const userfeedsEntityId = createUserfeedsId(forEntity.id);
+          return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
+        });
+      }
       const allFeedItems = pipe(uniqBy('id'), sortBy('created_at'), reverse, take(shownFeedItemsCount))([
         ...feedItems,
-        ...temporaryFeedItems
+        ...filteredTemporaryFeedItems
       ]);
       return (
         <Feed

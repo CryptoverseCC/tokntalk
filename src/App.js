@@ -7,7 +7,7 @@ import produce from 'immer';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
-import { getMyEntities, getWeb3State, sendMessage, reply, react, label, getLabels } from './api';
+import { getMyEntities, getWeb3State, sendMessage, reply, react, label, writeTo, getLabels } from './api';
 import { getEntityData } from './entityApi';
 import Header from './Header';
 
@@ -118,14 +118,20 @@ export default class App extends Component {
     this.setState({ temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems] });
   };
 
-  reply = async (message, about) => {
+  reply = async (message, to) => {
     const { token } = this.state.activeEntity;
-    const temporaryReply = await reply(token, message, about);
+    const temporaryReply = await reply(token, message, to);
     this.setState(
       produce(draft => {
-        draft.temporaryReplies[about] = [...(draft.temporaryReplies[about] || []), temporaryReply];
+        draft.temporaryReplies[to] = [...(draft.temporaryReplies[to] || []), temporaryReply];
       })
     );
+  };
+
+  writeTo = async (message, tokenTo) => {
+    const { token } = this.state.activeEntity;
+    const temporaryFeedItem = await writeTo(token, message, tokenTo);
+    this.setState({ temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems] });
   };
 
   react = async to => {
@@ -184,6 +190,7 @@ export default class App extends Component {
       getEntityInfo,
       sendMessage,
       reply,
+      writeTo,
       react,
       label,
       getEntity,
@@ -209,6 +216,7 @@ export default class App extends Component {
           feedStore: {
             sendMessage,
             reply,
+            writeTo,
             react,
             label,
             feedItems,

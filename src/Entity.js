@@ -2,7 +2,7 @@ import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import Context from './Context';
 import IdentityAvatar from './Avatar';
-import TranslationsContext from "./Translations";
+import TranslationsContext from './Translations';
 
 export const IfActiveEntity = ({ children, then, other }) => (
   <Context.Consumer>
