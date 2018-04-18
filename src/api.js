@@ -17,7 +17,7 @@ export const getFeedItems = async entityId => {
     );
     let { items: feedItems } = await response.json();
     feedItems = feedItems.filter(feedItem =>
-      ['regular', 'like', 'post_to', 'response', 'post_about'].includes(feedItem.type)
+      ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
     );
     return feedItems;
   } catch (e) {

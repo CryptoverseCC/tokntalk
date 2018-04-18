@@ -5,6 +5,7 @@ import uniqBy from 'lodash/fp/uniqBy';
 import sortBy from 'lodash/fp/sortBy';
 import take from 'lodash/fp/take';
 import reverse from 'lodash/fp/reverse';
+import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 import { Link } from 'react-router-dom';
@@ -15,6 +16,8 @@ import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 import { createUserfeedsId } from './api';
+import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
+import styled from 'styled-components';
 
 const Label = ({ onClick, className, icon, count, colors, style = {} }) => {
   return (
@@ -262,30 +265,64 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
   );
 };
 
-const Reaction = ({ backgroundColor, boxShadow, Icon }) => (
-  <div
-    style={{
-      height: '30px',
-      width: '30px',
-      backgroundColor: backgroundColor,
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      boxShadow: boxShadow
-    }}
-  >
-    <img alt="" src={Icon} style={{ width: '12px' }} />
-  </div>
-);
+const Reaction = styled.div`
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+`;
 
-const LikeReaction = () => (
-  <Reaction backgroundColor="#ffa6d8" boxShadow="0 4px 15px 4px rgba(255,166,216,0.4)" Icon={LikeIcon} />
-);
+const LikeReaction = styled(Reaction).attrs({ children: <img alt="" src={LikeIcon} style={{ width: '12px' }} /> })`
+  background-color: #ffa6d8;
+  box-shadow: 0 4px 15px 4px rgba(255, 166, 216, 0.4);
+`;
 
-const ReplyReaction = () => (
-  <Reaction backgroundColor="#623cea" boxShadow="0 4px 15px 4px rgba(98,60,234,0.3)" Icon={ReplyIcon} />
-);
+const ReplyReaction = styled(Reaction).attrs({ children: <img alt="" src={ReplyIcon} style={{ width: '12px' }} /> })`
+  background-color: #623cea;
+  box-shadow: 0 4px 15px 4px rgba(98, 60, 234, 0.3);
+`;
+
+const FacebookLabel = styled(Reaction).attrs({ children: <FacebookIcon /> })`
+  background-color: #4167b2;
+  box-shadow: 0 4px 15px 4px rgba(65, 103, 178, 0.3);
+  ${FacebookIcon} {
+    height: 60%;
+  }
+`;
+
+const GithubLabel = styled(Reaction).attrs({ children: <GithubIcon /> })`
+  background-color: #24292e;
+  box-shadow: 0 4px 15px 4px rgba(36, 41, 46, 0.3);
+  ${GithubIcon} {
+    height: 60%;
+  }
+`;
+
+const TwitterLabel = styled(Reaction).attrs({ children: <TwitterIcon /> })`
+  background-color: #1ca1f2;
+  box-shadow: 0 4px 15px 4px rgba(28, 161, 242, 0.3);
+  ${TwitterIcon} {
+    height: 50%;
+  }
+`;
+
+const InstagramLabel = styled(Reaction).attrs({ children: <InstagramIcon /> })`
+  background-color: #f41476;
+  box-shadow: 0 4px 15px 4px rgba(244, 20, 118, 0.3);
+  ${InstagramIcon} {
+    height: 50%;
+  }
+`;
+
+const LabelItems = {
+  facebook: FacebookLabel,
+  twitter: TwitterLabel,
+  instagram: InstagramLabel,
+  github: GithubLabel
+};
 
 class Card extends React.Component {
   state = {
@@ -357,7 +394,8 @@ class Card extends React.Component {
               dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about.id) }}
             />
           </React.Fragment>
-        )
+        ),
+        labels: feedItem => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>
       };
       return (
         <React.Fragment>
@@ -380,8 +418,11 @@ class Card extends React.Component {
             family={feedItem.family}
             etherscanUrl={createEtherscanUrl(feedItem)}
             reactions={reactions}
-            suffix={suffix[feedItem.type] && suffix[feedItem.type]()}
-            reaction={feedItem.type === 'response' && <ReplyReaction />}
+            suffix={suffix[feedItem.type] && suffix[feedItem.type](feedItem)}
+            reaction={
+              (feedItem.type === 'response' && <ReplyReaction />) ||
+              (feedItem.type === 'labels' && React.createElement(LabelItems[feedItem.labels[0]]))
+            }
           />
           {replies.map(reply => (
             <Reply
