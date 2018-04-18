@@ -5,7 +5,7 @@ import { ConnectedFeed } from './Feed';
 import { Entity, EntityName, IfIsActiveEntity, IfActiveEntity, ActiveEntityAvatar, ActiveEntityName } from './Entity';
 import Modal from './Modal';
 import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon } from './Icons';
-import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm } from './CommentForm';
+import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import { getFeedItems } from './api';
 import { EntityIcon } from './entityApi';
 import { Link } from 'react-router-dom';
@@ -91,7 +91,11 @@ export default class ShowPage extends Component {
                                 >
                                   <ActiveEntityName />
                                 </Link>
-                                <ConnectedWriteToForm to={entity} Form={CommentForm} />
+                                <IfIsActiveEntity
+                                  id={entity.id.toString()}
+                                  then={<ConnectedCommentForm Form={CommentForm} />}
+                                  other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
+                                />
                               </div>
                             </div>
                           </article>
