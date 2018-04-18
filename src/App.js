@@ -11,11 +11,16 @@ import { getMyEntities, getWeb3State, sendMessage, reply, react, label, getLabel
 import { getEntityData } from './entityApi';
 import Header from './Header';
 
-const { REACT_APP_BASENAME: BASENAME } = process.env;
+const { REACT_APP_NAME: APP_NAME, REACT_APP_BASENAME: BASENAME } = process.env;
 
-const previousActiveEntity = () => {
-  return JSON.parse(localStorage.getItem('activeEntity') || '');
-};
+const Storage = (storage = localStorage) => ({
+  getItem(key) {
+    return localStorage.getItem(`${APP_NAME}_${key}`);
+  },
+  setItem(key, value) {
+    return localStorage.setItem(`${APP_NAME}_${key}`, value);
+  }
+});
 
 export const produceEntities = (myEntities, previousActiveEntity) => {
   const activeEntity = find(previousActiveEntity)(myEntities) || myEntities[0];
@@ -23,10 +28,14 @@ export const produceEntities = (myEntities, previousActiveEntity) => {
 };
 
 export default class App extends Component {
+  entityInfoRequests = {};
+  entityLabelRequests = {};
+  storage = Storage();
+
   state = {
     activeEntity: undefined,
     myEntities: [],
-    entityInfo: JSON.parse(localStorage.getItem('entityInfo') || '{}'),
+    entityInfo: JSON.parse(this.storage.getItem('entityInfo') || '{}'),
     entityLabels: {},
     feedItems: [],
     shownFeedItemsCount: 10,
@@ -36,9 +45,6 @@ export default class App extends Component {
     from: undefined,
     provider: undefined
   };
-
-  entityInfoRequests = {};
-  entityLabelRequests = {};
 
   componentDidMount() {
     this.refreshWeb3State();
@@ -52,7 +58,11 @@ export default class App extends Component {
   }
 
   refreshMyEntities = async () => {
-    this.setState(produceEntities(await getMyEntities(), previousActiveEntity()), this.saveActiveEntity);
+    this.setState(produceEntities(await getMyEntities(), this.previousActiveEntity()), this.saveActiveEntity);
+  };
+
+  previousActiveEntity = () => {
+    return JSON.parse(this.storage.getItem('activeEntity') || 'null');
   };
 
   changeActiveEntityTo = newActiveEntity => {
@@ -61,7 +71,7 @@ export default class App extends Component {
 
   saveActiveEntity = () => {
     const { activeEntity } = this.state;
-    if (activeEntity) localStorage.setItem('activeEntity', JSON.stringify(activeEntity));
+    if (activeEntity) this.storage.setItem('activeEntity', JSON.stringify(activeEntity));
   };
 
   refreshWeb3State = async () => {
@@ -84,7 +94,7 @@ export default class App extends Component {
     this.entityInfoRequests[entityId] = entityInfoRequest;
     const entityData = await entityInfoRequest;
     this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, () => {
-      localStorage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
+      this.storage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
     });
   };
 
