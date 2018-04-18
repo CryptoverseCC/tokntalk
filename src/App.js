@@ -66,7 +66,8 @@ export default class App extends Component {
   };
 
   changeActiveEntityTo = newActiveEntity => {
-    this.setState({ activeEntity: newActiveEntity }, this.saveActiveEntity);
+    const activeEntity = find({ token: newActiveEntity.id.toString() })(this.state.myEntities);
+    this.setState({ activeEntity }, this.saveActiveEntity);
   };
 
   saveActiveEntity = () => {
