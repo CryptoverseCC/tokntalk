@@ -132,6 +132,13 @@ export class SocialBadges extends React.Component {
     instagram: /https?:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/
   };
 
+  static PLACEHOLDERS = {
+    facebook: 'https://facebook.com/profileName',
+    twitter: 'https://twitter.com/profileName',
+    github: 'https://github.com/profileName',
+    instagram: 'https://instagram.com/profileName'
+  };
+
   state = {
     editing: undefined
   };
@@ -184,6 +191,7 @@ export class SocialBadges extends React.Component {
             <ConnectedLabelForm
               Form={ReplyForm}
               validate={this.validate}
+              placeholder={SocialBadges.PLACEHOLDERS[this.state.editing]}
               labelType={this.state.editing}
               onSubmit={this.editLabel(undefined)}
             />
