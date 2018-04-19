@@ -421,7 +421,7 @@ class Card extends React.Component {
             suffix={suffix[feedItem.type] && suffix[feedItem.type](feedItem)}
             reaction={
               (feedItem.type === 'response' && <ReplyReaction />) ||
-              (feedItem.type === 'labels' && React.createElement(LabelItems[feedItem.labels[0]]))
+              (feedItem.type === 'labels' && Object.keys(LabelItems).includes(feedItem.labels[0]) && React.createElement(LabelItems[feedItem.labels[0]]))
             }
           />
           {replies.map(reply => (
