@@ -199,9 +199,14 @@ export class SocialBadges extends React.Component {
     return label === '' || SocialBadges.VALID_LABEL_EXPRESSIONS[labelType].test(label);
   };
 
+  normalizeHref = href => {
+    return href ? href : undefined;
+  }
+
   render() {
     const {
       EditButton,
+      normalizeHref,
       props: { facebook, twitter, instagram, github, id }
     } = this;
     return (
@@ -212,19 +217,19 @@ export class SocialBadges extends React.Component {
           </Entity>
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#4167b2" href={facebook} children={<FacebookIcon />} />
+          <Badge activeColor="#4167b2" href={normalizeHref(facebook)} children={<FacebookIcon />} />
           <EditButton labelType="facebook" />
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#1CA1F2" href={twitter} children={<TwitterIcon />} />
+          <Badge activeColor="#1CA1F2" href={normalizeHref(twitter)} children={<TwitterIcon />} />
           <EditButton labelType="twitter" />
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#F41476" href={instagram} children={<InstagramIcon />} />
+          <Badge activeColor="#F41476" href={normalizeHref(instagram)} children={<InstagramIcon />} />
           <EditButton labelType="instagram" />
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#24292e" href={github} children={<GithubIcon />} />
+          <Badge activeColor="#24292e" href={normalizeHref(github)} children={<GithubIcon />} />
           <EditButton labelType="github" />
         </SocialBadge>
         {this.state.editing && (
