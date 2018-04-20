@@ -18,8 +18,12 @@ export default class IndexPage extends Component {
 
   refreshFeedItems = async (purge = false) => {
     if (purge) this.props.startFeedLoading();
-    const feedItems = await getFeedItems();
-    this.props.updateFeedItems(feedItems, purge);
+    try {
+      const feedItems = await getFeedItems();
+      this.props.updateFeedItems(feedItems, purge);
+    } catch (e) {
+      console.warn('Failed to download feedItems');
+    }
   };
 
   render() {

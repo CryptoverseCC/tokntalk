@@ -10,19 +10,15 @@ const {
 export const createUserfeedsId = entityId => `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
 
 export const getFeedItems = async entityId => {
-  try {
-    const entitySuffix = entityId ? `:${entityId}` : '';
-    const response = await fetch(
-      `${USERFEEDS_API_ADDRESS}/cryptopurr_feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`
-    );
-    let { items: feedItems } = await response.json();
-    feedItems = feedItems.filter(feedItem =>
-      ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
-    );
-    return feedItems;
-  } catch (e) {
-    return [];
-  }
+  const entitySuffix = entityId ? `:${entityId}` : '';
+  const response = await fetch(
+    `${USERFEEDS_API_ADDRESS}/cryptopurr_feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`
+  );
+  let { items: feedItems } = await response.json();
+  feedItems = feedItems.filter(feedItem =>
+    ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
+  );
+  return feedItems;
 };
 
 export const getMyEntities = async () => {

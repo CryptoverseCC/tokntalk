@@ -36,8 +36,12 @@ export default class ShowPage extends Component {
 
   refreshFeedItems = async (purge = false, entityId = this.props.match.params.entityId) => {
     if (purge) this.props.startFeedLoading();
-    const feedItems = await getFeedItems(entityId);
-    this.props.updateFeedItems(feedItems, purge);
+    try {
+      const feedItems = await getFeedItems(entityId);
+      this.props.updateFeedItems(feedItems, purge);
+    } catch (e) {
+      console.warn('Failed to download feedItems');
+    }
   };
 
   render() {
