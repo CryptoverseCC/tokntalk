@@ -17,7 +17,7 @@ import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 import { createUserfeedsId } from './api';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const Label = ({ onClick, className, icon, count, colors, style = {} }) => {
   return (
@@ -324,6 +324,28 @@ const LabelItems = {
   github: GithubLabel
 };
 
+const blink = keyframes`
+  0% {
+    background-color: #623cea;
+  }
+  
+  100% {
+    background-color: transparent;
+  }
+`;
+
+const CardBox = styled.div`
+  box-shadow: 0 4px 10px rgba(98, 60, 234, 0.07);
+  overflow: hidden;
+  border-radius: 12px;
+  padding: 1.25rem;
+  & + & {
+    margin-top: 1.5rem;
+  }
+
+  ${({ added }) => (added ? 'animation: blink 1s ease-out 1' : '')};
+`;
+
 class Card extends React.Component {
   state = {
     wasShown: !this.props.added
@@ -421,7 +443,9 @@ class Card extends React.Component {
             suffix={suffix[feedItem.type] && suffix[feedItem.type](feedItem)}
             reaction={
               (feedItem.type === 'response' && <ReplyReaction />) ||
-              (feedItem.type === 'labels' && Object.keys(LabelItems).includes(feedItem.labels[0]) && React.createElement(LabelItems[feedItem.labels[0]]))
+              (feedItem.type === 'labels' &&
+                Object.keys(LabelItems).includes(feedItem.labels[0]) &&
+                React.createElement(LabelItems[feedItem.labels[0]]))
             }
           />
           {replies.map(reply => (
@@ -449,18 +473,10 @@ class Card extends React.Component {
 
   render() {
     return (
-      <div
-        className={`box cp-box ${this.props.added && this.state.wasShown ? 'cp-box--added' : ''}`}
-        style={{
-          boxShadow: '0 4px 10px rgba(98,60,234,0.07)',
-          fontFamily: 'Rubik',
-          overflow: 'hidden',
-          borderRadius: '12px'
-        }}
-      >
+      <CardBox added={this.props.added && this.state.wasShown}>
         {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
         {this.renderItem()}
-      </div>
+      </CardBox>
     );
   }
 }

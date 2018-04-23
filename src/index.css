@@ -1,17 +1,3 @@
-@keyframes blink {
-  0% {
-    background-color: #623cea;
-  }
-  
-  100% {
-    background-color: transparent;
-  }
-}
-
-.cp-box--added {
-  animation: blink 1s ease-out 1;
-}
-
 .cp-label.cp-like:not(.cp-label--done):hover .cp-label-container {
   cursor: pointer;
   box-shadow: 0 5px 20px rgba(255, 166, 216, 0.4);
