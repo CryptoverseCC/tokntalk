@@ -1,25 +1,3 @@
-.cp-label.cp-like:not(.cp-label--done):hover .cp-label-container {
-  cursor: pointer;
-  box-shadow: 0 5px 20px rgba(255, 166, 216, 0.4);
-}
-
-.cp-label.cp-like .cp-label-text:before {
-  content: 'Like';
-}
-
-.cp-label.cp-like.cp-label--done .cp-label-text:before {
-  content: 'Liked';
-  color: #ffa6d8;
-}
-
-.cp-label.cp-like.cp-label--done .cp-label-icon_container {
-  box-shadow: 0 5px 20px 2px rgba(255, 166, 216, 0.4);
-}
-
-.cp-label.cp-reply .cp-label-text:before {
-  content: 'Replies';
-}
-
 .cp-reply--highlighted:before {
   content: '';
   position: absolute;

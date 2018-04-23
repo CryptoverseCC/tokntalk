@@ -19,56 +19,64 @@ import { createUserfeedsId } from './api';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
 import styled, { keyframes } from 'styled-components';
 
-const Label = ({ onClick, className, icon, count, colors, style = {} }) => {
+const IconContainer = styled.div`
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+`;
+
+const LabelIconContainer = styled(IconContainer)`
+  height: 40px;
+  width: 40px;
+  transition: all 0.15s ease-in-out;
+  background-color: #ffa6d8;
+`;
+
+const LabelText = styled.span`
+  margin-left: 10px;
+`;
+
+const LabelCounter = styled.span`
+  margin-left: auto;
+  margin-right: 8px;
+`;
+
+const LabelButton = styled.button`
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 4px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 140px;
+  border-radius: 25px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ffe4f3;
+  font-size: 16px;
+  transition: all 0.15s ease-in-out;
+  color: ${({ liked }) => (liked ? '#ffa6d8' : 'inherit')};
+  cursor: ${({ liked }) => (liked ? 'default' : 'pointer')};
+
+  &:hover {
+    box-shadow: ${({ liked }) => (liked ? 'none' : '0 5px 20px rgba(255, 166, 216, 0.4)')};
+  }
+`;
+
+const Label = ({ onClick, liked, count }) => {
   return (
-    <button
-      onClick={onClick}
-      className={`cp-label ${className ? className : ''}`}
-      style={{
-        outline: 'none',
-        border: 'none',
-        background: 'none',
-        padding: 0,
-        margin: 0
-      }}
-    >
-      <div
-        className="cp-label-container"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          height: '50px',
-          width: '140px',
-          borderRadius: '25px',
-          borderWidth: '1px',
-          borderStyle: 'solid',
-          borderColor: colors.border,
-          padding: '4px',
-          boxSizing: 'border-box',
-          fontSize: '16px',
-          transition: 'all 0.15s ease-in-out',
-          ...style
-        }}
-      >
-        <div
-          className="cp-label-icon_container"
-          style={{
-            height: '40px',
-            width: '40px',
-            backgroundColor: colors.iconBackground,
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'all 0.15s ease-in-out'
-          }}
-        >
-          {icon}
-        </div>
-        <span className="cp-label-text" style={{ marginLeft: '10px' }} />
-        <span style={{ marginLeft: 'auto', marginRight: '8px', color: colors.count }}>{count}</span>
-      </div>
-    </button>
+    <LabelButton onClick={onClick} liked={liked}>
+      <LabelIconContainer>
+        <img alt="" src={LikeIcon} />
+      </LabelIconContainer>
+      <LabelText>Like{liked && 'd'}</LabelText>
+      <LabelCounter>{count}</LabelCounter>
+    </LabelButton>
   );
 };
 
@@ -99,25 +107,10 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
           <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
             <IfActiveEntityLiked
               id={id}
-              then={
-                <Label
-                  className="cp-like cp-label--done"
-                  icon={<img alt="" src={LikeIcon} />}
-                  count={reactions.length}
-                  colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
-                />
-              }
+              then={<Label liked count={reactions.length} />}
               other={
                 <Context.Consumer>
-                  {({ feedStore: { react } }) => (
-                    <Label
-                      onClick={() => react(id)}
-                      className="cp-like"
-                      icon={<img alt="" src={LikeIcon} />}
-                      count={reactions.length}
-                      colors={{ border: '#ffe4f3', iconBackground: '#FFA6D8', count: '#FFA6D8' }}
-                    />
-                  )}
+                  {({ feedStore: { react } }) => <Label onClick={() => react(id)} count={reactions.length} />}
                 </Context.Consumer>
               }
             />
@@ -265,14 +258,9 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
   );
 };
 
-const Reaction = styled.div`
+const Reaction = styled(IconContainer)`
   height: 30px;
   width: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
 `;
 
 const LikeReaction = styled(Reaction).attrs({ children: <img alt="" src={LikeIcon} style={{ width: '12px' }} /> })`
