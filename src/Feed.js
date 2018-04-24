@@ -8,7 +8,7 @@ import reverse from 'lodash/fp/reverse';
 import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
-import Link from './Link';
+import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
 import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
@@ -197,9 +197,9 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
               then={<span style={{ color: '#ffa6d8' }}>Liked</span>}
             />
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
-            <Link to={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+            <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
               {family}
-            </Link>
+            </A>
           </small>
         </div>
       </div>
@@ -249,9 +249,9 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
       <div>
         <small style={{ color: '#928F9B' }}>
           {timeago().format(createdAt)}{' '}
-          <Link to={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+          <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
             {family}
-          </Link>
+          </A>
         </small>
       </div>
     </React.Fragment>

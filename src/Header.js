@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from './Link';
+import Link, { A } from './Link';
 import styled from 'styled-components';
 import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityAvatar, EntityName } from './Entity';
 import TranslationsContext from './Translations';
@@ -7,6 +7,7 @@ import Locked from './img/locked.svg';
 import NoMetamask from './img/no.svg';
 import NoIdentity from './img/noidentity.svg';
 import Context from './Context';
+import Logo from './Logo';
 
 const StyledHeader = styled.div`
   background-color: #f9fbfd;
@@ -20,24 +21,48 @@ const StyledHeader = styled.div`
   z-index: 999;
   height: 65px;
   top: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
 `;
 
-const Title = styled.h1`
-  color: #1b2437;
-  font-weight: inherit;
-  font-size: inherit;
-  line-height: inherit;
+const TitleLink = styled(Link)`
+  margin-left: 1rem;
 `;
 
+const CrossLink = styled(A)`
+  margin-left: 1rem;
+  color: gray;
+`;
+
+const ButtonCrossLink = styled(CrossLink)`
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: rgba(246, 244, 255, 0.7);
+  color: #623cea;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: #623cea;
+    color: white !important;
+  }
+`
+
+// <div className="container is-fluid level-item columns">
+//         <Link to="/" className="level-item column is-column-4 is-offset-4 has-text-centered">
+//           <Title>{process.env.REACT_APP_NAME}</Title>
+//         </Link>
+//         <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
+//       </div>
 const Header = () => {
   return (
-    <StyledHeader className="level">
-      <div className="container is-fluid level-item columns">
-        <Link to="/" className="level-item column is-column-4 is-offset-4 has-text-centered">
-          <Title>{process.env.REACT_APP_NAME}</Title>
-        </Link>
-        <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
-      </div>
+    <StyledHeader>
+      <Logo />
+      <TitleLink to="/">Purr</TitleLink>
+      <CrossLink href="https://userfeeds.github.io/cryptobeep">Beep</CrossLink>
+      <CrossLink href="https://userfeeds.github.io/cryptomoji">Moji</CrossLink>
+      <CrossLink href="https://userfeeds.github.io/robohash-book">Hash</CrossLink>
+      <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
     </StyledHeader>
   );
 };

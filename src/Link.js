@@ -14,4 +14,6 @@ const StyledLink = styled(Link)`
   }
 `;
 
+export const A = StyledLink.withComponent('a');
+
 export default StyledLink;
