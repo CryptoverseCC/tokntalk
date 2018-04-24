@@ -8,7 +8,7 @@ import reverse from 'lodash/fp/reverse';
 import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
-import { Link } from 'react-router-dom';
+import Link from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
 import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
@@ -129,9 +129,9 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
   );
 };
 
-const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message, style = {} }) => (
+const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
-    <div className={`media-left ${highlighted ? 'cp-reply--highlighted' : ''}`} style={{ position: 'relative' }}>
+    <div className="media-left" style={{ position: 'relative' }}>
       <div
         style={{
           height: '54px',
@@ -197,9 +197,9 @@ const Reply = ({ id, highlighted, from, createdAt, etherscanUrl, family, message
               then={<span style={{ color: '#ffa6d8' }}>Liked</span>}
             />
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
-            <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+            <Link to={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
               {family}
-            </a>
+            </Link>
           </small>
         </div>
       </div>
@@ -249,9 +249,9 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
       <div>
         <small style={{ color: '#928F9B' }}>
           {timeago().format(createdAt)}{' '}
-          <a href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+          <Link to={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
             {family}
-          </a>
+          </Link>
         </small>
       </div>
     </React.Fragment>
@@ -331,7 +331,7 @@ const CardBox = styled.div`
     margin-top: 1.5rem;
   }
 
-  ${({ added }) => (added ? 'animation: blink 1s ease-out 1' : '')};
+  ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};
 `;
 
 class Card extends React.Component {

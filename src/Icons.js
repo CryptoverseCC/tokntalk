@@ -1,5 +1,12 @@
 import React from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
+
+export const socialColors = {
+  facebook: '#4167b2',
+  twitter: '#1CA1F2',
+  instagram: '#F41476',
+  github: '#24292e'
+};
 
 export const FacebookIcon = styled.svg.attrs({
   width: '18px',

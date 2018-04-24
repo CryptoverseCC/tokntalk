@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from './Link';
 import { ConnectedCommentForm, CommentForm } from './CommentForm';
 import { ActiveEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
 
@@ -30,7 +30,6 @@ const Hero = () => (
                           fontFamily: 'Rubik',
                           fontSize: '18px',
                           fontWeight: '500',
-                          color: '#623CEA'
                         }}
                       >
                         <ActiveEntityName />

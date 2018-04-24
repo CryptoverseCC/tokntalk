@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from './Link';
 import styled from 'styled-components';
 import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityAvatar, EntityName } from './Entity';
 import TranslationsContext from './Translations';
@@ -73,43 +73,45 @@ const CatDropdownToggle = ({ openDropdown }) => {
   );
 };
 
+const PickEntity = styled.button`
+  border: none;
+  background: none;
+  outline: none;
+  margin: 0;
+  padding: 0.375rem 1rem;
+  width: 100%;
+  border-radius: 33px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: #f4f1ff;
+    color: #623cea;
+  }
+`;
+
 const CatDropdown = () => {
   return (
-    <div className="has-text-right column" style={{ color: '#1B2437' }}>
+    <div className="has-text-right column">
       <Dropdown toggle={({ openDropdown }) => <CatDropdownToggle openDropdown={openDropdown} />}>
         {({ closeDropdown }) => (
           <Entities>
             {({ entities, changeActiveEntityTo }) =>
               entities.map(entity => (
-                <button
-                  key={entity.id}
-                  className="dropdown-item cp-dropdown-item"
-                  onClick={() => {
-                    changeActiveEntityTo(entity);
-                    closeDropdown();
-                  }}
-                  style={{
-                    border: 'none',
-                    background: 'none',
-                    outline: 'none',
-                    margin: 0,
-                    width: '100%',
-                    borderRadius: '33px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center'
+                <li className="dropdown-item" style={{ padding: 0 }} key={entity.id}>
+                  <PickEntity
+                    onClick={() => {
+                      changeActiveEntityTo(entity);
+                      closeDropdown();
                     }}
                   >
                     <EntityAvatar id={entity.id} size="small" lazy={false} />
                     <b style={{ marginLeft: '5px' }}>
                       <EntityName id={entity.id} />
                     </b>
-                  </div>
-                </button>
+                  </PickEntity>
+                </li>
               ))
             }
           </Entities>
@@ -185,7 +187,7 @@ const MetamaskLockedStatus = () => (
 
 const NoIdentitiesStatus = () => (
   <StyledErrorContainer>
-    <img src={NoIdentity} style={{ marginRight: '10px' }} alt="No Identities found"/>
+    <img src={NoIdentity} style={{ marginRight: '10px' }} alt="No Identities found" />
     <TranslationsContext.Consumer>{({ noEntitiesError }) => noEntitiesError}</TranslationsContext.Consumer>
   </StyledErrorContainer>
 );

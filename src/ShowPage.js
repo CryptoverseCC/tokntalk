@@ -4,11 +4,11 @@ import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
 import { Entity, EntityName, IfIsActiveEntity, IfActiveEntity, ActiveEntityAvatar, ActiveEntityName } from './Entity';
 import Modal from './Modal';
-import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon } from './Icons';
+import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon, socialColors } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import { getFeedItems } from './api';
 import { EntityIcon } from './entityApi';
-import { Link } from 'react-router-dom';
+import Link from './Link';
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -90,8 +90,7 @@ export default class ShowPage extends Component {
                                   style={{
                                     fontFamily: 'Rubik',
                                     fontSize: '18px',
-                                    fontWeight: '500',
-                                    color: '#623CEA'
+                                    fontWeight: '500'
                                   }}
                                 >
                                   <ActiveEntityName />
@@ -205,7 +204,7 @@ export class SocialBadges extends React.Component {
 
   normalizeHref = href => {
     return href ? href : undefined;
-  }
+  };
 
   render() {
     const {
@@ -221,19 +220,19 @@ export class SocialBadges extends React.Component {
           </Entity>
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#4167b2" href={normalizeHref(facebook)} children={<FacebookIcon />} />
+          <Badge activeColor={socialColors.facebook} href={normalizeHref(facebook)} children={<FacebookIcon />} />
           <EditButton labelType="facebook" />
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#1CA1F2" href={normalizeHref(twitter)} children={<TwitterIcon />} />
+          <Badge activeColor={socialColors.twitter} href={normalizeHref(twitter)} children={<TwitterIcon />} />
           <EditButton labelType="twitter" />
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#F41476" href={normalizeHref(instagram)} children={<InstagramIcon />} />
+          <Badge activeColor={socialColors.instagram} href={normalizeHref(instagram)} children={<InstagramIcon />} />
           <EditButton labelType="instagram" />
         </SocialBadge>
         <SocialBadge>
-          <Badge activeColor="#24292e" href={normalizeHref(github)} children={<GithubIcon />} />
+          <Badge activeColor={socialColors.github} href={normalizeHref(github)} children={<GithubIcon />} />
           <EditButton labelType="github" />
         </SocialBadge>
         {this.state.editing && (

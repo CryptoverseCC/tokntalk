@@ -9,15 +9,23 @@ const {
 
 export const createUserfeedsId = entityId => `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
 
+let lastFeedItemRequestTime = new Date(0);
+
 export const getFeedItems = async entityId => {
   const entitySuffix = entityId ? `:${entityId}` : '';
   const response = await fetch(
-    `${USERFEEDS_API_ADDRESS}/cryptopurr_feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`
+    `${USERFEEDS_API_ADDRESS}/cryptopurr_feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`,
+    {
+      headers: {
+        'If-Modified-Since': lastFeedItemRequestTime.toGMTString()
+      }
+    }
   );
   let { items: feedItems } = await response.json();
   feedItems = feedItems.filter(feedItem =>
     ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
   );
+  lastFeedItemRequestTime = new Date();
   return feedItems;
 };
 
