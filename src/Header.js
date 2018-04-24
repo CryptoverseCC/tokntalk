@@ -46,23 +46,18 @@ const ButtonCrossLink = styled(CrossLink)`
     background-color: #623cea;
     color: white !important;
   }
-`
+`;
 
-// <div className="container is-fluid level-item columns">
-//         <Link to="/" className="level-item column is-column-4 is-offset-4 has-text-centered">
-//           <Title>{process.env.REACT_APP_NAME}</Title>
-//         </Link>
-//         <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
-//       </div>
 const Header = () => {
   return (
     <StyledHeader>
       <Logo />
-      <TitleLink to="/">Purr</TitleLink>
+      <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
       <CrossLink href="https://userfeeds.github.io/cryptobeep">Beep</CrossLink>
       <CrossLink href="https://userfeeds.github.io/cryptomoji">Moji</CrossLink>
       <CrossLink href="https://userfeeds.github.io/robohash-book">Hash</CrossLink>
       <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
+      <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
     </StyledHeader>
   );
 };
