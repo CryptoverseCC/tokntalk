@@ -117,9 +117,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
             {reactions.map((reaction, index) => {
               const id = reaction.context.split(':')[2];
               return (
-                <Link to={`/${id}`} key={index}>
-                  <EntityAvatar id={id} size="verySmall" style={{ marginLeft: '8px' }} />
-                </Link>
+                <EntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />
               );
             })}
           </div>
