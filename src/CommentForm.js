@@ -2,7 +2,7 @@ import React from 'react';
 import TextArea from 'react-autosize-textarea';
 import styled, { css } from 'styled-components';
 import Context from './Context';
-import Metamask from './img/metamask.png';
+import Paw from './img/paw.svg';
 import TranslationsContext from './Translations';
 
 export const CommentForm = styled.form`
@@ -90,7 +90,7 @@ const MetamaskButton = styled.button`
   outline: none;
   border: none;
   transition: all 0.15s ease-in-out;
-  background: transparent url(${Metamask});
+  background: transparent url(${Paw});
   background-position: 50% 50%;
   background-size: 50%;
   background-repeat: no-repeat;
