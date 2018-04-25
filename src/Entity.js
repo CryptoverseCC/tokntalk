@@ -80,9 +80,15 @@ export const ActiveEntityName = () => (
   <Context.Consumer>{({ entityStore: { activeEntity } }) => <EntityName id={activeEntity.token} />}</Context.Consumer>
 );
 
-export const ActiveEntityAvatar = props => (
+export const LinkedActiveEntityAvatar = props => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => <LinkedEntityAvatar id={activeEntity.token} {...props} />}
+  </Context.Consumer>
+);
+
+export const ActiveEntityAvatar = props => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) => <EntityAvatar id={activeEntity.token} {...props} />}
   </Context.Consumer>
 );
 

@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
-import { Entity, EntityName, IfIsActiveEntity, IfActiveEntity, ActiveEntityAvatar, ActiveEntityName } from './Entity';
+import {
+  Entity,
+  EntityName,
+  IfIsActiveEntity,
+  IfActiveEntity,
+  LinkedActiveEntityAvatar,
+  ActiveEntityName
+} from './Entity';
 import Modal from './Modal';
 import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon, socialColors } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
@@ -81,7 +88,7 @@ export default class ShowPage extends Component {
                         >
                           <article className="media">
                             <div className="media-left">
-                              <ActiveEntityAvatar size="large" />
+                              <LinkedActiveEntityAvatar size="large" />
                             </div>
                             <div className="media-content">
                               <div className="content">

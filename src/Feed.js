@@ -11,7 +11,7 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
-import { EntityName, IfActiveEntity, ActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
+import { EntityName, IfActiveEntity, LinkedActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
@@ -224,7 +224,7 @@ const ReplyFormContainer = ({ about }) => (
 
     <div className="media-content columns">
       <div className="column is-narrow">
-        <ActiveEntityAvatar size="medium" />
+        <LinkedActiveEntityAvatar size="medium" />
       </div>
       <div className="column">
         <ConnectedReplyForm Form={ReplyForm} about={about} />

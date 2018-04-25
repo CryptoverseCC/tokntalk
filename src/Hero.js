@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from './Link';
 import { ConnectedCommentForm, CommentForm } from './CommentForm';
-import { ActiveEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
+import { LinkedActiveEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
 
 const Hero = () => (
   <IfActiveEntity>
-    {({token}) => (
+    {({ token }) => (
       <div
         style={{
           backgroundColor: '#f9fbfd'
@@ -20,7 +20,7 @@ const Hero = () => (
               >
                 <article className="media">
                   <div className="media-left">
-                    <ActiveEntityAvatar size="large" />
+                    <LinkedActiveEntityAvatar size="large" />
                   </div>
                   <div className="media-content">
                     <div className="content">
@@ -29,7 +29,7 @@ const Hero = () => (
                         style={{
                           fontFamily: 'Rubik',
                           fontSize: '18px',
-                          fontWeight: '500',
+                          fontWeight: '500'
                         }}
                       >
                         <ActiveEntityName />
