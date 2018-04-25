@@ -7,23 +7,18 @@ const FooterContainer = styled.div`
   border: 1px solid #e6dfff;
   padding: 1rem;
   color: #95929e;
+  background-color: white;
 `;
 
 const FooterLinksContainer = styled.div`
   display: flex;
 
   ${A} {
-    color: #313949;
-
-    &:hover {
-      color: #623cea;
-    }
-
     & + ${A} {
       margin-left: 5px;
     }
   }
-`
+`;
 
 const Footer = ({ className }) => {
   return (
@@ -31,7 +26,7 @@ const Footer = ({ className }) => {
       Powered by <A href="https://userfeeds.io">Userfeeds</A>
       <FooterLinksContainer>
         <A href="https://gitter.im/userfeeds">Gitter</A>
-        <A href="https://t.me/joinchat/CKM0hw3uGrpQXeL9">Telegram</A>
+        <A href="https://t.me/userfeeds">Telegram</A>
       </FooterLinksContainer>
     </FooterContainer>
   );
