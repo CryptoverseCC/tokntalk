@@ -17,6 +17,131 @@ a:hover[href] {
   cursor: pointer;
 }
 
-.hidden {
-  display: none;
+/* FAQ */
+
+.network-name {
+  font-weight: 600;
+  padding-top: 1em;
+}
+
+.faq-title {
+  font-size: 5rem;
+  color: #060310;
+  font-weight: 500;
+}
+
+.faq-subtitle {
+  font-size: 2rem;
+  color: #928f9b;
+}
+
+.hero-faq {
+  background-color: #f9fbfd;
+}
+.barbossa {
+  position: relative;
+  background-image: url('./img/barbossa.svg');
+  width: 167px;
+  height: 167px;
+}
+
+.section-faq {
+  padding-top: 6rem;
+}
+
+.imageContainer {
+  position: absolute;
+  top: 75px;
+  left: 57px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin: -15px 0 0 -15px;
+  clip-path: circle(14px at center);
+}
+
+.stroke {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.6px solid #31323d;
+  z-index: 999;
+}
+
+.image {
+  animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.toggle:last-child {
+  border-bottom: 1px solid #eaf1f7;
+}
+
+.toggle {
+  border-top: 1px solid #eaf1f7;
+}
+
+.toggle:first-child {
+  border-top: none;
+}
+
+.toggle .toggle-title {
+  position: relative;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.toggle .toggle-title:first-child {
+  position: relative;
+  display: block;
+  margin-bottom: 6px;
+}
+.toggle .toggle-title h3 {
+  font-size: 2rem;
+  margin: 0px;
+  line-height: 1;
+  cursor: pointer;
+  font-weight: 400;
+}
+.toggle .toggle-inner {
+  font-size: 1.2rem;
+  padding: 7px 25px 10px 0px;
+  margin: 0 0 0 0;
+}
+.toggle .toggle-inner div {
+  max-width: 100%;
+}
+
+.toggle .toggle-title .title-name {
+  display: block;
+  padding: 30px 0px 20px 0px;
+}
+
+.faq-label {
+  display: inline-block;
+  background-color: #e6faf1;
+  padding: 0.3em 0.8em;
+  font-size: 0.8em;
+  border-radius: 1em;
+  color: #09d57c;
+}
+
+.arrow {
+  display: inline-block;
+  margin-left: 1em;
+  transition: all 0.2s ease;
 }

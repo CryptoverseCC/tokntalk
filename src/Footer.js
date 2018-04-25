@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { A } from './Link';
+import StyledLink, { A } from './Link';
 
 const FooterContainer = styled.div`
   border-radius: 12px;
@@ -12,12 +12,7 @@ const FooterContainer = styled.div`
 
 const FooterLinksContainer = styled.div`
   display: flex;
-
-  ${A} {
-    & + ${A} {
-      margin-left: 5px;
-    }
-  }
+  justify-content: space-between;
 `;
 
 const Footer = ({ className }) => {
@@ -27,6 +22,7 @@ const Footer = ({ className }) => {
       <FooterLinksContainer>
         <A href="https://gitter.im/userfeeds">Gitter</A>
         <A href="https://t.me/userfeeds">Telegram</A>
+        <StyledLink to="/faq">FAQ</StyledLink>
       </FooterLinksContainer>
     </FooterContainer>
   );

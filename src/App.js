@@ -12,6 +12,7 @@ import { getEntityData } from './entityApi';
 import Header from './Header';
 import { PositionedFooter } from './Footer';
 import NetworkWarning from './NetworkWarning';
+import FAQPage from './FAQPage';
 
 const { REACT_APP_NAME: APP_NAME, REACT_APP_BASENAME: BASENAME } = process.env;
 
@@ -191,6 +192,8 @@ export default class App extends Component {
     <IndexPage {...props} updateFeedItems={this.updateFeedItems} startFeedLoading={this.startFeedLoading} />
   );
 
+  renderFaqPage = props => <FAQPage />;
+
   renderShowPage = props => (
     <ShowPage
       {...props}
@@ -204,6 +207,7 @@ export default class App extends Component {
     const {
       renderIndexPage,
       renderShowPage,
+      renderFaqPage,
       changeActiveEntityTo,
       getEntityInfo,
       sendMessage,
@@ -260,6 +264,7 @@ export default class App extends Component {
             <NetworkWarning />
             <Header />
             <Switch>
+              <Route exact path="/faq" component={renderFaqPage} />
               <Route exact path="/:entityId" component={renderShowPage} />
               <Route exact path="/" component={renderIndexPage} />
             </Switch>

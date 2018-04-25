@@ -51,7 +51,9 @@ const ButtonCrossLink = styled(CrossLink)`
 const Header = () => {
   return (
     <StyledHeader>
-      <Logo />
+      <Link to="/">
+        <Logo />
+      </Link>
       <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
       <CrossLink href="https://userfeeds.github.io/cryptobeep">Beep</CrossLink>
       <CrossLink href="https://userfeeds.github.io/cryptomoji">Moji</CrossLink>
