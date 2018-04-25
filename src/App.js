@@ -10,6 +10,7 @@ import ShowPage from './ShowPage';
 import { getMyEntities, getWeb3State, sendMessage, reply, react, label, writeTo, getLabels } from './api';
 import { getEntityData } from './entityApi';
 import Header from './Header';
+import { PositionedFooter } from './Footer';
 
 const { REACT_APP_NAME: APP_NAME, REACT_APP_BASENAME: BASENAME } = process.env;
 
@@ -257,6 +258,7 @@ export default class App extends Component {
               <Route exact path="/:entityId" component={renderShowPage} />
               <Route exact path="/" component={renderIndexPage} />
             </Switch>
+            <PositionedFooter />
           </React.Fragment>
         </Router>
       </Context.Provider>

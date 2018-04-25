@@ -55,9 +55,9 @@ const Logo = styled.div.attrs({
       >
         <defs>
           <linearGradient x1="18.2055918%" y1="-51.109094%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="#9C70F7" offset="0%" />
-            <stop stop-color="#976CF1" offset="0%" />
-            <stop stop-color="#8E63E6" offset="100%" />
+            <stop stopColor="#9C70F7" offset="0%" />
+            <stop stopColor="#976CF1" offset="0%" />
+            <stop stopColor="#8E63E6" offset="100%" />
           </linearGradient>
           <path
             d="M13.963507,6.03261851 C9.66937018,2.39277641 3.00569763,-2.2397499 0.429215543,1.48548439 C0.0774067436,1.98716351 0.0463647907,2.64895298 0.336089684,3.19332819 L3.55747768,9.01227679 C5.16229539,9.61653646 7.03241257,9.61653646 9.16782924,9.01227679 C11.3032459,8.40801711 12.9018052,7.41479769 13.963507,6.03261851 Z"
@@ -85,9 +85,9 @@ const Logo = styled.div.attrs({
       >
         <defs>
           <linearGradient x1="18.2055918%" y1="-51.109094%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="#9C70F7" offset="0%" />
-            <stop stop-color="#976CF1" offset="0%" />
-            <stop stop-color="#8E63E6" offset="100%" />
+            <stop stopColor="#9C70F7" offset="0%" />
+            <stop stopColor="#976CF1" offset="0%" />
+            <stop stopColor="#8E63E6" offset="100%" />
           </linearGradient>
         </defs>
         <g transform="translate(-726.000000, -734.000000)">

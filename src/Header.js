@@ -113,7 +113,7 @@ const PickEntity = styled.button`
 
 const CatDropdown = () => {
   return (
-    <div className="has-text-right column">
+    <div style={{ marginLeft: 'auto' }}>
       <Dropdown toggle={({ openDropdown }) => <CatDropdownToggle openDropdown={openDropdown} />}>
         {({ closeDropdown }) => (
           <Entities>
@@ -192,34 +192,32 @@ class Dropdown extends React.Component {
 }
 
 const NoMetamaskStatus = () => (
-  <StyledErrorContainer>
+  <ErrorContainer>
     <img src={NoMetamask} alt="No metamask" />
     No Metamask
-  </StyledErrorContainer>
+  </ErrorContainer>
 );
 
 const MetamaskLockedStatus = () => (
-  <StyledErrorContainer>
+  <ErrorContainer>
     <img src={Locked} alt="Metamask locked" />
     Metamask locked
-  </StyledErrorContainer>
+  </ErrorContainer>
 );
 
 const NoIdentitiesStatus = () => (
-  <StyledErrorContainer>
+  <ErrorContainer>
     <img src={NoIdentity} style={{ marginRight: '10px' }} alt="No Identities found" />
     <TranslationsContext.Consumer>{({ noEntitiesError }) => noEntitiesError}</TranslationsContext.Consumer>
-  </StyledErrorContainer>
+  </ErrorContainer>
 );
 
-const ErrorContainer = ({ children, className }) => {
-  return <div className={`${className} level-right has-text-right column`}>{children}</div>;
-};
-
-const StyledErrorContainer = styled(ErrorContainer)`
+const ErrorContainer = styled.div`
+  margin-left: auto;
   color: #fc0035;
   text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
   display: flex;
+  align-items: center;
 `;
 
 const ErrorStatus = () => {
