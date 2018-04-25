@@ -528,7 +528,7 @@ const LonelyBlock = styled.div`
 `;
 
 const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, showMoreFeedItems }) => (
-  <div className="container" style={{ padding: '40px 0' }}>
+  <div className="container" style={{ padding: '40px 0.75rem' }}>
     <div className="columns">
       <div className="column is-6 is-offset-3" style={{ display: 'flex', justifyContent: 'center' }}>
         {feedLoading ? (

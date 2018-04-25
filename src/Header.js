@@ -24,10 +24,17 @@ const StyledHeader = styled.div`
   display: flex;
   align-items: center;
   padding: 0 2rem;
+
+  @media (max-width: 700px) {
+    padding: 0 0.75rem;
+  }
 `;
 
 const TitleLink = styled(Link)`
   margin-left: 1rem;
+  @media (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const CrossLink = styled(A)`
@@ -66,6 +73,13 @@ const Header = () => {
 
 export default Header;
 
+const DropdownEntityName = styled.div`
+  margin-left: 12px;
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
 const CatDropdownToggle = ({ openDropdown }) => {
   return (
     <button
@@ -74,7 +88,7 @@ const CatDropdownToggle = ({ openDropdown }) => {
       style={{ border: 'none', background: 'none', outline: 'none', cursor: 'pointer', marginLeft: 'auto' }}
     >
       <ActiveEntityAvatar size="small" />
-      <div style={{ marginLeft: '12px' }}>
+      <DropdownEntityName>
         <b>
           <ActiveEntityName />
         </b>
@@ -90,7 +104,7 @@ const CatDropdownToggle = ({ openDropdown }) => {
         >
           ⌄
         </span>
-      </div>
+      </DropdownEntityName>
     </button>
   );
 };
@@ -193,31 +207,39 @@ class Dropdown extends React.Component {
   }
 }
 
+const Error = styled.span`
+  color: #fc0035;
+  text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
 const NoMetamaskStatus = () => (
   <ErrorContainer>
     <img src={NoMetamask} alt="No metamask" />
-    No Metamask
+    <Error>No Metamask</Error>
   </ErrorContainer>
 );
 
 const MetamaskLockedStatus = () => (
   <ErrorContainer>
     <img src={Locked} alt="Metamask locked" />
-    Metamask locked
+    <Error>Metamask locked</Error>
   </ErrorContainer>
 );
 
 const NoIdentitiesStatus = () => (
   <ErrorContainer>
     <img src={NoIdentity} style={{ marginRight: '10px' }} alt="No Identities found" />
-    <TranslationsContext.Consumer>{({ noEntitiesError }) => noEntitiesError}</TranslationsContext.Consumer>
+    <Error>
+      <TranslationsContext.Consumer>{({ noEntitiesError }) => noEntitiesError}</TranslationsContext.Consumer>
+    </Error>
   </ErrorContainer>
 );
 
 const ErrorContainer = styled.div`
   margin-left: auto;
-  color: #fc0035;
-  text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
   display: flex;
   align-items: center;
 `;
