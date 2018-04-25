@@ -11,6 +11,7 @@ import { getMyEntities, getWeb3State, sendMessage, reply, react, label, writeTo,
 import { getEntityData } from './entityApi';
 import Header from './Header';
 import { PositionedFooter } from './Footer';
+import NetworkWarning from './NetworkWarning';
 
 const { REACT_APP_NAME: APP_NAME, REACT_APP_BASENAME: BASENAME } = process.env;
 
@@ -45,7 +46,8 @@ export default class App extends Component {
     temporaryReplies: {},
     temporaryReactions: {},
     from: undefined,
-    provider: undefined
+    provider: undefined,
+    networkName: undefined
   };
 
   componentDidMount() {
@@ -78,9 +80,9 @@ export default class App extends Component {
   };
 
   refreshWeb3State = async () => {
-    const { from, isListening, provider } = await getWeb3State();
+    const { from, isListening, provider, networkName } = await getWeb3State();
     if (this.state.from !== from) this.refreshMyEntities();
-    this.setState({ from, isListening, provider });
+    this.setState({ from, isListening, provider, networkName });
   };
 
   getEntityLabels = async entityId => {
@@ -224,7 +226,8 @@ export default class App extends Component {
       temporaryReactions,
       allowAddingFeedItem,
       provider,
-      from
+      from,
+      networkName
     } = this.state;
     return (
       <Context.Provider
@@ -247,12 +250,14 @@ export default class App extends Component {
           },
           web3Store: {
             provider,
-            from
+            from,
+            networkName
           }
         }}
       >
         <Router basename={BASENAME}>
           <React.Fragment>
+            <NetworkWarning />
             <Header />
             <Switch>
               <Route exact path="/:entityId" component={renderShowPage} />

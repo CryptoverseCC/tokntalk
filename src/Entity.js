@@ -4,6 +4,12 @@ import Context from './Context';
 import IdentityAvatar from './Avatar';
 import TranslationsContext from './Translations';
 
+export const IfOnMainnet = ({ children, then, other }) => (
+  <Context.Consumer>
+    {({ web3Store: { networkName } }) => (networkName === 'ethereum' ? then || children : null)}
+  </Context.Consumer>
+);
+
 export const IfActiveEntity = ({ children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) =>
@@ -35,7 +41,9 @@ export const Entity = ({ id, children }) => (
 export const EntityName = ({ id }) => (
   <Context.Consumer>
     {({ entityStore: { getEntity } }) => (
-      <TranslationsContext.Consumer>{({ entityName }) => getEntity(id).name || `${entityName} #${getEntity(id).id}`}</TranslationsContext.Consumer>
+      <TranslationsContext.Consumer>
+        {({ entityName }) => getEntity(id).name || `${entityName} #${getEntity(id).id}`}
+      </TranslationsContext.Consumer>
     )}
   </Context.Consumer>
 );

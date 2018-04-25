@@ -16,7 +16,7 @@ const StyledHeader = styled.div`
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 0;
-  position: fixed;
+  position: sticky;
   width: 100%;
   z-index: 999;
   height: 65px;
