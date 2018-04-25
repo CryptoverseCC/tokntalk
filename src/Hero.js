@@ -11,7 +11,7 @@ const Hero = () => (
           backgroundColor: '#f9fbfd'
         }}
       >
-        <div className="container" style={{ padding: '40px 0' }}>
+        <div className="container" style={{ padding: '40px 0.75rem' }}>
           <div className="columns">
             <div className="column is-6 is-offset-3">
               <div

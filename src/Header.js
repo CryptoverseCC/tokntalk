@@ -1,7 +1,7 @@
 import React from 'react';
 import Link, { A } from './Link';
 import styled from 'styled-components';
-import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityAvatar, EntityName } from './Entity';
+import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityName, EntityAvatar } from './Entity';
 import TranslationsContext from './Translations';
 import Locked from './img/locked.svg';
 import NoMetamask from './img/no.svg';

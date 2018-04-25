@@ -11,7 +11,7 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
-import { EntityName, IfActiveEntity, ActiveEntityAvatar, EntityAvatar, IfActiveEntityLiked } from './Entity';
+import { EntityName, IfActiveEntity, ActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
@@ -95,7 +95,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
-        <EntityAvatar size="medium" reaction={reaction} id={from} />
+        <LinkedEntityAvatar size="medium" reaction={reaction} id={from} />
       </div>
       <div className="media-content">
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
@@ -117,7 +117,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
             {reactions.map((reaction, index) => {
               const id = reaction.context.split(':')[2];
               return (
-                <EntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />
+                <LinkedEntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />
               );
             })}
           </div>
@@ -149,7 +149,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
 
     <div className="media-content columns">
       <div className="column is-narrow">
-        <EntityAvatar size="medium" id={from} />
+        <LinkedEntityAvatar size="medium" id={from} />
       </div>
       <div className="column">
         <div
@@ -344,7 +344,7 @@ class Card extends React.Component {
         <React.Fragment>
           <article className="media">
             <div className="media-left" style={{ width: '54px' }}>
-              <EntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context.split(':')[2]} />
+              <LinkedEntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context.split(':')[2]} />
             </div>
             <div className="media-content">
               <CardTitle
@@ -378,7 +378,7 @@ class Card extends React.Component {
           return (
             <React.Fragment>
               <span style={{ marginLeft: '10px' }}>wrote to</span>
-              <EntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
+              <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
               <Link to={`/${id}`} style={{ marginLeft: '10px' }}>
                 <b>
                   <EntityName id={id} />

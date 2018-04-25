@@ -52,6 +52,14 @@ export const EntityName = ({ id }) => (
 export const EntityAvatar = ({ id, ...props }) => (
   <Context.Consumer>
     {({ entityStore: { getEntity } }) => (
+      <IdentityAvatar {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} />
+    )}
+  </Context.Consumer>
+);
+
+export const LinkedEntityAvatar = ({ id, ...props }) => (
+  <Context.Consumer>
+    {({ entityStore: { getEntity } }) => (
       <StyledLink to={`/${id}`}>
         <IdentityAvatar {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} />
       </StyledLink>
@@ -74,7 +82,7 @@ export const ActiveEntityName = () => (
 
 export const ActiveEntityAvatar = props => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity } }) => <EntityAvatar id={activeEntity.token} {...props} />}
+    {({ entityStore: { activeEntity } }) => <LinkedEntityAvatar id={activeEntity.token} {...props} />}
   </Context.Consumer>
 );
 

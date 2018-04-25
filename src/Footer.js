@@ -30,6 +30,7 @@ const Footer = ({ className }) => {
 
 export const PositionedFooter = styled(Footer)`
   position: fixed;
+  z-index: 1000;
   bottom: 10px;
   right: 2rem;
 `;
