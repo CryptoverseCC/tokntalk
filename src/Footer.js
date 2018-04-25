@@ -31,7 +31,7 @@ const Footer = ({ className }) => {
       Powered by <A href="https://userfeeds.io">Userfeeds</A>
       <FooterLinksContainer>
         <A href="https://gitter.im/userfeeds">Gitter</A>
-        <A href="https://gitter.im/userfeeds">Telegram</A>
+        <A href="https://t.me/joinchat/CKM0hw3uGrpQXeL9">Telegram</A>
       </FooterLinksContainer>
     </FooterContainer>
   );
