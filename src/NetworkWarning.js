@@ -5,13 +5,15 @@ import { IfOnMainnet } from './Entity';
 const StyledNetworkWarning = styled.p`
   text-align: center;
   padding: 0.5rem 2rem;
-  background-color: lightyellow;
-  color: #fc0035;
+  background-color: #fdcf0b;
+  color: #2f343a;
 `;
 
 const NetworkWarning = () => (
   <IfOnMainnet>
-    <StyledNetworkWarning>You are on mainnet. You can also interact with application on testnet!</StyledNetworkWarning>
+    <StyledNetworkWarning>
+      <b>You are on mainnet. Interact with application on testnet to save money and network!</b>
+    </StyledNetworkWarning>
   </IfOnMainnet>
 );
 export default NetworkWarning;
