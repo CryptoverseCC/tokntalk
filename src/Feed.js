@@ -129,7 +129,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
 
 const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
-    <div className="media-left" style={{ position: 'relative' }}>
+    <div className="media-left is-hidden-mobile" style={{ position: 'relative' }}>
       <div
         style={{
           height: '54px',
@@ -147,7 +147,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
       </div>
     </div>
 
-    <div className="media-content columns">
+    <div className="media-content columns is-mobile">
       <div className="column is-narrow">
         <LinkedEntityAvatar size="medium" id={from} />
       </div>
@@ -212,7 +212,7 @@ const createEtherscanUrl = item => {
 
 const ReplyFormContainer = ({ about }) => (
   <article className="media" style={{ borderTop: 'none' }}>
-    <div className="media-left">
+    <div className="media-left is-hidden-mobile">
       <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <svg width="16px" height="16px" version="1.1">
           <g fill="#e1dfec" fillRule="nonzero">
@@ -222,7 +222,7 @@ const ReplyFormContainer = ({ about }) => (
       </div>
     </div>
 
-    <div className="media-content columns">
+    <div className="media-content columns is-mobile">
       <div className="column is-narrow">
         <LinkedActiveEntityAvatar size="medium" />
       </div>
@@ -233,15 +233,19 @@ const ReplyFormContainer = ({ about }) => (
   </article>
 );
 
+const SenderName = styled(Link)`
+  font-size: 18px;
+`
+
 const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
   return (
     <React.Fragment>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Link to={`/${from}`} style={{ fontSize: '18px' }}>
+        <SenderName to={`/${from}`}>
           <b>
             <EntityName id={from} />
           </b>
-        </Link>{' '}
+        </SenderName>{' '}
         {suffix}
       </div>
       <div>
@@ -379,7 +383,7 @@ class Card extends React.Component {
             <React.Fragment>
               <span style={{ marginLeft: '10px' }}>wrote to</span>
               <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
-              <Link to={`/${id}`} style={{ marginLeft: '10px' }}>
+              <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
                 <b>
                   <EntityName id={id} />
                 </b>
