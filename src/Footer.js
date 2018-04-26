@@ -9,7 +9,7 @@ const FooterContainer = styled.div`
   color: #95929e;
   background-color: white;
 
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     border-radius: 0;
     border-width: 1px 0 0 0;
     display: flex;
@@ -21,7 +21,7 @@ const FooterLinksContainer = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     > * + * {
       margin-left: 10px;
     }
@@ -47,7 +47,7 @@ export const PositionedFooter = styled(Footer)`
   bottom: 10px;
   right: 2rem;
 
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     left: 0;
     right: 0;
     bottom: 0;

@@ -51,6 +51,28 @@ export default class ShowPage extends Component {
     }
   };
 
+  static HeroImageContainer = styled.div`
+    background-color: ${({ backgroundColor }) => backgroundColor || 'none'};
+    height: 30rem;
+    text-align: center;
+
+    @media (max-width: 770px) {
+      height: 15rem;
+    }
+  `;
+
+  static FeedContainer = styled.div`
+    padding: 20px 0.75rem;
+  `;
+
+  static EntityName = styled.h1`
+    font-size: 3rem;
+    @media (max-width: 770px) {
+      font-size: 2rem;
+      text-align: center;
+    }
+  `;
+
   render() {
     const { entityId } = this.props.match.params;
     return (
@@ -58,15 +80,15 @@ export default class ShowPage extends Component {
         <Entity id={entityId}>
           {entity => (
             <React.Fragment>
-              <div className="has-text-centered" style={{ backgroundColor: entity.color, height: '30rem' }}>
+              <ShowPage.HeroImageContainer backgroundColor={entity.color}>
                 <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id} />
-              </div>
-              <div className="container" style={{ padding: '20px 0' }}>
+              </ShowPage.HeroImageContainer>
+              <ShowPage.FeedContainer className="container">
                 <div className="columns">
                   <div className="column is-6 is-offset-3">
-                    <h1 style={{ fontSize: '3rem', display: 'inline' }}>
+                    <ShowPage.EntityName>
                       <EntityName id={entity.id} />
-                    </h1>
+                    </ShowPage.EntityName>
                   </div>
                 </div>
                 <div className="columns">
@@ -115,7 +137,7 @@ export default class ShowPage extends Component {
                     </div>
                   )}
                 </IfActiveEntity>
-              </div>
+              </ShowPage.FeedContainer>
               <ConnectedFeed forEntity={entity} />
             </React.Fragment>
           )}
@@ -142,6 +164,11 @@ const Badge = styled.a`
 
   &:hover {
     color: ${({ href }) => (href ? 'white' : '#94919c')};
+  }
+
+  @media (max-width: 770px) {
+    width: 50px;
+    height: 50px;
   }
 `;
 
@@ -213,6 +240,16 @@ export class SocialBadges extends React.Component {
     return href ? href : undefined;
   };
 
+  static Container = styled.div`
+    position: relative;
+    display: flex;
+    width: 100%;
+
+    @media (max-width: 770px) {
+      justify-content: space-between;
+    }
+  `;
+
   render() {
     const {
       EditButton,
@@ -220,7 +257,7 @@ export class SocialBadges extends React.Component {
       props: { facebook, twitter, instagram, github, id }
     } = this;
     return (
-      <div style={{ position: 'relative', display: 'flex', width: '100%' }}>
+      <SocialBadges.Container>
         <SocialBadge>
           <Entity id={id}>
             {({ url, color }) => <Badge href={url} activeColor={color} children={<EntityIcon />} />}
@@ -253,7 +290,7 @@ export class SocialBadges extends React.Component {
             />
           </LabelModal>
         )}
-      </div>
+      </SocialBadges.Container>
     );
   }
 }
