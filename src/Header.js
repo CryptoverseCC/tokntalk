@@ -80,13 +80,39 @@ const DropdownEntityName = styled.div`
   }
 `;
 
+const ToggleButton = styled.button`
+  border: none;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  margin-left: auto;
+  position: relative;
+
+  @media (max-width: 770px) {
+    &:before {
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 0 1px 4px 1px rgba(98, 60, 234, 0.2);
+      z-index: 1;
+      content: '▾';
+      display: flex;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      color: rgb(98, 60, 234);
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      align-items: center;
+      justify-content: center;
+    }
+  }
+`;
+
 const CatDropdownToggle = ({ openDropdown }) => {
   return (
-    <button
-      className="level"
-      onClick={openDropdown}
-      style={{ border: 'none', background: 'none', outline: 'none', cursor: 'pointer', marginLeft: 'auto' }}
-    >
+    <ToggleButton className="level" onClick={openDropdown}>
       <ActiveEntityAvatar size="small" />
       <DropdownEntityName>
         <b>
@@ -105,7 +131,7 @@ const CatDropdownToggle = ({ openDropdown }) => {
           ⌄
         </span>
       </DropdownEntityName>
-    </button>
+    </ToggleButton>
   );
 };
 
