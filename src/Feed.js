@@ -24,6 +24,7 @@ import ReplyIcon from './img/reply.svg';
 import { createUserfeedsId } from './api';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
 import styled, { keyframes } from 'styled-components';
+import TranslationsContext from './Translations';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -604,7 +605,11 @@ const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, sh
             })}
           </InfiniteScroll>
         ) : (
-          <EmptyFeedPlaceholder><b>No purrs yet</b></EmptyFeedPlaceholder>
+          <EmptyFeedPlaceholder>
+            <b>
+              <TranslationsContext.Consumer>{({ emptyFeed }) => emptyFeed}</TranslationsContext.Consumer>
+            </b>
+          </EmptyFeedPlaceholder>
         )}
       </div>
     </div>

@@ -44,7 +44,8 @@ export const entityTranslations = {
   commentPlaceholder: 'Purr your story',
   replyPlaceholder: 'Purr your reply',
   noEntitiesError: 'No cats found',
-  entityName: 'Kitty'
+  entityName: 'Kitty',
+  emptyFeed: 'No purrs yet'
 };
 
 export const avatarSizes = {
