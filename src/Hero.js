@@ -28,7 +28,7 @@ const Hero = () => (
                         to={`/${token}`}
                         style={{
                           fontFamily: 'Rubik',
-                          fontSize: '18px',
+                          fontSize: '1.1rem',
                           fontWeight: '500'
                         }}
                       >

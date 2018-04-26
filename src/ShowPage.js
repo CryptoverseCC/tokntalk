@@ -118,7 +118,7 @@ export default class ShowPage extends Component {
                                   to={`/${token}`}
                                   style={{
                                     fontFamily: 'Rubik',
-                                    fontSize: '18px',
+                                    fontSize: '1.1rem',
                                     fontWeight: '500'
                                   }}
                                 >
@@ -226,7 +226,7 @@ export class SocialBadges extends React.Component {
   };
 
   EditButton = ({ labelType }) => (
-    <InlineButton onClick={this.editLabel(labelType)} style={{ fontSize: '16px' }}>
+    <InlineButton onClick={this.editLabel(labelType)} style={{ fontSize: '1rem' }}>
       {this.props.editable && 'Edit'}
     </InlineButton>
   );

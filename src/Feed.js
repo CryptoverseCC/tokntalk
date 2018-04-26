@@ -58,7 +58,7 @@ const LabelButton = styled.button`
   border-width: 1px;
   border-style: solid;
   border-color: #ffe4f3;
-  font-size: 16px;
+  font-size: 1rem;
   transition: all 0.15s ease-in-out;
   color: ${({ liked }) => (liked ? '#ffa6d8' : 'inherit')};
   cursor: ${({ liked }) => (liked ? 'default' : 'pointer')};
@@ -100,7 +100,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
       <div className="media-content" style={{ overflow: 'hidden' }}>
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
         <p
-          style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word', whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
+          style={{ marginTop: '20px', fontSize: '1.1rem', wordBreak: 'break-word', whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
           dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
         {reactions && (
@@ -236,7 +236,7 @@ const ReplyFormContainer = ({ about }) => (
 );
 
 const SenderName = styled(Link)`
-  font-size: 18px;
+  font-size: 1.1rem;
 `
 
 const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {

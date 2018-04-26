@@ -1,3 +1,9 @@
+@media (max-width: 770px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 body {
   color: #1b2437;
   font-family: 'Rubik', sans-serif;

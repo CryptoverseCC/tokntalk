@@ -13,7 +13,7 @@ const StyledHeader = styled.div`
   background-color: #f9fbfd;
   border-bottom: 1px solid #e8e8f1;
   font-family: Rubik;
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 0;
   position: sticky;
@@ -95,7 +95,7 @@ const CatDropdownToggle = ({ openDropdown }) => {
         <span
           style={{
             display: 'inline-flex',
-            fontSize: '25px',
+            fontSize: '1.6rem',
             position: 'relative',
             top: '-2px',
             lineHeight: '1px',

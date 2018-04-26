@@ -13,7 +13,7 @@ export const CommentForm = styled.form`
 export const StyledTextArea = styled(TextArea)`
   background: transparent;
   font-family: Rubik;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 500;
   color: #1b2437;
   border: none;
@@ -60,7 +60,7 @@ export const ReplyForm = styled(CommentForm)`
   border: 1px solid ${({valid}) => valid ? 'transparent' : 'red'};
 
   ${StyledTextArea} {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: normal;
 
     &::placeholder {
