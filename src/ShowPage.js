@@ -189,6 +189,12 @@ const SocialBadge = styled.div`
   & + & {
     margin-left: 20px;
   }
+
+  @media (max-width: 770px) {
+    & + & {
+      margin-left: 0;
+    }
+  }
 `;
 
 const LabelModal = styled(Modal)`
