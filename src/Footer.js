@@ -11,6 +11,7 @@ const FooterContainer = styled.div`
   background-color: white;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   @media (max-width: 770px) {
     border-radius: 0;
@@ -28,8 +29,10 @@ const FotterInnerContainer = styled.div`
 const FooterLinksContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   @media (max-width: 770px) {
+    margin-left: 10px;
     > * + * {
       margin-left: 10px;
     }

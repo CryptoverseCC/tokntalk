@@ -32,7 +32,7 @@ const IntercomIconContainer = styled.div`
   border-radius: 100%;
   width: 40px;
   height: 40px;
-  margin-left: 5px;
+  margin-left: 10px;
 
   :hover {
     box-shadow: 0 3px 32px 0 rgba(0, 0, 0, 0.14);
@@ -50,11 +50,11 @@ export default class Intercom extends Component {
   };
 
   componentDidMount() {
-    if (NODE_ENV === 'production' && REACT_APP_INTERCOM_APP_ID) {
+    // if (NODE_ENV === 'production' && REACT_APP_INTERCOM_APP_ID) {
       import('react-intercom')
         .then((intercomModule) => this.setState({ IntercomComponent: intercomModule.default }))
         .catch(() => {});
-    }
+    // }
   }
 
   render() {
