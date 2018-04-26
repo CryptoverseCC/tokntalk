@@ -2,6 +2,15 @@ import React from 'react';
 import Link from './Link';
 import { ConnectedCommentForm, CommentForm } from './CommentForm';
 import { LinkedActiveEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
+import styled from 'styled-components';
+
+const HeroContainer = styled.div`
+  padding: 2.5rem 0.75rem;
+
+  @media(max-width: 770px) {
+    padding: 0.75rem;
+  }
+`
 
 const Hero = () => (
   <IfActiveEntity>
@@ -11,7 +20,7 @@ const Hero = () => (
           backgroundColor: '#f9fbfd'
         }}
       >
-        <div className="container" style={{ padding: '40px 0.75rem' }}>
+        <HeroContainer className="container">
           <div className="columns">
             <div className="column is-6 is-offset-3">
               <div
@@ -41,7 +50,7 @@ const Hero = () => (
               </div>
             </div>
           </div>
-        </div>
+        </HeroContainer>
       </div>
     )}
   </IfActiveEntity>
