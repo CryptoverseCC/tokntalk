@@ -223,7 +223,13 @@ class Dropdown extends React.Component {
         >
           <div
             className="dropdown-content"
-            style={{ boxShadow: '0 10px 30px rgba(6,3,16,0.06)', borderRadius: '25px 0 12px 25px', padding: '0.5rem' }}
+            style={{
+              boxShadow: '0 10px 30px rgba(6,3,16,0.06)',
+              borderRadius: '25px 0 12px 25px',
+              padding: '0.5rem',
+              maxHeight: '50vh',
+              overflowY: 'scroll'
+            }}
           >
             {this.props.children({ closeDropdown: this.closeDropdown })}
           </div>
