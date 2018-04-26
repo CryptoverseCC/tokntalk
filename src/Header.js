@@ -25,14 +25,14 @@ const StyledHeader = styled.div`
   align-items: center;
   padding: 0 2rem;
 
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     padding: 0 0.75rem;
   }
 `;
 
 const TitleLink = styled(Link)`
   margin-left: 1rem;
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     display: none;
   }
 `;
@@ -75,7 +75,7 @@ export default Header;
 
 const DropdownEntityName = styled.div`
   margin-left: 12px;
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     display: none;
   }
 `;
@@ -210,7 +210,7 @@ class Dropdown extends React.Component {
 const Error = styled.span`
   color: #fc0035;
   text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     display: none;
   }
 `;
