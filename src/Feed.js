@@ -58,6 +58,7 @@ const LabelButton = styled.button`
   padding: 4px;
   margin: 0;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   height: 50px;
   width: 140px;
