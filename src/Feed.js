@@ -11,7 +11,13 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
-import { EntityName, IfActiveEntity, LinkedActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
+import {
+  EntityName,
+  IfActiveEntity,
+  LinkedActiveEntityAvatar,
+  LinkedEntityAvatar,
+  IfActiveEntityLiked
+} from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
@@ -100,7 +106,13 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
       <div className="media-content" style={{ overflow: 'hidden' }}>
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
         <p
-          style={{ marginTop: '20px', fontSize: '1.1rem', wordBreak: 'break-word', whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
+          style={{
+            marginTop: '20px',
+            fontSize: '1.1rem',
+            wordBreak: 'break-word',
+            whiteSpace: 'pre-wrap',
+            overflowWrap: 'break-word'
+          }}
           dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
         {reactions && (
@@ -116,9 +128,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
             />
             {reactions.map((reaction, index) => {
               const id = reaction.context.split(':')[2];
-              return (
-                <LinkedEntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />
-              );
+              return <LinkedEntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />;
             })}
           </div>
         )}
@@ -160,7 +170,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
             borderRadius: '12px',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
-            overflowWrap: 'break-word',
+            overflowWrap: 'break-word'
           }}
         >
           <Link to={`/${from}`}>
@@ -237,7 +247,7 @@ const ReplyFormContainer = ({ about }) => (
 
 const SenderName = styled(Link)`
   font-size: 1.1rem;
-`
+`;
 
 const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
   return (
@@ -539,18 +549,20 @@ const FeedContainer = styled.div`
   @media (max-width: 770px) {
     padding: 0px 0.75rem 20px;
   }
-`
+`;
 
 const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, showMoreFeedItems }) => (
   <FeedContainer className="container">
     <div className="columns">
       <div className="column is-6 is-offset-3" style={{ display: 'flex', justifyContent: 'center' }}>
         {feedLoading ? (
-          <LonelyBlock>
-            <Block />
-            <Shadow />
-            <Bottom />
-          </LonelyBlock>
+          <div style={{ paddingTop: '20px' }}>
+            <LonelyBlock>
+              <Block />
+              <Shadow />
+              <Bottom />
+            </LonelyBlock>
+          </div>
         ) : (
           <InfiniteScroll
             style={{ width: '100%' }}
