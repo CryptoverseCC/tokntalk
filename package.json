@@ -12,6 +12,7 @@
     "react-dom": "^16.3.0",
     "react-ga": "^2.4.1",
     "react-hover-observer": "^2.1.0",
+    "react-intercom": "^1.0.14",
     "react-lazyload": "^2.3.0",
     "react-pose": "^1.1.1",
     "react-router-dom": "^4.2.2",

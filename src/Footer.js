@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledLink, { A } from './Link';
+import Intercom from './Intercom';
 
 const FooterContainer = styled.div`
   border-radius: 12px;
@@ -8,10 +9,17 @@ const FooterContainer = styled.div`
   padding: 1rem;
   color: #95929e;
   background-color: white;
+  display: flex;
+  justify-content: space-between;
 
   @media (max-width: 770px) {
     border-radius: 0;
     border-width: 1px 0 0 0;
+  }
+`;
+
+const FotterInnerContainer = styled.div`
+  @media (max-width: 770px) {
     display: flex;
     justify-content: space-between;
   }
@@ -31,12 +39,17 @@ const FooterLinksContainer = styled.div`
 const Footer = ({ className }) => {
   return (
     <FooterContainer className={className}>
-      <div>Powered by <A href="https://userfeeds.io">Userfeeds</A></div>
-      <FooterLinksContainer>
-        <A href="https://gitter.im/userfeeds">Gitter</A>
-        <A href="https://t.me/userfeeds">Telegram</A>
-        <StyledLink to="/faq">FAQ</StyledLink>
-      </FooterLinksContainer>
+      <FotterInnerContainer>
+        <div>
+          Powered by <A href="https://userfeeds.io">Userfeeds</A>
+        </div>
+        <FooterLinksContainer>
+          <A href="https://gitter.im/userfeeds">Gitter</A>
+          <A href="https://t.me/userfeeds">Telegram</A>
+          <StyledLink to="/faq">FAQ</StyledLink>
+        </FooterLinksContainer>
+      </FotterInnerContainer>
+      <Intercom />
     </FooterContainer>
   );
 };
