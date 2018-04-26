@@ -551,6 +551,17 @@ const FeedContainer = styled.div`
   }
 `;
 
+const EmptyFeedPlaceholder = styled.div`
+  display: flex;
+  flex: 1;
+  padding: 4rem 0.75rem;
+  font-size: 3rem;
+  border-radius: 20px;
+  background-color: rgba(246, 244, 255, 0.7);
+  color: #623cea;
+  justify-content: center;
+`;
+
 const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, showMoreFeedItems }) => (
   <FeedContainer className="container">
     <div className="columns">
@@ -563,7 +574,7 @@ const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, sh
               <Bottom />
             </LonelyBlock>
           </div>
-        ) : (
+        ) : feedItems.length > 0 ? (
           <InfiniteScroll
             style={{ width: '100%' }}
             hasMore={true}
@@ -592,6 +603,8 @@ const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, sh
               );
             })}
           </InfiniteScroll>
+        ) : (
+          <EmptyFeedPlaceholder><b>No purrs yet</b></EmptyFeedPlaceholder>
         )}
       </div>
     </div>
