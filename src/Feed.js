@@ -533,8 +533,16 @@ const LonelyBlock = styled.div`
   background-color: inherit;
 `;
 
+const FeedContainer = styled.div`
+  padding: 40px 0.75rem;
+
+  @media (max-width: 770px) {
+    padding: 0px 0.75rem 20px;
+  }
+`
+
 const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, showMoreFeedItems }) => (
-  <div className="container" style={{ padding: '40px 0.75rem' }}>
+  <FeedContainer className="container">
     <div className="columns">
       <div className="column is-6 is-offset-3" style={{ display: 'flex', justifyContent: 'center' }}>
         {feedLoading ? (
@@ -575,7 +583,7 @@ const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, sh
         )}
       </div>
     </div>
-  </div>
+  </FeedContainer>
 );
 
 export default Feed;
