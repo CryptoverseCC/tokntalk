@@ -97,10 +97,10 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
       <div className="media-left" style={{ width: '54px' }}>
         <LinkedEntityAvatar size="medium" reaction={reaction} id={from} />
       </div>
-      <div className="media-content">
+      <div className="media-content" style={{ overflow: 'hidden' }}>
         <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
         <p
-          style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word' }}
+          style={{ marginTop: '20px', fontSize: '18px', wordBreak: 'break-word', whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
           dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
         {reactions && (
@@ -147,7 +147,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
       </div>
     </div>
 
-    <div className="media-content columns is-mobile">
+    <div className="media-content columns is-mobile" style={{ overflow: 'hidden' }}>
       <div className="column is-narrow">
         <LinkedEntityAvatar size="medium" id={from} />
       </div>
@@ -158,7 +158,9 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
             width: '100%',
             padding: '12px',
             borderRadius: '12px',
-            wordBreak: 'break-word'
+            wordBreak: 'break-word',
+            whiteSpace: 'pre-wrap',
+            overflowWrap: 'break-word',
           }}
         >
           <Link to={`/${from}`}>
@@ -318,7 +320,7 @@ const blink = keyframes`
   0% {
     background-color: #623cea;
   }
-  
+
   100% {
     background-color: transparent;
   }
