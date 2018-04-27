@@ -2,7 +2,6 @@
   "name": "crypto-purr",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://userfeeds.github.io/cryptopurr",
   "dependencies": {
     "gh-pages": "^1.1.0",
     "immer": "^1.2.1",
