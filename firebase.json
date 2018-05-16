@@ -2,6 +2,9 @@
   "hosting": {
     "public": "build",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [{ "source": "!{/js,/css}/**", "destination": "/index.html" }]
+    "rewrites": [
+      { "source": "/share/**", "function": "share" },
+      { "source": "!{/js,/css,/share}/**", "destination": "/index.html" }
+    ]
   }
 }
