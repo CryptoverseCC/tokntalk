@@ -22,6 +22,8 @@ const StyledExternalLink = styled(ExternalLink)`
 
 const SharePopup = styled(Modal)`
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 80%;
   left: -110px;
   width: 120px;
@@ -42,21 +44,35 @@ const ShareItem = styled.p`
   }
 `;
 
+const Status = styled.p`
+  color: #623cea;
+  text-align: center;
+`;
+
 class Share extends Component {
   state = {
     open: false,
     loading: false,
+    sharingState: '',
   };
 
   render() {
-    const { open, loading } = this.state;
+    const { open, loading, sharingState } = this.state;
     return (
       <ShareContainer>
         <StyledExternalLink onClick={() => this.setState({ open: true })} />
         {open && (
           <SharePopup onClose={() => this.setState({ open: false })}>
             {loading ? (
-              <Loader style={{ transform: 'scale(0.3)' }} />
+              <React.Fragment>
+                <div style={{ width: '30px', height: '30px', alignSelf: 'center' }}>
+                  <Loader style={{ transform: 'scale(0.25)', transformOrigin: 'left top' }} />
+                </div>
+                <Status>
+                  {sharingState === 'image' && 'Generating an image'}
+                  {sharingState === 'upload' && 'Uploading to ipfs'}
+                </Status>
+              </React.Fragment>
             ) : (
               <React.Fragment>
                 <ShareItem onClick={(e) => this.share('tweet', e)}>Tweet it</ShareItem>
@@ -69,12 +85,16 @@ class Share extends Component {
     );
   }
 
+  onProgress = (sharingState) => {
+    this.setState({ sharingState });
+  };
+
   share = (type, event) => {
     event.stopPropagation();
     const { author, message, etherscanUrl } = this.props;
-    this.setState({ loading: true });
+    this.setState({ loading: true, sharingState: 'image' });
 
-    toIpfsImage(message, `https://cryptopurr.co/${author}`, etherscanUrl, author)
+    toIpfsImage(message, `https://cryptopurr.co/${author}`, etherscanUrl, author, this.onProgress)
       .then((ipfsUrl) => {
         const encodedMessage = encodeURIComponent(message);
 

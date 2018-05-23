@@ -35,6 +35,10 @@ fetch(`https://api.cryptokitties.co/kitties/${token_id}`)
   .then(() => {
     if (isInIframe()) {
       shoot($container)
+        .then((blob) => {
+          window.parent.postMessage({ type: 'update', state: 'upload' }, '*');
+          return blob;
+        })
         .then((blob) => uploadToIpfs(blob))
         .then((ipfsHash) => {
           window.parent.postMessage({ type: 'ipfsHash', ipfsHash }, '*');

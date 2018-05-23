@@ -2,7 +2,7 @@ const DEFAULT_TIMEOUT = 45 * 1000;
 const { REACT_APP_BASENAME: BASENAME } = process.env;
 const templateUrl = `${window.location.origin}${BASENAME ? `/${BASENAME}` : ''}/template.html`;
 
-export default function(content, link, etherscanUrl, tokenId) {
+export default function(content, link, etherscanUrl, tokenId, onProgress) {
   return new Promise((resolve, reject) => {
     const iframe = document.createElement('iframe');
 
@@ -13,17 +13,23 @@ export default function(content, link, etherscanUrl, tokenId) {
 
     const onMessage = (event) => {
       if (event.source === iframe.contentWindow) {
-        clearTimeout(timeoutID);
-        if (event.data && event.data.type === 'ipfsHash') {
-          resolve(`https://ipfs.io/ipfs/${event.data.ipfsHash}`);
-        } else {
-          reject(event.data);
+        switch (event.data.type) {
+          case 'ipfsHash':
+            resolve(`https://ipfs.io/ipfs/${event.data.ipfsHash}`);
+            clean();
+            break;
+          case 'update':
+            onProgress && onProgress(event.data.state);
+            break;
+          default:
+            reject(event.data);
+            clean();
         }
-        clean();
       }
     };
 
     const clean = () => {
+      clearTimeout(timeoutID);
       window.removeEventListener('message', onMessage);
       iframe.remove();
     };
