@@ -16,15 +16,17 @@ import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   LinkedEntityAvatar,
-  IfActiveEntityLiked
+  IfActiveEntityLiked,
 } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
 import { createUserfeedsId } from './api';
-import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
+import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, } from './Icons';
 import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
+import Share from './Share';
+import Loader from './Loader';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -88,9 +90,9 @@ const Label = ({ onClick, liked, count }) => {
   );
 };
 
-export const sanitizeMessage = message => {
-  const expression = /(https:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b(?:[-a-zA-Z0-9@;:%_+.~#?&//=]*))/g;
-  const replaceMatchWithLink = match => {
+export const sanitizeMessage = (message) => {
+  const expression = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b(?:[-a-zA-Z0-9@;:%_+.~#?&//=]*))/g;
+  const replaceMatchWithLink = (match) => {
     return `<a href="${match}">${escapeHtml(match)}</a>`;
   };
   return message
@@ -106,14 +108,20 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         <LinkedEntityAvatar size="medium" reaction={reaction} id={from} />
       </div>
       <div className="media-content" style={{ overflow: 'hidden' }}>
-        <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
+        <CardTitle
+          from={from}
+          createdAt={createdAt}
+          etherscanUrl={etherscanUrl}
+          family={family}
+          suffix={suffix}
+          share={<Share author={from} message={message} etherscanUrl={etherscanUrl} />} />
         <p
           style={{
             marginTop: '20px',
             fontSize: '1.1rem',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
-            overflowWrap: 'break-word'
+            overflowWrap: 'break-word',
           }}
           dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
@@ -148,7 +156,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
           width: '54px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         <svg width="16px" height="16px" version="1.1">
@@ -172,7 +180,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
             borderRadius: '12px',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
-            overflowWrap: 'break-word'
+            overflowWrap: 'break-word',
           }}
         >
           <Link to={`/${from}`}>
@@ -198,7 +206,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
                         padding: 0,
                         margin: 0,
                         color: '#ffa6d8',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       }}
                     >
                       Like
@@ -219,7 +227,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
   </article>
 );
 
-const createEtherscanUrl = item => {
+const createEtherscanUrl = (item) => {
   const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
@@ -251,7 +259,7 @@ const SenderName = styled(Link)`
   font-size: 1.1rem;
 `;
 
-const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
+const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix, share }) => {
   return (
     <React.Fragment>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -261,6 +269,7 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix }) => {
           </b>
         </SenderName>{' '}
         {suffix}
+        {share ? share : null}
       </div>
       <div>
         <small style={{ color: '#928F9B' }}>
@@ -325,7 +334,7 @@ const LabelItems = {
   facebook: FacebookLabel,
   twitter: TwitterLabel,
   instagram: InstagramLabel,
-  github: GithubLabel
+  github: GithubLabel,
 };
 
 const blink = keyframes`
@@ -352,7 +361,7 @@ const CardBox = styled.div`
 
 class Card extends React.Component {
   state = {
-    wasShown: !this.props.added
+    wasShown: !this.props.added,
   };
 
   renderItem = () => {
@@ -415,13 +424,13 @@ class Card extends React.Component {
                 overflow: 'hidden',
                 maxWidth: '300px',
                 display: 'inline-block',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
               }}
               dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about.id) }}
             />
           </React.Fragment>
         ),
-        labels: feedItem => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>
+        labels: (feedItem) => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>,
       };
       return (
         <React.Fragment>
@@ -452,7 +461,7 @@ class Card extends React.Component {
                 React.createElement(LabelItems[feedItem.labels[0]]))
             }
           />
-          {replies.map(reply => (
+          {replies.map((reply) => (
             <Reply
               id={reply.id}
               key={reply.id}
@@ -469,7 +478,7 @@ class Card extends React.Component {
     }
   };
 
-  onItemVisibilityChange = isVisible => {
+  onItemVisibilityChange = (isVisible) => {
     if (isVisible) {
       this.setState({ wasShown: true });
     }
@@ -485,65 +494,6 @@ class Card extends React.Component {
   }
 }
 
-const Block = styled.div`
-  position: relative;
-  width: 100px;
-  height: 100px;
-  background: #623cea;
-  animation: blockAnimation 1s linear infinite;
-  border-radius: 6px;
-  will-change: transform;
-
-  @keyframes blockAnimation {
-    25% {
-      transform: translateY(9px) rotate(22.5deg);
-    }
-    50% {
-      transform: translateY(18px) scale(1, 0.9) rotate(45deg);
-    }
-    75% {
-      transform: translateY(9px) rotate(67.5deg);
-    }
-    100% {
-      transform: translateY(0) rotate(90deg);
-    }
-  }
-`;
-
-const Shadow = styled.div`
-  width: 100px;
-  height: 10px;
-  background: #e9ebff;
-  opacity: 1;
-  position: absolute;
-  bottom: -30px;
-  left: 0px;
-  border-radius: 50%;
-  animation: shadowAnimation 1s linear infinite;
-  will-change: transform;
-  z-index: 2;
-
-  @keyframes shadowAnimation {
-    50% {
-      transform: scale(1.2, 1);
-    }
-  }
-`;
-
-const Bottom = styled.div`
-  height: 10px;
-  background-color: inherit;
-  width: 100px;
-  display: block;
-  position: absolute;
-  z-index: 1;
-  bottom: -40px;
-`;
-
-const LonelyBlock = styled.div`
-  position: relative;
-  background-color: inherit;
-`;
 
 const FeedContainer = styled.div`
   padding: 40px 0.75rem;
@@ -570,11 +520,7 @@ const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, sh
       <div className="column is-6 is-offset-3" style={{ display: 'flex', justifyContent: 'center' }}>
         {feedLoading ? (
           <div style={{ paddingTop: '20px' }}>
-            <LonelyBlock>
-              <Block />
-              <Shadow />
-              <Bottom />
-            </LonelyBlock>
+            <Loader />
           </div>
         ) : feedItems.length > 0 ? (
           <InfiniteScroll
@@ -585,14 +531,14 @@ const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, sh
             threshold={300}
             isLoading={false}
           >
-            {feedItems.map(feedItem => {
-              const replies = uniqBy(about => about.id)([
+            {feedItems.map((feedItem) => {
+              const replies = uniqBy((about) => about.id)([
                 ...(temporaryReplies[feedItem.id] || []),
-                ...(feedItem.abouted || [])
+                ...(feedItem.abouted || []),
               ]);
-              const reactions = uniqBy(target => target.id)([
+              const reactions = uniqBy((target) => target.id)([
                 ...(temporaryReactions[feedItem.id] || []),
-                ...(feedItem.targeted || [])
+                ...(feedItem.targeted || []),
               ]);
               return (
                 <Card
@@ -629,8 +575,8 @@ export const ConnectedFeed = ({ forEntity }) => (
         temporaryReplies,
         temporaryReactions,
         shownFeedItemsCount,
-        showMoreFeedItems
-      }
+        showMoreFeedItems,
+      },
     }) => {
       let filteredTemporaryFeedItems = temporaryFeedItems;
       if (forEntity) {
@@ -641,7 +587,7 @@ export const ConnectedFeed = ({ forEntity }) => (
       }
       const allFeedItems = pipe(uniqBy('id'), sortBy('created_at'), reverse, take(shownFeedItemsCount))([
         ...feedItems,
-        ...filteredTemporaryFeedItems
+        ...filteredTemporaryFeedItems,
       ]);
       return (
         <Feed

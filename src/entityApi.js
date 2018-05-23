@@ -1,7 +1,7 @@
 import React from 'react';
 import etherDiamond from './img/ether-diamond.gif';
 
-const colors = {
+export const colors = {
   babypuke: '#eff1e0',
   bubblegum: '#fadff4',
   chestnut: '#efe1da',

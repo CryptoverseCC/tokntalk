@@ -68,3 +68,21 @@ export const TwitterIcon = styled.svg.attrs({
   max-width: 100%;
   max-height: 100%;
 `;
+
+export const ExternalLink = styled.svg.attrs({
+  width: '12px',
+  height: '12px',
+  version: '1.1',
+  viewBox: '0 0 12 12',
+  children: (
+    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(-729.000000, -70.000000)">
+      <g transform="translate(729.000000, 70.000000)" fill="currentColor" fillRule="nonzero">
+        <path d="M6,0 L6,1.5 L9.4395,1.5 L5.46975,5.46975 L6.53025,6.53025 L10.5,2.5605 L10.5,6 L12,6 L12,0.75 C12,0.336 11.664,0 11.25,0 L6,0 Z" />
+        <path d="M12,12 L0.75,12 C0.336,12 0,11.664 0,11.25 L0,0 L1.5,0 L1.5,10.5 L12,10.5 L12,12 Z" />
+      </g>
+    </g>
+  )
+})`
+  max-width: 100%;
+  max-height: 100%;
+`;

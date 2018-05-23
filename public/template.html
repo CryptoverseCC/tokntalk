@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kitties Rendering</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,500" rel="stylesheet">
+</head>
+<body>
+  <div class="device">
+    <div class="main">
+      <div class="kitten_img">
+        <canvas class="img" width="266" height="266"></canvas>
+      </div>
+      <div class="text">
+        <p></p>
+      </div>
+      <div class="footer">
+        <div class="footer-content">
+          <h3 class="kitty-name"></h3>
+          <h4 class="link"></h4>
+        </div>
+        <div class="qr">
+          <canvas></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background: #ffffff;
+    }
+
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      box-sizing: border-box;
+    }
+
+    .device {
+      width: 100%;
+    }
+
+    .main {
+      position: relative;
+      width: 1530px;
+      height: 765px;
+      font-family: 'Rubik', sans-serif;
+      padding: 50px;
+    }
+
+    .kitten_img .img {
+      position: absolute;
+      left: -55%;
+      top: -40%;
+      /* transform: translate(-50%, -50%); Cannot be used with html2canvas */
+      width: 266px;
+      height: 266px;
+    }
+
+    .kitten_img {
+      transform: translate3d(0, 0, 0); /* Safari bug https://stackoverflow.com/a/25570053 */
+      position: relative;
+      overflow: hidden;
+      width: 120px;
+      height: 120px;
+      border-radius: 120px;
+    }
+
+    .text {
+      max-height: 70%;
+    }
+
+    .text p {
+      margin: 0;
+      text-align: left;
+      line-height: 1.1;
+      color: #060310;
+      font-weight: 500;
+      max-width: 1020px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      overflow-wrap: break-word
+    }
+
+    .footer {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      bottom: 20px;
+      width: calc(100% - 2 * 50px);
+      left: 50px;
+    }
+
+    .footer-content {
+      overflow: hidden;
+    }
+
+    .footer h3 {
+      font-size: 48px;
+      color: #060310;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+
+    .footer h4 {
+      margin-top: 10px;
+      font-size: 24px;
+      color: #928F9B;
+      font-weight: 400;
+    }
+
+    .qr {
+      margin-left: auto;
+    }
+
+    canvas {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+
+</body>
+
+</html>
