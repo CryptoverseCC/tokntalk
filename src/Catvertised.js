@@ -174,7 +174,7 @@ const CatvertisedItem = styled.li`
   }
 
   &:nth-child(3):before,
-  &:nth-child(4), 
+  &:nth-child(4),
   &:nth-child(5) {
     display: none;
   }
@@ -183,7 +183,7 @@ const CatvertisedItem = styled.li`
     overflow: hidden;
     height: auto;
     width: 54px;
-    
+
     & + & {
       margin-top: 0;
     }
@@ -197,29 +197,27 @@ const CatvertisedItem = styled.li`
       background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     }
 
-    &:nth-child(4), 
+    &:nth-child(4),
     &:nth-child(5) {
       display: flex;
     }
-  
   }
 `;
-
 
 const CatvertisedPickCatList = styled(CatvertisedList)`
   @media (max-width: 770px) {
     justify-content: normal;
     overflow-x: scroll;
+    
+    ${CatvertisedItem} + ${CatvertisedItem} {
+      margin-left: 10px;
+    }
   }
 
   ${CatvertisedItem}:before {
     display: none;
   }
-
-  ${CatvertisedItem} + ${CatvertisedItem} {
-    margin-left: 10px;
-  }
-`
+`;
 
 const CatvertisedItemLink = styled(Link)`
   display: flex;
@@ -320,14 +318,14 @@ const CatvertisedHeader = styled.div`
     flex-direction: row;
     align-items: baseline;
   }
-`
+`;
 
 const EntityDescription = styled.div`
   @media (max-width: 770px) {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-`
+`;
 
 export default class Catvertised extends React.Component {
   state = {
