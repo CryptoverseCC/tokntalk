@@ -1,12 +1,14 @@
 import React from 'react';
 import { avatarSizes } from './entityApi';
 import styled, { css } from 'styled-components';
+import placeholder from "./img/anonkitty.svg";
 
 const AvatarContainer = styled.div`
   overflow: hidden;
   position: relative;
   width: 100px;
   height: 100px;
+  flex-shrink: 0;
   border-radius: 50%;
   ${({ backgroundColor, containerSize }) => css`
     background-color: ${backgroundColor};
@@ -43,6 +45,13 @@ const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy
       {reaction && <ReactionContainer>{reaction}</ReactionContainer>}
     </div>
   );
+};
+
+export const AvatarPlaceholder = ({ size }) => {
+  const { containerSize } = avatarSizes[size];
+  return <AvatarContainer backgroundColor="#DED5FF" containerSize={containerSize}>
+    <Avatar src={placeholder} imgSize="75%" imgLeftOffset="50%" imgTopOffset="65%" />
+  </AvatarContainer>;
 };
 
 export default IdentityAvatar;

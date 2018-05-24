@@ -1,7 +1,7 @@
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import Context from './Context';
-import IdentityAvatar from './Avatar';
+import IdentityAvatar, { AvatarPlaceholder } from './Avatar';
 import TranslationsContext from './Translations';
 import StyledLink from './Link';
 
@@ -51,9 +51,9 @@ export const EntityName = ({ id }) => (
 
 export const EntityAvatar = ({ id, ...props }) => (
   <Context.Consumer>
-    {({ entityStore: { getEntity } }) => (
-      <IdentityAvatar {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} />
-    )}
+    {({ entityStore: { getEntity } }) =>
+      id ? <IdentityAvatar {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} /> : <AvatarPlaceholder {...props} />
+    }
   </Context.Consumer>
 );
 

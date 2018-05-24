@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { pageView } from './Analytics';
 import { getFeedItems } from './api';
-import { ConnectedFeed } from './Feed';
+import { ConnectedFeed, FeedContainer } from './Feed';
 import Hero from './Hero';
+import { FeedCatvertised } from './Catvertised';
 
 export default class IndexPage extends Component {
   componentDidMount() {
@@ -30,7 +31,10 @@ export default class IndexPage extends Component {
     return (
       <React.Fragment>
         <Hero />
-        <ConnectedFeed />
+        <FeedContainer>
+          <FeedCatvertised />
+          <ConnectedFeed className="column is-6" />
+        </FeedContainer>
       </React.Fragment>
     );
   }

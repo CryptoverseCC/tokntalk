@@ -16,6 +16,7 @@ import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, Conne
 import { getFeedItems } from './api';
 import { EntityIcon } from './entityApi';
 import Link from './Link';
+import { FeedCatvertised } from './Catvertised';
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -137,8 +138,11 @@ export default class ShowPage extends Component {
                     </div>
                   )}
                 </IfActiveEntity>
+                <div className="columns">
+                  <FeedCatvertised />
+                  <ConnectedFeed forEntity={entity} className={'column is-6'} />
+                </div>
               </ShowPage.FeedContainer>
-              <ConnectedFeed forEntity={entity} />
             </React.Fragment>
           )}
         </Entity>
