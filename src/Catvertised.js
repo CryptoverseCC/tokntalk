@@ -400,7 +400,7 @@ export default class Catvertised extends React.Component {
             )}
             {this.state.step === 'pickCat' && (
               <React.Fragment>
-                <CatvertisedTitle>Catvertise a kittie</CatvertisedTitle>
+                <CatvertisedTitle>Purrmote a kittie</CatvertisedTitle>
                 <CustomCatForm>
                   <EntityAvatar size="medium" id={this.state.customCatId} />
                   <CustomCatFormInput>
