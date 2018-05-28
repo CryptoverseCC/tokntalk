@@ -507,7 +507,7 @@ export default class Catvertised extends React.Component {
                         });
                       }}
                     >
-                      Catvertise!
+                      Purrmote!
                     </StyledButton>
                   )}
                 </Context.Consumer>
