@@ -371,7 +371,7 @@ export default class Catvertised extends React.Component {
             {this.state.step === 'catvertised' && (
               <React.Fragment>
                 <CatvertisedHeader>
-                  <CatvertisedTitle>Catvertised</CatvertisedTitle>
+                  <CatvertisedTitle>Purrmoted</CatvertisedTitle>
                   <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Add a kittie</AddAKitty>
                 </CatvertisedHeader>
                 {Object.keys(boosts).length > 0 && (
