@@ -482,7 +482,7 @@ export default class Catvertised extends React.Component {
                     marginTop: '20px'
                   }}
                 >
-                  Catvertise with
+                  Purrmote with
                 </div>
                 <StyledInput
                   type="text"
