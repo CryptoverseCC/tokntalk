@@ -341,6 +341,18 @@ const CatvertisedBack = styled.button`
   cursor: pointer;
 `;
 
+const CatvertisedClose = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  outline: none;
+  background: none;
+  border: none;
+  font-size: 20px;
+  padding: 0;
+  cursor: pointer;
+`;
+
 export default class Catvertised extends React.Component {
   state = {
     step: 'catvertised',
@@ -351,6 +363,7 @@ export default class Catvertised extends React.Component {
   static Container = styled.div`
     display: flex;
     width: 100%;
+    position: relative;
     flex-direction: column;
     box-shadow: 0 4px 10px 0 rgba(98, 60, 234, 0.07);
     border-radius: 12px;
@@ -550,6 +563,13 @@ export default class Catvertised extends React.Component {
                   alignItems: 'center'
                 }}
               >
+                <CatvertisedClose
+                  onClick={() => {
+                    this.setState({ step: 'catvertised', customCatId: undefined, value: 0 });
+                  }}
+                >
+                  ✖
+                </CatvertisedClose>
                 <div style={{ color: 'green', fontSize: '24px' }}>✔</div>
                 <div
                   style={{
