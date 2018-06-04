@@ -327,6 +327,20 @@ const EntityDescription = styled.div`
   }
 `;
 
+const CatvertisedBack = styled.button`
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0;
+  position: relative;
+  left: -5px;
+  align-self: flex-start;
+  outline: none;
+  font-size: 30px;
+  line-height: 30px;
+  cursor: pointer;
+`;
+
 export default class Catvertised extends React.Component {
   state = {
     step: 'catvertised',
@@ -401,6 +415,13 @@ export default class Catvertised extends React.Component {
             {this.state.step === 'pickCat' && (
               <React.Fragment>
                 <CatvertisedTitle>Purrmote a kittie</CatvertisedTitle>
+                <CatvertisedBack
+                  onClick={() => {
+                    this.setState({ step: 'catvertised' });
+                  }}
+                >
+                  ←
+                </CatvertisedBack>
                 <CustomCatForm>
                   <EntityAvatar size="medium" id={this.state.customCatId} />
                   <CustomCatFormInput>
@@ -475,6 +496,13 @@ export default class Catvertised extends React.Component {
                     </b>
                   </CatvertisedName>
                 </div>
+                <CatvertisedBack
+                  onClick={() => {
+                    this.setState({ step: 'pickCat' });
+                  }}
+                >
+                  ←
+                </CatvertisedBack>
                 <div
                   style={{
                     fontSize: '18px',
