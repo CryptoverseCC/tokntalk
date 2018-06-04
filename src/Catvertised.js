@@ -623,19 +623,12 @@ export default class Catvertised extends React.Component {
                 >
                   Purrmote with
                 </div>
-                <StyledInput
-                  type="text"
-                  value={this.state.value}
-                  onChange={e => {
-                    this.setState({ value: e.target.value });
-                  }}
-                />
-                <Position>Position: #{this.calculatePosition(boosts)}</Position>
                 <Context.Consumer>
                   {({ web3Store: { networkName } }) => (
-                    <StyledButton
-                      disabled={!isBoostable || this.state.value <= 0}
-                      onClick={async () => {
+                    <form
+                      style={{ marginBottom: '-5px' }}
+                      onSubmit={async e => {
+                        e.preventDefault();
                         const { transactionHash, networkName } = await boost(
                           this.state.entityId,
                           this.props.tokenId,
@@ -647,8 +640,18 @@ export default class Catvertised extends React.Component {
                         });
                       }}
                     >
-                      Purrmote!
-                    </StyledButton>
+                      <StyledInput
+                        pattern="^[0-9]+(\.[0-9]{1,2})?$"
+                        type="text"
+                        value={this.state.value}
+                        onChange={e => {
+                          this.setState({ value: e.target.value });
+                        }}
+                      />
+                      <Position>Position: #{this.calculatePosition(boosts)}</Position>
+
+                      <StyledButton disabled={!isBoostable || this.state.value <= 0}>Purrmote!</StyledButton>
+                    </form>
                   )}
                 </Context.Consumer>
               </React.Fragment>
