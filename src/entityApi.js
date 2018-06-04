@@ -30,6 +30,7 @@ export const getEntityData = async entityId => {
     data.name = data.name || `${entityTranslations.entityName} #${entityId}`;
     data.color = colors[data.color];
     data.url = `https://cryptokitties.co/kitty/${entityId}`;
+    data.ownerAddress = data.owner.address;
     return data;
   } catch (e) {
     return undefined;

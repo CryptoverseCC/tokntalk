@@ -28,7 +28,7 @@ import FAQPage from './FAQPage';
 const {
   REACT_APP_NAME: APP_NAME,
   REACT_APP_BASENAME: BASENAME,
-  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK
+  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
 } = process.env;
 
 const Storage = (storage = localStorage) => ({
@@ -72,7 +72,6 @@ export default class App extends Component {
     setInterval(this.refreshWeb3State, 2000);
     this.refreshMyEntities();
     setInterval(this.refreshMyEntities, 15000);
-    this.getBoosts();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -153,8 +152,8 @@ export default class App extends Component {
     };
   };
 
-  getBoosts = async () => {
-    const boosts = await getBoosts();
+  getBoosts = async (tokenId) => {
+    const boosts = await getBoosts(tokenId);
     this.setState({ boosts });
   };
 
@@ -283,7 +282,8 @@ export default class App extends Component {
       label,
       getEntity,
       showMoreFeedItems,
-      isBoostable
+      isBoostable,
+      getBoosts
     } = this;
     const {
       activeEntity,
@@ -330,7 +330,8 @@ export default class App extends Component {
           boostStore: {
             boost,
             boosts,
-            isBoostable
+            isBoostable,
+            getBoosts
           },
           web3Store: {
             provider,

@@ -6,17 +6,17 @@ import {
   claimWithValueTransferContractAddressesForNetworkId,
   claimWithValueTransferContractAbi
 } from './contract';
+import { getEntityData } from './entityApi';
 const {
   REACT_APP_ERC_721_ADDRESS: ERC_721_ADDRESS,
   REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS,
   REACT_APP_ERC_721_NETWORK: ERC_721_NETWORK,
   REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE,
   REACT_APP_INTERFACE_BOOST_ADDRESS: INTERFACE_BOOST_ADDRESS,
-  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK
+  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
 } = process.env;
 
-export const createUserfeedsId = entityId =>
-  `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
+export const createUserfeedsId = entityId => `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
 
 let lastFeedItemRequestTime = new Date(0);
 
@@ -32,9 +32,7 @@ export const getFeedItems = async entityId => {
   );
   let { items: feedItems } = await response.json();
   feedItems = feedItems.filter(feedItem =>
-    ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(
-      feedItem.type
-    )
+    ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
   );
   lastFeedItemRequestTime = new Date();
   return feedItems;
@@ -57,11 +55,7 @@ export const getMyEntities = async () => {
 
 export const getLabels = async entityId => {
   try {
-    const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/cryptopurr_profile;context=${createUserfeedsId(
-        entityId
-      )}`
-    );
+    const res = await fetch(`${USERFEEDS_API_ADDRESS}/cryptopurr_profile;context=${createUserfeedsId(entityId)}`);
     const labels = await res.json();
     return labels;
   } catch (e) {
@@ -69,10 +63,10 @@ export const getLabels = async entityId => {
   }
 };
 
-export const getBoosts = async () => {
+export const getBoosts = async tokenId => {
   try {
     const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/experimental_boost;asset=${INTERFACE_BOOST_NETWORK};context=${INTERFACE_BOOST_ADDRESS}`
+      `${USERFEEDS_API_ADDRESS}/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${createUserfeedsId(tokenId)};fee_address=${INTERFACE_BOOST_ADDRESS}`
     );
     const { items: boosts } = await res.json();
     const boostsMap = boosts.reduce(
@@ -135,12 +129,8 @@ const getClaimContract = async () => {
 const getClaimWithValueTransferContract = async () => {
   const web3 = await getWeb3();
   const { networkId } = await getWeb3State();
-  const contractAddress =
-    claimWithValueTransferContractAddressesForNetworkId[networkId];
-  const contract = new web3.eth.Contract(
-    claimWithValueTransferContractAbi,
-    contractAddress
-  );
+  const contractAddress = claimWithValueTransferContractAddressesForNetworkId[networkId];
+  const contract = new web3.eth.Contract(claimWithValueTransferContractAbi, contractAddress);
   contract.setProvider(web3.currentProvider);
   return contract;
 };
@@ -168,12 +158,16 @@ const claim = async data => {
   });
 };
 
-const claimWithValueTransfer = async (data, value) => {
+const claimWithValueTransfer = async (data, value, ownerAddress) => {
   const { from } = await getWeb3State();
   const contract = await getClaimWithValueTransferContract();
   return new Promise(resolve => {
     contract.methods
-      .post(INTERFACE_BOOST_ADDRESS, JSON.stringify(data))
+      .post(
+        JSON.stringify(data),
+        [ownerAddress.toLowerCase(), INTERFACE_BOOST_ADDRESS.toLowerCase()],
+        [value - value / 10, value / 10]
+      )
       .send({ from, value })
       .on('transactionHash', transactionHash => resolve(transactionHash));
   });
@@ -261,12 +255,14 @@ export const label = async (token, message, labelType) => {
   };
 };
 
-export const boost = async (entityId, value) => {
+export const boost = async (entityId, aboutTokenId, value) => {
   const { networkName } = await getWeb3State();
+  const { ownerAddress } = await getEntityData(aboutTokenId);
   const data = {
-    claim: { target: createUserfeedsId(entityId) },
+    type: ['about'],
+    claim: { target: createUserfeedsId(entityId), about: createUserfeedsId(aboutTokenId) },
     credits: getCreditsData()
   };
-  const transactionHash = await claimWithValueTransfer(data, value);
+  const transactionHash = await claimWithValueTransfer(data, value, ownerAddress);
   return { transactionHash, networkName };
 };

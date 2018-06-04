@@ -5,6 +5,8 @@ import { ConnectedFeed, FeedContainer } from './Feed';
 import Hero from './Hero';
 import { FeedCatvertised } from './Catvertised';
 
+const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
+
 export default class IndexPage extends Component {
   componentDidMount() {
     pageView();
@@ -32,7 +34,7 @@ export default class IndexPage extends Component {
       <React.Fragment>
         <Hero />
         <FeedContainer>
-          <FeedCatvertised />
+          <FeedCatvertised tokenId={DEFAULT_TOKEN_ID} />
           <ConnectedFeed className="column is-6" />
         </FeedContainer>
       </React.Fragment>

@@ -6,10 +6,10 @@ export const claimContractAddressesForNetworkId = {
 };
 
 export const claimWithValueTransferContractAddressesForNetworkId = {
-  1: '0x70B610F7072E742d4278eC55C02426Dbaaee388C',
-  3: '0x37C1CA7996CDdAaa31e13AA3eEE0C89Ee4f665B5',
-  4: '0x00034B8397d9400117b4298548EAa59267953F8c',
-  42: '0xc666c75C2bBA9AD8Df402138cE32265ac0EC7aaC'
+  1: '0xfad31a5672fBd8243E9691E8a5F958699CD0AaA9',
+  3: '0x298611B2798d280910274C222A9dbDfBA914B058',
+  4: '0x1f8A01833A0B083CCcd87fffEe50EF1D35621fD2',
+  42: '0x0c20Daa719Cd4fD73eAf23d2Cb687cD07d500E17'
 };
 
 export const networkNameForNetworkId = {
@@ -35,12 +35,16 @@ export const claimWithValueTransferContractAbi = [
     constant: false,
     inputs: [
       {
-        name: 'userfeed',
-        type: 'address'
-      },
-      {
         name: 'data',
         type: 'string'
+      },
+      {
+        name: 'recipients',
+        type: 'address[]'
+      },
+      {
+        name: 'values',
+        type: 'uint256[]'
       }
     ],
     name: 'post',

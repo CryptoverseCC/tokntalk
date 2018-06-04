@@ -63,7 +63,7 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 0 0 12px 12px;
   &:disabled {
-    opacity: 0.2;
+    background: #e4dcfb;
   }
 `;
 
@@ -119,6 +119,17 @@ const CatvertisedTitle = styled.div`
   font-size: 1.2rem;
   line-height: 1;
   font-weight: 500;
+  margin-top: 10px;
+
+  ${({ hiddenOnMobile }) =>
+    hiddenOnMobile
+      ? `
+    @media (max-width: 770px) {
+      margin-top: 0
+    }`
+      : `@media (max-width: 770px) {
+        margin-top: 10px;
+      }`};
 `;
 
 const AddAKitty = styled.button`
@@ -139,6 +150,22 @@ const AddAKitty = styled.button`
   }
 `;
 
+const CatvertisedName = styled.span`
+  margin-left: 10px;
+
+  @media (max-width: 770px) {
+    margin-left: 10px;
+    white-space: nowrap;
+  }
+`;
+
+const CatvertisedScore = styled.div`
+  margin-left: 10px;
+  font-size: 14px;
+  color: #928f9b;
+  font-weight: 500;
+`;
+
 const CatvertisedList = styled.ul`
   margin-top: 20px;
 
@@ -146,6 +173,14 @@ const CatvertisedList = styled.ul`
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+
+    ${CatvertisedName} {
+      margin-left: 0;
+    }
+
+    ${CatvertisedScore} {
+      margin-left: 0;
+    }
   }
 `;
 
@@ -222,6 +257,7 @@ const CatvertisedPickCatList = styled(CatvertisedList)`
 const CatvertisedItemLink = styled(Link)`
   display: flex;
   align-items: center;
+  overflow: hidden;
 
   @media (max-width: 770px) {
     flex-direction: column;
@@ -229,6 +265,34 @@ const CatvertisedItemLink = styled(Link)`
     text-align: center;
     width: 100%;
   }
+`;
+
+const Purrmoter = styled(Link)`
+  overflow: hidden;
+  display: flex;
+  ${({ hiddenOnMobile }) =>
+    hiddenOnMobile
+      ? `
+    @media (max-width: 770px) {
+      display: none;
+    }`
+      : ''};
+`;
+
+const HeaderSplit = styled.div`
+  height: 2px;
+  background-color: #cdf5d4;
+  width: calc(100% + 40px);
+  position: relative;
+  left: -20px;
+  margin-top: 10px;
+  ${({ hiddenOnMobile }) =>
+    hiddenOnMobile
+      ? `
+    @media (max-width: 770px) {
+      display: none;
+    }`
+      : ''};
 `;
 
 const CatvertisedItemButton = styled.button`
@@ -244,6 +308,7 @@ const CatvertisedItemButton = styled.button`
   border-radius: 33px;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
 
   &:hover {
     background-color: #f4f1ff;
@@ -262,26 +327,6 @@ const CatvertisedItemButton = styled.button`
   }
 `;
 
-const CatvertisedName = styled.span`
-  margin-left: 10px;
-
-  @media (max-width: 770px) {
-    margin-left: 0;
-    white-space: nowrap;
-  }
-`;
-
-const CatvertisedScore = styled.div`
-  margin-left: 10px;
-  font-size: 14px;
-  color: #928f9b;
-  font-weight: 500;
-
-  @media (max-width: 770px) {
-    margin-left: 0;
-  }
-`;
-
 const FeedCatvertisedContainer = styled.div`
   max-width: 300px;
 
@@ -290,10 +335,12 @@ const FeedCatvertisedContainer = styled.div`
   }
 `;
 
-export const FeedCatvertised = styled(({ className }) => (
+export const FeedCatvertised = styled(({ className, ...props }) => (
   <div className={`${className} column is-3`}>
     <FeedCatvertisedContainer>
-      <Catvertised />
+      <Context.Consumer>
+        {({ boostStore: { getBoosts } }) => <Catvertised getBoosts={getBoosts} {...props} />}
+      </Context.Consumer>
     </FeedCatvertisedContainer>
   </div>
 ))`
@@ -332,8 +379,9 @@ const CatvertisedBack = styled.button`
   outline: none;
   border: none;
   padding: 0;
-  position: relative;
-  left: -5px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
   align-self: flex-start;
   outline: none;
   font-size: 30px;
@@ -353,12 +401,26 @@ const CatvertisedClose = styled.button`
   cursor: pointer;
 `;
 
+const EntityNameWrapper = styled.b`
+  white-space: nowrap;
+`;
+
 export default class Catvertised extends React.Component {
   state = {
     step: 'catvertised',
     value: 0,
     customCatId: undefined
   };
+
+  componentDidMount() {
+    this.props.getBoosts(this.props.tokenId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tokenId !== this.props.tokenId) {
+      this.props.getBoosts(nextProps.tokenId);
+    }
+  }
 
   static Container = styled.div`
     display: flex;
@@ -368,7 +430,7 @@ export default class Catvertised extends React.Component {
     box-shadow: 0 4px 10px 0 rgba(98, 60, 234, 0.07);
     border-radius: 12px;
     padding: 20px;
-    ${({ showBorder }) => (showBorder ? 'border: 2px solid #cdf5d4' : 'border 2px solid transparent')};
+    border: 2px solid #cdf5d4;
   `;
 
   calculatePosition = boosts => {
@@ -394,11 +456,23 @@ export default class Catvertised extends React.Component {
     return (
       <Context.Consumer>
         {({ boostStore: { boosts, boost, isBoostable } }) => (
-          <Catvertised.Container showBorder={this.state.step === 'catvertised'} className={this.props.className}>
+          <Catvertised.Container className={this.props.className}>
             {this.state.step === 'catvertised' && (
               <React.Fragment>
                 <CatvertisedHeader>
-                  <CatvertisedTitle>Purrmoted</CatvertisedTitle>
+                  <Purrmoter to={`/${this.props.tokenId}`} hiddenOnMobile>
+                    <EntityAvatar size="medium" id={this.props.tokenId} />
+                    <EntityDescription>
+                      <CatvertisedName>
+                        <EntityNameWrapper>
+                          <EntityName id={this.props.tokenId} />
+                        </EntityNameWrapper>
+                      </CatvertisedName>
+                      <CatvertisedScore>Purrmoter</CatvertisedScore>
+                    </EntityDescription>
+                  </Purrmoter>
+                  <HeaderSplit hiddenOnMobile />
+                  <CatvertisedTitle hiddenOnMobile>Purrmoted</CatvertisedTitle>
                   <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Add a kittie</AddAKitty>
                 </CatvertisedHeader>
                 {Object.keys(boosts).length > 0 && (
@@ -412,9 +486,9 @@ export default class Catvertised extends React.Component {
                             <EntityAvatar size="medium" id={id} />
                             <EntityDescription>
                               <CatvertisedName>
-                                <b>
+                                <EntityNameWrapper>
                                   <EntityName id={id} />
-                                </b>
+                                </EntityNameWrapper>
                               </CatvertisedName>
                               <CatvertisedScore>{formatCurrency(score)} ETH</CatvertisedScore>
                             </EntityDescription>
@@ -427,7 +501,19 @@ export default class Catvertised extends React.Component {
             )}
             {this.state.step === 'pickCat' && (
               <React.Fragment>
-                <CatvertisedTitle>Purrmote a kittie</CatvertisedTitle>
+                <Purrmoter to={`/${this.props.tokenId}`}>
+                  <EntityAvatar size="medium" id={this.props.tokenId} />
+                  <EntityDescription>
+                    <CatvertisedName>
+                      <EntityNameWrapper>
+                        <EntityName id={this.props.tokenId} />
+                      </EntityNameWrapper>
+                    </CatvertisedName>
+                    <CatvertisedScore>Purrmoter</CatvertisedScore>
+                  </EntityDescription>
+                </Purrmoter>
+                <HeaderSplit />
+                <CatvertisedTitle style={{ marginTop: '10px' }}>Purrmote a kittie</CatvertisedTitle>
                 <CatvertisedBack
                   onClick={() => {
                     this.setState({ step: 'catvertised' });
@@ -475,7 +561,7 @@ export default class Catvertised extends React.Component {
                     entities.length > 0 && (
                       <CatvertisedPickCatList>
                         {entities.map(entity => (
-                          <CatvertisedItem>
+                          <CatvertisedItem key={entity.id}>
                             <CatvertisedItemButton
                               onClick={() =>
                                 this.setState({
@@ -486,9 +572,9 @@ export default class Catvertised extends React.Component {
                             >
                               <EntityAvatar size="medium" id={entity.id} />
                               <CatvertisedName>
-                                <b>
+                                <EntityNameWrapper>
                                   <EntityName id={entity.id} />
-                                </b>
+                                </EntityNameWrapper>
                               </CatvertisedName>
                             </CatvertisedItemButton>
                           </CatvertisedItem>
@@ -501,12 +587,24 @@ export default class Catvertised extends React.Component {
             )}
             {this.state.step === 'form' && (
               <React.Fragment>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Purrmoter to={`/${this.props.tokenId}`}>
+                  <EntityAvatar size="medium" id={this.props.tokenId} />
+                  <EntityDescription>
+                    <CatvertisedName>
+                      <EntityNameWrapper>
+                        <EntityName id={this.props.tokenId} />
+                      </EntityNameWrapper>
+                    </CatvertisedName>
+                    <CatvertisedScore>Purrmoter</CatvertisedScore>
+                  </EntityDescription>
+                </Purrmoter>
+                <HeaderSplit />
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px', overflow: 'hidden' }}>
                   <LinkedEntityAvatar size="medium" id={this.state.entityId} />
                   <CatvertisedName>
-                    <b>
+                    <EntityNameWrapper>
                       <EntityName id={this.state.entityId} />
-                    </b>
+                    </EntityNameWrapper>
                   </CatvertisedName>
                 </div>
                 <CatvertisedBack
@@ -540,6 +638,7 @@ export default class Catvertised extends React.Component {
                       onClick={async () => {
                         const { transactionHash, networkName } = await boost(
                           this.state.entityId,
+                          this.props.tokenId,
                           this.state.value * 10 ** 18
                         );
                         this.setState({

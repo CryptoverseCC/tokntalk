@@ -194,7 +194,7 @@ storiesOf('Components', module)
       <div style={{ width: '300px' }}>
         <MemoryRouter>
           <Context.Provider value={{ boostStore, entityStore, web3Store }}>
-            <Catvertised />
+            <Catvertised feedId="123"/>
           </Context.Provider>
         </MemoryRouter>
       </div>

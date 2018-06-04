@@ -139,7 +139,7 @@ export default class ShowPage extends Component {
                   )}
                 </IfActiveEntity>
                 <div className="columns">
-                  <FeedCatvertised />
+                  <FeedCatvertised tokenId={entityId} />
                   <ConnectedFeed forEntity={entity} className={'column is-6'} />
                 </div>
               </ShowPage.FeedContainer>
