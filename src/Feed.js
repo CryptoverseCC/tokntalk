@@ -107,7 +107,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
       <div className="media-left" style={{ width: '54px' }}>
         <LinkedEntityAvatar size="medium" reaction={reaction} id={from} />
       </div>
-      <div className="media-content" style={{ overflow: 'hidden' }}>
+      <div className="media-content">
         <CardTitle
           from={from}
           createdAt={createdAt}
