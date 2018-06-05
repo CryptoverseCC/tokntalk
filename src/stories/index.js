@@ -5,24 +5,17 @@ import {
   select,
   text,
   boolean,
-  number,
   object
 } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { MemoryRouter } from 'react-router-dom';
-import IdentityAvatar, { AvatarPlaceholder } from '../Avatar';
+import IdentityAvatar from '../Avatar';
 import { TextAreaForm, ReplyForm, CommentForm } from '../CommentForm';
 import Header from '../Header';
 import TranslationsContext from '../Translations';
 import EntityExample from '../img/entityExample.svg';
 import Context from '../Context';
 import { SocialBadges } from '../ShowPage';
-import {
-  LinkedEntityAvatar,
-  EntityName,
-  Entities,
-  EntityAvatar
-} from '../Entity';
 import Catvertised from '../Catvertised';
 
 storiesOf('Components', module)
@@ -158,6 +151,22 @@ storiesOf('Components', module)
         name: null,
         color: 'pink',
         id: 1234
+      },
+      12345: {
+        image_url:
+          'https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/1234.svg',
+        url: 'https://www.cryptokitties.co/kitty/1234',
+        name: null,
+        color: 'pink',
+        id: 12345
+      },
+      12346: {
+        image_url:
+          'https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/1234.svg',
+        url: 'https://www.cryptokitties.co/kitty/1234',
+        name: null,
+        color: 'pink',
+        id: 12346
       }
     });
     const boostStore = {
@@ -179,6 +188,21 @@ storiesOf('Components', module)
           asset: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d',
           sequence: 5462630,
           token: '1234'
+        },
+        {
+          asset: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d',
+          sequence: 5462630,
+          token: '12345'
+        },
+        {
+          asset: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d',
+          sequence: 5462630,
+          token: '12346'
+        },
+        {
+          asset: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d',
+          sequence: 5462630,
+          token: '12346'
         }
       ],
       getEntity(id) {
@@ -194,7 +218,7 @@ storiesOf('Components', module)
       <div style={{ width: '300px' }}>
         <MemoryRouter>
           <Context.Provider value={{ boostStore, entityStore, web3Store }}>
-            <Catvertised feedId="123"/>
+            <Catvertised tokenId="123" getBoosts={() => {}} />
           </Context.Provider>
         </MemoryRouter>
       </div>

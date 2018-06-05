@@ -169,6 +169,7 @@ const CatvertisedScore = styled.div`
 const CatvertisedList = styled.ul`
   margin-top: 20px;
 
+
   @media (max-width: 770px) {
     display: flex;
     justify-content: space-between;
@@ -194,7 +195,6 @@ const CatvertisedItem = styled.li`
     margin-top: 20px;
   }
 
-  &:nth-child(3):before,
   &:nth-child(5):before {
     content: '';
     display: block;
@@ -208,12 +208,6 @@ const CatvertisedItem = styled.li`
     pointer-events: none;
   }
 
-  &:nth-child(3):before,
-  &:nth-child(4),
-  &:nth-child(5) {
-    display: none;
-  }
-
   @media (max-width: 770px) {
     overflow: hidden;
     height: auto;
@@ -223,16 +217,10 @@ const CatvertisedItem = styled.li`
       margin-top: 0;
     }
 
-    &:nth-child(3):before {
-      display: none;
-    }
-
     &:nth-child(5):before {
-      display: block;
       background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     }
 
-    &:nth-child(4),
     &:nth-child(5) {
       display: flex;
     }
@@ -240,9 +228,18 @@ const CatvertisedItem = styled.li`
 `;
 
 const CatvertisedPickCatList = styled(CatvertisedList)`
+  max-height: 180px;
+  overflow-y: scroll;
+  padding: 7px 0 0 7px;
+  margin-left: -7px;
+
   @media (max-width: 770px) {
+    max-height: none;
+    padding: 0;
+    margin-left: 0;
     justify-content: normal;
     overflow-x: scroll;
+    overflow-y: hidden;
     
     ${CatvertisedItem} + ${CatvertisedItem} {
       margin-left: 10px;
@@ -324,6 +321,11 @@ const CatvertisedItemButton = styled.button`
       content: 'Add';
       transform: translateY(-50%);
     }
+  }
+
+  @media (max-width: 770px) {
+    margin: 0;
+    padding: 0;
   }
 `;
 
