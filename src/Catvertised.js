@@ -641,7 +641,7 @@ export default class Catvertised extends React.Component {
                       }}
                     >
                       <StyledInput
-                        pattern="^[0-9]+(\.[0-9]{1,2})?$"
+                        pattern="^[0-9]+(\.[0-9]+)?$"
                         type="text"
                         value={this.state.value}
                         onChange={e => {
