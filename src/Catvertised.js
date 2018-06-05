@@ -644,6 +644,7 @@ export default class Catvertised extends React.Component {
                         pattern="^[0-9]+(\.[0-9]+)?$"
                         type="text"
                         value={this.state.value}
+                        title="Value must only contain numbers and `.` sign. e.g. 0.011"
                         onChange={e => {
                           this.setState({ value: e.target.value });
                         }}
