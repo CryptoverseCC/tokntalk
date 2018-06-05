@@ -684,7 +684,7 @@ export default class Catvertised extends React.Component {
                   Success!
                 </div>
                 <div style={{ fontSize: '18px' }}>
-                  You've catvertised <EntityName id={this.state.entityId} />
+                  You've purrmoted <EntityName id={this.state.entityId} />
                 </div>
                 <A href={this.state.etherscanUrl}>See it on Etherscan</A>
               </div>
