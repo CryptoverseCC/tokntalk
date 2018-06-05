@@ -65,6 +65,7 @@ const Header = () => {
       <CrossLink href="https://userfeeds.github.io/cryptobeep">Beep</CrossLink>
       <CrossLink href="https://userfeeds.github.io/cryptomoji">Moji</CrossLink>
       <CrossLink href="https://userfeeds.github.io/robohash-book">Hash</CrossLink>
+      <CrossLink href="http://story.digitalartchain.com/">Art</CrossLink>
       <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
       <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
     </StyledHeader>
