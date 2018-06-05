@@ -167,12 +167,23 @@ storiesOf('Components', module)
         name: null,
         color: 'pink',
         id: 12346
+      },
+      12347: {
+        image_url:
+          'https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/1234.svg',
+        url: 'https://www.cryptokitties.co/kitty/1234',
+        name: null,
+        color: 'pink',
+        id: 12347
       }
     });
     const boostStore = {
       boosts: {
         123: { score: 98765432187654315 },
-        1234: { score: 12345678901234567890 }
+        1234: { score: 12345678901234567890 },
+        12345: { score: 12345678901234567890 },
+        12346: { score: 12345678901234567890 },
+        12347: { score: 12345678901234567890 }
       },
       boost: action('Boosted kitty'),
       isBoostable: boolean('Boostable', true)
@@ -202,7 +213,7 @@ storiesOf('Components', module)
         {
           asset: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d',
           sequence: 5462630,
-          token: '12346'
+          token: '12347'
         }
       ],
       getEntity(id) {

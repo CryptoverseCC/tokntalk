@@ -220,10 +220,6 @@ const CatvertisedItem = styled.li`
     &:nth-child(5):before {
       background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     }
-
-    &:nth-child(5) {
-      display: flex;
-    }
   }
 `;
 
