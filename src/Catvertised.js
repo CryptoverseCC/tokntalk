@@ -169,7 +169,6 @@ const CatvertisedScore = styled.div`
 const CatvertisedList = styled.ul`
   margin-top: 20px;
 
-
   @media (max-width: 770px) {
     display: flex;
     justify-content: space-between;
@@ -446,6 +445,8 @@ export default class Catvertised extends React.Component {
     return position + 1;
   };
 
+  renderPosition = position => (position <= 5 ? <span style={{ color: '#40bf57' }}>#{position}</span> : `#${position}`);
+
   boost = async () => {
     this.setState({ step: 'submitted' });
   };
@@ -647,9 +648,11 @@ export default class Catvertised extends React.Component {
                           this.setState({ value: e.target.value });
                         }}
                       />
-                      <Position>Position: #{this.calculatePosition(boosts)}</Position>
+                      <Position>Position: {this.renderPosition(this.calculatePosition(boosts))}</Position>
 
-                      <StyledButton disabled={!isBoostable || this.state.value <= 0}>Purrmote!</StyledButton>
+                      <StyledButton disabled={!isBoostable || this.state.value <= 0}>
+                        {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Purrmote!'}
+                      </StyledButton>
                     </form>
                   )}
                 </Context.Consumer>
