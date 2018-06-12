@@ -168,11 +168,14 @@ const CatvertisedScore = styled.div`
 
 const CatvertisedList = styled.ul`
   margin-top: 20px;
+  max-height: 340px;
+  overflow-y: scroll;
 
   @media (max-width: 770px) {
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
+    overflow-y: unset;
+    overflow-x: scroll;
 
     ${CatvertisedName} {
       margin-left: 0;
@@ -194,19 +197,6 @@ const CatvertisedItem = styled.li`
     margin-top: 20px;
   }
 
-  &:nth-child(5):before {
-    content: '';
-    display: block;
-    position: absolute;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 1;
-    pointer-events: none;
-  }
-
   @media (max-width: 770px) {
     overflow: hidden;
     height: auto;
@@ -214,17 +204,12 @@ const CatvertisedItem = styled.li`
 
     & + & {
       margin-top: 0;
-    }
-
-    &:nth-child(5):before {
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+      margin-left: 10px;
     }
   }
 `;
 
 const CatvertisedPickCatList = styled(CatvertisedList)`
-  max-height: 180px;
-  overflow-y: scroll;
   padding: 7px 0 0 7px;
   margin-left: -7px;
 
@@ -232,13 +217,8 @@ const CatvertisedPickCatList = styled(CatvertisedList)`
     max-height: none;
     padding: 0;
     margin-left: 0;
-    justify-content: normal;
     overflow-x: scroll;
     overflow-y: hidden;
-    
-    ${CatvertisedItem} + ${CatvertisedItem} {
-      margin-left: 10px;
-    }
   }
 
   ${CatvertisedItem}:before {
@@ -478,7 +458,6 @@ export default class Catvertised extends React.Component {
                   <CatvertisedList>
                     {Object.entries(boosts)
                       .sort(([, { score: a }], [, { score: b }]) => b - a)
-                      .slice(0, 5)
                       .map(([id, { score }]) => (
                         <CatvertisedItem key={id}>
                           <CatvertisedItemLink to={`/${id}`}>
@@ -622,40 +601,36 @@ export default class Catvertised extends React.Component {
                 >
                   Purrmote with
                 </div>
-                <Context.Consumer>
-                  {({ web3Store: { networkName } }) => (
-                    <form
-                      style={{ marginBottom: '-5px' }}
-                      onSubmit={async e => {
-                        e.preventDefault();
-                        const { transactionHash, networkName } = await boost(
-                          this.state.entityId,
-                          this.props.tokenId,
-                          this.state.value * 10 ** 18
-                        );
-                        this.setState({
-                          etherscanUrl: createEtherscanUrl(transactionHash, networkName),
-                          step: 'submitted'
-                        });
-                      }}
-                    >
-                      <StyledInput
-                        pattern="^[0-9]+(\.[0-9]+)?$"
-                        type="text"
-                        value={this.state.value}
-                        title="Value must only contain numbers and `.` sign. e.g. 0.011"
-                        onChange={e => {
-                          this.setState({ value: e.target.value });
-                        }}
-                      />
-                      <Position>Position: {this.renderPosition(this.calculatePosition(boosts))}</Position>
+                <form
+                  style={{ marginBottom: '-5px' }}
+                  onSubmit={async e => {
+                    e.preventDefault();
+                    const { transactionHash, networkName } = await boost(
+                      this.state.entityId,
+                      this.props.tokenId,
+                      this.state.value * 10 ** 18
+                    );
+                    this.setState({
+                      etherscanUrl: createEtherscanUrl(transactionHash, networkName),
+                      step: 'submitted'
+                    });
+                  }}
+                >
+                  <StyledInput
+                    pattern="^[0-9]+(\.[0-9]+)?$"
+                    type="text"
+                    value={this.state.value}
+                    title="Value must only contain numbers and `.` sign. e.g. 0.011"
+                    onChange={e => {
+                      this.setState({ value: e.target.value });
+                    }}
+                  />
+                  <Position>Position: {this.renderPosition(this.calculatePosition(boosts))}</Position>
 
-                      <StyledButton disabled={!isBoostable || this.state.value <= 0}>
-                        {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Purrmote!'}
-                      </StyledButton>
-                    </form>
-                  )}
-                </Context.Consumer>
+                  <StyledButton disabled={!isBoostable || this.state.value <= 0}>
+                    {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Purrmote!'}
+                  </StyledButton>
+                </form>
               </React.Fragment>
             )}
             {this.state.step === 'submitted' && (

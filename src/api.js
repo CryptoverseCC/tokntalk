@@ -23,7 +23,7 @@ export const getFeedItems = async ({ before, after, size, catId }) => {
   const afterParam = after ? `after=${after}` : '';
   const sizeParam = size ? `size=${size}` : '';
   const catIdParam = catId ? `catId=${createUserfeedsId(catId)}` : '';
-  const response = await fetch(`https://crypto-cache.herokuapp.com/purrs?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`);
+  const response = await fetch(`${USERFEEDS_API_ADDRESS}/api/cache-purr?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`);
   let { items: feedItems, total } = await response.json();
   feedItems = feedItems.filter(feedItem =>
     ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
@@ -37,7 +37,7 @@ export const getMyEntities = async () => {
     const [from] = await web3.eth.getAccounts();
     if (!from) return [];
     const response = await fetch(
-      `${USERFEEDS_API_ADDRESS}/experimental_tokens;identity=${from.toLowerCase()};asset=${ERC_721_NETWORK}:${ERC_721_ADDRESS}/`
+      `${USERFEEDS_API_ADDRESS}/ranking/experimental_tokens;identity=${from.toLowerCase()};asset=${ERC_721_NETWORK}:${ERC_721_ADDRESS}/`
     );
     const { items: myEntities } = await response.json();
     return myEntities;
@@ -48,7 +48,7 @@ export const getMyEntities = async () => {
 
 export const getLabels = async entityId => {
   try {
-    const res = await fetch(`${USERFEEDS_API_ADDRESS}/cryptopurr_profile;context=${createUserfeedsId(entityId)}`);
+    const res = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptopurr_profile;context=${createUserfeedsId(entityId)}`);
     const labels = await res.json();
     return labels;
   } catch (e) {
@@ -59,7 +59,7 @@ export const getLabels = async entityId => {
 export const getBoosts = async tokenId => {
   try {
     const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${createUserfeedsId(
+      `${USERFEEDS_API_ADDRESS}/ranking/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${createUserfeedsId(
         tokenId
       )};fee_address=${INTERFACE_BOOST_ADDRESS}`
     );

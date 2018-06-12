@@ -34,10 +34,10 @@ const {
 
 const Storage = (storage = localStorage) => ({
   getItem(key) {
-    return localStorage.getItem(`${APP_NAME}_${key}`);
+    return storage.getItem(`${APP_NAME}_${key}`);
   },
   setItem(key, value) {
-    return localStorage.setItem(`${APP_NAME}_${key}`, value);
+    return storage.setItem(`${APP_NAME}_${key}`, value);
   }
 });
 
