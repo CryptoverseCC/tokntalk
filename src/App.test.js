@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { produceEntities } from './App';
 import { sanitizeMessage } from './Feed';
 

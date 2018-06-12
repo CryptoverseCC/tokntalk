@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import find from 'lodash/fp/find';
-import keyBy from 'lodash/fp/keyBy';
 import produce from 'immer';
 import Context from './Context';
 import IndexPage from './IndexPage';
@@ -17,7 +16,8 @@ import {
   writeTo,
   getLabels,
   getBoosts,
-  boost
+  boost,
+  getFeedItems
 } from './api';
 import { getEntityData } from './entityApi';
 import Header from './Header';
@@ -29,6 +29,7 @@ const {
   REACT_APP_NAME: APP_NAME,
   REACT_APP_BASENAME: BASENAME,
   REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
+  REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID
 } = process.env;
 
 const Storage = (storage = localStorage) => ({
@@ -58,6 +59,8 @@ export default class App extends Component {
     feedItems: [],
     shownFeedItemsCount: 10,
     feedLoading: false,
+    feedLoadingMore: false,
+    feedId: undefined,
     temporaryFeedItems: [],
     temporaryReplies: {},
     temporaryReactions: {},
@@ -79,10 +82,7 @@ export default class App extends Component {
   }
 
   refreshMyEntities = async () => {
-    this.setState(
-      produceEntities(await getMyEntities(), this.previousActiveEntity()),
-      this.saveActiveEntity
-    );
+    this.setState(produceEntities(await getMyEntities(), this.previousActiveEntity()), this.saveActiveEntity);
   };
 
   previousActiveEntity = () => {
@@ -90,16 +90,13 @@ export default class App extends Component {
   };
 
   changeActiveEntityTo = newActiveEntity => {
-    const activeEntity = find({ token: newActiveEntity.id.toString() })(
-      this.state.myEntities
-    );
+    const activeEntity = find({ token: newActiveEntity.id.toString() })(this.state.myEntities);
     this.setState({ activeEntity }, this.saveActiveEntity);
   };
 
   saveActiveEntity = () => {
     const { activeEntity } = this.state;
-    if (activeEntity)
-      this.storage.setItem('activeEntity', JSON.stringify(activeEntity));
+    if (activeEntity) this.storage.setItem('activeEntity', JSON.stringify(activeEntity));
   };
 
   refreshWeb3State = async () => {
@@ -123,15 +120,9 @@ export default class App extends Component {
     const entityInfoRequest = getEntityData(entityId);
     this.entityInfoRequests[entityId] = entityInfoRequest;
     const entityData = await entityInfoRequest;
-    this.setState(
-      { entityInfo: { ...this.state.entityInfo, [entityId]: entityData } },
-      () => {
-        this.storage.setItem(
-          'entityInfo',
-          JSON.stringify(this.state.entityInfo)
-        );
-      }
-    );
+    this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, () => {
+      this.storage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
+    });
   };
 
   getEntity = entityId => {
@@ -152,9 +143,11 @@ export default class App extends Component {
     };
   };
 
-  getBoosts = async (tokenId) => {
+  getBoosts = async tokenId => {
     const boosts = await getBoosts(tokenId);
-    this.setState({ boosts });
+    if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
+      this.setState({ boosts });
+    }
   };
 
   get isBoostable() {
@@ -162,10 +155,7 @@ export default class App extends Component {
   }
 
   sendMessage = async message => {
-    const temporaryFeedItem = await sendMessage(
-      this.state.activeEntity.token,
-      message
-    );
+    const temporaryFeedItem = await sendMessage(this.state.activeEntity.token, message);
     this.setState({
       temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems]
     });
@@ -176,10 +166,7 @@ export default class App extends Component {
     const temporaryReply = await reply(token, message, to);
     this.setState(
       produce(draft => {
-        draft.temporaryReplies[to] = [
-          ...(draft.temporaryReplies[to] || []),
-          temporaryReply
-        ];
+        draft.temporaryReplies[to] = [...(draft.temporaryReplies[to] || []), temporaryReply];
       })
     );
   };
@@ -197,10 +184,7 @@ export default class App extends Component {
     const temporaryReaction = await react(token, to);
     this.setState(
       produce(draft => {
-        draft.temporaryReactions[to] = [
-          ...(draft.temporaryReactions[to] || []),
-          temporaryReaction
-        ];
+        draft.temporaryReactions[to] = [...(draft.temporaryReactions[to] || []), temporaryReaction];
       })
     );
   };
@@ -211,50 +195,55 @@ export default class App extends Component {
     this.setState(
       produce(draft => {
         draft.entityLabels[token][labelType] = temporaryFeedItem.target.id;
-        draft.temporaryFeedItems = [
-          temporaryFeedItem,
-          ...draft.temporaryFeedItems
-        ];
+        draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems];
       })
     );
   };
 
-  updateFeedItems = (feedItems, purge) => {
-    this.setState(
-      produce(draft => {
-        draft.feedLoading = false;
-        if (purge) {
-          draft.feedItems = feedItems;
-          draft.shownFeedItemsCount = 10;
-        } else {
-          const previousFeedItems = keyBy('id')(draft.feedItems);
-          const previousFeedItemsLength = draft.feedItems.length;
-          draft.feedItems = feedItems.map(feedItem => ({
-            ...feedItem,
-            added:
-              previousFeedItemsLength > 0 && !previousFeedItems[feedItem.id]
-          }));
-        }
-      })
-    );
+  getFeedItems = async catId => {
+    try {
+      this.setState({ feedLoading: true, feedId: catId }, async () => {
+        const { feedItems, total: feedItemsCount } = await getFeedItems({ size: 10, catId });
+        if (this.state.feedId !== catId) return;
+        this.setState({ feedLoading: false, feedItems, feedItemsCount });
+      });
+    } catch (e) {
+      console.warn('Failed to download feedItems');
+    }
   };
 
-  startFeedLoading = () => {
-    this.setState({ feedLoading: true });
+  getNewFeedItems = async catId => {
+    try {
+      const before = this.state.feedItems[0] ? this.state.feedItems[0].id : undefined;
+      const { feedItems: newFeedItems, total: feedItemsCount } = await getFeedItems({ before, catId, size: 10 });
+      const addedFeedItems = newFeedItems.map(item => ({ ...item, added: true }));
+      if (this.state.feedId !== catId) return;
+      this.setState(({ feedItems }) => ({ feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
+    } catch (e) {
+      console.warn('Failed to download feedItems');
+    }
   };
 
-  showMoreFeedItems = (count = 5) => {
-    this.setState({
-      shownFeedItemsCount: this.state.shownFeedItemsCount + count
-    });
+  getMoreFeedItems = async catId => {
+    if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
+    try {
+      this.setState({ feedLoadingMore: true }, async () => {
+        const after = this.state.feedItems[this.state.feedItems.length - 1].id;
+        const { feedItems: moreFeedItems, total: feedItemsCount } = await getFeedItems({ size: 10, after, catId });
+        if (this.state.feedId !== catId) return;
+        this.setState(({ feedItems }) => ({
+          feedLoadingMore: false,
+          feedItems: [...feedItems, ...moreFeedItems],
+          feedItemsCount
+        }));
+      });
+    } catch (e) {
+      console.warn('Failed to download more feedItems');
+    }
   };
 
   renderIndexPage = props => (
-    <IndexPage
-      {...props}
-      updateFeedItems={this.updateFeedItems}
-      startFeedLoading={this.startFeedLoading}
-    />
+    <IndexPage {...props} getFeedItems={this.getFeedItems} getNewFeedItems={this.getNewFeedItems} />
   );
 
   renderFaqPage = props => <FAQPage />;
@@ -262,8 +251,8 @@ export default class App extends Component {
   renderShowPage = props => (
     <ShowPage
       {...props}
-      updateFeedItems={this.updateFeedItems}
-      startFeedLoading={this.startFeedLoading}
+      getFeedItems={this.getFeedItems}
+      getNewFeedItems={this.getNewFeedItems}
       getEntityInfo={this.getEntityInfo}
     />
   );
@@ -281,7 +270,7 @@ export default class App extends Component {
       react,
       label,
       getEntity,
-      showMoreFeedItems,
+      getMoreFeedItems,
       isBoostable,
       getBoosts
     } = this;
@@ -289,7 +278,7 @@ export default class App extends Component {
       activeEntity,
       myEntities,
       feedItems,
-      shownFeedItemsCount,
+      isGettingMoreFeedItems,
       feedLoading,
       entityInfo,
       temporaryFeedItems,
@@ -320,8 +309,8 @@ export default class App extends Component {
             label,
             feedItems,
             feedLoading,
-            shownFeedItemsCount,
-            showMoreFeedItems,
+            isGettingMoreFeedItems,
+            getMoreFeedItems,
             temporaryFeedItems,
             temporaryReplies,
             temporaryReactions,

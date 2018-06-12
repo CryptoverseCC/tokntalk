@@ -13,7 +13,6 @@ import {
 import Modal from './Modal';
 import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon, socialColors } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
-import { getFeedItems } from './api';
 import { EntityIcon } from './entityApi';
 import Link from './Link';
 import { FeedCatvertised } from './Catvertised';
@@ -24,15 +23,15 @@ export default class ShowPage extends Component {
   componentDidMount() {
     pageView();
     window.scrollTo(0, 0);
-    this.refreshFeedItems(true);
+    this.props.getFeedItems(this.props.match.params.entityId);
     this.props.getEntityInfo(this.props.match.params.entityId);
-    this.refreshInterval = setInterval(this.refreshFeedItems, 15000);
+    this.refreshInterval = setInterval(() => this.props.getNewFeedItems(this.props.match.params.entityId), 3000);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.entityId !== this.props.match.params.entityId) {
       pageView();
-      this.refreshFeedItems(true, nextProps.match.params.entityId);
+      this.props.getFeedItems(nextProps.match.params.entityId);
       this.props.getEntityInfo(nextProps.match.params.entityId);
       window.scrollTo(0, 0);
     }
@@ -41,16 +40,6 @@ export default class ShowPage extends Component {
   componentWillUnmount() {
     clearInterval(this.refreshInterval);
   }
-
-  refreshFeedItems = async (purge = false, entityId = this.props.match.params.entityId) => {
-    if (purge) this.props.startFeedLoading();
-    try {
-      const feedItems = await getFeedItems(entityId);
-      this.props.updateFeedItems(feedItems, purge);
-    } catch (e) {
-      console.warn('Failed to download feedItems');
-    }
-  };
 
   static HeroImageContainer = styled.div`
     background-color: ${({ backgroundColor }) => backgroundColor || 'none'};

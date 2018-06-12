@@ -13,29 +13,22 @@ const {
   REACT_APP_ERC_721_NETWORK: ERC_721_NETWORK,
   REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE,
   REACT_APP_INTERFACE_BOOST_ADDRESS: INTERFACE_BOOST_ADDRESS,
-  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
+  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK
 } = process.env;
 
 export const createUserfeedsId = entityId => `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
 
-let lastFeedItemRequestTime = new Date(0);
-
-export const getFeedItems = async entityId => {
-  const entitySuffix = entityId ? `:${entityId}` : '';
-  const response = await fetch(
-    `${USERFEEDS_API_ADDRESS}/cryptopurr_feed;context=${ERC_721_NETWORK}:${ERC_721_ADDRESS}${entitySuffix}`,
-    {
-      headers: {
-        'If-Modified-Since': lastFeedItemRequestTime.toGMTString()
-      }
-    }
-  );
-  let { items: feedItems } = await response.json();
+export const getFeedItems = async ({ before, after, size, catId }) => {
+  const beforeParam = before ? `before=${before}` : '';
+  const afterParam = after ? `after=${after}` : '';
+  const sizeParam = size ? `size=${size}` : '';
+  const catIdParam = catId ? `catId=${createUserfeedsId(catId)}` : '';
+  const response = await fetch(`https://crypto-cache.herokuapp.com/purrs?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`);
+  let { items: feedItems, total } = await response.json();
   feedItems = feedItems.filter(feedItem =>
     ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
   );
-  lastFeedItemRequestTime = new Date();
-  return feedItems;
+  return { feedItems, total };
 };
 
 export const getMyEntities = async () => {
@@ -66,7 +59,9 @@ export const getLabels = async entityId => {
 export const getBoosts = async tokenId => {
   try {
     const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${createUserfeedsId(tokenId)};fee_address=${INTERFACE_BOOST_ADDRESS}`
+      `${USERFEEDS_API_ADDRESS}/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${createUserfeedsId(
+        tokenId
+      )};fee_address=${INTERFACE_BOOST_ADDRESS}`
     );
     const { items: boosts } = await res.json();
     const boostsMap = boosts.reduce(

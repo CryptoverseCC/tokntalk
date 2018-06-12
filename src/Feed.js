@@ -3,7 +3,6 @@ import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
 import sortBy from 'lodash/fp/sortBy';
-import take from 'lodash/fp/take';
 import reverse from 'lodash/fp/reverse';
 import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
@@ -521,7 +520,15 @@ const EmptyFeedPlaceholder = styled.div`
   justify-content: center;
 `;
 
-const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, showMoreFeedItems, className }) => (
+const Feed = ({
+  feedItems,
+  feedLoading,
+  temporaryReplies,
+  temporaryReactions,
+  getMoreFeedItems,
+  feedLoadingMore,
+  className
+}) => (
   <div className={className || 'column is-6 is-offset-3'} style={{ display: 'flex', justifyContent: 'center' }}>
     {feedLoading ? (
       <div style={{ paddingTop: '20px' }}>
@@ -531,10 +538,10 @@ const Feed = ({ feedItems, feedLoading, temporaryReplies, temporaryReactions, sh
       <InfiniteScroll
         style={{ width: '100%' }}
         hasMore={true}
-        onLoadMore={showMoreFeedItems}
+        onLoadMore={getMoreFeedItems}
         throttle={100}
         threshold={300}
-        isLoading={false}
+        isLoading={feedLoadingMore || feedLoading}
       >
         {feedItems.map(feedItem => {
           const replies = uniqBy(about => about.id)([
@@ -577,8 +584,8 @@ export const ConnectedFeed = ({ forEntity, className }) => (
         temporaryFeedItems,
         temporaryReplies,
         temporaryReactions,
-        shownFeedItemsCount,
-        showMoreFeedItems
+        getMoreFeedItems,
+        feedLoadingMore
       }
     }) => {
       let filteredTemporaryFeedItems = temporaryFeedItems;
@@ -588,10 +595,11 @@ export const ConnectedFeed = ({ forEntity, className }) => (
           return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
         });
       }
-      const allFeedItems = pipe(uniqBy('id'), sortBy('created_at'), reverse, take(shownFeedItemsCount))([
-        ...feedItems,
-        ...filteredTemporaryFeedItems
-      ]);
+      const allFeedItems = pipe(
+        uniqBy('id'),
+        sortBy('created_at'),
+        reverse
+      )([...feedItems, ...filteredTemporaryFeedItems]);
       return (
         <Feed
           className={className}
@@ -599,7 +607,8 @@ export const ConnectedFeed = ({ forEntity, className }) => (
           feedLoading={feedLoading}
           temporaryReplies={temporaryReplies}
           temporaryReactions={temporaryReactions}
-          showMoreFeedItems={showMoreFeedItems}
+          getMoreFeedItems={() => forEntity ? getMoreFeedItems(forEntity.id) : getMoreFeedItems()}
+          feedLoadingMore={feedLoadingMore}
         />
       );
     }}
