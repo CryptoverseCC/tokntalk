@@ -55,18 +55,29 @@ const ButtonCrossLink = styled(CrossLink)`
   }
 `;
 
+const LinkContainer = styled.ul`
+  display: flex;
+  align-items: center;
+  @media (max-width: 770px) {
+    display: none;
+  }
+`;
+
 const Header = () => {
   return (
     <StyledHeader>
       <Link to="/">
         <Logo />
       </Link>
-      <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
-      <CrossLink href="https://userfeeds.github.io/cryptobeep">Beep</CrossLink>
-      <CrossLink href="https://userfeeds.github.io/cryptomoji">Moji</CrossLink>
-      <CrossLink href="https://userfeeds.github.io/robohash-book">Hash</CrossLink>
-      <CrossLink href="http://story.digitalartchain.com/">Art</CrossLink>
-      <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
+      <LinkDropdown />
+      <LinkContainer>
+        <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
+        <CrossLink href="https://userfeeds.github.io/cryptobeep">Beep</CrossLink>
+        <CrossLink href="https://userfeeds.github.io/cryptomoji">Moji</CrossLink>
+        <CrossLink href="https://userfeeds.github.io/robohash-book">Hash</CrossLink>
+        <CrossLink href="http://story.digitalartchain.com/">Art</CrossLink>
+        <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
+      </LinkContainer>
       <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
     </StyledHeader>
   );
@@ -154,15 +165,28 @@ const PickEntity = styled.button`
   }
 `;
 
+const CatDropdownContent = styled.ul`
+  box-shadow: 0 10px 30px rgba(6, 3, 16, 0.06);
+  border-radius: 25px 0 12px 25px;
+  padding: 0.5rem;
+  max-height: 50vh;
+  overflow-y: scroll;
+  margin: 0;
+`;
+
 const CatDropdown = () => {
   return (
     <div style={{ marginLeft: 'auto' }}>
-      <Dropdown toggle={({ openDropdown }) => <CatDropdownToggle openDropdown={openDropdown} />}>
+      <Dropdown
+        Content={CatDropdownContent}
+        toggle={({ openDropdown }) => <CatDropdownToggle openDropdown={openDropdown} />}
+        position="right"
+      >
         {({ closeDropdown }) => (
           <Entities>
             {({ entities, changeActiveEntityTo }) =>
               entities.map(entity => (
-                <li className="dropdown-item" style={{ padding: 0 }} key={entity.id}>
+                <li className="dropdown-item" style={{ padding: 0, minWidth: '11rem' }} key={entity.id}>
                   <PickEntity
                     onClick={() => {
                       changeActiveEntityTo(entity);
@@ -183,6 +207,69 @@ const CatDropdown = () => {
     </div>
   );
 };
+
+const DropdownLink = styled(CrossLink)`
+  padding: 10px;
+  margin: 0;
+  min-width: 5rem;
+`;
+
+const DropdownButtonCrossLink = styled(ButtonCrossLink)`
+  margin: 0;
+  background-color: unset;
+  min-width: 5rem;
+`;
+
+const LinkDropdownContent = styled.ul`
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(6, 3, 16, 0.06);
+  border-radius: 12px;
+  margin: 0;
+  padding: 0.5rem;
+  max-height: 50vh;
+  overflow-y: scroll;
+`;
+
+const LinkDropdownContainer = styled.div`
+  margin-left: 10px;
+  display: none;
+  @media (max-width: 770px) {
+    display: flex;
+  }
+`;
+
+const LinkDropdownToggle = styled.button`
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: Rubik;
+`;
+
+const LinkDropdown = () => (
+  <LinkDropdownContainer>
+    <Dropdown
+      Content={LinkDropdownContent}
+      toggle={({ openDropdown }) => (
+        <LinkDropdownToggle onClick={openDropdown}>
+          More <span style={{ position: 'relative', top: '-2px' }}>⌄</span>
+        </LinkDropdownToggle>
+      )}
+      position="left"
+    >
+      {() => (
+        <React.Fragment>
+          <DropdownLink href="https://userfeeds.github.io/cryptobeep">Beep</DropdownLink>
+          <DropdownLink href="https://userfeeds.github.io/cryptomoji">Moji</DropdownLink>
+          <DropdownLink href="https://userfeeds.github.io/robohash-book">Hash</DropdownLink>
+          <DropdownLink href="http://story.digitalartchain.com/">Art</DropdownLink>
+          <DropdownButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</DropdownButtonCrossLink>
+        </React.Fragment>
+      )}
+    </Dropdown>
+  </LinkDropdownContainer>
+);
 
 class Dropdown extends React.Component {
   state = {
@@ -213,6 +300,10 @@ class Dropdown extends React.Component {
     }
   };
 
+  get dropdownMenuPosition() {
+    return this.props.position === 'left' ? { left: 0, right: 'auto' } : { left: 'auto', right: 0 };
+  }
+
   render() {
     return (
       <div className={`dropdown ${this.state.active ? 'is-active' : ''}`}>
@@ -220,20 +311,11 @@ class Dropdown extends React.Component {
         <div
           className="dropdown-menu"
           ref={dropdown => (this.dropdownElement = dropdown)}
-          style={{ left: 'auto', right: 0 }}
+          style={{ ...this.dropdownMenuPosition, minWidth: 'unset' }}
         >
-          <div
-            className="dropdown-content"
-            style={{
-              boxShadow: '0 10px 30px rgba(6,3,16,0.06)',
-              borderRadius: '25px 0 12px 25px',
-              padding: '0.5rem',
-              maxHeight: '50vh',
-              overflowY: 'scroll'
-            }}
-          >
+          <this.props.Content className="dropdown-content">
             {this.props.children({ closeDropdown: this.closeDropdown })}
-          </div>
+          </this.props.Content>
         </div>
       </div>
     );

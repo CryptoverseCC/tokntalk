@@ -26,7 +26,7 @@ storiesOf('Components', module)
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '600px',
+        width: '80%',
         height: '100vh',
         margin: '0 auto'
       }}
