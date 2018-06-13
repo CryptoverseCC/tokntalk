@@ -130,13 +130,13 @@ const getClaimWithValueTransferContract = async () => {
   return contract;
 };
 
-const createFeedItemBase = async (transactionHash, token) => {
+const createFeedItemBase = async (id, token) => {
   const { from, blockNumber, networkName } = await getWeb3State();
   return {
     author: from,
     created_at: new Date().getTime(),
     family: networkName,
-    id: `claim:${transactionHash}:0`,
+    id,
     sequence: blockNumber + 1,
     context: createUserfeedsId(token)
   };
@@ -149,7 +149,7 @@ const claim = async data => {
     contract.methods
       .post(JSON.stringify(data))
       .send({ from })
-      .on('transactionHash', transactionHash => resolve(transactionHash));
+      .on('transactionHash', transactionHash => resolve(`claim:${transactionHash}:0`));
   });
 };
 
@@ -174,8 +174,8 @@ export const sendMessage = async (token, message) => {
     context: createUserfeedsId(token),
     credits: getCreditsData()
   };
-  const transactionHash = await claim(data);
-  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  const id = await claim(data);
+  const feedItemBase = await createFeedItemBase(id, token);
   return {
     ...feedItemBase,
     about: null,
@@ -193,8 +193,8 @@ export const reply = async (token, message, to) => {
     context: createUserfeedsId(token),
     credits: getCreditsData()
   };
-  const transactionHash = await claim(data);
-  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  const id = await claim(data);
+  const feedItemBase = await createFeedItemBase(id, token);
   return { ...feedItemBase, target: { id: message } };
 };
 
@@ -206,8 +206,8 @@ export const writeTo = async (token, message, tokenTo) => {
     context: createUserfeedsId(token),
     credits: getCreditsData()
   };
-  const transactionHash = await claim(data);
-  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  const id = await claim(data);
+  const feedItemBase = await createFeedItemBase(id, token);
   return {
     ...feedItemBase,
     about: { id: entityUserfeedsId },
@@ -225,8 +225,8 @@ export const react = async (token, to) => {
     context: createUserfeedsId(token),
     credits: getCreditsData()
   };
-  const transactionHash = await claim(data);
-  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  const id = await claim(data);
+  const feedItemBase = await createFeedItemBase(id, token);
   return { ...feedItemBase, target: { id: to } };
 };
 
@@ -237,8 +237,8 @@ export const label = async (token, message, labelType) => {
     context: createUserfeedsId(token),
     credits: getCreditsData()
   };
-  const transactionHash = await claim(data);
-  const feedItemBase = await createFeedItemBase(transactionHash, token);
+  const id = await claim(data);
+  const feedItemBase = await createFeedItemBase(id, token);
   return {
     ...feedItemBase,
     about: null,
