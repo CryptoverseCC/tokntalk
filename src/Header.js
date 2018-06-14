@@ -63,6 +63,15 @@ const LinkContainer = styled.ul`
   }
 `;
 
+const ToggleHttpButton = styled.button`
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #623cea;
+  border: none;
+  border-radius: 3px;
+  color: white;
+`;
+
 const Header = () => {
   return (
     <StyledHeader>
@@ -78,6 +87,11 @@ const Header = () => {
         <CrossLink href="http://story.digitalartchain.com/">Art</CrossLink>
         <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
       </LinkContainer>
+      <Context.Consumer>
+        {({ appStore: { http, toggleHttpClaims } }) => (
+          <ToggleHttpButton onClick={toggleHttpClaims}>{http ? 'Off Chain' : 'On Chain'}</ToggleHttpButton>
+        )}
+      </Context.Consumer>
       <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
     </StyledHeader>
   );

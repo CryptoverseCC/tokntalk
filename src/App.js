@@ -67,7 +67,8 @@ export default class App extends Component {
     boosts: {},
     from: undefined,
     provider: undefined,
-    networkName: undefined
+    networkName: undefined,
+    http: this.storage.getItem('http') || true
   };
 
   componentDidMount() {
@@ -115,6 +116,12 @@ export default class App extends Component {
     });
   };
 
+  toggleHttpClaims = () => {
+    this.setState({ http: !this.state.http }, () => {
+      this.storage.setItem('http', this.state.http);
+    });
+  };
+
   getEntityInfo = async entityId => {
     if (this.entityInfoRequests[entityId]) return;
     const entityInfoRequest = getEntityData(entityId);
@@ -155,15 +162,17 @@ export default class App extends Component {
   }
 
   sendMessage = async message => {
-    const temporaryFeedItem = await sendMessage(this.state.activeEntity.token, message);
+    const { http } = this.state;
+    const temporaryFeedItem = await sendMessage(this.state.activeEntity.token, message, { http });
     this.setState({
       temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems]
     });
   };
 
   reply = async (message, to) => {
+    const { http } = this.state;
     const { token } = this.state.activeEntity;
-    const temporaryReply = await reply(token, message, to);
+    const temporaryReply = await reply(token, message, to, { http });
     this.setState(
       produce(draft => {
         draft.temporaryReplies[to] = [...(draft.temporaryReplies[to] || []), temporaryReply];
@@ -172,16 +181,18 @@ export default class App extends Component {
   };
 
   writeTo = async (message, tokenTo) => {
+    const { http } = this.state;
     const { token } = this.state.activeEntity;
-    const temporaryFeedItem = await writeTo(token, message, tokenTo);
+    const temporaryFeedItem = await writeTo(token, message, tokenTo, { http });
     this.setState({
       temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems]
     });
   };
 
   react = async to => {
+    const { http } = this.state;
     const { token } = this.state.activeEntity;
-    const temporaryReaction = await react(token, to);
+    const temporaryReaction = await react(token, to, { http });
     this.setState(
       produce(draft => {
         draft.temporaryReactions[to] = [...(draft.temporaryReactions[to] || []), temporaryReaction];
@@ -190,8 +201,9 @@ export default class App extends Component {
   };
 
   label = async (message, labelType) => {
+    const { http } = this.state;
     const { token } = this.state.activeEntity;
-    const temporaryFeedItem = await label(token, message, labelType);
+    const temporaryFeedItem = await label(token, message, labelType, { http });
     this.setState(
       produce(draft => {
         draft.entityLabels[token][labelType] = temporaryFeedItem.target.id;
@@ -272,7 +284,8 @@ export default class App extends Component {
       getEntity,
       getMoreFeedItems,
       isBoostable,
-      getBoosts
+      getBoosts,
+      toggleHttpClaims
     } = this;
     const {
       activeEntity,
@@ -288,11 +301,16 @@ export default class App extends Component {
       provider,
       from,
       networkName,
-      boosts
+      boosts,
+      http
     } = this.state;
     return (
       <Context.Provider
         value={{
+          appStore: {
+            toggleHttpClaims,
+            http
+          },
           entityStore: {
             getEntity,
             myEntities,
