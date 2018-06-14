@@ -66,10 +66,10 @@ const LinkContainer = styled.ul`
 const ToggleHttpButton = styled.button`
   margin-left: 10px;
   padding: 5px 10px;
-  background-color: #623cea;
+  background-color: ${({http}) => http ? "#623cea" : "#fdcf0b"};
   border: none;
   border-radius: 3px;
-  color: white;
+  color: ${({http}) => http ? "white" : "#2f343a"};
 `;
 
 const Header = () => {
@@ -89,7 +89,7 @@ const Header = () => {
       </LinkContainer>
       <Context.Consumer>
         {({ appStore: { http, toggleHttpClaims } }) => (
-          <ToggleHttpButton onClick={toggleHttpClaims}>{http ? 'Off Chain' : 'On Chain'}</ToggleHttpButton>
+          <ToggleHttpButton http={http} onClick={toggleHttpClaims}>{http ? 'Off Chain' : 'On Chain'}</ToggleHttpButton>
         )}
       </Context.Consumer>
       <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />

@@ -228,6 +228,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
 );
 
 const createEtherscanUrl = item => {
+  if (item.family === 'Http') return undefined;
   const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
@@ -607,7 +608,7 @@ export const ConnectedFeed = ({ forEntity, className }) => (
           feedLoading={feedLoading}
           temporaryReplies={temporaryReplies}
           temporaryReactions={temporaryReactions}
-          getMoreFeedItems={() => forEntity ? getMoreFeedItems(forEntity.id) : getMoreFeedItems()}
+          getMoreFeedItems={() => (forEntity ? getMoreFeedItems(forEntity.id) : getMoreFeedItems())}
           feedLoadingMore={feedLoadingMore}
         />
       );

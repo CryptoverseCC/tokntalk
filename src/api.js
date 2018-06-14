@@ -135,12 +135,12 @@ const getClaimWithValueTransferContract = async () => {
   return contract;
 };
 
-const createFeedItemBase = async (id, token) => {
+const createFeedItemBase = async (id, token, http) => {
   const { from, blockNumber, networkName } = await getWeb3State();
   return {
     author: from,
     created_at: new Date().getTime(),
-    family: networkName,
+    family: http ? "Http" : networkName,
     id,
     sequence: blockNumber + 1,
     context: createUserfeedsId(token)
@@ -154,14 +154,14 @@ const httpClaim = async data => {
   const wrappedClaim = JSON.stringify({ data, creator: from.toLowerCase(), nonce: uuidv4() });
   const signatureValue = await web3.eth.personal.sign(wrappedClaim, from);
   const body = JSON.stringify({ data: wrappedClaim, signatureValue, signatureType: 'ethereum:personal:sign' });
-  const id = await fetch(`${USERFEEDS_API_ADDRESS}/api/create-claim`, {
+  const response = await fetch(`${USERFEEDS_API_ADDRESS}/api/create-claim`, {
     method: 'POST',
     body,
     headers: {
       'Content-Type': 'application/json'
     },
   });
-  return id;
+  return response.body.toString();
 };
 
 const claim = async data => {
@@ -197,7 +197,7 @@ export const sendMessage = async (token, message, { http } = {}) => {
     credits: getCreditsData()
   };
   const id = await sendClaim(data, http);
-  const feedItemBase = await createFeedItemBase(id, token);
+  const feedItemBase = await createFeedItemBase(id, token, http);
   return {
     ...feedItemBase,
     about: null,
@@ -216,7 +216,7 @@ export const reply = async (token, message, to, { http } = {}) => {
     credits: getCreditsData()
   };
   const id = await sendClaim(data, http);
-  const feedItemBase = await createFeedItemBase(id, token);
+  const feedItemBase = await createFeedItemBase(id, token, http);
   return { ...feedItemBase, target: { id: message } };
 };
 
@@ -229,7 +229,7 @@ export const writeTo = async (token, message, tokenTo, { http } = {}) => {
     credits: getCreditsData()
   };
   const id = await sendClaim(data, http);
-  const feedItemBase = await createFeedItemBase(id, token);
+  const feedItemBase = await createFeedItemBase(id, token, http);
   return {
     ...feedItemBase,
     about: { id: entityUserfeedsId },
@@ -248,7 +248,7 @@ export const react = async (token, to, { http } = {}) => {
     credits: getCreditsData()
   };
   const id = await sendClaim(data, http);
-  const feedItemBase = await createFeedItemBase(id, token);
+  const feedItemBase = await createFeedItemBase(id, token, http);
   return { ...feedItemBase, target: { id: to } };
 };
 
@@ -260,7 +260,7 @@ export const label = async (token, message, labelType, { http } = {}) => {
     credits: getCreditsData()
   };
   const id = await sendClaim(data, http);
-  const feedItemBase = await createFeedItemBase(id, token);
+  const feedItemBase = await createFeedItemBase(id, token, http);
   return {
     ...feedItemBase,
     about: null,
