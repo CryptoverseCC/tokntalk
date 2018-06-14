@@ -228,7 +228,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
 );
 
 const createEtherscanUrl = item => {
-  if (item.family === 'Http') return undefined;
+  if (item.family.toLowerCase() === 'http') return undefined;
   const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
