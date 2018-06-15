@@ -140,7 +140,7 @@ const createFeedItemBase = async (id, token, http) => {
   return {
     author: from,
     created_at: new Date().getTime(),
-    family: http ? "Http" : networkName,
+    family: http ? "http" : networkName,
     id,
     sequence: blockNumber + 1,
     context: createUserfeedsId(token)
@@ -161,7 +161,8 @@ const httpClaim = async data => {
       'Content-Type': 'application/json'
     },
   });
-  return response.body.toString();
+  const id = await response.text();
+  return id;
 };
 
 const claim = async data => {
