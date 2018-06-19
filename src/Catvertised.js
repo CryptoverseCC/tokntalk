@@ -239,7 +239,7 @@ const CatvertisedItemLink = styled(Link)`
   }
 `;
 
-const Purrmoter = styled(Link)`
+const Purrmoter = styled(({ hiddenOnMobile, ...restProps }) => <Link {...restProps} />)`
   overflow: hidden;
   display: flex;
   ${({ hiddenOnMobile }) =>
