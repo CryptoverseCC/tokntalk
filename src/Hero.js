@@ -7,17 +7,17 @@ import styled from 'styled-components';
 const HeroContainer = styled.div`
   padding: 2.5rem 0.75rem;
 
-  @media(max-width: 770px) {
+  @media (max-width: 770px) {
     padding: 0.75rem;
   }
-`
+`;
 
 const Hero = () => (
   <IfActiveEntity>
-    {({ token }) => (
+    {(entity) => (
       <div
         style={{
-          backgroundColor: '#f9fbfd'
+          backgroundColor: '#f9fbfd',
         }}
       >
         <HeroContainer className="container">
@@ -34,11 +34,11 @@ const Hero = () => (
                   <div className="media-content">
                     <div className="content">
                       <Link
-                        to={`/${token}`}
+                        to={`/${entity}`}
                         style={{
                           fontFamily: 'Rubik',
                           fontSize: '1.1rem',
-                          fontWeight: '500'
+                          fontWeight: '500',
                         }}
                       >
                         <ActiveEntityName />

@@ -21,16 +21,14 @@ export const IfActiveEntity = ({ children, then, other }) => (
 
 export const IfIsActiveEntity = ({ id, children, then, other }) => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity } }) =>
-      activeEntity && activeEntity.token === id ? then || children : other || null
-    }
+    {({ entityStore: { activeEntity } }) => (activeEntity && activeEntity === id ? then || children : other || null)}
   </Context.Consumer>
 );
 
 export const IfOwnerOfEntity = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { myEntities } }) =>
-      !!myEntities.find(entity => id.toString() === entity.token) ? then || children : other || null
+      !!myEntities.find((entity) => id.toString() === entity) ? then || children : other || null
     }
   </Context.Consumer>
 );
@@ -52,7 +50,11 @@ export const EntityName = ({ id }) => (
 export const EntityAvatar = ({ id, ...props }) => (
   <Context.Consumer>
     {({ entityStore: { getEntity } }) =>
-      id ? <IdentityAvatar {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} /> : <AvatarPlaceholder {...props} />
+      id ? (
+        <IdentityAvatar {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} />
+      ) : (
+        <AvatarPlaceholder {...props} />
+      )
     }
   </Context.Consumer>
 );
@@ -70,25 +72,25 @@ export const LinkedEntityAvatar = ({ id, ...props }) => (
 export const Entities = ({ children }) => (
   <Context.Consumer>
     {({ entityStore: { myEntities, changeActiveEntityTo }, entityStore: { getEntity } }) => {
-      const entities = myEntities.map(myEntity => getEntity(myEntity.token));
+      const entities = myEntities.map((myEntity) => getEntity(myEntity));
       return children({ entities, changeActiveEntityTo });
     }}
   </Context.Consumer>
 );
 
 export const ActiveEntityName = () => (
-  <Context.Consumer>{({ entityStore: { activeEntity } }) => <EntityName id={activeEntity.token} />}</Context.Consumer>
+  <Context.Consumer>{({ entityStore: { activeEntity } }) => <EntityName id={activeEntity} />}</Context.Consumer>
 );
 
-export const LinkedActiveEntityAvatar = props => (
+export const LinkedActiveEntityAvatar = (props) => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity } }) => <LinkedEntityAvatar id={activeEntity.token} {...props} />}
+    {({ entityStore: { activeEntity } }) => <LinkedEntityAvatar id={activeEntity} {...props} />}
   </Context.Consumer>
 );
 
-export const ActiveEntityAvatar = props => (
+export const ActiveEntityAvatar = (props) => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity } }) => <EntityAvatar id={activeEntity.token} {...props} />}
+    {({ entityStore: { activeEntity } }) => <EntityAvatar id={activeEntity} {...props} />}
   </Context.Consumer>
 );
 
@@ -96,14 +98,11 @@ export const IfActiveEntityLiked = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity }, feedStore: { feedItems, temporaryFeedItems, temporaryReactions } }) => {
       if (!activeEntity) return other;
-      const claim = uniqBy([...temporaryFeedItems, ...feedItems], feedItem => feedItem.id).find(
-        ({ id: claimId }) => claimId === id
+      const claim = uniqBy([...temporaryFeedItems, ...feedItems], (feedItem) => feedItem.id).find(
+        ({ id: claimId }) => claimId === id,
       );
       const liked =
-        claim &&
-        claim.targeted
-          .concat(temporaryReactions[id] || [])
-          .find(({ context }) => context.split(':')[2] === activeEntity.token);
+        claim && claim.targeted.concat(temporaryReactions[id] || []).find(({ context }) => context === activeEntity);
       return liked ? then || children : other;
     }}
   </Context.Consumer>

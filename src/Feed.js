@@ -15,7 +15,7 @@ import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   LinkedEntityAvatar,
-  IfActiveEntityLiked
+  IfActiveEntityLiked,
 } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
@@ -89,9 +89,9 @@ const Label = ({ onClick, liked, count }) => {
   );
 };
 
-export const sanitizeMessage = message => {
+export const sanitizeMessage = (message) => {
   const expression = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b(?:[-a-zA-Z0-9@;:%_+.~#?&//=]*))/g;
-  const replaceMatchWithLink = match => {
+  const replaceMatchWithLink = (match) => {
     return `<a href="${match}">${escapeHtml(match)}</a>`;
   };
   return message
@@ -121,7 +121,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
             fontSize: '1.1rem',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
-            overflowWrap: 'break-word'
+            overflowWrap: 'break-word',
           }}
           dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
@@ -137,7 +137,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
               }
             />
             {reactions.map((reaction, index) => {
-              const id = reaction.context.split(':')[2];
+              const id = reaction.context;
               return <LinkedEntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />;
             })}
           </div>
@@ -156,7 +156,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
           width: '54px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         <svg width="16px" height="16px" version="1.1">
@@ -180,7 +180,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
             borderRadius: '12px',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
-            overflowWrap: 'break-word'
+            overflowWrap: 'break-word',
           }}
         >
           <Link to={`/${from}`}>
@@ -206,7 +206,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
                         padding: 0,
                         margin: 0,
                         color: '#ffa6d8',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       }}
                     >
                       Like
@@ -227,7 +227,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
   </article>
 );
 
-const createEtherscanUrl = item => {
+const createEtherscanUrl = (item) => {
   if (item.family.toLowerCase() === 'http') return undefined;
   const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
@@ -335,7 +335,7 @@ const LabelItems = {
   facebook: FacebookLabel,
   twitter: TwitterLabel,
   instagram: InstagramLabel,
-  github: GithubLabel
+  github: GithubLabel,
 };
 
 const blink = keyframes`
@@ -362,7 +362,7 @@ const CardBox = styled.div`
 
 class Card extends React.Component {
   state = {
-    wasShown: !this.props.added
+    wasShown: !this.props.added,
   };
 
   renderItem = () => {
@@ -372,11 +372,11 @@ class Card extends React.Component {
         <React.Fragment>
           <article className="media">
             <div className="media-left" style={{ width: '54px' }}>
-              <LinkedEntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context.split(':')[2]} />
+              <LinkedEntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context} />
             </div>
             <div className="media-content">
               <CardTitle
-                from={feedItem.context.split(':')[2]}
+                from={feedItem.context}
                 createdAt={feedItem.created_at}
                 etherscanUrl={createEtherscanUrl(feedItem)}
                 family={feedItem.family}
@@ -389,7 +389,7 @@ class Card extends React.Component {
             </div>
           </article>
           <Post
-            from={feedItem.target.context.split(':')[2]}
+            from={feedItem.target.context}
             createdAt={feedItem.target.created_at}
             etherscanUrl={createEtherscanUrl(feedItem.target)}
             family={feedItem.target.family}
@@ -425,20 +425,20 @@ class Card extends React.Component {
                 overflow: 'hidden',
                 maxWidth: '300px',
                 display: 'inline-block',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
               }}
               dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about.id) }}
             />
           </React.Fragment>
         ),
-        labels: feedItem => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>
+        labels: (feedItem) => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>,
       };
       return (
         <React.Fragment>
           {feedItem.type === 'response' && (
             <Reply
               id={feedItem.about.id}
-              from={feedItem.about.context.split(':')[2]}
+              from={feedItem.about.context}
               createdAt={feedItem.about.created_at}
               etherscanUrl={createEtherscanUrl(feedItem.about)}
               family={feedItem.about.family}
@@ -448,7 +448,7 @@ class Card extends React.Component {
           <Post
             id={feedItem.id}
             style={{ borderTop: 'none' }}
-            from={feedItem.context.split(':')[2]}
+            from={feedItem.context}
             createdAt={feedItem.created_at}
             message={feedItem.target.id}
             family={feedItem.family}
@@ -462,11 +462,11 @@ class Card extends React.Component {
                 React.createElement(LabelItems[feedItem.labels[0]]))
             }
           />
-          {replies.map(reply => (
+          {replies.map((reply) => (
             <Reply
               id={reply.id}
               key={reply.id}
-              from={reply.context.split(':')[2]}
+              from={reply.context}
               createdAt={reply.created_at}
               message={reply.target.id}
               family={reply.family}
@@ -479,7 +479,7 @@ class Card extends React.Component {
     }
   };
 
-  onItemVisibilityChange = isVisible => {
+  onItemVisibilityChange = (isVisible) => {
     if (isVisible) {
       this.setState({ wasShown: true });
     }
@@ -528,7 +528,7 @@ const Feed = ({
   temporaryReactions,
   getMoreFeedItems,
   feedLoadingMore,
-  className
+  className,
 }) => (
   <div className={className || 'column is-6 is-offset-3'} style={{ display: 'flex', justifyContent: 'center' }}>
     {feedLoading ? (
@@ -544,14 +544,14 @@ const Feed = ({
         threshold={300}
         isLoading={feedLoadingMore || feedLoading}
       >
-        {feedItems.map(feedItem => {
-          const replies = uniqBy(about => about.id)([
+        {feedItems.map((feedItem) => {
+          const replies = uniqBy((about) => about.id)([
             ...(temporaryReplies[feedItem.id] || []),
-            ...(feedItem.abouted || [])
+            ...(feedItem.abouted || []),
           ]);
-          const reactions = uniqBy(target => target.id)([
+          const reactions = uniqBy((target) => target.id)([
             ...(temporaryReactions[feedItem.id] || []),
-            ...(feedItem.targeted || [])
+            ...(feedItem.targeted || []),
           ]);
           return (
             <Card
@@ -586,8 +586,8 @@ export const ConnectedFeed = ({ forEntity, className }) => (
         temporaryReplies,
         temporaryReactions,
         getMoreFeedItems,
-        feedLoadingMore
-      }
+        feedLoadingMore,
+      },
     }) => {
       let filteredTemporaryFeedItems = temporaryFeedItems;
       if (forEntity) {
@@ -599,7 +599,7 @@ export const ConnectedFeed = ({ forEntity, className }) => (
       const allFeedItems = pipe(
         uniqBy('id'),
         sortBy('created_at'),
-        reverse
+        reverse,
       )([...feedItems, ...filteredTemporaryFeedItems]);
       return (
         <Feed

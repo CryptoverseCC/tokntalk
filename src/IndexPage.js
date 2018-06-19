@@ -23,7 +23,7 @@ export default class IndexPage extends Component {
       <React.Fragment>
         <Hero />
         <FeedContainer>
-          <FeedCatvertised tokenId={DEFAULT_TOKEN_ID} />
+          <FeedCatvertised token={DEFAULT_TOKEN_ID} />
           <ConnectedFeed className="column is-6" />
         </FeedContainer>
       </React.Fragment>

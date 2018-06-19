@@ -5,7 +5,7 @@ import Context from './Context';
 import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from './Entity';
 
 const StyledInput = styled.div.attrs({
-  children: props => (
+  children: (props) => (
     <input
       style={{
         fontSize: '18px',
@@ -16,11 +16,11 @@ const StyledInput = styled.div.attrs({
         height: '57px',
         background: 'none',
         outline: 'none',
-        border: 'none'
+        border: 'none',
       }}
       {...props}
     />
-  )
+  ),
 })`
   width: 100%;
   border-radius: 8px;
@@ -110,7 +110,7 @@ const CustomCatFormInput = styled.div`
   align-items: center;
 `;
 
-const formatCurrency = value => {
+const formatCurrency = (value) => {
   return (value * 10 ** -18).toFixed(3);
 };
 
@@ -386,16 +386,16 @@ export default class Catvertised extends React.Component {
   state = {
     step: 'catvertised',
     value: 0,
-    customCatId: undefined
+    customCatId: undefined,
   };
 
   componentDidMount() {
-    this.props.getBoosts(this.props.tokenId);
+    this.props.getBoosts(this.props.token);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.tokenId !== this.props.tokenId) {
-      this.props.getBoosts(nextProps.tokenId);
+    if (nextProps.token !== this.props.token) {
+      this.props.getBoosts(nextProps.token);
     }
   }
 
@@ -410,7 +410,7 @@ export default class Catvertised extends React.Component {
     border: 2px solid #cdf5d4;
   `;
 
-  calculatePosition = boosts => {
+  calculatePosition = (boosts) => {
     const scores = Object.entries(boosts)
       .sort(([, { score: a }], [, { score: b }]) => b - a)
       .map(([, { score }]) => score);
@@ -425,7 +425,8 @@ export default class Catvertised extends React.Component {
     return position + 1;
   };
 
-  renderPosition = position => (position <= 5 ? <span style={{ color: '#40bf57' }}>#{position}</span> : `#${position}`);
+  renderPosition = (position) =>
+    position <= 5 ? <span style={{ color: '#40bf57' }}>#{position}</span> : `#${position}`;
 
   boost = async () => {
     this.setState({ step: 'submitted' });
@@ -439,12 +440,12 @@ export default class Catvertised extends React.Component {
             {this.state.step === 'catvertised' && (
               <React.Fragment>
                 <CatvertisedHeader>
-                  <Purrmoter to={`/${this.props.tokenId}`} hiddenOnMobile>
-                    <EntityAvatar size="medium" id={this.props.tokenId} />
+                  <Purrmoter to={`/${this.props.token}`} hiddenOnMobile>
+                    <EntityAvatar size="medium" id={this.props.token} />
                     <EntityDescription>
                       <CatvertisedName>
                         <EntityNameWrapper>
-                          <EntityName id={this.props.tokenId} />
+                          <EntityName id={this.props.token} />
                         </EntityNameWrapper>
                       </CatvertisedName>
                       <CatvertisedScore>Purrmoter</CatvertisedScore>
@@ -479,12 +480,12 @@ export default class Catvertised extends React.Component {
             )}
             {this.state.step === 'pickCat' && (
               <React.Fragment>
-                <Purrmoter to={`/${this.props.tokenId}`}>
-                  <EntityAvatar size="medium" id={this.props.tokenId} />
+                <Purrmoter to={`/${this.props.token}`}>
+                  <EntityAvatar size="medium" id={this.props.token} />
                   <EntityDescription>
                     <CatvertisedName>
                       <EntityNameWrapper>
-                        <EntityName id={this.props.tokenId} />
+                        <EntityName id={this.props.token} />
                       </EntityNameWrapper>
                     </CatvertisedName>
                     <CatvertisedScore>Purrmoter</CatvertisedScore>
@@ -512,11 +513,11 @@ export default class Catvertised extends React.Component {
                         height: '57px',
                         background: 'none',
                         outline: 'none',
-                        border: 'none'
+                        border: 'none',
                       }}
                       type="text"
                       value={this.state.customCatId}
-                      onChange={e => {
+                      onChange={(e) => {
                         this.setState({ customCatId: e.target.value });
                       }}
                       placeholder="Custom cat id"
@@ -526,7 +527,7 @@ export default class Catvertised extends React.Component {
                       onClick={() =>
                         this.setState({
                           step: 'form',
-                          entityId: this.state.customCatId
+                          entityId: this.state.customCatId,
                         })
                       }
                     >
@@ -538,13 +539,13 @@ export default class Catvertised extends React.Component {
                   {({ entities }) =>
                     entities.length > 0 && (
                       <CatvertisedPickCatList>
-                        {entities.map(entity => (
+                        {entities.map((entity) => (
                           <CatvertisedItem key={entity.id}>
                             <CatvertisedItemButton
                               onClick={() =>
                                 this.setState({
                                   step: 'form',
-                                  entityId: entity.id
+                                  entityId: entity.id,
                                 })
                               }
                             >
@@ -565,12 +566,12 @@ export default class Catvertised extends React.Component {
             )}
             {this.state.step === 'form' && (
               <React.Fragment>
-                <Purrmoter to={`/${this.props.tokenId}`}>
-                  <EntityAvatar size="medium" id={this.props.tokenId} />
+                <Purrmoter to={`/${this.props.token}`}>
+                  <EntityAvatar size="medium" id={this.props.token} />
                   <EntityDescription>
                     <CatvertisedName>
                       <EntityNameWrapper>
-                        <EntityName id={this.props.tokenId} />
+                        <EntityName id={this.props.token} />
                       </EntityNameWrapper>
                     </CatvertisedName>
                     <CatvertisedScore>Purrmoter</CatvertisedScore>
@@ -596,23 +597,23 @@ export default class Catvertised extends React.Component {
                   style={{
                     fontSize: '18px',
                     fontWeight: '500',
-                    marginTop: '20px'
+                    marginTop: '20px',
                   }}
                 >
                   Purrmote with
                 </div>
                 <form
                   style={{ marginBottom: '-5px' }}
-                  onSubmit={async e => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
                     const { transactionHash, networkName } = await boost(
                       this.state.entityId,
-                      this.props.tokenId,
-                      this.state.value * 10 ** 18
+                      this.props.token,
+                      this.state.value * 10 ** 18,
                     );
                     this.setState({
                       etherscanUrl: createEtherscanUrl(transactionHash, networkName),
-                      step: 'submitted'
+                      step: 'submitted',
                     });
                   }}
                 >
@@ -621,7 +622,7 @@ export default class Catvertised extends React.Component {
                     type="text"
                     value={this.state.value}
                     title="Value must only contain numbers and `.` sign. e.g. 0.011"
-                    onChange={e => {
+                    onChange={(e) => {
                       this.setState({ value: e.target.value });
                     }}
                   />
@@ -639,7 +640,7 @@ export default class Catvertised extends React.Component {
                   display: 'flex',
                   flexDirection: 'column',
                   textAlign: 'center',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
                 <CatvertisedClose
@@ -654,7 +655,7 @@ export default class Catvertised extends React.Component {
                   style={{
                     fontWeight: 500,
                     fontSize: '32px',
-                    color: '#060310'
+                    color: '#060310',
                   }}
                 >
                   Success!

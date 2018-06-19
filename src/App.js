@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
-import find from 'lodash/fp/find';
 import produce from 'immer';
 import Context from './Context';
 import IndexPage from './IndexPage';
@@ -17,7 +16,7 @@ import {
   getLabels,
   getBoosts,
   boost,
-  getFeedItems
+  getFeedItems,
 } from './api';
 import { getEntityData } from './entityApi';
 import Header from './Header';
@@ -29,7 +28,7 @@ const {
   REACT_APP_NAME: APP_NAME,
   REACT_APP_BASENAME: BASENAME,
   REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
-  REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID
+  REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID,
 } = process.env;
 
 const Storage = (storage = localStorage) => ({
@@ -38,11 +37,14 @@ const Storage = (storage = localStorage) => ({
   },
   setItem(key, value) {
     return storage.setItem(`${APP_NAME}_${key}`, value);
-  }
+  },
 });
 
 export const produceEntities = (myEntities, previousActiveEntity) => {
-  const activeEntity = find(previousActiveEntity)(myEntities) || myEntities[0];
+  let activeEntity = myEntities[0];
+  if (myEntities.includes(previousActiveEntity)) {
+    activeEntity = previousActiveEntity;
+  }
   return { myEntities, activeEntity };
 };
 
@@ -68,7 +70,7 @@ export default class App extends Component {
     from: undefined,
     provider: undefined,
     networkName: undefined,
-    http: this.storage.getItem('http') || true
+    http: this.storage.getItem('http') || true,
   };
 
   componentDidMount() {
@@ -87,17 +89,17 @@ export default class App extends Component {
   };
 
   previousActiveEntity = () => {
-    return JSON.parse(this.storage.getItem('activeEntity') || 'null');
+    return this.storage.getItem('activeEntity') || null;
   };
 
-  changeActiveEntityTo = newActiveEntity => {
-    const activeEntity = find({ token: newActiveEntity.id.toString() })(this.state.myEntities);
-    this.setState({ activeEntity }, this.saveActiveEntity);
+  changeActiveEntityTo = (newActiveEntity) => {
+    if (!this.state.myEntities.includes(newActiveEntity.id)) return;
+    this.setState({ activeEntity: newActiveEntity.id }, this.saveActiveEntity);
   };
 
   saveActiveEntity = () => {
     const { activeEntity } = this.state;
-    if (activeEntity) this.storage.setItem('activeEntity', JSON.stringify(activeEntity));
+    if (activeEntity) this.storage.setItem('activeEntity', activeEntity);
   };
 
   refreshWeb3State = async () => {
@@ -106,13 +108,13 @@ export default class App extends Component {
     this.setState({ from, isListening, provider, networkName });
   };
 
-  getEntityLabels = async entityId => {
+  getEntityLabels = async (entityId) => {
     if (this.entityLabelRequests[entityId]) return;
     const entityLabelRequest = getLabels(entityId);
     this.entityLabelRequests[entityId] = entityLabelRequest;
     const labels = await entityLabelRequest;
     this.setState({
-      entityLabels: { ...this.state.entityLabels, [entityId]: labels }
+      entityLabels: { ...this.state.entityLabels, [entityId]: labels },
     });
   };
 
@@ -122,7 +124,7 @@ export default class App extends Component {
     });
   };
 
-  getEntityInfo = async entityId => {
+  getEntityInfo = async (entityId) => {
     if (this.entityInfoRequests[entityId]) return;
     const entityInfoRequest = getEntityData(entityId);
     this.entityInfoRequests[entityId] = entityInfoRequest;
@@ -132,7 +134,7 @@ export default class App extends Component {
     });
   };
 
-  getEntity = entityId => {
+  getEntity = (entityId) => {
     const entityInfo = this.state.entityInfo[entityId];
     if (!entityInfo) this.getEntityInfo(entityId);
     const entityLabels = this.state.entityLabels[entityId];
@@ -146,11 +148,11 @@ export default class App extends Component {
       name: undefined,
       boostValue,
       ...entityInfo,
-      ...entityLabels
+      ...entityLabels,
     };
   };
 
-  getBoosts = async tokenId => {
+  getBoosts = async (tokenId) => {
     const boosts = await getBoosts(tokenId);
     if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
       this.setState({ boosts });
@@ -161,11 +163,11 @@ export default class App extends Component {
     return this.state.from && this.state.networkName === INTERFACE_BOOST_NETWORK;
   }
 
-  sendMessage = async message => {
+  sendMessage = async (message) => {
     const { http } = this.state;
-    const temporaryFeedItem = await sendMessage(this.state.activeEntity.token, message, { http });
+    const temporaryFeedItem = await sendMessage(this.state.activeEntity, message, { http });
     this.setState({
-      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems]
+      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
     });
   };
 
@@ -174,9 +176,9 @@ export default class App extends Component {
     const { token } = this.state.activeEntity;
     const temporaryReply = await reply(token, message, to, { http });
     this.setState(
-      produce(draft => {
+      produce((draft) => {
         draft.temporaryReplies[to] = [...(draft.temporaryReplies[to] || []), temporaryReply];
-      })
+      }),
     );
   };
 
@@ -185,18 +187,18 @@ export default class App extends Component {
     const { token } = this.state.activeEntity;
     const temporaryFeedItem = await writeTo(token, message, tokenTo, { http });
     this.setState({
-      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems]
+      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
     });
   };
 
-  react = async to => {
+  react = async (to) => {
     const { http } = this.state;
     const { token } = this.state.activeEntity;
     const temporaryReaction = await react(token, to, { http });
     this.setState(
-      produce(draft => {
+      produce((draft) => {
         draft.temporaryReactions[to] = [...(draft.temporaryReactions[to] || []), temporaryReaction];
-      })
+      }),
     );
   };
 
@@ -205,14 +207,14 @@ export default class App extends Component {
     const { token } = this.state.activeEntity;
     const temporaryFeedItem = await label(token, message, labelType, { http });
     this.setState(
-      produce(draft => {
+      produce((draft) => {
         draft.entityLabels[token][labelType] = temporaryFeedItem.target.id;
         draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems];
-      })
+      }),
     );
   };
 
-  getFeedItems = async catId => {
+  getFeedItems = async (catId) => {
     try {
       this.setState({ feedLoading: true, feedId: catId }, async () => {
         const { feedItems, total: feedItemsCount } = await getFeedItems({ size: 10, catId });
@@ -224,11 +226,11 @@ export default class App extends Component {
     }
   };
 
-  getNewFeedItems = async catId => {
+  getNewFeedItems = async (catId) => {
     try {
       const before = this.state.feedItems[0] ? this.state.feedItems[0].id : undefined;
       const { feedItems: newFeedItems, total: feedItemsCount } = await getFeedItems({ before, catId, size: 10 });
-      const addedFeedItems = newFeedItems.map(item => ({ ...item, added: true }));
+      const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
       if (this.state.feedId !== catId) return;
       this.setState(({ feedItems }) => ({ feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
     } catch (e) {
@@ -236,7 +238,7 @@ export default class App extends Component {
     }
   };
 
-  getMoreFeedItems = async catId => {
+  getMoreFeedItems = async (catId) => {
     if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
     try {
       this.setState({ feedLoadingMore: true }, async () => {
@@ -246,7 +248,7 @@ export default class App extends Component {
         this.setState(({ feedItems }) => ({
           feedLoadingMore: false,
           feedItems: [...feedItems, ...moreFeedItems],
-          feedItemsCount
+          feedItemsCount,
         }));
       });
     } catch (e) {
@@ -254,13 +256,13 @@ export default class App extends Component {
     }
   };
 
-  renderIndexPage = props => (
+  renderIndexPage = (props) => (
     <IndexPage {...props} getFeedItems={this.getFeedItems} getNewFeedItems={this.getNewFeedItems} />
   );
 
-  renderFaqPage = props => <FAQPage />;
+  renderFaqPage = (props) => <FAQPage />;
 
-  renderShowPage = props => (
+  renderShowPage = (props) => (
     <ShowPage
       {...props}
       getFeedItems={this.getFeedItems}
@@ -285,7 +287,7 @@ export default class App extends Component {
       getMoreFeedItems,
       isBoostable,
       getBoosts,
-      toggleHttpClaims
+      toggleHttpClaims,
     } = this;
     const {
       activeEntity,
@@ -302,14 +304,14 @@ export default class App extends Component {
       from,
       networkName,
       boosts,
-      http
+      http,
     } = this.state;
     return (
       <Context.Provider
         value={{
           appStore: {
             toggleHttpClaims,
-            http
+            http,
           },
           entityStore: {
             getEntity,
@@ -317,7 +319,7 @@ export default class App extends Component {
             changeActiveEntityTo,
             activeEntity,
             entityInfo,
-            getEntityInfo
+            getEntityInfo,
           },
           feedStore: {
             sendMessage,
@@ -332,19 +334,19 @@ export default class App extends Component {
             temporaryFeedItems,
             temporaryReplies,
             temporaryReactions,
-            allowAddingFeedItem
+            allowAddingFeedItem,
           },
           boostStore: {
             boost,
             boosts,
             isBoostable,
-            getBoosts
+            getBoosts,
           },
           web3Store: {
             provider,
             from,
-            networkName
-          }
+            networkName,
+          },
         }}
       >
         <Router basename={BASENAME}>

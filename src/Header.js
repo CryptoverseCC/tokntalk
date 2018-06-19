@@ -66,10 +66,10 @@ const LinkContainer = styled.ul`
 const ToggleHttpButton = styled.button`
   margin-left: 10px;
   padding: 5px 10px;
-  background-color: ${({http}) => http ? "#623cea" : "#fdcf0b"};
+  background-color: ${({ http }) => (http ? '#623cea' : '#fdcf0b')};
   border: none;
   border-radius: 3px;
-  color: ${({http}) => http ? "white" : "#2f343a"};
+  color: ${({ http }) => (http ? 'white' : '#2f343a')};
 `;
 
 const Header = () => {
@@ -81,15 +81,13 @@ const Header = () => {
       <LinkDropdown />
       <LinkContainer>
         <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
-        <CrossLink href="https://userfeeds.github.io/cryptobeep">Beep</CrossLink>
-        <CrossLink href="https://userfeeds.github.io/cryptomoji">Moji</CrossLink>
-        <CrossLink href="https://userfeeds.github.io/robohash-book">Hash</CrossLink>
-        <CrossLink href="http://story.digitalartchain.com/">Art</CrossLink>
         <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
       </LinkContainer>
       <Context.Consumer>
         {({ appStore: { http, toggleHttpClaims } }) => (
-          <ToggleHttpButton http={http} onClick={toggleHttpClaims}>{http ? 'Off Chain' : 'On Chain'}</ToggleHttpButton>
+          <ToggleHttpButton http={http} onClick={toggleHttpClaims}>
+            {http ? 'Off Chain' : 'On Chain'}
+          </ToggleHttpButton>
         )}
       </Context.Consumer>
       <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
@@ -151,7 +149,7 @@ const CatDropdownToggle = ({ openDropdown }) => {
             position: 'relative',
             top: '-2px',
             lineHeight: '1px',
-            marginLeft: '7px'
+            marginLeft: '7px',
           }}
         >
           ⌄
@@ -199,7 +197,7 @@ const CatDropdown = () => {
         {({ closeDropdown }) => (
           <Entities>
             {({ entities, changeActiveEntityTo }) =>
-              entities.map(entity => (
+              entities.map((entity) => (
                 <li className="dropdown-item" style={{ padding: 0, minWidth: '11rem' }} key={entity.id}>
                   <PickEntity
                     onClick={() => {
@@ -287,14 +285,14 @@ const LinkDropdown = () => (
 
 class Dropdown extends React.Component {
   state = {
-    active: false
+    active: false,
   };
 
   componentWillUnmount() {
     this.closeDropdown();
   }
 
-  openDropdown = e => {
+  openDropdown = (e) => {
     e.stopPropagation();
     this.setState({ active: true }, () => {
       window.addEventListener('click', this.onWindowClick);
@@ -308,7 +306,7 @@ class Dropdown extends React.Component {
     window.removeEventListener('touchstart', this.onWindowClick);
   };
 
-  onWindowClick = event => {
+  onWindowClick = (event) => {
     if (event.target !== this.dropdownElement && !this.dropdownElement.contains(event.target) && this.state.active) {
       this.closeDropdown();
     }
@@ -324,7 +322,7 @@ class Dropdown extends React.Component {
         <div className="dropdown-trigger">{this.props.toggle({ openDropdown: this.openDropdown })}</div>
         <div
           className="dropdown-menu"
-          ref={dropdown => (this.dropdownElement = dropdown)}
+          ref={(dropdown) => (this.dropdownElement = dropdown)}
           style={{ ...this.dropdownMenuPosition, minWidth: 'unset' }}
         >
           <this.props.Content className="dropdown-content">

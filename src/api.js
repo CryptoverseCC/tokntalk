@@ -1,35 +1,39 @@
-import getWeb3 from './web3';
+import find from 'lodash/fp/find';
 import uuidv4 from 'uuid/v4';
+
+import getWeb3 from './web3';
 import {
   claimContractAddressesForNetworkId,
   claimContractAbi,
   networkNameForNetworkId,
   claimWithValueTransferContractAddressesForNetworkId,
-  claimWithValueTransferContractAbi
+  claimWithValueTransferContractAbi,
 } from './contract';
 import { getEntityData } from './entityApi';
+import ercs721 from './erc721';
+
 const {
   REACT_APP_ERC_721_ADDRESS: ERC_721_ADDRESS,
   REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS,
   REACT_APP_ERC_721_NETWORK: ERC_721_NETWORK,
   REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE,
   REACT_APP_INTERFACE_BOOST_ADDRESS: INTERFACE_BOOST_ADDRESS,
-  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK
+  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
 } = process.env;
 
-export const createUserfeedsId = entityId => `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
+export const createUserfeedsId = (entityId) => `${ERC_721_NETWORK}:${ERC_721_ADDRESS}:${entityId}`;
 
 export const getFeedItems = async ({ before, after, size, catId }) => {
   const beforeParam = before ? `before=${before}` : '';
   const afterParam = after ? `after=${after}` : '';
   const sizeParam = size ? `size=${size}` : '';
-  const catIdParam = catId ? `catId=${createUserfeedsId(catId)}` : '';
+  const catIdParam = catId ? catId : '';
   const response = await fetch(
-    `${USERFEEDS_API_ADDRESS}/api/cache-purr?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`
+    `${USERFEEDS_API_ADDRESS}/api/cache-purr?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`,
   );
   let { items: feedItems, total } = await response.json();
-  feedItems = feedItems.filter(feedItem =>
-    ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type)
+  feedItems = feedItems.filter((feedItem) =>
+    ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type),
   );
   return { feedItems, total };
 };
@@ -39,20 +43,36 @@ export const getMyEntities = async () => {
     const web3 = await getWeb3();
     const [from] = await web3.eth.getAccounts();
     if (!from) return [];
-    const response = await fetch(
-      `${USERFEEDS_API_ADDRESS}/ranking/experimental_tokens;identity=${from.toLowerCase()};asset=${ERC_721_NETWORK}:${ERC_721_ADDRESS}/`
-    );
-    const { items: myEntities } = await response.json();
-    return myEntities;
+
+    const identities = await fetch('https://api.userfeeds.io/ranking', {
+      body: JSON.stringify({
+        flow: [
+          {
+            algorithm: 'experimental_tokens',
+            params: {
+              identity: from.toLowerCase(),
+              asset: ercs721.map(({ address: erc721Address }) => `ethereum:${erc721Address.toLowerCase()}`),
+            },
+          },
+        ],
+      }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then(({ items }) => items.map(({ asset, token }) => `${asset}:${token}`));
+    return identities;
   } catch (e) {
     return [];
   }
 };
 
-export const getLabels = async entityId => {
+export const getLabels = async (entityId) => {
   try {
     const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/ranking/cryptopurr_profile;context=${createUserfeedsId(entityId)}`
+      `${USERFEEDS_API_ADDRESS}/ranking/cryptopurr_profile;context=${createUserfeedsId(entityId)}`,
     );
     const labels = await res.json();
     return labels;
@@ -61,21 +81,19 @@ export const getLabels = async entityId => {
   }
 };
 
-export const getBoosts = async tokenId => {
+export const getBoosts = async (token) => {
   try {
     const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/ranking/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${createUserfeedsId(
-        tokenId
-      )};fee_address=${INTERFACE_BOOST_ADDRESS}`
+      `${USERFEEDS_API_ADDRESS}/ranking/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${token};fee_address=${INTERFACE_BOOST_ADDRESS}`,
     );
     const { items: boosts } = await res.json();
-    const boostsMap = boosts.reduce(
-      (acc, boost) =>
-        boost.id.startsWith(`${ERC_721_NETWORK}:${ERC_721_ADDRESS}:`)
-          ? { ...acc, [boost.id.split(':')[2]]: boost }
-          : acc,
-      {}
-    );
+    const boostsMap = boosts.reduce((acc, boost) => {
+      const [, address] = boost.id.split(':');
+      if (!find({ address })(ercs721)) {
+        return acc;
+      }
+      return { ...acc, [boost.id]: boost };
+    }, {});
     return boostsMap;
   } catch (e) {
     return {};
@@ -89,7 +107,7 @@ export const getWeb3State = async () => {
       web3.eth.getAccounts(),
       web3.eth.net.isListening(),
       web3.eth.net.getId(),
-      web3.eth.getBlockNumber()
+      web3.eth.getBlockNumber(),
     ]);
     const networkName = networkNameForNetworkId[networkId];
     const provider = web3.currentProvider;
@@ -100,7 +118,7 @@ export const getWeb3State = async () => {
       blockNumber,
       web3,
       networkName,
-      provider
+      provider,
     };
   } catch (e) {
     return {
@@ -110,7 +128,7 @@ export const getWeb3State = async () => {
       blockNumber: undefined,
       web3: undefined,
       networkName: undefined,
-      provider: undefined
+      provider: undefined,
     };
   }
 };
@@ -140,16 +158,16 @@ const createFeedItemBase = async (id, token, http) => {
   return {
     author: from,
     created_at: new Date().getTime(),
-    family: http ? "http" : networkName,
+    family: http ? 'http' : networkName,
     id,
     sequence: blockNumber + 1,
-    context: createUserfeedsId(token)
+    context: createUserfeedsId(token),
   };
 };
 
 const sendClaim = (data, http) => (http ? httpClaim(data) : claim(data));
 
-const httpClaim = async data => {
+const httpClaim = async (data) => {
   const { web3, from } = await getWeb3State();
   const wrappedClaim = JSON.stringify({ data, creator: from.toLowerCase(), nonce: uuidv4() });
   const signatureValue = await web3.eth.personal.sign(wrappedClaim, from);
@@ -158,36 +176,36 @@ const httpClaim = async data => {
     method: 'POST',
     body,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
   });
   const id = await response.text();
   return id;
 };
 
-const claim = async data => {
+const claim = async (data) => {
   const { from } = await getWeb3State();
   const contract = await getClaimContract();
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     contract.methods
       .post(JSON.stringify(data))
       .send({ from })
-      .on('transactionHash', transactionHash => resolve(`claim:${transactionHash}:0`));
+      .on('transactionHash', (transactionHash) => resolve(`claim:${transactionHash}:0`));
   });
 };
 
 const claimWithValueTransfer = async (data, value, ownerAddress) => {
   const { from } = await getWeb3State();
   const contract = await getClaimWithValueTransferContract();
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     contract.methods
       .post(
         JSON.stringify(data),
         [ownerAddress.toLowerCase(), INTERFACE_BOOST_ADDRESS.toLowerCase()],
-        [value - value / 10, value / 10]
+        [value - value / 10, value / 10],
       )
       .send({ from, value })
-      .on('transactionHash', transactionHash => resolve(transactionHash));
+      .on('transactionHash', (transactionHash) => resolve(transactionHash));
   });
 };
 
@@ -195,7 +213,7 @@ export const sendMessage = async (token, message, { http } = {}) => {
   const data = {
     claim: { target: message },
     context: createUserfeedsId(token),
-    credits: getCreditsData()
+    credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, token, http);
@@ -205,7 +223,7 @@ export const sendMessage = async (token, message, { http } = {}) => {
     abouted: [],
     target: { id: message },
     targeted: [],
-    type: 'regular'
+    type: 'regular',
   };
 };
 
@@ -214,7 +232,7 @@ export const reply = async (token, message, to, { http } = {}) => {
     type: ['about'],
     claim: { target: message, about: to },
     context: createUserfeedsId(token),
-    credits: getCreditsData()
+    credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, token, http);
@@ -227,7 +245,7 @@ export const writeTo = async (token, message, tokenTo, { http } = {}) => {
     type: ['about'],
     claim: { target: message, about: entityUserfeedsId },
     context: createUserfeedsId(token),
-    credits: getCreditsData()
+    credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, token, http);
@@ -237,7 +255,7 @@ export const writeTo = async (token, message, tokenTo, { http } = {}) => {
     abouted: [],
     target: { id: message },
     targeted: [],
-    type: 'post_to'
+    type: 'post_to',
   };
 };
 
@@ -246,7 +264,7 @@ export const react = async (token, to, { http } = {}) => {
     type: ['labels'],
     claim: { target: to, labels: ['like'] },
     context: createUserfeedsId(token),
-    credits: getCreditsData()
+    credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, token, http);
@@ -258,7 +276,7 @@ export const label = async (token, message, labelType, { http } = {}) => {
     type: ['labels'],
     claim: { target: message, labels: [labelType] },
     context: createUserfeedsId(token),
-    credits: getCreditsData()
+    credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, token, http);
@@ -269,7 +287,7 @@ export const label = async (token, message, labelType, { http } = {}) => {
     target: { id: message },
     targeted: [],
     type: 'labels',
-    labels: [labelType]
+    labels: [labelType],
   };
 };
 
@@ -279,7 +297,7 @@ export const boost = async (entityId, aboutTokenId, value) => {
   const data = {
     type: ['about'],
     claim: { target: createUserfeedsId(entityId), about: createUserfeedsId(aboutTokenId) },
-    credits: getCreditsData()
+    credits: getCreditsData(),
   };
   const transactionHash = await claimWithValueTransfer(data, value, ownerAddress);
   return { transactionHash, networkName };
