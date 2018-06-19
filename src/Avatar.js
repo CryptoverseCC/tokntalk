@@ -1,7 +1,7 @@
 import React from 'react';
-import { avatarSizes } from './entityApi';
+import { getAvatarSizes } from './entityApi';
 import styled, { css } from 'styled-components';
-import placeholder from "./img/anonkitty.svg";
+import placeholder from './img/anonkitty.svg';
 
 const AvatarContainer = styled.div`
   overflow: hidden;
@@ -35,8 +35,8 @@ const ReactionContainer = styled.div`
   transform: translate(-50%, 50%);
 `;
 
-const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy = true }) => {
-  const { containerSize, imgSize, imgTopOffset, imgLeftOffset } = avatarSizes[size];
+const IdentityAvatar = ({ entity, size, reaction, style = {}, backgroundColor, src, lazy = true }) => {
+  const { containerSize, imgSize, imgTopOffset, imgLeftOffset } = getAvatarSizes(entity)[size];
   return (
     <div style={{ position: 'relative', ...style }}>
       <AvatarContainer backgroundColor={backgroundColor} containerSize={containerSize}>
@@ -47,11 +47,13 @@ const IdentityAvatar = ({ size, reaction, style = {}, backgroundColor, src, lazy
   );
 };
 
-export const AvatarPlaceholder = ({ size }) => {
-  const { containerSize } = avatarSizes[size];
-  return <AvatarContainer backgroundColor="#DED5FF" containerSize={containerSize}>
-    <Avatar src={placeholder} imgSize="75%" imgLeftOffset="50%" imgTopOffset="65%" />
-  </AvatarContainer>;
+export const AvatarPlaceholder = ({ entity, size }) => {
+  const { containerSize } = getAvatarSizes(entity)[size];
+  return (
+    <AvatarContainer backgroundColor="#DED5FF" containerSize={containerSize}>
+      <Avatar src={placeholder} imgSize="75%" imgLeftOffset="50%" imgTopOffset="65%" />
+    </AvatarContainer>
+  );
 };
 
 export default IdentityAvatar;

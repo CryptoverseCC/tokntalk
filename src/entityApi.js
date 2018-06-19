@@ -1,26 +1,14 @@
 import React from 'react';
+import find from 'lodash/fp/find';
+
+import ercs721 from './erc721';
 import etherDiamond from './img/ether-diamond.gif';
 
-export const colors = {
-  babypuke: '#eff1e0',
-  bubblegum: '#fadff4',
-  chestnut: '#efe1da',
-  coralsunrise: '#fde9e4',
-  cyan: '#c5eefa',
-  doridnudibranch: '#faeefa',
-  eclipse: '#e5e7ef',
-  forgetmenot: '#dcebfc',
-  gold: '#faf4cf',
-  limegreen: '#d9f5cb',
-  mintgreen: '#cdf5d4',
-  parakeet: '#e5f3e2',
-  pumpkin: '#fae1ca',
-  sapphire: '#d3e8ff',
-  sizzurp: '#dfdffa',
-  strawberry: '#ffe0e5',
-  thundergrey: '#eee9e8',
-  topaz: '#d1eeeb',
-  twilightsparkle: '#ede2f5',
+export const defaultAvatarSizes = {
+  verySmall: { containerSize: '32px', imgSize: '32px', imgTopOffset: '50%', imgLeftOffset: '50%' },
+  small: { containerSize: '44px', imgSize: '44px', imgTopOffset: '50%', imgLeftOffset: '50%' },
+  medium: { containerSize: '54px', imgSize: '54px', imgTopOffset: '50%', imgLeftOffset: '50%' },
+  large: { containerSize: '64px', imgSize: '64px', imgTopOffset: '50%', imgLeftOffset: '50%' },
 };
 
 export const getEntityData = async (entity) => {
@@ -38,20 +26,19 @@ export const getEntityData = async (entity) => {
 };
 
 export const EntityIcon = () => {
-  return <img src={etherDiamond} style={{ height: '70%' }} alt={entityTranslations.entityName} />;
+  return <img src={etherDiamond} style={{ height: '70%' }} alt="" />;
 };
 
 export const entityTranslations = {
-  commentPlaceholder: 'Purr your story',
-  replyPlaceholder: 'Purr your reply',
-  noEntitiesError: 'No cats found',
-  entityName: 'Kitty',
-  emptyFeed: 'No purrs yet',
+  commentPlaceholder: 'Write your story',
+  replyPlaceholder: 'Write your reply',
+  noEntitiesError: 'No tokens found',
+  emptyFeed: 'No messages yet',
 };
 
-export const avatarSizes = {
-  verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%', imgLeftOffset: '55%' },
-  small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%', imgLeftOffset: '55%' },
-  medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%', imgLeftOffset: '55%' },
-  large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%', imgLeftOffset: '55%' },
+export const getAvatarSizes = (entity) => {
+  const [, address] = entity.split(':');
+  const token = find({ address })(ercs721);
+
+  return token && token.avatarSizes ? token.avatarSizes : defaultAvatarSizes;
 };

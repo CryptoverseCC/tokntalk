@@ -172,9 +172,8 @@ export default class App extends Component {
   };
 
   reply = async (message, to) => {
-    const { http } = this.state;
-    const { token } = this.state.activeEntity;
-    const temporaryReply = await reply(token, message, to, { http });
+    const { http, activeEntity } = this.state;
+    const temporaryReply = await reply(activeEntity, message, to, { http });
     this.setState(
       produce((draft) => {
         draft.temporaryReplies[to] = [...(draft.temporaryReplies[to] || []), temporaryReply];
@@ -183,18 +182,16 @@ export default class App extends Component {
   };
 
   writeTo = async (message, tokenTo) => {
-    const { http } = this.state;
-    const { token } = this.state.activeEntity;
-    const temporaryFeedItem = await writeTo(token, message, tokenTo, { http });
+    const { http, activeEntity } = this.state;
+    const temporaryFeedItem = await writeTo(activeEntity, message, tokenTo, { http });
     this.setState({
       temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
     });
   };
 
   react = async (to) => {
-    const { http } = this.state;
-    const { token } = this.state.activeEntity;
-    const temporaryReaction = await react(token, to, { http });
+    const { http, activeEntity } = this.state;
+    const temporaryReaction = await react(activeEntity, to, { http });
     this.setState(
       produce((draft) => {
         draft.temporaryReactions[to] = [...(draft.temporaryReactions[to] || []), temporaryReaction];
@@ -203,12 +200,11 @@ export default class App extends Component {
   };
 
   label = async (message, labelType) => {
-    const { http } = this.state;
-    const { token } = this.state.activeEntity;
-    const temporaryFeedItem = await label(token, message, labelType, { http });
+    const { http, activeEntity } = this.state;
+    const temporaryFeedItem = await label(activeEntity, message, labelType, { http });
     this.setState(
       produce((draft) => {
-        draft.entityLabels[token][labelType] = temporaryFeedItem.target.id;
+        draft.entityLabels[activeEntity][labelType] = temporaryFeedItem.target.id;
         draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems];
       }),
     );
