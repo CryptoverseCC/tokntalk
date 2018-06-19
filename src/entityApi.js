@@ -14,7 +14,7 @@ export const defaultAvatarSizes = {
 export const getEntityData = async (entity) => {
   const [, address, token] = entity.split(':');
   try {
-    const res = await fetch(`https://opensea-api.herokuapp.com/asset/${address}/${token}`);
+    const res = await fetch(`https://opensea-api.herokuapp.com/asset/${address}/${token}/`);
     const data = await res.json();
     data.color = `#${data.background_color}`;
     data.url = data.external_link;
