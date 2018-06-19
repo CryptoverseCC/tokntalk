@@ -20,7 +20,6 @@ import {
 import InfiniteScroll from './InfiniteScroll';
 import LikeIcon from './img/like.svg';
 import ReplyIcon from './img/reply.svg';
-import { createUserfeedsId } from './api';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
 import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
@@ -368,6 +367,7 @@ class Card extends React.Component {
   renderItem = () => {
     const { feedItem, replies, reactions } = this.props;
     if (feedItem.type === 'like') {
+      console.log('like', feedItem.context, feedItem.target.context);
       return (
         <React.Fragment>
           <article className="media">
@@ -402,7 +402,7 @@ class Card extends React.Component {
       const suffix = {
         response: () => <span style={{ marginLeft: '10px' }}>replied</span>,
         post_to: () => {
-          const id = feedItem.about.id.split(':')[2];
+          const id = feedItem.about.id;
           return (
             <React.Fragment>
               <span style={{ marginLeft: '10px' }}>wrote to</span>
@@ -592,7 +592,7 @@ export const ConnectedFeed = ({ forEntity, className }) => (
       let filteredTemporaryFeedItems = temporaryFeedItems;
       if (forEntity) {
         filteredTemporaryFeedItems = temporaryFeedItems.filter(({ context, about }) => {
-          const userfeedsEntityId = createUserfeedsId(forEntity.id);
+          const userfeedsEntityId = forEntity;
           return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
         });
       }

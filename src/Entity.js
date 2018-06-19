@@ -37,15 +37,17 @@ export const Entity = ({ id, children }) => (
   <Context.Consumer>{({ entityStore: { getEntity } }) => children(getEntity(id))}</Context.Consumer>
 );
 
-export const EntityName = ({ id }) => (
-  <Context.Consumer>
-    {({ entityStore: { getEntity } }) => (
-      <TranslationsContext.Consumer>
-        {({ entityName }) => getEntity(id).name || `${entityName} #${getEntity(id).id}`}
-      </TranslationsContext.Consumer>
-    )}
-  </Context.Consumer>
-);
+export const EntityName = ({ id }) => {
+  return (
+    <Context.Consumer>
+      {({ entityStore: { getEntity } }) => (
+        <TranslationsContext.Consumer>
+          {({ entityName }) => getEntity(id).name || `${entityName} #${getEntity(id).id}`}
+        </TranslationsContext.Consumer>
+      )}
+    </Context.Consumer>
+  );
+};
 
 export const EntityAvatar = ({ id, ...props }) => (
   <Context.Consumer>

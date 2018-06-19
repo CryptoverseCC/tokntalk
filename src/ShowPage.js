@@ -8,7 +8,7 @@ import {
   IfIsActiveEntity,
   IfActiveEntity,
   LinkedActiveEntityAvatar,
-  ActiveEntityName
+  ActiveEntityName,
 } from './Entity';
 import Modal from './Modal';
 import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon, socialColors } from './Icons';
@@ -68,7 +68,7 @@ export default class ShowPage extends Component {
     return (
       <React.Fragment>
         <Entity id={entityId}>
-          {entity => (
+          {(entity) => (
             <React.Fragment>
               <ShowPage.HeroImageContainer backgroundColor={entity.color}>
                 <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id} />
@@ -109,7 +109,7 @@ export default class ShowPage extends Component {
                                   style={{
                                     fontFamily: 'Rubik',
                                     fontSize: '1.1rem',
-                                    fontWeight: '500'
+                                    fontWeight: '500',
                                   }}
                                 >
                                   <ActiveEntityName />
@@ -128,7 +128,7 @@ export default class ShowPage extends Component {
                   )}
                 </IfActiveEntity>
                 <div className="columns">
-                  <FeedCatvertised tokenId={entityId} />
+                  <FeedCatvertised token={entityId} />
                   <ConnectedFeed forEntity={entity} className={'column is-6'} />
                 </div>
               </ShowPage.FeedContainer>
@@ -206,21 +206,21 @@ export class SocialBadges extends React.Component {
     facebook: /http(s)?:\/\/(www\.)?(facebook|fb)\.com\/(A-z 0-9 _ - \.)\/?/,
     twitter: /http(s)?:\/\/(.*\.)?twitter\.com\/[A-z 0-9 _]+\/?/,
     github: /http(s)?:\/\/(www\.)?github\.com\/[A-z 0-9 _ -]+\/?/,
-    instagram: /https?:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/
+    instagram: /https?:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/,
   };
 
   static PLACEHOLDERS = {
     facebook: 'https://facebook.com/profileName',
     twitter: 'https://twitter.com/profileName',
     github: 'https://github.com/profileName',
-    instagram: 'https://instagram.com/profileName'
+    instagram: 'https://instagram.com/profileName',
   };
 
   state = {
-    editing: undefined
+    editing: undefined,
   };
 
-  editLabel = labelType => () => {
+  editLabel = (labelType) => () => {
     this.setState({ editing: labelType });
   };
 
@@ -230,12 +230,12 @@ export class SocialBadges extends React.Component {
     </InlineButton>
   );
 
-  validate = label => {
+  validate = (label) => {
     const { editing: labelType } = this.state;
     return label === '' || SocialBadges.VALID_LABEL_EXPRESSIONS[labelType].test(label);
   };
 
-  normalizeHref = href => {
+  normalizeHref = (href) => {
     return href ? href : undefined;
   };
 
@@ -253,7 +253,7 @@ export class SocialBadges extends React.Component {
     const {
       EditButton,
       normalizeHref,
-      props: { facebook, twitter, instagram, github, id }
+      props: { facebook, twitter, instagram, github, id },
     } = this;
     return (
       <SocialBadges.Container>
