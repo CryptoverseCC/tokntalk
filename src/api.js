@@ -20,18 +20,23 @@ const {
 } = process.env;
 
 export const getFeedItems = async ({ before, after, size, catId }) => {
-  const beforeParam = before ? `before=${before}` : '';
-  const afterParam = after ? `after=${after}` : '';
-  const sizeParam = size ? `size=${size}` : '';
-  const catIdParam = catId ? catId : '';
-  const response = await fetch(
-    `${USERFEEDS_API_ADDRESS}/api/cache-purr?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`,
-  );
-  let { items: feedItems, total } = await response.json();
-  feedItems = feedItems.filter((feedItem) =>
-    ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type),
-  );
-  return { feedItems, total };
+  // const beforeParam = before ? `before=${before}` : '';
+  // const afterParam = after ? `after=${after}` : '';
+  // const sizeParam = size ? `size=${size}` : '';
+  // const catIdParam = catId ? catId : '';
+  // const response = await fetch(
+  //   `${USERFEEDS_API_ADDRESS}/api/cache-purr?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`,
+  // );
+  const response = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_feed`);
+  let { items: feedItems } = await response.json();
+  feedItems = feedItems.filter((feedItem) => {
+    // ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type),
+    if (!feedItem.context) return;
+    const [, address] = feedItem.context.split(':');
+    return !!find({ address })(ercs721);
+  });
+
+  return { feedItems: feedItems.slice(0, 30), total: 30 };
 };
 
 export const getMyEntities = async () => {

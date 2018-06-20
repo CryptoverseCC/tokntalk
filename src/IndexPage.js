@@ -11,7 +11,7 @@ export default class IndexPage extends Component {
     pageView();
     window.scrollTo(0, 0);
     this.props.getFeedItems();
-    this.refreshInterval = setInterval(() => this.props.getNewFeedItems(), 3000);
+    // this.refreshInterval = setInterval(() => this.props.getNewFeedItems(), 3000);
   }
 
   componentWillUnmount() {

@@ -104,7 +104,7 @@ export const IfActiveEntityLiked = ({ id, children, then, other }) => (
         ({ id: claimId }) => claimId === id,
       );
       const liked =
-        claim && claim.targeted.concat(temporaryReactions[id] || []).find(({ context }) => context === activeEntity);
+        claim && claim.likes.concat(temporaryReactions[id] || []).find(({ context }) => context === activeEntity);
       return liked ? then || children : other;
     }}
   </Context.Consumer>

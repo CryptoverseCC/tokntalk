@@ -214,6 +214,7 @@ export default class App extends Component {
     try {
       this.setState({ feedLoading: true, feedId: catId }, async () => {
         const { feedItems, total: feedItemsCount } = await getFeedItems({ size: 10, catId });
+        console.log(feedItems);
         if (this.state.feedId !== catId) return;
         this.setState({ feedLoading: false, feedItems, feedItemsCount });
       });
@@ -235,21 +236,21 @@ export default class App extends Component {
   };
 
   getMoreFeedItems = async (catId) => {
-    if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
-    try {
-      this.setState({ feedLoadingMore: true }, async () => {
-        const after = this.state.feedItems[this.state.feedItems.length - 1].id;
-        const { feedItems: moreFeedItems, total: feedItemsCount } = await getFeedItems({ size: 10, after, catId });
-        if (this.state.feedId !== catId) return;
-        this.setState(({ feedItems }) => ({
-          feedLoadingMore: false,
-          feedItems: [...feedItems, ...moreFeedItems],
-          feedItemsCount,
-        }));
-      });
-    } catch (e) {
-      console.warn('Failed to download more feedItems');
-    }
+    // if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
+    // try {
+    //   this.setState({ feedLoadingMore: true }, async () => {
+    //     const after = this.state.feedItems[this.state.feedItems.length - 1].id;
+    //     const { feedItems: moreFeedItems, total: feedItemsCount } = await getFeedItems({ size: 10, after, catId });
+    //     if (this.state.feedId !== catId) return;
+    //     this.setState(({ feedItems }) => ({
+    //       feedLoadingMore: false,
+    //       feedItems: [...feedItems, ...moreFeedItems],
+    //       feedItemsCount,
+    //     }));
+    //   });
+    // } catch (e) {
+    //   console.warn('Failed to download more feedItems');
+    // }
   };
 
   renderIndexPage = (props) => (
