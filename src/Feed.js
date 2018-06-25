@@ -23,7 +23,6 @@ import ReplyIcon from './img/reply.svg';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
 import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
-import Share from './Share';
 import Loader from './Loader';
 
 const IconContainer = styled.div`
@@ -106,14 +105,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         <LinkedEntityAvatar size="medium" reaction={reaction} id={from} />
       </div>
       <div className="media-content">
-        <CardTitle
-          from={from}
-          createdAt={createdAt}
-          etherscanUrl={etherscanUrl}
-          family={family}
-          suffix={suffix}
-          share={<Share author={from} message={message} etherscanUrl={etherscanUrl} />}
-        />
+        <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
         <p
           style={{
             marginTop: '20px',
@@ -402,35 +394,36 @@ class Card extends React.Component {
       const suffix = {
         response: () => <span style={{ marginLeft: '10px' }}>replied</span>,
         post_to: () => {
-          const id = feedItem.about.id;
-          return null;
-          // return (
-          //   <React.Fragment>
-          //     <span style={{ marginLeft: '10px' }}>wrote to</span>
-          //     <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
-          //     <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
-          //       <b>
-          //         <EntityName id={id} />
-          //       </b>
-          //     </Link>
-          //   </React.Fragment>
-          // );
+          const id = feedItem.about;
+          // return null;
+          return (
+            <React.Fragment>
+              <span style={{ marginLeft: '10px' }}>wrote to</span>
+              <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
+              <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
+                <b>
+                  <EntityName id={id} />
+                </b>
+              </Link>
+            </React.Fragment>
+          );
         },
-        post_about: () => null,
-        // <React.Fragment>
-        //   <span style={{ marginLeft: '10px' }}>wrote about</span>
-        //   <b
-        //     style={{
-        //       marginLeft: '10px',
-        //       textOverflow: 'ellipsis',
-        //       overflow: 'hidden',
-        //       maxWidth: '300px',
-        //       display: 'inline-block',
-        //       whiteSpace: 'nowrap',
-        //     }}
-        //     dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
-        //   />
-        // </React.Fragment>
+        post_about: () => (
+          <React.Fragment>
+            <span style={{ marginLeft: '10px' }}>wrote about</span>
+            <b
+              style={{
+                marginLeft: '10px',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                maxWidth: '300px',
+                display: 'inline-block',
+                whiteSpace: 'nowrap',
+              }}
+              dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
+            />
+          </React.Fragment>
+        ),
         labels: (feedItem) => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>,
       };
       return (

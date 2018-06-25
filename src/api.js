@@ -19,6 +19,12 @@ const {
   REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
 } = process.env;
 
+const hasValidContext = ({ context }) => {
+  if (!context) return false;
+  const [, address] = context.split(':');
+  return !!find({ address })(ercs721);
+};
+
 export const getFeedItems = async ({ before, after, size, catId }) => {
   // const beforeParam = before ? `before=${before}` : '';
   // const afterParam = after ? `after=${after}` : '';
@@ -27,13 +33,27 @@ export const getFeedItems = async ({ before, after, size, catId }) => {
   // const response = await fetch(
   //   `${USERFEEDS_API_ADDRESS}/api/cache-purr?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`,
   // );
-  const response = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_feed`);
+  const response = await fetch(
+    catId
+      ? `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_single_feed;id=${catId}`
+      : `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_feed`,
+  );
+
   let { items: feedItems } = await response.json();
   feedItems = feedItems.filter((feedItem) => {
     // ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type),
-    if (!feedItem.context) return;
-    const [, address] = feedItem.context.split(':');
-    return !!find({ address })(ercs721);
+    if (!hasValidContext(feedItem)) {
+      return false;
+    }
+    console.log(feedItem.type);
+
+    feedItem.likes = feedItem.likes.filter(hasValidContext);
+    feedItem.replies = feedItem.replies.filter(hasValidContext).map((reply) => {
+      reply.likes = reply.likes.filter(hasValidContext);
+      return reply;
+    });
+
+    return true;
   });
 
   return { feedItems: feedItems.slice(0, 30), total: 30 };

@@ -452,7 +452,7 @@ export default class Catvertised extends React.Component {
                     </EntityDescription>
                   </Purrmoter>
                   <HeaderSplit hiddenOnMobile />
-                  <CatvertisedTitle hiddenOnMobile>Purrmoted</CatvertisedTitle>
+                  <CatvertisedTitle hiddenOnMobile>Promoted</CatvertisedTitle>
                   <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Add a kittie</AddAKitty>
                 </CatvertisedHeader>
                 {Object.keys(boosts).length > 0 && (
