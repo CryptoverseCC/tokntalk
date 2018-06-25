@@ -45,7 +45,6 @@ export const getFeedItems = async ({ before, after, size, catId }) => {
     if (!hasValidContext(feedItem)) {
       return false;
     }
-    console.log(feedItem.type);
 
     feedItem.likes = feedItem.likes.filter(hasValidContext);
     feedItem.replies = feedItem.replies.filter(hasValidContext).map((reply) => {

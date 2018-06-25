@@ -448,12 +448,12 @@ export default class Catvertised extends React.Component {
                           <EntityName id={this.props.token} />
                         </EntityNameWrapper>
                       </CatvertisedName>
-                      <CatvertisedScore>Purrmoter</CatvertisedScore>
+                      <CatvertisedScore>Space Owner</CatvertisedScore>
                     </EntityDescription>
                   </Purrmoter>
                   <HeaderSplit hiddenOnMobile />
                   <CatvertisedTitle hiddenOnMobile>Promoted</CatvertisedTitle>
-                  <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Add a kittie</AddAKitty>
+                  <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Promote yourself</AddAKitty>
                 </CatvertisedHeader>
                 {Object.keys(boosts).length > 0 && (
                   <CatvertisedList>
@@ -488,11 +488,11 @@ export default class Catvertised extends React.Component {
                         <EntityName id={this.props.token} />
                       </EntityNameWrapper>
                     </CatvertisedName>
-                    <CatvertisedScore>Purrmoter</CatvertisedScore>
+                    <CatvertisedScore>Space Owner</CatvertisedScore>
                   </EntityDescription>
                 </Purrmoter>
                 <HeaderSplit />
-                <CatvertisedTitle style={{ marginTop: '10px' }}>Purrmote a kittie</CatvertisedTitle>
+                <CatvertisedTitle style={{ marginTop: '10px' }}>Promote yourself</CatvertisedTitle>
                 <CatvertisedBack
                   onClick={() => {
                     this.setState({ step: 'catvertised' });
@@ -574,7 +574,7 @@ export default class Catvertised extends React.Component {
                         <EntityName id={this.props.token} />
                       </EntityNameWrapper>
                     </CatvertisedName>
-                    <CatvertisedScore>Purrmoter</CatvertisedScore>
+                    <CatvertisedScore>Space Owner</CatvertisedScore>
                   </EntityDescription>
                 </Purrmoter>
                 <HeaderSplit />
@@ -600,7 +600,7 @@ export default class Catvertised extends React.Component {
                     marginTop: '20px',
                   }}
                 >
-                  Purrmote with
+                  Promote with
                 </div>
                 <form
                   style={{ marginBottom: '-5px' }}
@@ -629,7 +629,7 @@ export default class Catvertised extends React.Component {
                   <Position>Position: {this.renderPosition(this.calculatePosition(boosts))}</Position>
 
                   <StyledButton disabled={!isBoostable || this.state.value <= 0}>
-                    {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Purrmote!'}
+                    {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Promote!'}
                   </StyledButton>
                 </form>
               </React.Fragment>
@@ -661,7 +661,7 @@ export default class Catvertised extends React.Component {
                   Success!
                 </div>
                 <div style={{ fontSize: '18px' }}>
-                  You've purrmoted <EntityName id={this.state.entityId} />
+                  You've promoted <EntityName id={this.state.entityId} />
                 </div>
                 <A href={this.state.etherscanUrl}>See it on Etherscan</A>
               </div>
