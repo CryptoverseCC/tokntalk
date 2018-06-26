@@ -2,9 +2,9 @@ FROM node:9
 
 WORKDIR /
 
-COPY . /cryptopurr
+COPY . /cryptoverse
 
-WORKDIR /cryptopurr
+WORKDIR /cryptoverse
 
 RUN yarn install --pure-lockfile
 

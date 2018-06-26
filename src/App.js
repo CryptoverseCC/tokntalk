@@ -214,7 +214,6 @@ export default class App extends Component {
     try {
       this.setState({ feedLoading: true, feedId: catId }, async () => {
         const { feedItems, total: feedItemsCount } = await getFeedItems({ size: 10, catId });
-        console.log(feedItems);
         if (this.state.feedId !== catId) return;
         this.setState({ feedLoading: false, feedItems, feedItemsCount });
       });

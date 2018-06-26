@@ -1,11 +1,11 @@
 - type: serial
   tag: master
   steps:
-    - service: cryptopurr
-      command: /cryptopurr/release.sh
+    - service: cryptoverse
+      command: /cryptoverse/release.sh
 
 - type: serial
   exclude: ^(master)
   steps:
-    - service: cryptopurr
+    - service: cryptoverse
       command: echo 'dumb script'
