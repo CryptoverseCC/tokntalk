@@ -500,7 +500,7 @@ export default class Catvertised extends React.Component {
                 >
                   ←
                 </CatvertisedBack>
-                <CustomCatForm>
+                {/* <CustomCatForm>
                   <EntityAvatar size="medium" id={this.state.customCatId} />
                   <CustomCatFormInput>
                     <input
@@ -534,7 +534,7 @@ export default class Catvertised extends React.Component {
                       ✔
                     </CustomCatFormButton>
                   </CustomCatFormInput>
-                </CustomCatForm>
+                </CustomCatForm> */}
                 <Entities>
                   {({ entities }) =>
                     entities.length > 0 && (
