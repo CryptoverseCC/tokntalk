@@ -359,43 +359,41 @@ class Card extends React.Component {
   renderItem = () => {
     const { feedItem, replies, reactions } = this.props;
     if (feedItem.type === 'like') {
-      return null;
-      // return (
-      //   <React.Fragment>
-      //     <article className="media">
-      //       <div className="media-left" style={{ width: '54px' }}>
-      //         <LinkedEntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context} />
-      //       </div>
-      //       <div className="media-content">
-      //         <CardTitle
-      //           from={feedItem.context}
-      //           createdAt={feedItem.created_at}
-      //           etherscanUrl={createEtherscanUrl(feedItem)}
-      //           family={feedItem.family}
-      //           suffix={
-      //             <span style={{ marginLeft: '10px' }}>
-      //               reacted to <b>Post</b>
-      //             </span>
-      //           }
-      //         />
-      //       </div>
-      //     </article>
-      //     <Post
-      //       from={feedItem.target.context}
-      //       createdAt={feedItem.target.created_at}
-      //       etherscanUrl={createEtherscanUrl(feedItem.target)}
-      //       family={feedItem.target.family}
-      //       message={feedItem.target.target.id}
-      //       style={{ marginTop: '20px' }}
-      //     />
-      //   </React.Fragment>
-      // );
+      return (
+        <React.Fragment>
+          <article className="media">
+            <div className="media-left" style={{ width: '54px' }}>
+              <LinkedEntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context} />
+            </div>
+            <div className="media-content">
+              <CardTitle
+                from={feedItem.context}
+                createdAt={feedItem.created_at}
+                etherscanUrl={createEtherscanUrl(feedItem)}
+                family={feedItem.family}
+                suffix={
+                  <span style={{ marginLeft: '10px' }}>
+                    reacted to <b>Post</b>
+                  </span>
+                }
+              />
+            </div>
+          </article>
+          <Post
+            from={feedItem.target.context}
+            createdAt={feedItem.target.created_at}
+            etherscanUrl={createEtherscanUrl(feedItem.target)}
+            family={feedItem.target.family}
+            message={feedItem.target.target}
+            style={{ marginTop: '20px' }}
+          />
+        </React.Fragment>
+      );
     } else {
       const suffix = {
         response: () => <span style={{ marginLeft: '10px' }}>replied</span>,
         post_to: () => {
           const id = feedItem.about;
-          // return null;
           return (
             <React.Fragment>
               <span style={{ marginLeft: '10px' }}>wrote to</span>

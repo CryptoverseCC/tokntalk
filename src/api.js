@@ -41,7 +41,10 @@ export const getFeedItems = async ({ before, after, size, catId }) => {
 
   let { items: feedItems } = await response.json();
   feedItems = feedItems.filter((feedItem) => {
-    // ['regular', 'like', 'post_to', 'response', 'post_about', 'labels'].includes(feedItem.type),
+    if (!['regular', 'like', 'post_to', 'post_about'].includes(feedItem.type)) {
+      // 'response', 'labels'
+      return false;
+    }
     if (!hasValidContext(feedItem)) {
       return false;
     }
