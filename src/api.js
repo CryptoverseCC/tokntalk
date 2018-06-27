@@ -58,7 +58,7 @@ export const getFeedItems = async ({ before, after, size, catId }) => {
     return true;
   });
 
-  return { feedItems: feedItems.slice(0, 100), total: 100 };
+  return { feedItems: feedItems.slice(0, 30), total: 30 };
 };
 
 export const getMyEntities = async () => {

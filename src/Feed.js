@@ -119,7 +119,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         {reactions && (
           <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
             <IfActiveEntityLiked
-              id={id}
+              reactions={reactions}
               then={<Label liked count={reactions.length} />}
               other={
                 <Context.Consumer>
@@ -138,7 +138,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
   );
 };
 
-const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} }) => (
+const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, style = {} }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
     <div className="media-left is-hidden-mobile" style={{ position: 'relative' }}>
       <div
@@ -184,7 +184,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
         <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
           <small style={{ color: '#928F9B' }}>
             <IfActiveEntityLiked
-              id={id}
+              reactions={reactions}
               other={
                 <Context.Consumer>
                   {({ feedStore: { react } }) => (
@@ -200,12 +200,12 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, style = {} 
                         cursor: 'pointer',
                       }}
                     >
-                      Like
+                      Like {reactions.length ? `(${reactions.length})` : ''}
                     </button>
                   )}
                 </Context.Consumer>
               }
-              then={<span style={{ color: '#ffa6d8' }}>Liked</span>}
+              then={<span style={{ color: '#ffa6d8' }}>Liked {reactions.length ? `(${reactions.length})` : ''}</span>}
             />
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
             <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
@@ -429,6 +429,7 @@ class Card extends React.Component {
             createdAt={reply.created_at}
             message={reply.target}
             family={reply.family}
+            reactions={reply.likes}
             etherscanUrl={createEtherscanUrl(reply)}
           />
         ))}{' '}
