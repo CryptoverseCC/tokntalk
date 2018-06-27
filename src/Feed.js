@@ -380,53 +380,21 @@ class Card extends React.Component {
             </div>
           </article>
           <Post
+            style={{ marginTop: '20px' }}
             from={feedItem.target.context}
             createdAt={feedItem.target.created_at}
-            etherscanUrl={createEtherscanUrl(feedItem.target)}
-            family={feedItem.target.family}
             message={feedItem.target.target}
-            style={{ marginTop: '20px' }}
+            family={feedItem.target.family}
+            etherscanUrl={createEtherscanUrl(feedItem.target)}
+            suffix={this.getSuffix(feedItem.target)}
           />
         </React.Fragment>
       );
-    } else {
-      const suffix = {
-        response: () => <span style={{ marginLeft: '10px' }}>replied</span>,
-        post_to: () => {
-          const id = feedItem.about;
-          return (
-            <React.Fragment>
-              <span style={{ marginLeft: '10px' }}>wrote to</span>
-              <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
-              <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
-                <b>
-                  <EntityName id={id} />
-                </b>
-              </Link>
-            </React.Fragment>
-          );
-        },
-        post_about: () => (
-          <React.Fragment>
-            <span style={{ marginLeft: '10px' }}>wrote about</span>
-            <b
-              style={{
-                marginLeft: '10px',
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                maxWidth: '300px',
-                display: 'inline-block',
-                whiteSpace: 'nowrap',
-              }}
-              dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
-            />
-          </React.Fragment>
-        ),
-        labels: (feedItem) => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>,
-      };
-      return (
-        <React.Fragment>
-          {/* {feedItem.type === 'response' && (
+    }
+
+    return (
+      <React.Fragment>
+        {/* {feedItem.type === 'response' && (
             <Reply
               id={feedItem.about.id}
               from={feedItem.about.context}
@@ -436,38 +404,76 @@ class Card extends React.Component {
               message={feedItem.about.target.id}
             />
           )} */}
-          <Post
-            id={feedItem.id}
-            style={{ borderTop: 'none' }}
-            from={feedItem.context}
-            createdAt={feedItem.created_at}
-            message={feedItem.target}
-            family={feedItem.family}
-            etherscanUrl={createEtherscanUrl(feedItem)}
-            reactions={reactions}
-            suffix={suffix[feedItem.type] && suffix[feedItem.type](feedItem)}
-            reaction={
-              (feedItem.type === 'response' && <ReplyReaction />) ||
-              (feedItem.type === 'labels' &&
-                Object.keys(LabelItems).includes(feedItem.labels[0]) &&
-                React.createElement(LabelItems[feedItem.labels[0]]))
-            }
+        <Post
+          id={feedItem.id}
+          style={{ borderTop: 'none' }}
+          from={feedItem.context}
+          createdAt={feedItem.created_at}
+          message={feedItem.target}
+          family={feedItem.family}
+          etherscanUrl={createEtherscanUrl(feedItem)}
+          reactions={reactions}
+          suffix={this.getSuffix(feedItem)}
+          reaction={
+            (feedItem.type === 'response' && <ReplyReaction />) ||
+            (feedItem.type === 'labels' &&
+              Object.keys(LabelItems).includes(feedItem.labels[0]) &&
+              React.createElement(LabelItems[feedItem.labels[0]]))
+          }
+        />
+        {replies.map((reply) => (
+          <Reply
+            id={reply.id}
+            key={reply.id}
+            from={reply.context}
+            createdAt={reply.created_at}
+            message={reply.target}
+            family={reply.family}
+            etherscanUrl={createEtherscanUrl(reply)}
           />
-          {replies.map((reply) => (
-            <Reply
-              id={reply.id}
-              key={reply.id}
-              from={reply.context}
-              createdAt={reply.created_at}
-              message={reply.target}
-              family={reply.family}
-              etherscanUrl={createEtherscanUrl(reply)}
-            />
-          ))}{' '}
-          <IfActiveEntity>{() => <ReplyFormContainer about={feedItem.id} />}</IfActiveEntity>
+        ))}{' '}
+        <IfActiveEntity>{() => <ReplyFormContainer about={feedItem.id} />}</IfActiveEntity>
+      </React.Fragment>
+    );
+  };
+
+  getSuffix = (feedItem) => {
+    const suffix = {
+      response: () => <span style={{ marginLeft: '10px' }}>replied</span>,
+      post_to: () => {
+        const id = feedItem.about;
+        return (
+          <React.Fragment>
+            <span style={{ marginLeft: '10px' }}>wrote to</span>
+            <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
+            <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
+              <b>
+                <EntityName id={id} />
+              </b>
+            </Link>
+          </React.Fragment>
+        );
+      },
+      post_about: () => (
+        <React.Fragment>
+          <span style={{ marginLeft: '10px' }}>wrote about</span>
+          <b
+            style={{
+              marginLeft: '10px',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              maxWidth: '300px',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+            dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
+          />
         </React.Fragment>
-      );
-    }
+      ),
+      labels: (feedItem) => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>,
+    };
+
+    return suffix[feedItem.type] && suffix[feedItem.type](feedItem);
   };
 
   onItemVisibilityChange = (isVisible) => {
