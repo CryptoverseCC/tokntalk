@@ -238,13 +238,13 @@ export const sendMessage = async (entity, message, { http } = {}) => {
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, entity, http);
+
   return {
     ...feedItemBase,
-    about: null,
-    abouted: [],
-    target: { id: message },
-    targeted: [],
+    target: message,
     type: 'regular',
+    likes: [],
+    replies: [],
   };
 };
 
@@ -257,7 +257,7 @@ export const reply = async (entity, message, to, { http } = {}) => {
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, entity, http);
-  return { ...feedItemBase, target: { id: message } };
+  return { ...feedItemBase, target: message };
 };
 
 export const writeTo = async (entity, message, entityTo, { http } = {}) => {
