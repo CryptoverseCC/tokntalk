@@ -25,10 +25,6 @@ export const getEntityData = async (entity) => {
   }
 };
 
-export const EntityIcon = () => {
-  return <img src={etherDiamond} style={{ height: '70%' }} alt="" />;
-};
-
 export const entityTranslations = {
   commentPlaceholder: 'Write your story',
   replyPlaceholder: 'Write your reply',

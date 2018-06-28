@@ -10,10 +10,10 @@ import {
   LinkedActiveEntityAvatar,
   ActiveEntityName,
 } from './Entity';
+import IdentityAvatar from './Avatar';
 import Modal from './Modal';
 import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon, socialColors } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
-import { EntityIcon } from './entityApi';
 import Link from './Link';
 import { FeedCatvertised } from './Catvertised';
 
@@ -91,7 +91,7 @@ export default class ShowPage extends Component {
                   </div>
                 </div>
                 <IfActiveEntity>
-                  {({ token }) => (
+                  {(token) => (
                     <div className="columns">
                       <div className="column is-6 is-offset-3">
                         <div
@@ -153,7 +153,7 @@ const Badge = styled.a`
   justify-content: center;
   cursor: ${({ href }) => (href ? 'pointer' : 'default')};
   color: ${({ href }) => (href ? 'white !important' : '#94919c')};
-  background-color: ${({ href, activeColor }) => (href ? activeColor : '#eef2f5')}
+  background-color: ${({ href }) => (href ? '' : '#eef2f5')}
 
   &:hover {
     color: ${({ href }) => (href ? 'white' : '#94919c')};
@@ -259,7 +259,12 @@ export class SocialBadges extends React.Component {
       <SocialBadges.Container>
         <SocialBadge>
           <Entity id={id}>
-            {({ url, color }) => <Badge href={url} activeColor={color} children={<EntityIcon />} />}
+            {({ url, color, image_url }) => (
+              <Badge
+                href={url}
+                children={<IdentityAvatar entity={id} backgroundColor={color} size="medium" src={image_url} />}
+              />
+            )}
           </Entity>
         </SocialBadge>
         <SocialBadge>
