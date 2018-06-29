@@ -223,15 +223,15 @@ export default class App extends Component {
   };
 
   getNewFeedItems = async (catId) => {
-    try {
-      const before = this.state.feedItems[0] ? this.state.feedItems[0].id : undefined;
-      const { feedItems: newFeedItems, total: feedItemsCount } = await getFeedItems({ before, catId, size: 10 });
-      const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
-      if (this.state.feedId !== catId) return;
-      this.setState(({ feedItems }) => ({ feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
-    } catch (e) {
-      console.warn('Failed to download feedItems');
-    }
+    // try {
+    //   const before = this.state.feedItems[0] ? this.state.feedItems[0].id : undefined;
+    //   const { feedItems: newFeedItems, total: feedItemsCount } = await getFeedItems({ before, catId, size: 10 });
+    //   const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
+    //   if (this.state.feedId !== catId) return;
+    //   this.setState(({ feedItems }) => ({ feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
+    // } catch (e) {
+    //   console.warn('Failed to download feedItems');
+    // }
   };
 
   getMoreFeedItems = async (catId) => {
