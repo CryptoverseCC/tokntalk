@@ -153,7 +153,7 @@ const Badge = styled.a`
   justify-content: center;
   cursor: ${({ href }) => (href ? 'pointer' : 'default')};
   color: ${({ href }) => (href ? 'white !important' : '#94919c')};
-  background-color: ${({ href }) => (href ? '' : '#eef2f5')}
+  background-color: ${({ href, activeColor }) => (href ? activeColor : '#eef2f5')}
 
   &:hover {
     color: ${({ href }) => (href ? 'white' : '#94919c')};
