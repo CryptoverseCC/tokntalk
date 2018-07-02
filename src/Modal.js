@@ -17,14 +17,14 @@ export default class Modal extends React.Component {
     this.props.onClose();
   };
 
-  onWindowClick = event => {
+  onWindowClick = (event) => {
     if (event.target !== this.el && !this.el.contains(event.target)) {
       this.closeModal();
     }
   };
   render() {
     return (
-      <div ref={el => (this.el = el)} className={this.props.className}>
+      <div ref={(el) => (this.el = el)} className={this.props.className}>
         {this.props.children}
       </div>
     );

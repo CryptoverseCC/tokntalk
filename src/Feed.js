@@ -105,7 +105,14 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         <LinkedEntityAvatar size="medium" reaction={reaction} id={from} />
       </div>
       <div className="media-content">
-        <CardTitle from={from} createdAt={createdAt} etherscanUrl={etherscanUrl} family={family} suffix={suffix} />
+        <CardTitle
+          id={id}
+          from={from}
+          createdAt={createdAt}
+          etherscanUrl={etherscanUrl}
+          family={family}
+          suffix={suffix}
+        />
         <p
           style={{
             marginTop: '20px',
@@ -251,7 +258,7 @@ const SenderName = styled(Link)`
   font-size: 1.1rem;
 `;
 
-const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix, share }) => {
+const CardTitle = ({ id, from, createdAt, etherscanUrl, family, suffix, share }) => {
   return (
     <React.Fragment>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -265,7 +272,7 @@ const CardTitle = ({ from, createdAt, etherscanUrl, family, suffix, share }) => 
       </div>
       <div>
         <small style={{ color: '#928F9B' }}>
-          {timeago().format(createdAt)}{' '}
+          <Link to={{ pathname: `/thread/${id}`, state: { modal: true } }}>{timeago().format(createdAt)} </Link>
           <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
             {family}
           </A>
@@ -351,7 +358,7 @@ const CardBox = styled.div`
   ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};
 `;
 
-class Card extends React.Component {
+export class Card extends React.Component {
   state = {
     wasShown: !this.props.added,
   };
@@ -485,7 +492,7 @@ class Card extends React.Component {
 
   render() {
     return (
-      <CardBox added={this.props.added && this.state.wasShown}>
+      <CardBox added={this.props.added && this.state.wasShown} style={this.props.style}>
         {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
         {this.renderItem()}
       </CardBox>

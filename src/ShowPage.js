@@ -25,7 +25,7 @@ export default class ShowPage extends Component {
     window.scrollTo(0, 0);
     this.props.getFeedItems(this.props.match.params.entityId);
     this.props.getEntityInfo(this.props.match.params.entityId);
-    this.refreshInterval = setInterval(() => this.props.getNewFeedItems(this.props.match.params.entityId), 3000);
+    // this.refreshInterval = setInterval(() => this.props.getNewFeedItems(this.props.match.params.entityId), 3000);
   }
 
   componentWillReceiveProps(nextProps) {

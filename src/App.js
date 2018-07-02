@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import find from 'lodash/fp/find';
 import isEqual from 'lodash/isEqual';
 import produce from 'immer';
+
 import Context from './Context';
 import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
@@ -16,6 +18,7 @@ import {
   getLabels,
   getBoosts,
   boost,
+  getFeedItem,
   getFeedItems,
 } from './api';
 import { getEntityData } from './entityApi';
@@ -23,10 +26,10 @@ import Header from './Header';
 import { PositionedFooter } from './Footer';
 import NetworkWarning from './NetworkWarning';
 import FAQPage from './FAQPage';
+import { Thread, ModalThread } from './Thread';
 
 const {
   REACT_APP_NAME: APP_NAME,
-  REACT_APP_BASENAME: BASENAME,
   REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
   REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID,
 } = process.env;
@@ -58,6 +61,8 @@ export default class App extends Component {
     myEntities: [],
     entityInfo: JSON.parse(this.storage.getItem('entityInfo') || '{}'),
     entityLabels: {},
+    feedItem: null,
+    feedItemLoading: false,
     feedItems: [],
     shownFeedItemsCount: 10,
     feedLoading: false,
@@ -210,6 +215,19 @@ export default class App extends Component {
     );
   };
 
+  getFeedItem = async (claimId) => {
+    const { feedItems } = this.state;
+    try {
+      const feedItem = find({ id: claimId })(feedItems);
+      this.setState({ feedItemLoading: true, feedItemId: claimId, feedItem }, async () => {
+        const feedItem = await getFeedItem({ claimId });
+        this.setState({ feedItemLoading: false, feedItem });
+      });
+    } catch (e) {
+      console.warn('Failed to download feedItems');
+    }
+  };
+
   getFeedItems = async (catId) => {
     try {
       this.setState({ feedLoading: true, feedId: catId }, async () => {
@@ -252,26 +270,8 @@ export default class App extends Component {
     // }
   };
 
-  renderIndexPage = (props) => (
-    <IndexPage {...props} getFeedItems={this.getFeedItems} getNewFeedItems={this.getNewFeedItems} />
-  );
-
-  renderFaqPage = (props) => <FAQPage />;
-
-  renderShowPage = (props) => (
-    <ShowPage
-      {...props}
-      getFeedItems={this.getFeedItems}
-      getNewFeedItems={this.getNewFeedItems}
-      getEntityInfo={this.getEntityInfo}
-    />
-  );
-
   render() {
     const {
-      renderIndexPage,
-      renderShowPage,
-      renderFaqPage,
       changeActiveEntityTo,
       getEntityInfo,
       sendMessage,
@@ -288,6 +288,8 @@ export default class App extends Component {
     const {
       activeEntity,
       myEntities,
+      feedItem,
+      feedItemLoading,
       feedItems,
       isGettingMoreFeedItems,
       feedLoading,
@@ -302,6 +304,7 @@ export default class App extends Component {
       boosts,
       http,
     } = this.state;
+
     return (
       <Context.Provider
         value={{
@@ -323,6 +326,8 @@ export default class App extends Component {
             writeTo,
             react,
             label,
+            feedItem,
+            feedItemLoading,
             feedItems,
             feedLoading,
             isGettingMoreFeedItems,
@@ -345,15 +350,16 @@ export default class App extends Component {
           },
         }}
       >
-        <Router basename={BASENAME}>
+        <Router>
           <React.Fragment>
             <NetworkWarning />
             <Header />
-            <Switch>
-              <Route exact path="/faq" component={renderFaqPage} />
-              <Route exact path="/:entityId" component={renderShowPage} />
-              <Route exact path="/" component={renderIndexPage} />
-            </Switch>
+            <RoutesWithRouter
+              getFeedItem={this.getFeedItem}
+              getFeedItems={this.getFeedItems}
+              getNewFeedItems={this.getNewFeedItems}
+              getEntityInfo={this.getEntityInfo}
+            />
             <PositionedFooter />
           </React.Fragment>
         </Router>
@@ -361,3 +367,53 @@ export default class App extends Component {
     );
   }
 }
+
+class Routes extends Component {
+  previousLocation = this.props.location;
+
+  componentWillUpdate(nextProps) {
+    const { location } = this.props;
+    if (nextProps.history.action !== 'POP' && (!location.state || !location.state.modal)) {
+      this.previousLocation = location;
+    }
+  }
+
+  renderIndexPage = (props) => (
+    <IndexPage {...props} getFeedItems={this.props.getFeedItems} getNewFeedItems={this.props.getNewFeedItems} />
+  );
+
+  renderFaqPage = (props) => <FAQPage />;
+
+  renderShowPage = (props) => (
+    <ShowPage
+      {...props}
+      getFeedItems={this.props.getFeedItems}
+      getNewFeedItems={this.props.getNewFeedItems}
+      getEntityInfo={this.props.getEntityInfo}
+    />
+  );
+
+  renderThread = (props) => <Thread {...props} getFeedItem={this.props.getFeedItem} />;
+
+  renderModalThread = (props) => <ModalThread {...props} getFeedItem={this.props.getFeedItem} />;
+
+  render() {
+    const { renderModalThread, renderShowPage, renderFaqPage, renderIndexPage, renderThread } = this;
+    const { location } = this.props;
+    const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
+
+    return (
+      <React.Fragment>
+        <Switch location={isModal ? this.previousLocation : location}>
+          <Route exact path="/" component={renderIndexPage} />
+          <Route exact path="/faq" component={renderFaqPage} />
+          <Route exact path="/:entityId" component={renderShowPage} />
+          {!isModal ? <Route exact path="/thread/:claimId" component={renderThread} /> : null}
+        </Switch>
+        {isModal ? <Route exact path="/thread/:claimId" component={renderModalThread} /> : null}
+      </React.Fragment>
+    );
+  }
+}
+
+const RoutesWithRouter = withRouter(Routes);

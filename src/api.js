@@ -25,6 +25,34 @@ const hasValidContext = ({ context }) => {
   return !!find({ address })(ercs721);
 };
 
+const isValidFeedItem = (feedItem) => {
+  if (!['regular', 'like', 'post_to', 'post_about'].includes(feedItem.type)) {
+    // 'response', 'labels'
+    return false;
+  }
+  if (!hasValidContext(feedItem)) {
+    return false;
+  }
+
+  feedItem.likes = feedItem.likes.filter(hasValidContext);
+  feedItem.replies = feedItem.replies.filter(hasValidContext).map((reply) => {
+    reply.likes = reply.likes.filter(hasValidContext);
+    return reply;
+  });
+
+  return true;
+};
+
+export const getFeedItem = async ({ claimId }) => {
+  let { items: feedItems } = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_thread_feed;id=${claimId}`).then(
+    (res) => res.json(),
+  );
+
+  feedItems = feedItems.filter(isValidFeedItem);
+
+  return feedItems[0];
+};
+
 export const getFeedItems = async ({ before, after, size, catId }) => {
   // const beforeParam = before ? `before=${before}` : '';
   // const afterParam = after ? `after=${after}` : '';
@@ -40,23 +68,7 @@ export const getFeedItems = async ({ before, after, size, catId }) => {
   );
 
   let { items: feedItems } = await response.json();
-  feedItems = feedItems.filter((feedItem) => {
-    if (!['regular', 'like', 'post_to', 'post_about'].includes(feedItem.type)) {
-      // 'response', 'labels'
-      return false;
-    }
-    if (!hasValidContext(feedItem)) {
-      return false;
-    }
-
-    feedItem.likes = feedItem.likes.filter(hasValidContext);
-    feedItem.replies = feedItem.replies.filter(hasValidContext).map((reply) => {
-      reply.likes = reply.likes.filter(hasValidContext);
-      return reply;
-    });
-
-    return true;
-  });
+  feedItems = feedItems.filter(isValidFeedItem);
 
   return { feedItems: feedItems.slice(0, 30), total: 30 };
 };
