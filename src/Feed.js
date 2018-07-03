@@ -272,7 +272,11 @@ const CardTitle = ({ id, from, createdAt, etherscanUrl, family, suffix, share })
       </div>
       <div>
         <small style={{ color: '#928F9B' }}>
-          <Link to={{ pathname: `/thread/${id}`, state: { modal: true } }}>{timeago().format(createdAt)} </Link>
+          {id ? (
+            <Link to={{ pathname: `/thread/${id}`, state: { modal: true } }}>{timeago().format(createdAt)} </Link>
+          ) : (
+            timeago().format(createdAt) + ' '
+          )}
           <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
             {family}
           </A>
