@@ -27,7 +27,6 @@ const hasValidContext = ({ context }) => {
 
 const isValidFeedItem = (feedItem) => {
   if (!['regular', 'like', 'post_to', 'post_about'].includes(feedItem.type)) {
-    // 'response', 'labels'
     return false;
   }
   if (!hasValidContext(feedItem)) {
@@ -54,23 +53,20 @@ export const getFeedItem = async ({ claimId }) => {
 };
 
 export const getFeedItems = async ({ before, after, size, catId }) => {
-  // const beforeParam = before ? `before=${before}` : '';
-  // const afterParam = after ? `after=${after}` : '';
-  // const sizeParam = size ? `size=${size}` : '';
-  // const catIdParam = catId ? catId : '';
-  // const response = await fetch(
-  //   `${USERFEEDS_API_ADDRESS}/api/cache-purr?${beforeParam}&${afterParam}&${sizeParam}&${catIdParam}`,
-  // );
+  const beforeParam = before ? `before=${before}` : '';
+  const afterParam = after ? `after=${after}` : '';
+  const sizeParam = size ? `size=${size}` : '';
+
   const response = await fetch(
     catId
       ? `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_single_feed;id=${catId}`
-      : `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_feed`,
+      : `${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${beforeParam}&${afterParam}&${sizeParam}`,
   );
 
-  let { items: feedItems } = await response.json();
+  let { items: feedItems, total } = await response.json();
   feedItems = feedItems.filter(isValidFeedItem);
 
-  return { feedItems: feedItems.slice(0, 30), total: 30 };
+  return { feedItems: feedItems.slice(0, 30), total };
 };
 
 export const getMyEntities = async () => {

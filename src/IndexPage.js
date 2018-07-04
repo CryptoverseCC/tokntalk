@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import { pageView } from './Analytics';
 import { ConnectedFeed, FeedContainer } from './Feed';
@@ -14,7 +13,7 @@ export default class IndexPage extends Component {
     window.scrollTo(0, 0);
     this.props.getFeedItems();
     // this.refreshInterval = setInterval(() => this.props.getNewFeedItems(), 15000);
-    // this.refreshInterval = setInterval(() => this.props.getNewFeedItems(), 3000);
+    this.refreshInterval = setInterval(() => this.props.getNewFeedItems(), 3000);
   }
 
   componentWillUnmount() {

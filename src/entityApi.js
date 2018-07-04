@@ -1,8 +1,6 @@
-import React from 'react';
 import find from 'lodash/fp/find';
 
 import ercs721 from './erc721';
-import etherDiamond from './img/ether-diamond.gif';
 
 export const defaultAvatarSizes = {
   verySmall: { containerSize: '32px', imgSize: '32px', imgTopOffset: '50%', imgLeftOffset: '50%' },

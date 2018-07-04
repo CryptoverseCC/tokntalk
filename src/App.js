@@ -241,33 +241,39 @@ export default class App extends Component {
   };
 
   getNewFeedItems = async (catId) => {
-    // try {
-    //   const before = this.state.feedItems[0] ? this.state.feedItems[0].id : undefined;
-    //   const { feedItems: newFeedItems, total: feedItemsCount } = await getFeedItems({ before, catId, size: 10 });
-    //   const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
-    //   if (this.state.feedId !== catId) return;
-    //   this.setState(({ feedItems }) => ({ feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
-    // } catch (e) {
-    //   console.warn('Failed to download feedItems');
-    // }
+    try {
+      // ToDo find newest claim
+      const before = this.state.feedItems[0] ? this.state.feedItems[0].id : undefined;
+
+      const { feedItems: newFeedItems, total: feedItemsCount } = await getFeedItems({ before, catId, size: 10 });
+      const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
+      if (this.state.feedId !== catId) return;
+
+      // ToDo sort by date
+      this.setState(({ feedItems }) => ({ feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
+    } catch (e) {
+      console.warn('Failed to download feedItems');
+    }
   };
 
   getMoreFeedItems = async (catId) => {
-    // if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
-    // try {
-    //   this.setState({ feedLoadingMore: true }, async () => {
-    //     const after = this.state.feedItems[this.state.feedItems.length - 1].id;
-    //     const { feedItems: moreFeedItems, total: feedItemsCount } = await getFeedItems({ size: 10, after, catId });
-    //     if (this.state.feedId !== catId) return;
-    //     this.setState(({ feedItems }) => ({
-    //       feedLoadingMore: false,
-    //       feedItems: [...feedItems, ...moreFeedItems],
-    //       feedItemsCount,
-    //     }));
-    //   });
-    // } catch (e) {
-    //   console.warn('Failed to download more feedItems');
-    // }
+    if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
+    try {
+      this.setState({ feedLoadingMore: true }, async () => {
+        // ToDo find oldest claim
+        const after = this.state.feedItems[this.state.feedItems.length - 1].id;
+
+        const { feedItems: moreFeedItems, total: feedItemsCount } = await getFeedItems({ size: 10, after, catId });
+        if (this.state.feedId !== catId) return;
+        this.setState(({ feedItems }) => ({
+          feedLoadingMore: false,
+          feedItems: [...feedItems, ...moreFeedItems],
+          feedItemsCount,
+        }));
+      });
+    } catch (e) {
+      console.warn('Failed to download more feedItems');
+    }
   };
 
   render() {

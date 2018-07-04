@@ -1,5 +1,5 @@
 import React from 'react';
-import uniqBy from 'lodash/uniqBy';
+
 import Context from './Context';
 import IdentityAvatar, { AvatarPlaceholder } from './Avatar';
 import TranslationsContext from './Translations';
