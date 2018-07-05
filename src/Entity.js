@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { getEntityPrefix, getEntityId } from './entityApi';
 import Context from './Context';
 import IdentityAvatar, { AvatarPlaceholder } from './Avatar';
 import TranslationsContext from './Translations';
@@ -42,7 +43,7 @@ export const EntityName = ({ id }) => {
     <Context.Consumer>
       {({ entityStore: { getEntity } }) => (
         <TranslationsContext.Consumer>
-          {({ entityName }) => getEntity(id).name || `${entityName} #${getEntity(id).id}`}
+          {({ entityName }) => getEntity(id).name || `${getEntityPrefix(id)}${getEntityId(id)}`}
         </TranslationsContext.Consumer>
       )}
     </Context.Consumer>

@@ -5,6 +5,7 @@ export default [
     symbol: 'CKITTY',
     image_url: 'https://storage.googleapis.com/opensea-static/cryptokitties-logo.png',
     external_link: 'https://www.cryptokitties.co/',
+    entityPrefix: 'CryptoKitty #',
     avatarSizes: {
       verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%', imgLeftOffset: '55%' },
       small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%', imgLeftOffset: '55%' },
@@ -18,6 +19,7 @@ export default [
     symbol: 'CBT',
     image_url: 'https://storage.googleapis.com/opensea-static/cryptobots-logo.png',
     external_link: 'http://cryptobots.me/',
+    entityPrefix: 'CryptoBot #',
   },
   {
     address: '0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9',
@@ -25,6 +27,7 @@ export default [
     symbol: 'MOJI',
     image_url: 'https://storage.googleapis.com/opensea-static/ethmoji-logo.png',
     external_link: 'https://ethmoji.io/',
+    entityPrefix: 'Ethmoji #',
   },
   {
     address: '0x323a3e1693e7a0959f65972f3bf2dfcb93239dfe',
@@ -32,5 +35,6 @@ export default [
     symbol: 'DAC',
     image_url: 'https://storage.googleapis.com/opensea-static/digitalartchain-logo.png',
     external_link: 'http://digitalartchain.com/',
+    entityPrefix: 'Digital Art ',
   },
 ];

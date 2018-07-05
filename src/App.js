@@ -146,6 +146,7 @@ export default class App extends Component {
     if (!entityLabels) this.getEntityLabels(entityId);
     const boost = this.state.boosts[entityId] || { score: 0 };
     const boostValue = boost.score;
+
     return {
       image_url: undefined,
       color: undefined,

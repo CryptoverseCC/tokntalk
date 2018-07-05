@@ -23,6 +23,17 @@ export const getEntityData = async (entity) => {
   }
 };
 
+export const getEntityId = (entity) => {
+  const [, , id] = entity.split(':');
+  return id;
+};
+
+export const getEntityPrefix = (entity) => {
+  const [, address] = entity.split(':');
+  const { entityPrefix } = find({ address })(ercs721);
+  return entityPrefix;
+};
+
 export const entityTranslations = {
   commentPlaceholder: 'Write your story',
   replyPlaceholder: 'Write your reply',
