@@ -33,6 +33,10 @@ const isValidFeedItem = (feedItem) => {
     return false;
   }
 
+  if (feedItem.target && !hasValidContext(feedItem.target)) {
+    return false;
+  }
+
   feedItem.likes = feedItem.likes.filter(hasValidContext);
   feedItem.replies = feedItem.replies.filter(hasValidContext).map((reply) => {
     reply.likes = reply.likes.filter(hasValidContext);
