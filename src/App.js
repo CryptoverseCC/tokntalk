@@ -65,6 +65,7 @@ export default class App extends Component {
     feedItemLoading: false,
     feedItems: [],
     shownFeedItemsCount: 10,
+    feedVersion: undefined,
     feedLoading: false,
     feedLoadingMore: false,
     feedId: undefined,
@@ -232,9 +233,9 @@ export default class App extends Component {
   getFeedItems = async (catId) => {
     try {
       this.setState({ feedLoading: true, feedId: catId }, async () => {
-        const { feedItems, total: feedItemsCount } = await getFeedItems({ size: 10, catId });
+        const { feedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({ size: 10, catId });
         if (this.state.feedId !== catId) return;
-        this.setState({ feedLoading: false, feedItems, feedItemsCount });
+        this.setState({ feedLoading: false, feedItems, feedItemsCount, feedVersion });
       });
     } catch (e) {
       console.warn('Failed to download feedItems');
@@ -243,15 +244,22 @@ export default class App extends Component {
 
   getNewFeedItems = async (catId) => {
     try {
-      // ToDo find newest claim
-      const before = this.state.feedItems[0] ? this.state.feedItems[0].id : undefined;
+      // ToDo
+      const { feedVersion: lastVersion, feedItems } = this.state;
+      const oldestKnown = feedItems[feedItems.length - 1] ? feedItems[feedItems.length - 1].id : undefined;
 
-      const { feedItems: newFeedItems, total: feedItemsCount } = await getFeedItems({ before, catId, size: 10 });
+      const { feedItems: newFeedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({
+        lastVersion,
+        oldestKnown,
+        catId,
+        size: 10,
+      });
+
       const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
       if (this.state.feedId !== catId) return;
 
       // ToDo sort by date
-      this.setState(({ feedItems }) => ({ feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
+      this.setState(({ feedItems }) => ({ feedVersion, feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
     } catch (e) {
       console.warn('Failed to download feedItems');
     }
@@ -262,13 +270,21 @@ export default class App extends Component {
     try {
       this.setState({ feedLoadingMore: true }, async () => {
         // ToDo find oldest claim
-        const after = this.state.feedItems[this.state.feedItems.length - 1].id;
+        const { feedItems } = this.state;
+        const oldestKnown = feedItems[feedItems.length - 1] ? feedItems[feedItems.length - 1].id : undefined;
 
-        const { feedItems: moreFeedItems, total: feedItemsCount } = await getFeedItems({ size: 10, after, catId });
+        const { feedItems: moreFeedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({
+          size: 10,
+          oldestKnown,
+          catId,
+        });
+
         if (this.state.feedId !== catId) return;
+
         this.setState(({ feedItems }) => ({
           feedLoadingMore: false,
-          feedItems: [...feedItems, ...moreFeedItems],
+          feedVersion,
+          feedItems: [...feedItems, ...moreFeedItems], // ToDo
           feedItemsCount,
         }));
       });

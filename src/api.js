@@ -56,21 +56,21 @@ export const getFeedItem = async ({ claimId }) => {
   return feedItems[0];
 };
 
-export const getFeedItems = async ({ before, after, size, catId }) => {
-  const beforeParam = before ? `before=${before}` : '';
-  const afterParam = after ? `after=${after}` : '';
+export const getFeedItems = async ({ lastVersion, oldestKnown, size, catId }) => {
+  const versionParam = lastVersion ? `lastVersion=${lastVersion}` : '';
+  const oldestParam = oldestKnown ? `oldestKnown=${oldestKnown}` : '';
   const sizeParam = size ? `size=${size}` : '';
 
   const response = await fetch(
     catId
       ? `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_single_feed;id=${catId}`
-      : `${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${beforeParam}&${afterParam}&${sizeParam}`,
+      : `${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${versionParam}&${oldestParam}&${sizeParam}`,
   );
 
-  let { items: feedItems, total } = await response.json();
+  let { items: feedItems, total, version } = await response.json();
   feedItems = feedItems.filter(isValidFeedItem);
 
-  return { feedItems: feedItems.slice(0, 30), total };
+  return { feedItems: feedItems.slice(0, 30), total, version };
 };
 
 export const getMyEntities = async () => {
