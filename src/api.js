@@ -33,7 +33,7 @@ const isValidFeedItem = (feedItem) => {
     return false;
   }
 
-  if (feedItem.target && !hasValidContext(feedItem.target)) {
+  if (typeof feedItem.target === 'object' && !hasValidContext(feedItem.target)) {
     return false;
   }
 
