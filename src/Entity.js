@@ -8,7 +8,9 @@ import StyledLink from './Link';
 
 export const IfOnMainnet = ({ children, then, other }) => (
   <Context.Consumer>
-    {({ web3Store: { networkName } }) => (networkName === 'ethereum' ? then || children : null)}
+    {({ web3Store: { networkName }, appStore: { http } }) =>
+      !http && networkName === 'ethereum' ? then || children : null
+    }
   </Context.Consumer>
 );
 
