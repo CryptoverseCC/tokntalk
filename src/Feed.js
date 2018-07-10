@@ -7,6 +7,7 @@ import reverse from 'lodash/fp/reverse';
 import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
+
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
@@ -88,7 +89,7 @@ const Label = ({ onClick, liked, count }) => {
 };
 
 export const sanitizeMessage = (message) => {
-  const expression = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b(?:[-a-zA-Z0-9@;:%_+.~#?&//=]*))/g;
+  const expression = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b(?:[-a-zA-Z0-9@;:%_+.,~#?&//=]*))/g;
   const replaceMatchWithLink = (match) => {
     return `<a href="${match}">${escapeHtml(match)}</a>`;
   };
