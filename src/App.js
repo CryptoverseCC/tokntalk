@@ -66,6 +66,7 @@ export default class App extends Component {
     feedItems: [],
     shownFeedItemsCount: 10,
     feedVersion: undefined,
+    lastFeedItemId: undefined,
     feedLoading: false,
     feedLoadingMore: false,
     feedId: undefined,
@@ -233,9 +234,12 @@ export default class App extends Component {
   getFeedItems = async (catId) => {
     try {
       this.setState({ feedLoading: true, feedId: catId }, async () => {
-        const { feedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({ size: 10, catId });
+        const { feedItems, total: feedItemsCount, version: feedVersion, lastItemId } = await getFeedItems({
+          catId,
+          size: 10,
+        });
         if (this.state.feedId !== catId) return;
-        this.setState({ feedLoading: false, feedItems, feedItemsCount, feedVersion });
+        this.setState({ feedLoading: false, feedItems, feedItemsCount, feedVersion, lastFeedItemId: lastItemId });
       });
     } catch (e) {
       console.warn('Failed to download feedItems');
@@ -245,14 +249,13 @@ export default class App extends Component {
   getNewFeedItems = async (catId) => {
     try {
       // ToDo
-      const { feedVersion: lastVersion, feedItems } = this.state;
-      const oldestKnown = feedItems[feedItems.length - 1] ? feedItems[feedItems.length - 1].id : undefined;
+      const { feedVersion: lastVersion, lastFeedItemId } = this.state;
 
       const { feedItems: newFeedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({
-        lastVersion,
-        oldestKnown,
         catId,
         size: 10,
+        lastVersion,
+        oldestKnown: lastFeedItemId,
       });
 
       const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
@@ -269,21 +272,18 @@ export default class App extends Component {
     if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
     try {
       this.setState({ feedLoadingMore: true }, async () => {
-        // ToDo find oldest claim
-        const { feedItems } = this.state;
-        const oldestKnown = feedItems[feedItems.length - 1] ? feedItems[feedItems.length - 1].id : undefined;
-
-        const { feedItems: moreFeedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({
-          size: 10,
-          oldestKnown,
+        const { lastFeedItemId } = this.state;
+        const { feedItems: moreFeedItems, total: feedItemsCount, lastItemId } = await getFeedItems({
           catId,
+          size: 10,
+          oldestKnown: lastFeedItemId,
         });
 
         if (this.state.feedId !== catId) return;
 
         this.setState(({ feedItems }) => ({
+          lastFeedItemId: lastItemId,
           feedLoadingMore: false,
-          feedVersion,
           feedItems: [...feedItems, ...moreFeedItems], // ToDo
           feedItemsCount,
         }));

@@ -1,5 +1,6 @@
-import find from 'lodash/fp/find';
 import uuidv4 from 'uuid/v4';
+import find from 'lodash/fp/find';
+import last from 'lodash/fp/last';
 
 import getWeb3 from './web3';
 import {
@@ -67,10 +68,11 @@ export const getFeedItems = async ({ lastVersion, oldestKnown, size, catId }) =>
       : `${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${versionParam}&${oldestParam}&${sizeParam}`,
   );
 
-  let { items: feedItems, total, version } = await response.json();
-  feedItems = feedItems.filter(isValidFeedItem);
+  const { items, total, version } = await response.json();
+  const validFeedItems = items.filter(isValidFeedItem);
+  const lastItem = last(items);
 
-  return { feedItems: feedItems.slice(0, 30), total, version };
+  return { feedItems: validFeedItems.slice(0, 30), total, version, lastItemId: lastItem ? lastItem.id : undefined };
 };
 
 export const getMyEntities = async () => {
