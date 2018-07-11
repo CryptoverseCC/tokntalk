@@ -81,7 +81,6 @@ const Header = () => {
       <LinkDropdown />
       <LinkContainer>
         <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
-        <ButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</ButtonCrossLink>
       </LinkContainer>
       <Context.Consumer>
         {({ appStore: { http, toggleHttpClaims } }) => (
