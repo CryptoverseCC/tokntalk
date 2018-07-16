@@ -20,10 +20,12 @@ const {
   REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
 } = process.env;
 
-const hasValidContext = ({ context }) => {
+export const isValidAndSupportedErc721 = (address) => !!find({ address })(ercs721);
+
+export const hasValidContext = ({ context }) => {
   if (!context) return false;
   const [, address] = context.split(':');
-  return !!find({ address })(ercs721);
+  return isValidAndSupportedErc721(address);
 };
 
 const isValidFeedItem = (feedItem) => {
@@ -73,6 +75,18 @@ export const getFeedItems = async ({ lastVersion, oldestKnown, size, catId }) =>
   const lastItem = last(items);
 
   return { feedItems: validFeedItems.slice(0, 30), total, version, lastItemId: lastItem ? lastItem.id : undefined };
+};
+
+export const getRanking = async (flow) => {
+  const { items } = await fetch(`${USERFEEDS_API_ADDRESS}/ranking`, {
+    method: 'POST',
+    body: JSON.stringify({ flow }),
+    headers: {
+      'content-type': 'application/json',
+    },
+  }).then((res) => res.json());
+
+  return items;
 };
 
 export const getMyEntities = async () => {

@@ -8,6 +8,7 @@ import NoMetamask from './img/no.svg';
 import NoIdentity from './img/noidentity.svg';
 import Context from './Context';
 import Logo from './Logo';
+import Dropdown from './Dropdown';
 
 const StyledHeader = styled.div`
   background-color: #f9fbfd;
@@ -37,22 +38,9 @@ const TitleLink = styled(Link)`
   }
 `;
 
-const CrossLink = styled(A)`
+const CrossLink = styled(Link)`
   margin-left: 1rem;
   color: gray;
-`;
-
-const ButtonCrossLink = styled(CrossLink)`
-  display: inline-block;
-  padding: 5px 10px;
-  background-color: rgba(246, 244, 255, 0.7);
-  color: #623cea;
-  border-radius: 3px;
-
-  &:hover {
-    background-color: #623cea;
-    color: white !important;
-  }
 `;
 
 const LinkContainer = styled.ul`
@@ -81,6 +69,7 @@ const Header = () => {
       <LinkDropdown />
       <LinkContainer>
         <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
+        <CrossLink to="/discover">Discover</CrossLink>
       </LinkContainer>
       <Context.Consumer>
         {({ appStore: { http, toggleHttpClaims } }) => (
@@ -225,12 +214,6 @@ const DropdownLink = styled(CrossLink)`
   min-width: 5rem;
 `;
 
-const DropdownButtonCrossLink = styled(ButtonCrossLink)`
-  margin: 0;
-  background-color: unset;
-  min-width: 5rem;
-`;
-
 const LinkDropdownContent = styled.ul`
   display: flex;
   flex-direction: column;
@@ -271,67 +254,12 @@ const LinkDropdown = () => (
     >
       {() => (
         <React.Fragment>
-          <DropdownLink href="https://userfeeds.github.io/cryptobeep">Beep</DropdownLink>
-          <DropdownLink href="https://userfeeds.github.io/cryptomoji">Moji</DropdownLink>
-          <DropdownLink href="https://userfeeds.github.io/robohash-book">Hash</DropdownLink>
-          <DropdownLink href="http://story.digitalartchain.com/">Art</DropdownLink>
-          <DropdownButtonCrossLink href="https://github.com/userfeeds/cryptopurr">Fork it</DropdownButtonCrossLink>
+          <DropdownLink to="/discover">Discover</DropdownLink>
         </React.Fragment>
       )}
     </Dropdown>
   </LinkDropdownContainer>
 );
-
-class Dropdown extends React.Component {
-  state = {
-    active: false,
-  };
-
-  componentWillUnmount() {
-    this.closeDropdown();
-  }
-
-  openDropdown = (e) => {
-    e.stopPropagation();
-    this.setState({ active: true }, () => {
-      window.addEventListener('click', this.onWindowClick);
-      window.addEventListener('touchstart', this.onWindowClick);
-    });
-  };
-
-  closeDropdown = () => {
-    this.setState({ active: false });
-    window.removeEventListener('click', this.onWindowClick);
-    window.removeEventListener('touchstart', this.onWindowClick);
-  };
-
-  onWindowClick = (event) => {
-    if (event.target !== this.dropdownElement && !this.dropdownElement.contains(event.target) && this.state.active) {
-      this.closeDropdown();
-    }
-  };
-
-  get dropdownMenuPosition() {
-    return this.props.position === 'left' ? { left: 0, right: 'auto' } : { left: 'auto', right: 0 };
-  }
-
-  render() {
-    return (
-      <div className={`dropdown ${this.state.active ? 'is-active' : ''}`}>
-        <div className="dropdown-trigger">{this.props.toggle({ openDropdown: this.openDropdown })}</div>
-        <div
-          className="dropdown-menu"
-          ref={(dropdown) => (this.dropdownElement = dropdown)}
-          style={{ ...this.dropdownMenuPosition, minWidth: 'unset' }}
-        >
-          <this.props.Content className="dropdown-content">
-            {this.props.children({ closeDropdown: this.closeDropdown })}
-          </this.props.Content>
-        </div>
-      </div>
-    );
-  }
-}
 
 const Error = styled.span`
   color: #fc0035;

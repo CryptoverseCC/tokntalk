@@ -27,6 +27,7 @@ import { PositionedFooter } from './Footer';
 import NetworkWarning from './NetworkWarning';
 import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
+import Discover from './Discover';
 
 const {
   REACT_APP_NAME: APP_NAME,
@@ -420,8 +421,10 @@ class Routes extends Component {
 
   renderModalThread = (props) => <ModalThread {...props} getFeedItem={this.props.getFeedItem} />;
 
+  renderDiscover = (props) => <Discover {...props} />;
+
   render() {
-    const { renderModalThread, renderShowPage, renderFaqPage, renderIndexPage, renderThread } = this;
+    const { renderModalThread, renderShowPage, renderFaqPage, renderIndexPage, renderThread, renderDiscover } = this;
     const { location } = this.props;
     const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
 
@@ -430,6 +433,7 @@ class Routes extends Component {
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path="/" component={renderIndexPage} />
           <Route exact path="/faq" component={renderFaqPage} />
+          <Route path="/discover" component={renderDiscover} />
           <Route exact path="/:entityId" component={renderShowPage} />
           {!isModal ? <Route exact path="/thread/:claimId" component={renderThread} /> : null}
         </Switch>

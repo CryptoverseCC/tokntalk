@@ -3,7 +3,6 @@ import React from 'react';
 import { getEntityPrefix, getEntityId } from './entityApi';
 import Context from './Context';
 import IdentityAvatar, { AvatarPlaceholder } from './Avatar';
-import TranslationsContext from './Translations';
 import StyledLink from './Link';
 
 export const IfOnMainnet = ({ children, then, other }) => (
