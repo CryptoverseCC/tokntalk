@@ -1,27 +1,31 @@
 import React from 'react';
 import find from 'lodash/fp/find';
 
+import zrx from './img/tokens/zrx.png';
+import omg from './img/tokens/omg.png';
+import avocado from './img/tokens/avocado.svg';
+
 const ercs20 = [
   {
     network: 'ethereum',
     address: '0xfa6f7881e52fdf912c4a285d78a3141b089ce859',
     name: 'Avocado',
     symbol: 'AVO',
-    image_url: 'https://www.svgrepo.com/show/48219/avocado.svg',
+    image_url: avocado,
   },
   {
     network: 'ethereum',
     address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
     name: 'ZRX',
     symbol: 'ZRX',
-    image_url: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1896.png',
+    image_url: zrx,
   },
   {
     network: 'ethereum',
     address: '0xd26114cd6ee289accf82350c8d8487fedb8a0c07',
     name: 'OmiseGO',
     symbol: 'OMG',
-    image_url: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1808.png',
+    image_url: omg,
   },
 ];
 
