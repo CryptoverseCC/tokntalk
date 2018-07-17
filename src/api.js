@@ -11,6 +11,7 @@ import {
   claimWithValueTransferContractAbi,
 } from './contract';
 import { getEntityData } from './entityApi';
+import erc20 from './erc20';
 import ercs721 from './erc721';
 
 const {
@@ -77,16 +78,14 @@ export const getFeedItems = async ({ lastVersion, oldestKnown, size, catId }) =>
   return { feedItems: validFeedItems.slice(0, 30), total, version, lastItemId: lastItem ? lastItem.id : undefined };
 };
 
-export const getRanking = async (flow) => {
-  const { items } = await fetch(`${USERFEEDS_API_ADDRESS}/ranking`, {
+export const getRanking = (flow) => {
+  return fetch(`${USERFEEDS_API_ADDRESS}/ranking`, {
     method: 'POST',
     body: JSON.stringify({ flow }),
     headers: {
       'content-type': 'application/json',
     },
   }).then((res) => res.json());
-
-  return items;
 };
 
 export const getMyEntities = async () => {
@@ -128,6 +127,20 @@ export const getLabels = async (entityId) => {
   } catch (e) {
     return {};
   }
+};
+
+export const getEntityTokens = async (entityId) => {
+  const tokens = await getRanking([
+    {
+      algorithm: 'experimental_assets_balances_erc721',
+      params: {
+        context: entityId,
+        asset: erc20.map(({ network, address }) => `${network}:${address}`),
+      },
+    },
+  ]);
+
+  return Object.entries(tokens).map(([token]) => token);
 };
 
 export const getBoosts = async (token) => {

@@ -16,6 +16,7 @@ import {
   label,
   writeTo,
   getLabels,
+  getEntityTokens,
   getBoosts,
   boost,
   getFeedItem,
@@ -55,6 +56,7 @@ export const produceEntities = (myEntities, previousActiveEntity) => {
 export default class App extends Component {
   entityInfoRequests = {};
   entityLabelRequests = {};
+  entityTokensRequests = {};
   storage = Storage();
 
   state = {
@@ -62,6 +64,7 @@ export default class App extends Component {
     myEntities: [],
     entityInfo: JSON.parse(this.storage.getItem('entityInfo') || '{}'),
     entityLabels: {},
+    entityTokens: {},
     feedItem: null,
     feedItemLoading: false,
     feedItems: [],
@@ -126,6 +129,16 @@ export default class App extends Component {
     });
   };
 
+  getEntityTokens = async (entityId) => {
+    if (this.entityTokensRequests[entityId]) return;
+    const entityTokensRequests = getEntityTokens(entityId);
+    this.entityTokensRequests[entityId] = entityTokensRequests;
+    const tokens = await entityTokensRequests;
+    this.setState({
+      entityTokens: { ...this.state.entityTokens, [entityId]: tokens },
+    });
+  };
+
   toggleHttpClaims = () => {
     this.setState({ http: !this.state.http }, () => {
       this.storage.setItem('http', this.state.http);
@@ -147,6 +160,8 @@ export default class App extends Component {
     if (!entityInfo) this.getEntityInfo(entityId);
     const entityLabels = this.state.entityLabels[entityId];
     if (!entityLabels) this.getEntityLabels(entityId);
+    const entityTokens = this.state.entityTokens[entityId];
+    if (!entityTokens) this.getEntityTokens(entityId);
     const boost = this.state.boosts[entityId] || { score: 0 };
     const boostValue = boost.score;
 
@@ -156,6 +171,7 @@ export default class App extends Component {
       id: entityId,
       name: undefined,
       boostValue,
+      tokens: entityTokens || [],
       ...entityInfo,
       ...entityLabels,
     };

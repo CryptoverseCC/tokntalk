@@ -16,6 +16,7 @@ import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon, socialColors } fr
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
 import { FeedCatvertised } from './Catvertised';
+import { TokenImage } from './erc20';
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -42,6 +43,7 @@ export default class ShowPage extends Component {
   }
 
   static HeroImageContainer = styled.div`
+    position: relative;
     background-color: ${({ backgroundColor }) => backgroundColor || 'none'};
     height: 30rem;
     text-align: center;
@@ -72,6 +74,9 @@ export default class ShowPage extends Component {
             <React.Fragment>
               <ShowPage.HeroImageContainer backgroundColor={entity.color}>
                 <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id} />
+                <EntityTokensContainer>
+                  {entity.tokens.map((token) => <Erc20Token key={token} asset={token} />)}
+                </EntityTokensContainer>
               </ShowPage.HeroImageContainer>
               <ShowPage.FeedContainer className="container">
                 <div className="columns">
@@ -139,6 +144,25 @@ export default class ShowPage extends Component {
     );
   }
 }
+
+const Erc20Token = styled(({ asset, className }) => (
+  <Link className={className} to={`/discover/byToken/${asset}`}>
+    <TokenImage asset={asset} />
+  </Link>
+))`
+  display: block;
+  transition: transform 0.2s;
+
+  :hover {
+    transform: translateY(-3px);
+  }
+`;
+
+const EntityTokensContainer = styled.div`
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+`;
 
 const Badge = styled.a`
   width: 60px;

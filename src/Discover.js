@@ -5,6 +5,7 @@ import timeago from 'timeago.js';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
+import erc20 from './erc20';
 import Loader from './Loader';
 import { EntityName, EntityAvatar } from './Entity';
 import { getRanking, hasValidContext } from './api';
@@ -31,7 +32,10 @@ export default class Discover extends Component {
 }
 
 class Index extends Component {
-  tokens = [{ label: 'Avocado (AVO)', value: 'ethereum:0xfa6f7881e52fdf912c4a285d78a3141b089ce859' }];
+  tokens = erc20.map(({ network, address, name, symbol }) => ({
+    label: `${name} (${symbol})`,
+    value: `${network}:${address}`,
+  }));
 
   onSelect = ({ value }) => {
     const { history, match } = this.props;
@@ -62,7 +66,7 @@ class ByToken extends Component {
     try {
       this.setState({ loading: true });
       const asset = this.props.match.params.token;
-      const items = await getRanking([
+      const { items } = await getRanking([
         {
           algorithm: 'experimental_latest_purrers',
         },
