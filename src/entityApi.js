@@ -15,7 +15,7 @@ export const getEntityData = async (entity) => {
     const res = await fetch(`https://opensea-api.herokuapp.com/asset/${address}/${token}/`);
     const data = await res.json();
     data.color = `#${data.background_color}`;
-    data.url = data.external_link;
+    data.url = data.external_link || `https://opensea.io/assets/${address}/${token}`;
     data.ownerAddress = data.owner.address;
     return data;
   } catch (e) {
