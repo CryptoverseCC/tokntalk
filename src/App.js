@@ -29,6 +29,7 @@ import NetworkWarning from './NetworkWarning';
 import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
+import NotFound from './NotFound';
 
 const {
   REACT_APP_NAME: APP_NAME,
@@ -450,6 +451,7 @@ class Routes extends Component {
           <Route exact path="/" component={renderIndexPage} />
           <Route exact path="/faq" component={renderFaqPage} />
           <Route path="/discover" component={renderDiscover} />
+          <Route path="/404" component={NotFound} />
           <Route exact path="/:entityId" component={renderShowPage} />
           {!isModal ? <Route exact path="/thread/:claimId" component={renderThread} /> : null}
         </Switch>

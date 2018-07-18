@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import timeago from 'timeago.js';
+import find from 'lodash/fp/find';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-import erc20 from './erc20';
+import ercs20 from './erc20';
 import Loader from './Loader';
+import { validateParams } from './utils';
 import { EntityName, EntityAvatar } from './Entity';
 import { getRanking, hasValidContext } from './api';
 
@@ -24,7 +26,7 @@ export default class Discover extends Component {
       <DiscoveryContainer>
         <Switch>
           <Route exact path={`${match.url}/`} component={Index} />
-          <Route exact path={`${match.url}/byToken/:token`} component={ByToken} />
+          <Route exact path={`${match.url}/byToken/:token`} component={ByTokenWithValidParams} />
         </Switch>
       </DiscoveryContainer>
     );
@@ -32,7 +34,7 @@ export default class Discover extends Component {
 }
 
 class Index extends Component {
-  tokens = erc20.map(({ network, address, name, symbol }) => ({
+  tokens = ercs20.map(({ network, address, name, symbol }) => ({
     label: `${name} (${symbol})`,
     value: `${network}:${address}`,
   }));
@@ -53,19 +55,31 @@ class Index extends Component {
 }
 
 class ByToken extends Component {
-  state = {
-    loading: false,
-    authors: [],
-  };
+  constructor(props) {
+    super(props);
+    const { token } = this.props.match.params;
+
+    let asset = token;
+    if (token.indexOf(':') === -1) {
+      const erc20 = find({ symbol: token })(ercs20);
+      asset = `${erc20.network}:${erc20.address}`;
+    }
+
+    this.state = {
+      asset,
+      loading: false,
+      authors: [],
+    };
+  }
 
   componentDidMount() {
     this.fetchLatestAuthors();
   }
 
   fetchLatestAuthors = async () => {
+    const { asset } = this.state;
     try {
       this.setState({ loading: true });
-      const asset = this.props.match.params.token;
       const { items } = await getRanking([
         {
           algorithm: 'experimental_latest_purrers',
@@ -107,6 +121,24 @@ class ByToken extends Component {
     );
   }
 }
+
+const ByTokenWithValidParams = validateParams(
+  {
+    token: (token) => {
+      if (!token) {
+        return false;
+      }
+
+      if (token.indexOf(':') !== -1) {
+        const [network, address] = token.split(':');
+        return !!find({ network, address })(ercs20);
+      }
+
+      return !!find({ symbol: token })(ercs20);
+    },
+  },
+  '/404',
+)(ByToken);
 
 const AuthorContainer = styled(Link)`
   cursor: pointer;
