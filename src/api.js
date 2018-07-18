@@ -217,6 +217,7 @@ const getClaimWithValueTransferContract = async () => {
 
 const createFeedItemBase = async (id, entity, http) => {
   const { from, blockNumber, networkName } = await getWeb3State();
+
   return {
     author: from,
     created_at: new Date().getTime(),
@@ -298,7 +299,7 @@ export const reply = async (entity, message, to, { http } = {}) => {
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, entity, http);
-  return { ...feedItemBase, target: message };
+  return { ...feedItemBase, target: message, likes: [] };
 };
 
 export const writeTo = async (entity, message, entityTo, { http } = {}) => {

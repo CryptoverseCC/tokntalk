@@ -555,10 +555,11 @@ const Feed = ({
         isLoading={feedLoadingMore || feedLoading}
       >
         {feedItems.map((feedItem) => {
-          const replies = uniqBy((about) => about.id)([
-            ...(temporaryReplies[feedItem.id] || []),
-            ...(feedItem.replies || []),
-          ]);
+          const replies = pipe(
+            sortBy('created_at'),
+            uniqBy((about) => about.id),
+          )([...(temporaryReplies[feedItem.id] || []), ...(feedItem.replies || [])]);
+
           const reactions = uniqBy((target) => target.id)([
             ...(temporaryReactions[feedItem.id] || []),
             ...(feedItem.likes || []),
