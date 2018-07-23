@@ -271,7 +271,6 @@ export default class App extends Component {
 
       const { feedItems: newFeedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({
         catId,
-        size: 10,
         lastVersion,
         oldestKnown: lastFeedItemId,
       });
