@@ -12,6 +12,8 @@ const ercs20 = [
     name: 'Avocado',
     symbol: 'AVO',
     image_url: avocado,
+    primaryColor: '#9ad14aad',
+    secondaryColor: '#ffffff',
   },
   {
     network: 'ethereum',
@@ -19,6 +21,8 @@ const ercs20 = [
     name: 'ZRX',
     symbol: 'ZRX',
     image_url: zrx,
+    primaryColor: '#404040',
+    secondaryColor: '#ffffff',
   },
   {
     network: 'ethereum',
@@ -26,6 +30,8 @@ const ercs20 = [
     name: 'OmiseGO',
     symbol: 'OMG',
     image_url: omg,
+    primaryColor: '#1a52ef',
+    secondaryColor: '#ffffff',
   },
 ];
 
@@ -34,14 +40,12 @@ const sizes = {
   medium: { width: '54px', height: '54px' },
 };
 
-export const TokenImage = ({ asset, size = 'small' }) => {
-  const [network, address] = asset.split(':');
-  const token = find({ network, address })(ercs20);
+export const TokenImage = ({ token, size = 'small', ...restProps }) => {
   if (!token) {
     return null;
   }
 
-  return <img src={token.image_url} {...sizes[size]} />;
+  return <img src={token.image_url} {...sizes[size]} {...restProps} />;
 };
 
 export default ercs20;

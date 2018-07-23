@@ -3,58 +3,89 @@ import { Switch, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import timeago from 'timeago.js';
 import find from 'lodash/fp/find';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 
-import ercs20 from './erc20';
+import ercs20, { TokenImage } from './erc20';
 import Loader from './Loader';
 import { validateParams } from './utils';
-import { EntityName, EntityAvatar } from './Entity';
+import { EntityName, EntityAvatar, IfActiveEntity, Entity } from './Entity';
 import { getRanking, hasValidContext } from './api';
-
-const DiscoveryContainer = styled.div`
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-`;
 
 export default class Discover extends Component {
   render() {
     const { match } = this.props;
 
     return (
-      <DiscoveryContainer>
-        <Switch>
-          <Route exact path={`${match.url}/`} component={Index} />
-          <Route exact path={`${match.url}/byToken/:token`} component={decoratedByToken} />
-          <Route exact path={`${match.url}/byToken/:token/latest`} component={decoratedLatestPage} />
-          <Route exact path={`${match.url}/byToken/:token/social/:social`} component={decoratedSocialPage} />
-        </Switch>
-      </DiscoveryContainer>
+      <Switch>
+        <Route exact path={`${match.url}/`} component={Index} />
+        <Route exact path={`${match.url}/byToken/:token`} component={decoratedByToken} />
+        <Route exact path={`${match.url}/byToken/:token/latest`} component={decoratedLatestPage} />
+        <Route exact path={`${match.url}/byToken/:token/social/:social`} component={decoratedSocialPage} />
+      </Switch>
     );
   }
 }
 
 class Index extends Component {
-  tokens = ercs20.map(({ network, address, name, symbol }) => ({
-    label: `${name} (${symbol})`,
-    value: `${network}:${address}`,
-  }));
+  renderEntityTokens = (entity) =>
+    this.renderTiles(
+      entity.tokens.map((asset) => {
+        const [network, address] = asset.split(':');
+        return find({ network, address })(ercs20);
+      }),
+    );
 
-  onSelect = ({ value }) => {
-    const { history, match } = this.props;
-    history.push(`${match.url}/byToken/${value}`);
+  renderOthersTokens = () => this.renderTiles(ercs20);
+
+  renderTiles = (tokens) => {
+    const { match } = this.props;
+    return (
+      <div className="columns is-multiline is-mobile">
+        {tokens.map((token) => (
+          <TokenTile
+            linkTo={`${match.url}/byToken/${token.symbol}`}
+            key={token.address}
+            token={token}
+            className="column is-one-quarter"
+          />
+        ))}
+      </div>
+    );
   };
 
   render() {
     return (
-      <div>
-        <h2>Discover tokens</h2>
-        <Select onChange={this.onSelect} options={this.tokens} placeholder="Select token" />
-      </div>
+      <DiscoveryContainer>
+        <H1 style={{ margin: '60px 0' }}>Discovery</H1>
+        <div className="columns is-marginless">
+          <div className="column is-8 is-paddingless">
+            <H2>Communities</H2>
+            <IfActiveEntity
+              then={(entityId) => (
+                <Entity id={entityId}>
+                  {(entity) => (
+                    <React.Fragment>
+                      <H3 style={{ marginTop: '30px', marginBottom: '15px' }}>Yours</H3>
+                      {this.renderEntityTokens(entity)}
+                      <H3 style={{ marginTop: '30px', marginBottom: '15px' }}>Others</H3>
+                      {this.renderOthersTokens()}
+                    </React.Fragment>
+                  )}
+                </Entity>
+              )}
+              other={
+                <React.Fragment>
+                  <H3 style={{ marginTop: '30px', marginBottom: '15px' }}>Others</H3> {this.renderOthersTokens()}
+                </React.Fragment>
+              }
+            />
+          </div>
+          <div className="column is-3 is-offset-1" />
+        </div>
+      </DiscoveryContainer>
     );
   }
 }
+
 const ByToken = ({ match, token }) => (
   <div className="columns">
     <Latest
@@ -86,30 +117,6 @@ const ByToken = ({ match, token }) => (
     </div>
   </div>
 );
-
-const mapTokenUrlParam = (Cmp) => (props) => {
-  const { token } = props.match.params;
-
-  let erc20Token;
-  if (token.indexOf(':') === -1) {
-    erc20Token = find({ symbol: token })(ercs20);
-  } else {
-    const [network, address] = token.split(':');
-    erc20Token = find({ network, address })(ercs20);
-  }
-
-  return <Cmp token={erc20Token} {...props} />;
-};
-
-const authorsFlow = (asset) => [
-  {
-    algorithm: 'experimental_latest_purrers',
-  },
-  {
-    algorithm: 'experimental_author_balance',
-    params: { asset },
-  },
-];
 
 const Latest = ({ asset, ...restProps }) => (
   <List flow={authorsFlow(asset)} {...restProps}>
@@ -186,6 +193,30 @@ const validateTokenParam = validateParams(
   '/404',
 );
 
+const mapTokenUrlParam = (Cmp) => (props) => {
+  const { token } = props.match.params;
+
+  let erc20Token;
+  if (token.indexOf(':') === -1) {
+    erc20Token = find({ symbol: token })(ercs20);
+  } else {
+    const [network, address] = token.split(':');
+    erc20Token = find({ network, address })(ercs20);
+  }
+
+  return <Cmp token={erc20Token} {...props} />;
+};
+
+const authorsFlow = (asset) => [
+  {
+    algorithm: 'experimental_latest_purrers',
+  },
+  {
+    algorithm: 'experimental_author_balance',
+    params: { asset },
+  },
+];
+
 const decoratedByToken = validateTokenParam(mapTokenUrlParam(ByToken));
 const decoratedLatestPage = validateTokenParam(mapTokenUrlParam(LatestPage));
 const decoratedSocialPage = validateParams(
@@ -230,6 +261,69 @@ class List extends Component {
     );
   }
 }
+
+const TokenTile = ({ linkTo, token, ...restProps }) => {
+  return (
+    <Link to={linkTo} {...restProps}>
+      <TokenTileCotainer primaryColor={token.primaryColor} secondaryColor={token.secondaryColor}>
+        <TokenTileWrapper>
+          <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
+          <H3>{token.name}</H3>
+        </TokenTileWrapper>
+      </TokenTileCotainer>
+    </Link>
+  );
+};
+
+const TokenTileCotainer = styled.div`
+  background: ${({ primaryColor }) => primaryColor};
+  color: ${({ secondaryColor }) => secondaryColor}
+  box-shadow: 0 15px 27px 0 rgba(98, 60, 234, 0.06);
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s;
+
+  :hover {
+    transform: translateY(-3px);
+  }
+`;
+
+const TokenTileWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 15px;
+`;
+
+const H1 = styled.p`
+  font-size: 46px;
+  font-weight: bold;
+`;
+
+const H2 = styled.p`
+  font-size: 28px;
+  font-weight: 600;
+`;
+
+const H3 = styled.p`
+  font-size: 21px;
+  font-weight: 600;
+`;
+
+const DiscoveryContainer = styled.div`
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+`;
 
 const AuthorContainer = styled(Link)`
   cursor: pointer;

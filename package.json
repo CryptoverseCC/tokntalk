@@ -50,8 +50,6 @@
     "react-lazyload": "^2.3.0",
     "react-pose": "^1.1.1",
     "react-router-dom": "^4.2.2",
-    "react-select": "^1.2.1",
-    "react-tabs": "^2.2.2",
     "react-transition-group": "^2.4.0",
     "react-visibility-sensor": "^3.11.0",
     "source-map-explorer": "^1.5.0",
