@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import timeago from 'timeago.js';
 import find from 'lodash/fp/find';
 
 import ercs20, { TokenImage } from './erc20';
 import Loader from './Loader';
+import Link from './Link';
 import { validateParams } from './utils';
-import { EntityName, EntityAvatar, IfActiveEntity, Entity } from './Entity';
+import { EntityName, LinkedEntityAvatar, IfActiveEntity, Entity } from './Entity';
 import { getRanking, hasValidContext } from './api';
+import { GithubIcon, TwitterIcon, InstagramIcon, FacebookIcon, socialColors } from './Icons';
 
 export default class Discover extends Component {
   render() {
@@ -19,7 +21,7 @@ export default class Discover extends Component {
         <Route exact path={`${match.url}/`} component={Index} />
         <Route exact path={`${match.url}/byToken/:token`} component={decoratedByToken} />
         <Route exact path={`${match.url}/byToken/:token/latest`} component={decoratedLatestPage} />
-        <Route exact path={`${match.url}/byToken/:token/social/:social`} component={decoratedSocialPage} />
+        <Route exact path={`${match.url}/byToken/:token/social`} component={decoratedSocialPage} />
       </Switch>
     );
   }
@@ -45,7 +47,7 @@ class Index extends Component {
             linkTo={`${match.url}/byToken/${token.symbol}`}
             key={token.address}
             token={token}
-            className="column is-one-quarter"
+            className="column is-one-third"
           />
         ))}
       </div>
@@ -55,7 +57,7 @@ class Index extends Component {
   render() {
     return (
       <DiscoveryContainer>
-        <H1 style={{ margin: '60px 0' }}>Discovery</H1>
+        <H1 style={{ margin: '60px 0' }}>Discover</H1>
         <div className="columns is-marginless">
           <div className="column is-8 is-paddingless">
             <H2>Communities</H2>
@@ -87,51 +89,124 @@ class Index extends Component {
 }
 
 const ByToken = ({ match, token }) => (
-  <div className="columns">
-    <Latest
-      className="column"
-      asset={`${token.network}:${token.address}`}
-      header={<Link to={`${match.url}/latest`}>Latest authors</Link>}
-    />
-    <div className="column">
-      <Social
-        asset={`${token.network}:${token.address}`}
-        social="github"
-        header={<Link to={`${match.url}/social/github`}>Authors with github</Link>}
-      />
-      <Social
-        asset={`${token.network}:${token.address}`}
-        social="twitter"
-        header={<Link to={`${match.url}/social/twitter`}>Authors with twitter</Link>}
-      />
-      <Social
-        asset={`${token.network}:${token.address}`}
-        social="instagram"
-        header={<Link to={`${match.url}/social/instagram`}>Authors with instagram</Link>}
-      />
-      <Social
-        asset={`${token.network}:${token.address}`}
-        social="facebook"
-        header={<Link to={`${match.url}/social/facebook`}>Authors with facebook</Link>}
-      />
-    </div>
-  </div>
+  <React.Fragment>
+    <Hero
+      primaryColor={token.primaryColor}
+      secondaryColor={token.secondaryColor}
+      className="is-flex"
+      style={{ alignItems: 'center' }}
+    >
+      <DiscoveryContainer style={{ flex: 1 }}>
+        <Link to="/discover">
+          <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
+            <div className="column is-1">
+              <BackArrow>
+                <H2 className="is-pulled-right">←</H2>
+              </BackArrow>
+            </div>
+            <div className="column">
+              <H2>Communities</H2>
+            </div>
+          </Back>
+        </Link>
+        <div className="columns is-mobile">
+          <div className="column is-1">
+            <TokenImage token={token} className="is-pulled-right" />
+          </div>
+          <div className="column">
+            <H1>{token.name}</H1>
+          </div>
+        </div>
+      </DiscoveryContainer>
+    </Hero>
+    <DiscoveryContainer>
+      <div className="columns">
+        <div className="column is-8">
+          <FlatContainer>
+            <H3>Active members</H3>
+            <Link to={`${match.url}/latest`}>
+              <SeeMore style={{ marginBottom: '15px' }}>
+                See more <SeeMoreArrow />
+              </SeeMore>
+            </Link>
+            <Latest asset={`${token.network}:${token.address}`} />
+          </FlatContainer>
+        </div>
+        <div className="column is-3 is-offset-1">
+          <FlatContainer>
+            <H3>In social</H3>
+            <Link to={`${match.url}/social`}>
+              <SeeMore style={{ marginBottom: '15px' }}>
+                See more <SeeMoreArrow />
+              </SeeMore>
+            </Link>
+            <Social asset={`${token.network}:${token.address}`} social="github" />
+            <Social asset={`${token.network}:${token.address}`} social="twitter" />
+            <Social asset={`${token.network}:${token.address}`} social="instagram" />
+            <Social asset={`${token.network}:${token.address}`} social="facebook" />
+          </FlatContainer>
+        </div>
+      </div>
+    </DiscoveryContainer>
+  </React.Fragment>
 );
 
-const Latest = ({ asset, ...restProps }) => (
-  <List flow={authorsFlow(asset)} {...restProps}>
+const Hero = styled.div`
+  background: ${({ primaryColor }) => primaryColor};
+  color: ${({ secondaryColor }) => secondaryColor};
+  height: 15rem;
+
+  @media (max-width: 770px) {
+    height: 7.5rem;
+  }
+`;
+
+const Back = Link.withComponent('div');
+
+const BackArrow = styled.div`
+  transition: transform 0.3s;
+
+  ${Back}:hover & {
+    transform: translateX(-3px);
+  }
+`;
+
+const SeeMore = styled.div`
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  color: #264dd9;
+`;
+
+const SeeMoreArrow = styled.div.attrs({ children: '→' })`
+  display: inline-block;
+  transition: transform 0.3s;
+
+  ${SeeMore}:hover & {
+    transform: translateX(3px);
+  }
+`;
+
+const Latest = ({ asset }) => (
+  <List flow={authorsFlow(asset)} className="columns is-multiline">
     {(items) =>
-      items.filter(hasValidContext).map(({ context, created_at }) => (
-        <AuthorContainer key={context} to={`/${context}`}>
-          <React.Fragment>
-            <EntityAvatar id={context} size="medium" />
-            <AuthorInfo>
-              <EntityName id={context} />
+      items
+        .filter(hasValidContext)
+        .slice(0, 9)
+        .map(({ context, created_at }) => (
+          <EntityContainer key={context} to={`/${context}`} className="column is-one-third">
+            <LinkedEntityAvatar id={context} size="medium" />
+            <EntityInfo>
+              <Link
+                to={`/${context}`}
+                style={{ fontSize: '18px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+              >
+                <EntityName id={context} />
+              </Link>
               <Timeago>{timeago().format(created_at)}</Timeago>
-            </AuthorInfo>
-          </React.Fragment>
-        </AuthorContainer>
-      ))
+            </EntityInfo>
+          </EntityContainer>
+        ))
     }
   </List>
 );
@@ -149,28 +224,65 @@ const socialFlow = (asset, type) => [
   },
 ];
 
-const Social = ({ asset, social, ...restProps }) => (
-  <List flow={socialFlow(asset, social)} {...restProps}>
-    {(items) =>
-      items.filter(hasValidContext).map(({ context, target }) => (
-        <React.Fragment key={context}>
-          <AuthorContainer to={`/${context}`}>
-            <EntityAvatar id={context} size="medium" />
-            <AuthorInfo>
-              <EntityName id={context} />
-            </AuthorInfo>
-          </AuthorContainer>
-          <a href={target} target="_blank">
-            {target}
-          </a>
-        </React.Fragment>
-      ))
-    }
-  </List>
-);
+const socialIcons = {
+  github: (props) => <GithubIcon color={socialColors.github} {...props} />,
+  twitter: (props) => <TwitterIcon color={socialColors.twitter} {...props} />,
+  instagram: (props) => <InstagramIcon color={socialColors.instagram} {...props} />,
+  facebook: (props) => <FacebookIcon color={socialColors.facebook} {...props} />,
+};
+
+const Social = ({ asset, social, ...restProps }) => {
+  const Icon = socialIcons[social];
+
+  return (
+    <React.Fragment>
+      <SocialHeader style={{ marginBottom: '15px' }}>
+        <Icon style={{ width: '16px', height: '16px', marginRight: '10px' }} />
+        {social}
+      </SocialHeader>
+      <List flow={socialFlow(asset, social)} className="columns is-multiline">
+        {(items) =>
+          items.filter(hasValidContext).map(({ context, target }) => (
+            <EntityContainer key={context} className="column is-12">
+              <LinkedEntityAvatar id={context} size="medium" />
+              <EntityInfo>
+                <EntityName id={context} />
+                <SocialLink social={social} target={target} />
+              </EntityInfo>
+            </EntityContainer>
+          ))
+        }
+      </List>
+    </React.Fragment>
+  );
+};
+const SocialHeader = styled.p`
+  font-size: 18px;
+  text-transform: capitalize;
+  font-weight: 600;
+`;
+
+const SocialLink = ({ target, social }) => {
+  let username = target;
+  const result = /\/([^\/]+)(\/?)$/.exec(target);
+  if (result && result[1]) {
+    username = result[1];
+  }
+
+  return (
+    <a href={target} target="_blank">
+      {username}
+    </a>
+  );
+};
 
 const SocialPage = ({ token, match }) => (
-  <Social asset={`${token.network}:${token.address}`} social={match.params.social} />
+  <DiscoveryContainer>
+    <Social asset={`${token.network}:${token.address}`} social="github" />
+    <Social asset={`${token.network}:${token.address}`} social="twitter" />
+    <Social asset={`${token.network}:${token.address}`} social="instagram" />
+    <Social asset={`${token.network}:${token.address}`} social="facebook" />
+  </DiscoveryContainer>
 );
 
 const isTokenValid = (token) => {
@@ -219,13 +331,7 @@ const authorsFlow = (asset) => [
 
 const decoratedByToken = validateTokenParam(mapTokenUrlParam(ByToken));
 const decoratedLatestPage = validateTokenParam(mapTokenUrlParam(LatestPage));
-const decoratedSocialPage = validateParams(
-  {
-    token: isTokenValid,
-    social: (social) => ['facebook', 'github', 'twitter', 'instagram'].indexOf(social) !== -1,
-  },
-  '/404',
-)(mapTokenUrlParam(SocialPage));
+const decoratedSocialPage = validateTokenParam(mapTokenUrlParam(SocialPage));
 
 class List extends Component {
   state = {
@@ -250,25 +356,28 @@ class List extends Component {
   };
 
   render() {
-    const { header, children, ...restProps } = this.props;
+    const { children, ...restProps } = this.props;
     const { loading, items } = this.state;
 
-    return (
-      <div {...restProps}>
-        {header}
-        {loading ? <Loader /> : children(items)}
-      </div>
-    );
+    return <div {...restProps}>{loading ? <Loader /> : children(items)}</div>;
   }
 }
 
 const TokenTile = ({ linkTo, token, ...restProps }) => {
   return (
     <Link to={linkTo} {...restProps}>
-      <TokenTileCotainer primaryColor={token.primaryColor} secondaryColor={token.secondaryColor}>
+      <TokenTileCotainer
+        primaryColor={token.primaryColor}
+        secondaryColor={token.secondaryColor}
+        coverImage={token.coverImage}
+        shadowColor={token.shadowColor}
+      >
         <TokenTileWrapper>
           <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
-          <H3>{token.name}</H3>
+          <div>
+            <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
+            <H3>{token.name}</H3>
+          </div>
         </TokenTileWrapper>
       </TokenTileCotainer>
     </Link>
@@ -276,13 +385,16 @@ const TokenTile = ({ linkTo, token, ...restProps }) => {
 };
 
 const TokenTileCotainer = styled.div`
-  background: ${({ primaryColor }) => primaryColor};
-  color: ${({ secondaryColor }) => secondaryColor}
-  box-shadow: 0 15px 27px 0 rgba(98, 60, 234, 0.06);
+  background-color: ${({ primaryColor }) => primaryColor};
+  background-image: url(${({ coverImage }) => coverImage});
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: ${({ secondaryColor }) => secondaryColor};
+  box-shadow: 0 3rem 5rem -2rem ${({ shadowColor }) => shadowColor};
   cursor: pointer;
   position: relative;
   width: 100%;
-  padding-top: 100%;
+  padding-top: 102%;
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.3s;
@@ -304,6 +416,12 @@ const TokenTileWrapper = styled.div`
   padding: 15px;
 `;
 
+const FlatContainer = styled.div`
+  border-radius: 12px;
+  padding: 30px;
+  background-color: #f8f9fd;
+`;
+
 const H1 = styled.p`
   font-size: 46px;
   font-weight: bold;
@@ -320,23 +438,22 @@ const H3 = styled.p`
 `;
 
 const DiscoveryContainer = styled.div`
-  max-width: 1000px;
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
 `;
 
-const AuthorContainer = styled(Link)`
-  cursor: pointer;
+const EntityContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 20px 0;
 `;
 
-const AuthorInfo = styled.div`
+const EntityInfo = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 10px;
+  overflow: hidden;
 `;
 
 const Timeago = styled.p`

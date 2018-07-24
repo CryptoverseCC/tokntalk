@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'AvenirNext';
+  src: url('./fonts/AvenirNextLTPro-Bold.woff2') format('woff2'),
+    url('./fonts/AvenirNextLTPro-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirNext';
+  src: url('./fonts/AvenirNextLTPro-Regular.woff2') format('woff2'),
+    url('./fonts/AvenirNextLTPro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AvenirNext';
+  src: url('./fonts/AvenirNextLTPro-Demi.woff2') format('woff2'),
+    url('./fonts/AvenirNextLTPro-Demi.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
 @media (max-width: 770px) {
   html {
     font-size: 14px;
@@ -6,7 +30,7 @@
 
 body {
   color: #1b2437;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'AvenirNext', sans-serif;
 }
 
 b {
