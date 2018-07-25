@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import timeago from 'timeago.js';
 import find from 'lodash/fp/find';
 
-import ercs20, { TokenImage } from './erc20';
-import Loader from './Loader';
 import Link from './Link';
+import Loader from './Loader';
+import { HeaderSpacer } from './Header';
 import { validateParams } from './utils';
-import { EntityName, LinkedEntityAvatar, IfActiveEntity, Entity } from './Entity';
+import ercs20, { TokenImage } from './erc20';
 import { getRanking, hasValidContext } from './api';
+import { EntityName, LinkedEntityAvatar, IfActiveEntity, Entity } from './Entity';
 import { GithubIcon, TwitterIcon, InstagramIcon, FacebookIcon, socialColors } from './Icons';
 
 export default class Discover extends Component {
@@ -20,7 +21,7 @@ export default class Discover extends Component {
       <Switch>
         <Route exact path={`${match.url}/`} component={Index} />
         <Route exact path={`${match.url}/byToken/:token`} component={decoratedByToken} />
-        <Route exact path={`${match.url}/byToken/:token/recentActive`} component={decoratedLatestPage} />
+        <Route exact path={`${match.url}/byToken/:token/recentlyActive`} component={decoratedRecentlyActivePage} />
         <Route exact path={`${match.url}/byToken/:token/social`} component={decoratedSocialPage} />
       </Switch>
     );
@@ -57,6 +58,7 @@ class Index extends Component {
   render() {
     return (
       <DiscoveryContainer>
+        <HeaderSpacer />
         <H1 style={{ margin: '60px 0' }}>Discover</H1>
         <div className="columns is-marginless">
           <div className="column is-8 is-paddingless">
@@ -123,11 +125,11 @@ const ByToken = ({ match, token }) => (
       <div className="columns">
         <div className="column is-8">
           <FlatContainer>
-            <H3>Recent active</H3>
-            <Link to={`${match.url}/recentActive`}>
+            <H3>Recently active</H3>
+            <Link to={`${match.url}/recentlyActive`}>
               <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>
             </Link>
-            <RecentActive asset={`${token.network}:${token.address}`} limit={9} />
+            <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
           </FlatContainer>
         </div>
         <div className="column is-3 is-offset-1">
@@ -150,7 +152,8 @@ const ByToken = ({ match, token }) => (
 const Hero = styled.div`
   background: ${({ primaryColor }) => primaryColor};
   color: ${({ secondaryColor }) => secondaryColor};
-  height: 15rem;
+  padding-top: 65px;
+  height: calc(15rem + 65px);
   margin-bottom: 68px;
 
   @media (max-width: 770px) {
@@ -188,7 +191,7 @@ const SeeMore = styled.div`
   }
 `;
 
-const RecentActive = ({ asset, limit = Number.MAX_SAFE_INTEGER }) => (
+const RecentlyActive = ({ asset, limit = Number.MAX_SAFE_INTEGER }) => (
   <List flow={authorsFlow(asset)} className="columns is-multiline">
     {(items) =>
       items
@@ -212,7 +215,7 @@ const RecentActive = ({ asset, limit = Number.MAX_SAFE_INTEGER }) => (
   </List>
 );
 
-const RecentActivePage = ({ token }) => (
+const RecentlyActivePage = ({ token }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -238,14 +241,14 @@ const RecentActivePage = ({ token }) => (
         </Link>
         <div className="columns is-mobile">
           <div className="column is-offset-1">
-            <H1>Recent active</H1>
+            <H1>Recently active</H1>
           </div>
         </div>
       </DiscoveryContainer>
     </Hero>
     <DiscoveryContainer>
       <FlatContainer>
-        <RecentActive asset={`${token.network}:${token.address}`} />
+        <RecentlyActive asset={`${token.network}:${token.address}`} />
       </FlatContainer>
     </DiscoveryContainer>
   </React.Fragment>
@@ -419,8 +422,8 @@ const authorsFlow = (asset) => [
 ];
 
 const decoratedByToken = validateTokenParam(mapTokenUrlParam(ByToken));
-const decoratedLatestPage = validateTokenParam(mapTokenUrlParam(RecentActivePage));
 const decoratedSocialPage = validateTokenParam(mapTokenUrlParam(SocialPage));
+const decoratedRecentlyActivePage = validateTokenParam(mapTokenUrlParam(RecentlyActivePage));
 
 class List extends Component {
   state = {

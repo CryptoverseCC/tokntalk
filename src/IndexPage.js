@@ -4,6 +4,7 @@ import { pageView } from './Analytics';
 import { ConnectedFeed, FeedContainer } from './Feed';
 import Hero from './Hero';
 import { FeedCatvertised } from './Catvertised';
+import { HeaderSpacer } from './Header';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -22,6 +23,7 @@ export default class IndexPage extends Component {
   render() {
     return (
       <React.Fragment>
+        <HeaderSpacer />
         <Hero />
         <FeedContainer>
           <FeedCatvertised token={DEFAULT_TOKEN_ID} />

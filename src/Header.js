@@ -10,24 +10,34 @@ import Context from './Context';
 import Logo from './Logo';
 import Dropdown from './Dropdown';
 
-const StyledHeader = styled.div`
-  background-color: #f9fbfd;
-  border-bottom: 1px solid #e8e8f1;
-  font-family: Rubik;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 0;
-  position: sticky;
-  width: 100%;
-  z-index: 999;
+export const HeaderSpacer = styled.div`
   height: 65px;
+  width: 100vw;
+`;
+
+const StyledHeader = styled.div`
+  position: fixed;
+  height: 65px;
+  width: 1280px;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
   display: flex;
   align-items: center;
+  background-color: #f5f8fd;
+  border-radius: 0 0 30px 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
   padding: 0 2rem;
 
   @media (max-width: 770px) {
     padding: 0 0.75rem;
+  }
+
+  @media (max-width: 1280px) {
+    width: 100%;
+    border-radius: 0;
   }
 `;
 

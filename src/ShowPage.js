@@ -17,6 +17,7 @@ import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, Conne
 import Link from './Link';
 import { FeedCatvertised } from './Catvertised';
 import { TokenImage } from './erc20';
+import { HeaderSpacer } from './Header';
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -73,6 +74,7 @@ export default class ShowPage extends Component {
           {(entity) => (
             <React.Fragment>
               <ShowPage.HeroImageContainer backgroundColor={entity.color}>
+                <HeaderSpacer />
                 <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id} />
                 <EntityTokensContainer>
                   {entity.tokens.map((token) => <Erc20Token key={token} asset={token} />)}
