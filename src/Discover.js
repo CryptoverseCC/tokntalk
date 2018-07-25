@@ -9,9 +9,11 @@ import Loader from './Loader';
 import { HeaderSpacer } from './Header';
 import { validateParams } from './utils';
 import ercs20, { TokenImage } from './erc20';
-import { getRanking, hasValidContext } from './api';
+import { hasValidContext } from './api';
 import { EntityName, LinkedEntityAvatar, IfActiveEntity, Entity } from './Entity';
 import { GithubIcon, TwitterIcon, InstagramIcon, FacebookIcon, socialColors } from './Icons';
+
+const DiscoveryContext = React.createContext();
 
 export default class Discover extends Component {
   render() {
@@ -20,9 +22,7 @@ export default class Discover extends Component {
     return (
       <Switch>
         <Route exact path={`${match.url}/`} component={Index} />
-        <Route exact path={`${match.url}/byToken/:token`} component={decoratedByToken} />
-        <Route exact path={`${match.url}/byToken/:token/recentlyActive`} component={decoratedRecentlyActivePage} />
-        <Route exact path={`${match.url}/byToken/:token/social`} component={decoratedSocialPage} />
+        <Route path={`${match.url}/byToken/:token`} component={decoratedByTokenIndex} />
       </Switch>
     );
   }
@@ -86,6 +86,55 @@ class Index extends Component {
           <div className="column is-3 is-offset-1" />
         </div>
       </DiscoveryContainer>
+    );
+  }
+}
+
+class ByTokenIndex extends Component {
+  state = {
+    loading: false,
+    data: {
+      latest: [],
+      twitter: [],
+      facebook: [],
+      instagram: [],
+      github: [],
+    },
+  };
+
+  componentDidMount() {
+    this.fetchRanking();
+  }
+
+  fetchRanking = async () => {
+    const { token } = this.props;
+    this.setState({ loading: true });
+    try {
+      const data = await fetch(
+        `https://api.userfeeds.io/api/cache-cryptoverse-discovery?asset=${token.network}:${token.address}`,
+      ).then((res) => res.json());
+      this.setState({ data, loading: false });
+    } catch (e) {
+      this.setState({ loading: false });
+    }
+  };
+
+  render() {
+    const { match, token } = this.props;
+    const { loading, data } = this.state;
+
+    return (
+      <DiscoveryContext.Provider value={{ loading, ...data }}>
+        <Switch>
+          <Route exact path={`${match.url}/`} render={(props) => <ByToken token={token} {...props} />} />
+          <Route
+            exact
+            path={`${match.url}/recentlyActive`}
+            render={(props) => <RecentlyActivePage token={token} {...props} />}
+          />
+          <Route exact path={`${match.url}/social`} render={(props) => <SocialPage token={token} {...props} />} />
+        </Switch>
+      </DiscoveryContext.Provider>
     );
   }
 }
@@ -191,28 +240,35 @@ const SeeMore = styled.div`
   }
 `;
 
-const RecentlyActive = ({ asset, limit = Number.MAX_SAFE_INTEGER }) => (
-  <List flow={authorsFlow(asset)} className="columns is-multiline">
-    {(items) =>
-      items
-        .filter(hasValidContext)
-        .slice(0, limit)
-        .map(({ context, created_at }) => (
-          <EntityContainer key={context} to={`/${context}`} className="column is-one-third">
-            <LinkedEntityAvatar id={context} size="medium" />
-            <EntityInfo>
-              <Link
-                to={`/${context}`}
-                style={{ fontSize: '18px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-              >
-                <EntityName id={context} />
-              </Link>
-              <Timeago>{timeago().format(created_at)}</Timeago>
-            </EntityInfo>
-          </EntityContainer>
-        ))
-    }
-  </List>
+const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
+  <React.Fragment>
+    <IsLoading>
+      <Loader />
+    </IsLoading>
+    <DiscoveryContext.Consumer>
+      {({ latest }) => (
+        <div className="columns is-multiline">
+          {latest
+            .filter(hasValidContext)
+            .slice(0, limit)
+            .map(({ context, created_at }) => (
+              <EntityContainer key={context} to={`/${context}`} className="column is-one-third">
+                <LinkedEntityAvatar id={context} size="medium" />
+                <EntityInfo>
+                  <Link
+                    to={`/${context}`}
+                    style={{ fontSize: '18px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                  >
+                    <EntityName id={context} />
+                  </Link>
+                  <Timeago>{timeago().format(created_at)}</Timeago>
+                </EntityInfo>
+              </EntityContainer>
+            ))}
+        </div>
+      )}
+    </DiscoveryContext.Consumer>
+  </React.Fragment>
 );
 
 const RecentlyActivePage = ({ token }) => (
@@ -254,17 +310,6 @@ const RecentlyActivePage = ({ token }) => (
   </React.Fragment>
 );
 
-const socialFlow = (asset, type) => [
-  {
-    algorithm: 'experimental_social_profiles',
-    params: { type },
-  },
-  {
-    algorithm: 'experimental_author_balance',
-    params: { asset },
-  },
-];
-
 const socialIcons = {
   github: (props) => <GithubIcon color={socialColors.github} {...props} />,
   twitter: (props) => <TwitterIcon color={socialColors.twitter} {...props} />,
@@ -272,7 +317,7 @@ const socialIcons = {
   facebook: (props) => <FacebookIcon color={socialColors.facebook} {...props} />,
 };
 
-const Social = ({ asset, social, limit = Number.MAX_SAFE_INTEGER }) => {
+const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
   const Icon = socialIcons[social];
 
   return (
@@ -281,24 +326,29 @@ const Social = ({ asset, social, limit = Number.MAX_SAFE_INTEGER }) => {
         <Icon style={{ width: '16px', height: '16px', marginRight: '10px' }} />
         {social}
       </SocialHeader>
-      <List flow={socialFlow(asset, social)} className="columns is-multiline">
-        {(items) =>
-          items
-            .filter(hasValidContext)
-            .slice(0, limit)
-            .map(({ context, target }) => (
-              <EntityContainer key={context} className="column is-12">
-                <LinkedEntityAvatar id={context} size="medium" />
-                <EntityInfo>
-                  <Link to={`/${context}`}>
-                    <EntityName id={context} />
-                  </Link>
-                  <SocialLink social={social} target={target} />
-                </EntityInfo>
-              </EntityContainer>
-            ))
-        }
-      </List>
+      <IsLoading>
+        <Loader />
+      </IsLoading>
+      <div className="columns is-multiline">
+        <DiscoveryContext.Consumer>
+          {(data) =>
+            data[social]
+              .filter(hasValidContext)
+              .slice(0, limit)
+              .map(({ context, target }) => (
+                <EntityContainer key={context} className="column is-12">
+                  <LinkedEntityAvatar id={context} size="medium" />
+                  <EntityInfo>
+                    <Link to={`/${context}`}>
+                      <EntityName id={context} />
+                    </Link>
+                    <SocialLink social={social} target={target} />
+                  </EntityInfo>
+                </EntityContainer>
+              ))
+          }
+        </DiscoveryContext.Consumer>
+      </div>
     </React.Fragment>
   );
 };
@@ -411,49 +461,7 @@ const mapTokenUrlParam = (Cmp) => (props) => {
   return <Cmp token={erc20Token} {...props} />;
 };
 
-const authorsFlow = (asset) => [
-  {
-    algorithm: 'experimental_latest_purrers',
-  },
-  {
-    algorithm: 'experimental_author_balance',
-    params: { asset },
-  },
-];
-
-const decoratedByToken = validateTokenParam(mapTokenUrlParam(ByToken));
-const decoratedSocialPage = validateTokenParam(mapTokenUrlParam(SocialPage));
-const decoratedRecentlyActivePage = validateTokenParam(mapTokenUrlParam(RecentlyActivePage));
-
-class List extends Component {
-  state = {
-    items: [],
-    loading: false,
-  };
-
-  componentDidMount() {
-    this.fetchRanking();
-  }
-
-  fetchRanking = async () => {
-    const { flow } = this.props;
-    try {
-      this.setState({ loading: true });
-      const { items } = await getRanking(flow);
-      this.setState({ loading: false, items });
-    } catch (e) {
-      console.warn(e);
-      this.setState({ loading: false });
-    }
-  };
-
-  render() {
-    const { children, ...restProps } = this.props;
-    const { loading, items } = this.state;
-
-    return <div {...restProps}>{loading ? <Loader /> : children(items)}</div>;
-  }
-}
+const decoratedByTokenIndex = validateTokenParam(mapTokenUrlParam(ByTokenIndex));
 
 const TokenTile = ({ linkTo, token, ...restProps }) => {
   return (
@@ -475,6 +483,10 @@ const TokenTile = ({ linkTo, token, ...restProps }) => {
     </Link>
   );
 };
+
+const IsLoading = ({ children }) => (
+  <DiscoveryContext.Consumer>{({ loading }) => loading && children}</DiscoveryContext.Consumer>
+);
 
 const TokenTileCotainer = styled.div`
   background-color: ${({ primaryColor }) => primaryColor};
