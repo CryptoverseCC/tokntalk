@@ -48,7 +48,7 @@ class Index extends Component {
             linkTo={`${match.url}/byToken/${token.symbol}`}
             key={token.address}
             token={token}
-            className="column is-one-third"
+            className="column is-one-quarter"
           />
         ))}
       </div>
@@ -61,7 +61,7 @@ class Index extends Component {
         <HeaderSpacer />
         <H1 style={{ margin: '60px 0' }}>Discover</H1>
         <div className="columns is-marginless">
-          <div className="column is-8 is-paddingless">
+          <div className="column is-12 is-paddingless">
             <H2>Communities</H2>
             <IfActiveEntity
               then={(entityId) => (
