@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="39px" viewBox="0 0 44 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Basic_Attention_Token_Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="DiscoveryMain-Copy-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-211.000000, -1185.000000)">
+        <g id="Group-9" transform="translate(191.000000, 1165.000000)" fill-rule="nonzero">
+            <g id="Basic_Attention_Token_Icon" transform="translate(20.000000, 20.000000)">
+                <polygon id="Shape" fill="#662D91" points="43.7574803 38.0409449 21.9307087 25.5338583 0.0692913386 38.1795276"></polygon>
+                <polygon id="Shape" fill="#9E1F63" points="21.896063 0 21.7574803 25.5338583 43.7574803 38.0409449"></polygon>
+                <polygon id="Shape" fill="#FF5000" points="0.0692913386 38.1795276 21.8267717 25.7417323 21.896063 0"></polygon>
+                <polygon id="Shape" stroke="#FF5000" stroke-width="0.83" fill="#FFFFFF" points="21.7574803 15.5212598 12.9574803 30.6614173 30.8 30.6614173"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
