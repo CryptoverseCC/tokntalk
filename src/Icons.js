@@ -86,3 +86,25 @@ export const ExternalLink = styled.svg.attrs({
   max-width: 100%;
   max-height: 100%;
 `;
+
+export const ExclamationMark = styled.svg.attrs({
+  width: '48px',
+  height: '48px',
+  version: '1.1',
+  viewBox: '0 0 48 48',
+  children: (
+    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(-223.000000, -870.000000)">
+      <g transform="translate(193.000000, 839.000000)" fill="#FDCE00" fillRule="nonzero">
+        <g transform="translate(30.000000, 31.000000)">
+          <path
+            d="M45,0 L3,0 C1.2,0 0,1.2 0,3 L0,45 C0,46.8 1.2,48 3,48 L45,48 C46.8,48 48,46.8 48,45 L48,3 C48,1.2 46.8,0 45,0 Z M24,36 C22.2,36 21,34.8 21,33 C21,31.2 22.2,30 24,30 C25.8,30 27,31.2 27,33 C27,34.8 25.8,36 24,36 Z M27,27 L21,27 L21,12 L27,12 L27,27 Z"
+            id="Shape"
+          />
+        </g>
+      </g>
+    </g>
+  ),
+})`
+  max-width: 100%;
+  max-height: 100%;
+`;

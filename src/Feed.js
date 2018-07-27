@@ -540,8 +540,12 @@ const Feed = ({
   getMoreFeedItems,
   feedLoadingMore,
   className,
+  style,
 }) => (
-  <div className={className || 'column is-6 is-offset-3'} style={{ display: 'flex', justifyContent: 'center' }}>
+  <div
+    className={className || 'column is-6 is-offset-3'}
+    style={{ display: 'flex', justifyContent: 'center', ...style }}
+  >
     {feedLoading ? (
       <div style={{ paddingTop: '20px' }}>
         <Loader />
@@ -635,6 +639,7 @@ export class FeedForToken extends Component {
     feedItems: [],
     visibleItemsCount: 0,
   };
+
   componentDidMount() {
     this.fetchFeed();
   }
@@ -669,7 +674,7 @@ export class FeedForToken extends Component {
   };
 
   render() {
-    const { className } = this.props;
+    const { className, style } = this.props;
     const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
 
     return (
@@ -691,6 +696,7 @@ export class FeedForToken extends Component {
           return (
             <Feed
               className={className}
+              style={style}
               feedItems={allFeedItems}
               feedLoading={loading}
               temporaryReplies={temporaryReplies}

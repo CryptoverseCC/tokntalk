@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import timeago from 'timeago.js';
 import find from 'lodash/fp/find';
 
+import { ExclamationMark } from './Icons';
 import Link from './Link';
 import Loader from './Loader';
 import { HeaderSpacer } from './Header';
@@ -164,7 +165,17 @@ const ByToken = ({ match, token }) => (
         </Link>
         <div className="columns is-mobile">
           <div className="column is-1">
-            <TokenImage token={token} className="is-pulled-right" />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <TokenImage token={token} />
+            </div>
           </div>
           <div className="column">
             <H1>{token.name}</H1>
@@ -188,7 +199,11 @@ const ByToken = ({ match, token }) => (
               <ConnectedClubForm token={token} Form={CommentForm} />
             </FormContainer>
           </IfActiveEntityHasToken>
-          <FeedForToken className="feed-for-token" asset={`${token.network}:${token.address}`} />
+          <FeedForToken
+            className="feed-for-token"
+            style={{ marginTop: '60px' }}
+            asset={`${token.network}:${token.address}`}
+          />
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer>
@@ -498,9 +513,12 @@ const IsLoading = ({ children }) => (
 );
 
 const NoTokensWarning = ({ token }) => (
-  <WarningContainer>
-    <p>You can’t participate</p>
-    <p>Aquire {token.name} to join this club</p>
+  <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
+    <ExclamationMark style={{ marginRight: '30px' }} />
+    <div>
+      <p style={{ fontSize: '21px' }}>You can’t participate</p>
+      <p style={{ fontSize: '14px' }}>Aquire {token.name} to join this club</p>
+    </div>
   </WarningContainer>
 );
 
@@ -583,7 +601,7 @@ const EntityContainer = styled.div`
 const EntityInfo = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
+  margin-left: 15px;
   overflow: hidden;
 `;
 
