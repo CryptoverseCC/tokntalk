@@ -103,3 +103,13 @@ export const IfActiveEntityLiked = ({ reactions, children, then, other }) => (
     }}
   </Context.Consumer>
 );
+
+export const IfActiveEntityHasToken = ({ asset, children, then, other }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity, getEntity } }) => {
+      if (!activeEntity) return other;
+      const hasToken = getEntity(activeEntity).tokens.indexOf(asset) !== -1;
+      return hasToken ? then || children : other;
+    }}
+  </Context.Consumer>
+);

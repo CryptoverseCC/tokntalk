@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
@@ -8,6 +8,7 @@ import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 
+import { getRanking, isValidFeedItem } from './api';
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
@@ -626,3 +627,80 @@ export const ConnectedFeed = ({ forEntity, className }) => (
     }}
   </Context.Consumer>
 );
+
+export class FeedForToken extends Component {
+  state = {
+    loading: false,
+    feedLoadingMore: false,
+    feedItems: [],
+    visibleItemsCount: 0,
+  };
+  componentDidMount() {
+    this.fetchFeed();
+  }
+
+  fetchFeed = async () => {
+    const { asset } = this.props;
+    this.setState({ loading: true });
+
+    try {
+      const { items } = await getRanking([
+        {
+          algorithm: 'cryptoverse_feed',
+        },
+        {
+          algorithm: 'experimental_author_balance',
+          params: { asset },
+        },
+      ]);
+      const feedItems = items.filter(isValidFeedItem);
+      this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 30 ? 30 : feedItems.length });
+    } catch (e) {
+      console.warn(e);
+      this.setState({ loading: false });
+    }
+  };
+
+  getMoreItems = () => {
+    console.log('getMoreItems');
+    this.setState(({ visibleItemsCount, feedItems }) => ({
+      visibleItemsCount: feedItems.length > visibleItemsCount + 30 ? visibleItemsCount + 30 : feedItems.length,
+    }));
+  };
+
+  render() {
+    const { className } = this.props;
+    const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
+
+    return (
+      <Context.Consumer>
+        {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
+          let filteredTemporaryFeedItems = temporaryFeedItems;
+          // if (forEntity) {
+          //   filteredTemporaryFeedItems = temporaryFeedItems.filter(({ context, about }) => {
+          //     const userfeedsEntityId = forEntity;
+          //     return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
+          //   });
+          // }
+          const allFeedItems = pipe(
+            uniqBy('id'),
+            sortBy('created_at'),
+            reverse,
+          )([...feedItems.slice(0, visibleItemsCount), ...filteredTemporaryFeedItems]);
+
+          return (
+            <Feed
+              className={className}
+              feedItems={allFeedItems}
+              feedLoading={loading}
+              temporaryReplies={temporaryReplies}
+              temporaryReactions={temporaryReactions}
+              getMoreFeedItems={this.getMoreItems}
+              feedLoadingMore={feedLoadingMore}
+            />
+          );
+        }}
+      </Context.Consumer>
+    );
+  }
+}

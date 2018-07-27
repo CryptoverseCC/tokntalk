@@ -249,14 +249,14 @@ export default class App extends Component {
     }
   };
 
-  getFeedItems = async (catId) => {
+  getFeedItems = async (entityId) => {
     try {
-      this.setState({ feedLoading: true, feedId: catId }, async () => {
+      this.setState({ feedLoading: true, feedId: entityId }, async () => {
         const { feedItems, total: feedItemsCount, version: feedVersion, lastItemId } = await getFeedItems({
-          catId,
+          entityId,
           size: 10,
         });
-        if (this.state.feedId !== catId) return;
+        if (this.state.feedId !== entityId) return;
         this.setState({ feedLoading: false, feedItems, feedItemsCount, feedVersion, lastFeedItemId: lastItemId });
       });
     } catch (e) {
@@ -264,19 +264,19 @@ export default class App extends Component {
     }
   };
 
-  getNewFeedItems = async (catId) => {
+  getNewFeedItems = async (entityId) => {
     try {
       // ToDo
       const { feedVersion: lastVersion, lastFeedItemId } = this.state;
 
       const { feedItems: newFeedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({
-        catId,
+        entityId,
         lastVersion,
         oldestKnown: lastFeedItemId,
       });
 
       const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
-      if (this.state.feedId !== catId) return;
+      if (this.state.feedId !== entityId) return;
 
       // ToDo sort by date
       this.setState(({ feedItems }) => ({ feedVersion, feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));

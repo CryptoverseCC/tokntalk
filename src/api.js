@@ -29,7 +29,7 @@ export const hasValidContext = ({ context }) => {
   return isValidAndSupportedErc721(address);
 };
 
-const isValidFeedItem = (feedItem) => {
+export const isValidFeedItem = (feedItem) => {
   if (!['regular', 'like', 'post_to', 'post_about'].includes(feedItem.type)) {
     return false;
   }
@@ -60,14 +60,14 @@ export const getFeedItem = async ({ claimId }) => {
   return feedItems[0];
 };
 
-export const getFeedItems = async ({ lastVersion, oldestKnown, size, catId }) => {
+export const getFeedItems = async ({ lastVersion, oldestKnown, size, entityId }) => {
   const versionParam = lastVersion ? `lastVersion=${lastVersion}` : '';
   const oldestParam = oldestKnown ? `oldestKnown=${oldestKnown}` : '';
   const sizeParam = size ? `size=${size}` : '';
 
   const response = await fetch(
-    catId
-      ? `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_single_feed;id=${catId}`
+    entityId
+      ? `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_single_feed;id=${entityId}`
       : `${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${versionParam}&${oldestParam}&${sizeParam}`,
   );
 

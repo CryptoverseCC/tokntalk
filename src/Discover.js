@@ -10,7 +10,9 @@ import { HeaderSpacer } from './Header';
 import { validateParams } from './utils';
 import ercs20, { TokenImage } from './erc20';
 import { hasValidContext } from './api';
-import { EntityName, LinkedEntityAvatar, IfActiveEntity, Entity } from './Entity';
+import { FeedForToken } from './Feed';
+import { ConnectedClubForm, CommentForm } from './CommentForm';
+import { EntityName, LinkedEntityAvatar, IfActiveEntity, Entity, IfActiveEntityHasToken } from './Entity';
 import { GithubIcon, TwitterIcon, InstagramIcon, FacebookIcon, socialColors } from './Icons';
 
 const DiscoveryContext = React.createContext();
@@ -180,8 +182,13 @@ const ByToken = ({ match, token }) => (
             </Link>
             <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
           </FlatContainer>
-          {/* <H2 style={{ marginTop: '60px', marginBottom: '30px' }}>Messages in this community</H2>
-          <NoTokensWarning token={token} /> */}
+          <H2 style={{ marginTop: '60px', marginBottom: '30px' }}>Messages in this community</H2>
+          <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
+            <FormContainer>
+              <ConnectedClubForm token={token} Form={CommentForm} />
+            </FormContainer>
+          </IfActiveEntityHasToken>
+          <FeedForToken className="feed-for-token" asset={`${token.network}:${token.address}`} />
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer>
@@ -527,6 +534,13 @@ const TokenTileWrapper = styled.div`
   right: 0;
   bottom: 0;
   padding: 15px;
+`;
+
+const FormContainer = styled.div`
+  border-radius: 12px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: solid 1px #f0eef6;
 `;
 
 const FlatContainer = styled.div`
