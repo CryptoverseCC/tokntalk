@@ -75,7 +75,7 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(11,63,75,0.4)',
   },
-  /*{
+  {
     network: 'ethereum',
     address: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
     name: 'Maker',
@@ -85,7 +85,7 @@ const ercs20 = [
     primaryColor: '#C6FFF4',
     secondaryColor: '#276C5E',
     shadowColor: 'rgba(82,211,185,0.5)',
-  },*/
+  },
   /*{
     network: 'ethereum',
     address: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d',
