@@ -42,7 +42,7 @@ const ercs20 = [
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
   },
-  {
+  /*{
     network: 'ethereum',
     address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
     name: 'Basic Attention Token',
@@ -52,7 +52,7 @@ const ercs20 = [
     primaryColor: '#818181',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(75,75,75,0.4)',
-  },
+  },*/
   {
     network: 'ethereum',
     address: '0x108c05cac356d93b351375434101cfd3e14f7e44',
@@ -75,7 +75,7 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(11,63,75,0.4)',
   },
-  {
+  /*{
     network: 'ethereum',
     address: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
     name: 'Maker',
@@ -85,8 +85,8 @@ const ercs20 = [
     primaryColor: '#C6FFF4',
     secondaryColor: '#276C5E',
     shadowColor: 'rgba(82,211,185,0.5)',
-  },
-  {
+  },*/
+  /*{
     network: 'ethereum',
     address: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d',
     name: 'Golem',
@@ -96,8 +96,8 @@ const ercs20 = [
     primaryColor: '#002D64',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(31,54,90,0.5)',
-  },
-  {
+  },*/
+  /*{
     network: 'ethereum',
     address: '0xd26114cd6ee289accf82350c8d8487fedb8a0c07',
     name: 'OmiseGO',
@@ -107,7 +107,7 @@ const ercs20 = [
     primaryColor: '#1A52EF',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(26,82,239,0.5)',
-  },
+  },*/
   {
     network: 'ethereum',
     address: '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7',
@@ -119,7 +119,7 @@ const ercs20 = [
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
   },
-  {
+  /*{
     network: 'ethereum',
     address: '0x744d70fdbe2ba4cf95131626614a1763df805b9e',
     name: 'Status',
@@ -129,8 +129,8 @@ const ercs20 = [
     primaryColor: '#5B6CEE',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(91,108,238,0.5)',
-  },
-  {
+  },*/
+  /*{
     network: 'ethereum',
     address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
     name: 'ZRX',
@@ -140,7 +140,7 @@ const ercs20 = [
     primaryColor: '#3C3C3C',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
-  },
+  },*/
 ];
 
 const sizes = {
