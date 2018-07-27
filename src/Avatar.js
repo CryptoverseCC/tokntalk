@@ -9,7 +9,7 @@ const AvatarContainer = styled.div`
   width: 100px;
   height: 100px;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: 16%;
   ${({ backgroundColor, containerSize }) => css`
     background-color: ${backgroundColor};
     width: ${containerSize};

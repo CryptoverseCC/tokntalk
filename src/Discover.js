@@ -42,7 +42,7 @@ class Index extends Component {
   renderTiles = (tokens) => {
     const { match } = this.props;
     return (
-      <div className="columns is-multiline is-mobile">
+      <div className="columns is-multiline">
         {tokens.map((token) => (
           <TokenTile
             linkTo={`${match.url}/byToken/${token.symbol}`}
@@ -60,8 +60,8 @@ class Index extends Component {
       <DiscoveryContainer>
         <HeaderSpacer />
         <H1 style={{ margin: '60px 0' }}>Discover</H1>
-        <div className="columns is-marginless">
-          <div className="column is-12 is-paddingless">
+        <div className="columns">
+          <div className="column is-12">
             <H2>Communities</H2>
             <IfActiveEntity
               then={(entityId) => (
@@ -180,6 +180,8 @@ const ByToken = ({ match, token }) => (
             </Link>
             <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
           </FlatContainer>
+          {/* <H2 style={{ marginTop: '60px', marginBottom: '30px' }}>Messages in this community</H2>
+          <NoTokensWarning token={token} /> */}
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer>
@@ -488,11 +490,18 @@ const IsLoading = ({ children }) => (
   <DiscoveryContext.Consumer>{({ loading }) => loading && children}</DiscoveryContext.Consumer>
 );
 
+const NoTokensWarning = ({ token }) => (
+  <WarningContainer>
+    <p>You can’t participate</p>
+    <p>Aquire {token.name} to join this club</p>
+  </WarningContainer>
+);
+
 const TokenTileCotainer = styled.div`
   background-color: ${({ primaryColor }) => primaryColor};
   background-image: url(${({ coverImage }) => coverImage});
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
   color: ${({ secondaryColor }) => secondaryColor};
   box-shadow: 0 3rem 5rem -2rem ${({ shadowColor }) => shadowColor};
   cursor: pointer;
@@ -524,6 +533,10 @@ const FlatContainer = styled.div`
   border-radius: 12px;
   padding: 30px;
   background-color: #f8f9fd;
+`;
+
+const WarningContainer = FlatContainer.extend`
+  background-color: rgba(255, 234, 142, 0.75);
 `;
 
 const H1 = styled.p`
