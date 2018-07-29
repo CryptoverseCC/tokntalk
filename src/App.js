@@ -285,18 +285,18 @@ export default class App extends Component {
     }
   };
 
-  getMoreFeedItems = async (catId) => {
+  getMoreFeedItems = async (entityId) => {
     if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
     try {
       this.setState({ feedLoadingMore: true }, async () => {
         const { lastFeedItemId } = this.state;
         const { feedItems: moreFeedItems, total: feedItemsCount, lastItemId } = await getFeedItems({
-          catId,
+          entityId,
           size: 30,
           oldestKnown: lastFeedItemId,
         });
 
-        if (this.state.feedId !== catId) return;
+        if (this.state.feedId !== entityId) return;
 
         this.setState(({ feedItems }) => ({
           lastFeedItemId: lastItemId,
