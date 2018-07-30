@@ -3,7 +3,7 @@ import React from 'react';
 import cryptobots from './img/tokens/cryptobots-icon.svg';
 import cryptobotsCover from './img/tokens/cryptobots.png';
 
-import ethmoji from './img/tokens/ethmoji-icon.svg';
+import ethmoji from './img/tokens/ethmoji-icon.png';
 import ethmojiCover from './img/tokens/ethmoji.jpg';
 
 import dac from './img/tokens/dac-icon.svg';
