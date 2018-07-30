@@ -1,5 +1,14 @@
 import React from 'react';
 
+import cryptobots from './img/tokens/cryptobots-icon.svg';
+import cryptobotsCover from './img/tokens/cryptobots.png';
+
+import ethmoji from './img/tokens/ethmoji-icon.svg';
+import ethmojiCover from './img/tokens/ethmoji.jpg';
+
+import dac from './img/tokens/dac-icon.svg';
+import dacCover from './img/tokens/dac.jpg';
+
 import bat from './img/tokens/bat-icon.svg';
 import batCover from './img/tokens/bat.jpg';
 
@@ -36,8 +45,8 @@ const ercs20 = [
     address: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
     name: 'Bots',
     symbol: 'CBT',
-    logo: avocado,
-    coverImage: avocadoCover,
+    logo: cryptobots,
+    coverImage: cryptobotsCover,
     primaryColor: '#ffffff',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
@@ -47,8 +56,8 @@ const ercs20 = [
     address: '0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9',
     name: 'EthMoji',
     symbol: 'MOJI',
-    logo: avocado,
-    coverImage: avocadoCover,
+    logo: ethmoji,
+    coverImage: ethmojiCover,
     primaryColor: '#ffffff',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
@@ -58,8 +67,8 @@ const ercs20 = [
     address: '0x323a3e1693e7a0959f65972f3bf2dfcb93239dfe',
     name: 'DigitalArtChain',
     symbol: 'DAC',
-    logo: avocado,
-    coverImage: avocadoCover,
+    logo: dac,
+    coverImage: dacCover,
     primaryColor: '#ffffff',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
