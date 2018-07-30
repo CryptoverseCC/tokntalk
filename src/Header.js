@@ -1,5 +1,5 @@
 import React from 'react';
-import Link, { A } from './Link';
+import Link from './Link';
 import styled from 'styled-components';
 import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityName, EntityAvatar } from './Entity';
 import TranslationsContext from './Translations';

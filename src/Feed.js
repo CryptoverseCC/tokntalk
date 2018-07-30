@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
@@ -8,7 +8,6 @@ import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 
-import { getRanking, isValidFeedItem } from './api';
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
@@ -70,16 +69,16 @@ const LabelButton = styled.button`
   font-size: 1rem;
   transition: all 0.15s ease-in-out;
   color: ${({ liked }) => (liked ? '#ffa6d8' : 'inherit')};
-  cursor: ${({ liked }) => (liked ? 'default' : 'pointer')};
+  cursor: ${({ liked, unActive }) => (liked || unActive ? 'default' : 'pointer')};
 
   &:hover {
-    box-shadow: ${({ liked }) => (liked ? 'none' : '0 5px 20px rgba(255, 166, 216, 0.4)')};
+    box-shadow: ${({ liked, unActive }) => (liked || unActive ? 'none' : '0 5px 20px rgba(255, 166, 216, 0.4)')};
   }
 `;
 
-const Label = ({ onClick, liked, count }) => {
+const Label = ({ onClick, liked, unActive, count }) => {
   return (
-    <LabelButton onClick={onClick} liked={liked}>
+    <LabelButton onClick={onClick} liked={liked} unActive={unActive}>
       <LabelIconContainer>
         <img alt="" src={LikeIcon} />
       </LabelIconContainer>
@@ -100,7 +99,19 @@ export const sanitizeMessage = (message) => {
     .join('');
 };
 
-const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, reaction, suffix, style = {} }) => {
+const Post = ({
+  id,
+  from,
+  createdAt,
+  etherscanUrl,
+  family,
+  message,
+  reactions,
+  reaction,
+  suffix,
+  disabledInteractions,
+  style = {},
+}) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
@@ -127,15 +138,20 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
         />
         {reactions && (
           <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
-            <IfActiveEntityLiked
-              reactions={reactions}
-              then={<Label liked count={reactions.length} />}
-              other={
-                <Context.Consumer>
-                  {({ feedStore: { react } }) => <Label onClick={() => react(id)} count={reactions.length} />}
-                </Context.Consumer>
-              }
-            />
+            {disabledInteractions ? (
+              <Label unActive count={reactions.length} />
+            ) : (
+              <IfActiveEntityLiked
+                reactions={reactions}
+                unActive={<Label unActive count={reactions.length} />}
+                notLiked={
+                  <Context.Consumer>
+                    {({ feedStore: { react } }) => <Label onClick={() => react(id)} count={reactions.length} />}
+                  </Context.Consumer>
+                }
+                liked={<Label liked count={reactions.length} />}
+              />
+            )}
             {reactions.map((reaction, index) => {
               const id = reaction.context;
               return <LinkedEntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />;
@@ -147,7 +163,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reactions, r
   );
 };
 
-const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, style = {} }) => (
+const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, disabledInteractions, style = {} }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
     <div className="media-left is-hidden-mobile" style={{ position: 'relative' }}>
       <div
@@ -192,30 +208,39 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, 
         </div>
         <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
           <small style={{ color: '#928F9B' }}>
-            <IfActiveEntityLiked
-              reactions={reactions}
-              other={
-                <Context.Consumer>
-                  {({ feedStore: { react } }) => (
-                    <button
-                      onClick={() => react(id)}
-                      style={{
-                        border: 'none',
-                        background: 'none',
-                        display: 'inline-block',
-                        padding: 0,
-                        margin: 0,
-                        color: '#ffa6d8',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Like {reactions.length ? `(${reactions.length})` : ''}
-                    </button>
-                  )}
-                </Context.Consumer>
-              }
-              then={<span style={{ color: '#ffa6d8' }}>Liked {reactions.length ? `(${reactions.length})` : ''}</span>}
-            />
+            {disabledInteractions ? (
+              <span style={{ color: '#ffa6d8' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
+            ) : (
+              <IfActiveEntityLiked
+                reactions={reactions}
+                notLiked={
+                  <Context.Consumer>
+                    {({ feedStore: { react } }) => (
+                      <button
+                        onClick={() => react(id)}
+                        style={{
+                          border: 'none',
+                          background: 'none',
+                          display: 'inline-block',
+                          padding: 0,
+                          margin: 0,
+                          color: '#ffa6d8',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Like {reactions.length ? `(${reactions.length})` : ''}
+                      </button>
+                    )}
+                  </Context.Consumer>
+                }
+                liked={
+                  <span style={{ color: '#ffa6d8' }}>Liked {reactions.length ? `(${reactions.length})` : ''}</span>
+                }
+                unActive={
+                  <span style={{ color: '#ffa6d8' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
+                }
+              />
+            )}
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
             <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
               {family}
@@ -370,7 +395,8 @@ export class Card extends React.Component {
   };
 
   renderItem = () => {
-    const { feedItem, replies, reactions } = this.props;
+    const { feedItem, replies, reactions, disabledInteractions } = this.props;
+
     if (feedItem.type === 'like') {
       return (
         <React.Fragment>
@@ -400,6 +426,7 @@ export class Card extends React.Component {
             family={feedItem.target.family}
             etherscanUrl={createEtherscanUrl(feedItem.target)}
             suffix={this.getSuffix(feedItem.target)}
+            disabledInteractions={disabledInteractions}
           />
         </React.Fragment>
       );
@@ -407,18 +434,9 @@ export class Card extends React.Component {
 
     return (
       <React.Fragment>
-        {/* {feedItem.type === 'response' && (
-            <Reply
-              id={feedItem.about.id}
-              from={feedItem.about.context}
-              createdAt={feedItem.about.created_at}
-              etherscanUrl={createEtherscanUrl(feedItem.about)}
-              family={feedItem.about.family}
-              message={feedItem.about.target.id}
-            />
-          )} */}
         <Post
           id={feedItem.id}
+          disabledInteractions={disabledInteractions}
           style={{ borderTop: 'none' }}
           from={feedItem.context}
           createdAt={feedItem.created_at}
@@ -444,9 +462,10 @@ export class Card extends React.Component {
             family={reply.family}
             reactions={reply.likes}
             etherscanUrl={createEtherscanUrl(reply)}
+            disabledInteractions={disabledInteractions}
           />
         ))}{' '}
-        <IfActiveEntity>{() => <ReplyFormContainer about={feedItem.id} />}</IfActiveEntity>
+        {!disabledInteractions && <IfActiveEntity>{() => <ReplyFormContainer about={feedItem.id} />}</IfActiveEntity>}
       </React.Fragment>
     );
   };
@@ -541,6 +560,7 @@ const Feed = ({
   feedLoadingMore,
   className,
   style,
+  disabledInteractions,
 }) => (
   <div
     className={className || 'column is-6 is-offset-3'}
@@ -571,6 +591,7 @@ const Feed = ({
           ]);
           return (
             <Card
+              disabledInteractions={disabledInteractions}
               feedItem={feedItem}
               replies={replies}
               reactions={reactions}
@@ -631,82 +652,3 @@ export const ConnectedFeed = ({ forEntity, className }) => (
     }}
   </Context.Consumer>
 );
-
-export class FeedForToken extends Component {
-  state = {
-    loading: false,
-    feedLoadingMore: false,
-    feedItems: [],
-    visibleItemsCount: 0,
-  };
-
-  componentDidMount() {
-    this.fetchFeed();
-  }
-
-  fetchFeed = async () => {
-    const { asset } = this.props;
-    this.setState({ loading: true });
-
-    try {
-      const { items } = await getRanking([
-        {
-          algorithm: 'cryptoverse_feed',
-        },
-        {
-          algorithm: 'experimental_author_balance',
-          params: { asset },
-        },
-      ]);
-      const feedItems = items.filter(isValidFeedItem);
-      this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 30 ? 30 : feedItems.length });
-    } catch (e) {
-      console.warn(e);
-      this.setState({ loading: false });
-    }
-  };
-
-  getMoreItems = () => {
-    console.log('getMoreItems');
-    this.setState(({ visibleItemsCount, feedItems }) => ({
-      visibleItemsCount: feedItems.length > visibleItemsCount + 30 ? visibleItemsCount + 30 : feedItems.length,
-    }));
-  };
-
-  render() {
-    const { className, style } = this.props;
-    const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
-
-    return (
-      <Context.Consumer>
-        {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
-          let filteredTemporaryFeedItems = temporaryFeedItems;
-          // if (forEntity) {
-          //   filteredTemporaryFeedItems = temporaryFeedItems.filter(({ context, about }) => {
-          //     const userfeedsEntityId = forEntity;
-          //     return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
-          //   });
-          // }
-          const allFeedItems = pipe(
-            uniqBy('id'),
-            sortBy('created_at'),
-            reverse,
-          )([...feedItems.slice(0, visibleItemsCount), ...filteredTemporaryFeedItems]);
-
-          return (
-            <Feed
-              className={className}
-              style={style}
-              feedItems={allFeedItems}
-              feedLoading={loading}
-              temporaryReplies={temporaryReplies}
-              temporaryReactions={temporaryReactions}
-              getMoreFeedItems={this.getMoreItems}
-              feedLoadingMore={feedLoadingMore}
-            />
-          );
-        }}
-      </Context.Consumer>
-    );
-  }
-}

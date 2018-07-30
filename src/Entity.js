@@ -94,12 +94,22 @@ export const ActiveEntityAvatar = (props) => (
   </Context.Consumer>
 );
 
-export const IfActiveEntityLiked = ({ reactions, children, then, other }) => (
+export const IfActiveEntityLiked = ({ reactions, children, liked, notLiked, unActive }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => {
-      if (!activeEntity) return other;
-      const liked = reactions && reactions.find(({ context }) => context === activeEntity);
-      return liked ? then || children : other;
+      if (!activeEntity) return unActive;
+      const entityHasLiked = reactions && reactions.find(({ context }) => context === activeEntity);
+      return entityHasLiked ? liked || children : notLiked;
+    }}
+  </Context.Consumer>
+);
+
+export const DoesActiveEntityHasToken = ({ asset, children }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity, getEntity } }) => {
+      if (!activeEntity) return children(false);
+      const hasToken = getEntity(activeEntity).tokens.indexOf(asset) !== -1;
+      return children(hasToken);
     }}
   </Context.Consumer>
 );

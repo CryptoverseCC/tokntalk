@@ -2,19 +2,31 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import timeago from 'timeago.js';
+import pipe from 'lodash/fp/pipe';
+import uniqBy from 'lodash/fp/uniqBy';
+import sortBy from 'lodash/fp/sortBy';
+import reverse from 'lodash/fp/reverse';
 import find from 'lodash/fp/find';
 
-import { ExclamationMark } from './Icons';
 import Link from './Link';
+import Feed from './Feed';
 import Loader from './Loader';
+import AppContext from './Context';
 import { HeaderSpacer } from './Header';
 import { validateParams } from './utils';
+import { ExclamationMark } from './Icons';
 import ercs20, { TokenImage } from './erc20';
-import { hasValidContext } from './api';
-import { FeedForToken } from './Feed';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
-import { EntityName, LinkedEntityAvatar, IfActiveEntity, Entity, IfActiveEntityHasToken } from './Entity';
+import { hasValidContext, getRanking, isValidFeedItem } from './api';
 import { GithubIcon, TwitterIcon, InstagramIcon, FacebookIcon, socialColors } from './Icons';
+import {
+  EntityName,
+  LinkedEntityAvatar,
+  IfActiveEntity,
+  Entity,
+  IfActiveEntityHasToken,
+  DoesActiveEntityHasToken,
+} from './Entity';
 
 const DiscoveryContext = React.createContext();
 
@@ -199,11 +211,16 @@ const ByToken = ({ match, token }) => (
               <ConnectedClubForm token={token} Form={CommentForm} />
             </FormContainer>
           </IfActiveEntityHasToken>
-          <FeedForToken
-            className="feed-for-token"
-            style={{ marginTop: '60px' }}
-            asset={`${token.network}:${token.address}`}
-          />
+          <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+            {(hasToken) => (
+              <FeedForToken
+                disabledInteractions={!hasToken}
+                className="feed-for-token"
+                style={{ marginTop: '60px' }}
+                asset={`${token.network}:${token.address}`}
+              />
+            )}
+          </DoesActiveEntityHasToken>
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer>
@@ -383,7 +400,7 @@ const SocialHeader = styled.p`
 `;
 
 const SocialLink = ({ target, social }) => {
-  const result = /\/([^\/]+)(\/?)$/.exec(target);
+  const result = /\/([^/]+)(\/?)$/.exec(target);
   const username = result && result[1] ? result[1] : target;
 
   return (
@@ -521,6 +538,85 @@ const NoTokensWarning = ({ token }) => (
     </div>
   </WarningContainer>
 );
+
+export class FeedForToken extends Component {
+  state = {
+    loading: false,
+    feedLoadingMore: false,
+    feedItems: [],
+    visibleItemsCount: 0,
+  };
+
+  componentDidMount() {
+    this.fetchFeed();
+  }
+
+  fetchFeed = async () => {
+    const { asset } = this.props;
+    this.setState({ loading: true });
+
+    try {
+      const { items } = await getRanking([
+        {
+          algorithm: 'cryptoverse_feed',
+        },
+        {
+          algorithm: 'experimental_author_balance',
+          params: { asset },
+        },
+      ]);
+      const feedItems = items.filter(isValidFeedItem);
+      this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
+    } catch (e) {
+      console.warn(e);
+      this.setState({ loading: false });
+    }
+  };
+
+  getMoreItems = () => {
+    this.setState(({ visibleItemsCount, feedItems }) => ({
+      visibleItemsCount: feedItems.length > visibleItemsCount + 30 ? visibleItemsCount + 30 : feedItems.length,
+    }));
+  };
+
+  render() {
+    const { className, style, disabledInteractions } = this.props;
+    const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
+
+    return (
+      <AppContext.Consumer>
+        {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
+          let filteredTemporaryFeedItems = temporaryFeedItems;
+          // if (forEntity) {
+          //   filteredTemporaryFeedItems = temporaryFeedItems.filter(({ context, about }) => {
+          //     const userfeedsEntityId = forEntity;
+          //     return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
+          //   });
+          // }
+          const allFeedItems = pipe(
+            uniqBy('id'),
+            sortBy('created_at'),
+            reverse,
+          )([...feedItems.slice(0, visibleItemsCount), ...filteredTemporaryFeedItems]);
+
+          return (
+            <Feed
+              disabledInteractions={disabledInteractions}
+              className={className}
+              style={style}
+              feedItems={allFeedItems}
+              feedLoading={loading}
+              temporaryReplies={temporaryReplies}
+              temporaryReactions={temporaryReactions}
+              getMoreFeedItems={this.getMoreItems}
+              feedLoadingMore={feedLoadingMore}
+            />
+          );
+        }}
+      </AppContext.Consumer>
+    );
+  }
+}
 
 const TokenTileCotainer = styled.div`
   background-color: ${({ primaryColor }) => primaryColor};
