@@ -410,7 +410,7 @@ const SocialLink = ({ target, social }) => {
   );
 };
 
-const SocialPage = ({ token, match }) => (
+const SocialPage = ({ token }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -558,7 +558,8 @@ export class FeedForToken extends Component {
     try {
       const { items } = await getRanking([
         {
-          algorithm: 'cryptoverse_feed',
+          algorithm: 'cryptoverse_club_feed',
+          params: { id: asset },
         },
         {
           algorithm: 'experimental_author_balance',
@@ -580,19 +581,16 @@ export class FeedForToken extends Component {
   };
 
   render() {
-    const { className, style, disabledInteractions } = this.props;
+    const { className, style, asset, disabledInteractions } = this.props;
     const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
 
     return (
       <AppContext.Consumer>
         {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
-          let filteredTemporaryFeedItems = temporaryFeedItems;
-          // if (forEntity) {
-          //   filteredTemporaryFeedItems = temporaryFeedItems.filter(({ context, about }) => {
-          //     const userfeedsEntityId = forEntity;
-          //     return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
-          //   });
-          // }
+          const filteredTemporaryFeedItems = temporaryFeedItems
+            .filter(({ type, about }) => type === 'post_club' && about === asset)
+            .map((item) => ({ ...item, type: 'regular' }));
+
           const allFeedItems = pipe(
             uniqBy('id'),
             sortBy('created_at'),

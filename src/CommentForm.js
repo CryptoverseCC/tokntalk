@@ -152,8 +152,12 @@ export class TextAreaForm extends React.Component {
 
 export const ConnectedClubForm = ({ token, ...props }) => (
   <Context.Consumer>
-    {({ feedStore: { sendMessage } }) => (
-      <TextAreaForm sendMessage={sendMessage} placeholder={`Write in ${token.name} club`} {...props} />
+    {({ feedStore: { writeAbout } }) => (
+      <TextAreaForm
+        sendMessage={(message) => writeAbout(message, `${token.network}:${token.address}`)}
+        placeholder={`Write in ${token.name} club`}
+        {...props}
+      />
     )}
   </Context.Consumer>
 );

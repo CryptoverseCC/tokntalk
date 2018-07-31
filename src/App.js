@@ -15,6 +15,7 @@ import {
   react,
   label,
   writeTo,
+  writeAbout,
   getLabels,
   getEntityTokens,
   getBoosts,
@@ -215,6 +216,14 @@ export default class App extends Component {
     });
   };
 
+  writeAbout = async (message, club) => {
+    const { http, activeEntity } = this.state;
+    const temporaryFeedItem = await writeAbout(activeEntity, message, club, { http });
+    this.setState({
+      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
+    });
+  };
+
   react = async (to) => {
     const { http, activeEntity } = this.state;
     const temporaryReaction = await react(activeEntity, to, { http });
@@ -317,6 +326,7 @@ export default class App extends Component {
       sendMessage,
       reply,
       writeTo,
+      writeAbout,
       react,
       label,
       getEntity,
@@ -364,6 +374,7 @@ export default class App extends Component {
             sendMessage,
             reply,
             writeTo,
+            writeAbout,
             react,
             label,
             feedItem,

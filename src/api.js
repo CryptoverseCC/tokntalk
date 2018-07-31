@@ -30,7 +30,7 @@ export const hasValidContext = ({ context }) => {
 };
 
 export const isValidFeedItem = (feedItem) => {
-  if (!['regular', 'like', 'post_to', 'post_about'].includes(feedItem.type)) {
+  if (!['regular', 'like', 'post_to', 'post_about', 'post_club'].includes(feedItem.type)) {
     return false;
   }
   if (!hasValidContext(feedItem)) {
@@ -314,10 +314,25 @@ export const writeTo = async (entity, message, entityTo, { http } = {}) => {
   return {
     ...feedItemBase,
     about: { id: entityTo },
-    abouted: [],
-    target: { id: message },
-    targeted: [],
+    target: message,
     type: 'post_to',
+  };
+};
+
+export const writeAbout = async (entity, message, about, { http } = {}) => {
+  const data = {
+    type: ['about'],
+    claim: { target: message, about: about },
+    context: entity,
+    credits: getCreditsData(),
+  };
+  const id = await sendClaim(data, http);
+  const feedItemBase = await createFeedItemBase(id, entity, http);
+  return {
+    ...feedItemBase,
+    about,
+    target: message,
+    type: 'post_club',
   };
 };
 

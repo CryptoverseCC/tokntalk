@@ -1,6 +1,7 @@
 import React from 'react';
 import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
+import find from 'lodash/fp/find';
 import uniqBy from 'lodash/fp/uniqBy';
 import sortBy from 'lodash/fp/sortBy';
 import reverse from 'lodash/fp/reverse';
@@ -25,6 +26,7 @@ import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
 import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
+import ercs20 from './erc20';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -472,7 +474,19 @@ export class Card extends React.Component {
 
   getSuffix = (feedItem) => {
     const suffix = {
-      response: () => <span style={{ marginLeft: '10px' }}>replied</span>,
+      post_club: () => {
+        const [network, address] = feedItem.about.split(':');
+        const token = find({ network, address })(ercs20);
+
+        return (
+          <React.Fragment>
+            <span style={{ marginLeft: '10px' }}>wrote in</span>
+            <Link to={`/discover/byToken/${token.symbol}`} style={{ marginLeft: '10px' }}>
+              <b>{token.name} club </b>
+            </Link>
+          </React.Fragment>
+        );
+      },
       post_to: () => {
         const id = feedItem.about;
         return (
