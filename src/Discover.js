@@ -148,6 +148,7 @@ class ByTokenIndex extends Component {
             render={(props) => <RecentlyActivePage token={token} {...props} />}
           />
           <Route exact path={`${match.url}/social`} render={(props) => <SocialPage token={token} {...props} />} />
+          <Route exact path={`${match.url}/feed`} render={(props) => <FeedPage token={token} {...props} />} />
         </Switch>
       </DiscoveryContext.Provider>
     );
@@ -205,7 +206,12 @@ const ByToken = ({ match, token }) => (
             </Link>
             <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
           </FlatContainer>
-          <H2 style={{ marginTop: '60px', marginBottom: '30px' }}>Messages in this community</H2>
+          <H2 style={{ marginTop: '60px', marginBottom: '30px' }}>
+            Messages in this community
+            <Link to={`${match.url}/feed`}>
+              <SeeMore style={{ marginLeft: '15px' }}>See more</SeeMore>
+            </Link>
+          </H2>
           <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
             <FormContainer>
               <ConnectedClubForm token={token} Form={CommentForm} />
@@ -261,7 +267,7 @@ const BackArrow = styled.div`
   }
 `;
 
-const SeeMore = styled.div`
+const SeeMore = styled.span`
   display: inline-block;
   font-size: 18px;
   font-weight: 600;
@@ -464,6 +470,57 @@ const SocialPage = ({ token }) => (
           </FlatContainer>
         </div>
       </div>
+    </DiscoveryContainer>
+  </React.Fragment>
+);
+
+const FeedPage = ({ token }) => (
+  <React.Fragment>
+    <Hero
+      primaryColor={token.primaryColor}
+      secondaryColor={token.secondaryColor}
+      className="is-flex"
+      style={{ alignItems: 'center' }}
+    >
+      <DiscoveryContainer style={{ flex: 1 }}>
+        <Link to={`/discover/byToken/${token.symbol}`}>
+          <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
+            <div className="column is-1">
+              <BackArrow>
+                <H2 className="is-pulled-right">←</H2>
+              </BackArrow>
+            </div>
+            <div className="column">
+              <H2>
+                <TokenImage token={token} style={{ width: '23px', height: '23px', marginRight: '10px' }} />
+                {token.name}
+              </H2>
+            </div>
+          </Back>
+        </Link>
+        <div className="columns is-mobile">
+          <div className="column is-offset-1">
+            <H1>Feed</H1>
+          </div>
+        </div>
+      </DiscoveryContainer>
+    </Hero>
+    <DiscoveryContainer>
+      <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
+        <FormContainer>
+          <ConnectedClubForm token={token} Form={CommentForm} />
+        </FormContainer>
+      </IfActiveEntityHasToken>
+      <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+        {(hasToken) => (
+          <FeedForToken
+            disabledInteractions={!hasToken}
+            className="feed-for-token"
+            style={{ marginTop: '60px' }}
+            asset={`${token.network}:${token.address}`}
+          />
+        )}
+      </DoesActiveEntityHasToken>
     </DiscoveryContainer>
   </React.Fragment>
 );
