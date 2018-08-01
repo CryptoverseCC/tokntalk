@@ -69,6 +69,9 @@ import mythereumCover from './img/tokens/mythereum.png';
 import pandaearth from './img/tokens/pandaearth-icon.png';
 import pandaearthCover from './img/tokens/pandaearth.png';
 
+import percent from './img/tokens/pandaearth-icon.png';
+import percentCover from './img/tokens/pandaearth.png';
+
 const ercs20 = [
   {
     network: 'ethereum',
@@ -336,6 +339,17 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
   },*/
+  {
+    network: 'ethereum',
+    address: '0xc93058ca0cc2330b847c001c835fc926fedf5a07',
+    name: 'Percent',
+    symbol: '%',
+    logo: percent,
+    coverImage: percentCover,
+    primaryColor: '#C8F9FF',
+    secondaryColor: '#5B3D9D',
+    shadowColor: 'rgba(200,249,255,0.6)',
+  },
 ];
 
 const sizes = {
