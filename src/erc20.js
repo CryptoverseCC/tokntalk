@@ -1,7 +1,7 @@
 import React from 'react';
 
-import cryptokitties from './img/tokens/cryptobots-icon.svg';
-import cryptokittiesCover from './img/tokens/cryptobots.png';
+import cryptokitties from './img/tokens/cryptokitties-icon.svg';
+import cryptokittiesCover from './img/tokens/cryptokitties.png';
 
 import cryptobots from './img/tokens/cryptobots-icon.svg';
 import cryptobotsCover from './img/tokens/cryptobots.png';
