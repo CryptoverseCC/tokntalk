@@ -1,7 +1,5 @@
-## CryptoPurr
+## Tokntalk.club
 
-Facebook for cryptokitties. If you have a kitty you can share information using it as your identity.
+Social Platform for Token Owners
 
-## Fork Me!
-
-This is an example project created to showcase Userfeeds Platform APIs. You can fork it and expand it's functionalities.
+If you want to add your token contact us at into@cryptoverse.cc
