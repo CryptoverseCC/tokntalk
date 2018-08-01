@@ -60,6 +60,12 @@ import chibiCover from './img/tokens/chibi.png';
 import cryptofighters from './img/tokens/cryptofighters-icon.png';
 import cryptofightersCover from './img/tokens/cryptofighters.png';
 
+import etheremon from './img/tokens/etheremon-icon.png';
+import etheremonCover from './img/tokens/etheremon.png';
+
+import mythereum from './img/tokens/mythereum-icon.png';
+import mythereumCover from './img/tokens/mythereum.png';
+
 const ercs20 = [
   {
     network: 'ethereum',
@@ -176,6 +182,30 @@ const ercs20 = [
     symbol: "SAGA",
     logo: cryptosaga,
     coverImage: cryptosagaCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: "0xb2c0782ae4a299f7358758b2d15da9bf29e1dd99",
+    name: "Etheremon",
+    symbol: "MON",
+    logo: etheremon,
+    coverImage: etheremonCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: "0xc70be5b7c19529ef642d16c10dfe91c58b5c3bf0",
+    name: "Mythereum",
+    symbol: "MYTH",
+    logo: mythereum,
+    coverImage: mythereumCover,
     primaryColor: '#121212',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',

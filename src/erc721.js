@@ -84,5 +84,21 @@ export default [
     image_url: "https://cdn-images-1.medium.com/fit/c/200/200/1*9FWNQRTi1eIfogVJyAwHXg.png",
     external_link: "https://cryptosaga.io/",
     entityPrefix: "Hero #"
+  },
+  {
+    address: "0xb2c0782ae4a299f7358758b2d15da9bf29e1dd99",
+    name: "Etheremon",
+    symbol: "MON",
+    image_url: "https://storage.googleapis.com/opensea-static/etheremon-logo.png",
+    external_link: "https://www.etheremon.com/",
+    entityPrefix: "Etheremon #"
+  },
+  {
+    address: "0xc70be5b7c19529ef642d16c10dfe91c58b5c3bf0",
+    name: "Mythereum",
+    symbol: "MYTH",
+    image_url: "https://storage.googleapis.com/opensea-prod.appspot.com/0xc70be5b7c19529ef642d16c10dfe91c58b5c3bf0.png",
+    external_link: "https://www.mythereum.io/",
+    entityPrefix: "Card #"
   }
 ];
