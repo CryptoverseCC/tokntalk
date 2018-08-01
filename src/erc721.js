@@ -43,6 +43,22 @@ export default [
     symbol: 'KODA',
     image_url: 'https://storage.googleapis.com/opensea-static/known-origin-logo.png',
     external_link: 'https://knownorigin.io',
-    entityPrefix: 'Art ',
+    entityPrefix: 'KO Art #',
+  },
+  {
+    address: '0xdcaad9fd9a74144d226dbf94ce6162ca9f09ed7e',
+    name: 'CryptoStrikers',
+    symbol: 'STRK',
+    image_url: 'https://storage.googleapis.com/opensea-static/cryptostrikers-logo.png',
+    external_link: 'https://www.cryptostrikers.com/',
+    entityPrefix: 'CryptoStriker #',
+  },
+  {
+    address: '0x4fece400c0d3db0937162ab44bab34445626ecfe',
+    name: 'ETH TOWN',
+    symbol: 'HERO',
+    image_url: 'https://storage.googleapis.com/opensea-static/eth-town-logo.png',
+    external_link: 'https://eth.town/',
+    entityPrefix: 'Hero #',
   }
 ];

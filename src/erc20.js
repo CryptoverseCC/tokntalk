@@ -42,6 +42,13 @@ import avocadoCover from './img/tokens/avocado.jpg';
 import knownorigin from './img/tokens/knownorigin-icon.svg';
 import knownoriginCover from './img/tokens/knownorigin.jpg';
 
+import cryptostrikers from './img/tokens/cryptostrikers-icon.png';
+import cryptostrikersCover from './img/tokens/cryptostrikers.png';
+
+import ethtown from './img/tokens/ethtown-icon.png';
+import ethtownCover from './img/tokens/ethtown.png';
+
+
 const ercs20 = [
   {
     network: 'ethereum',
@@ -193,6 +200,28 @@ const ercs20 = [
     symbol: 'KODA',
     logo: knownorigin,
     coverImage: knownoriginCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+  },
+  {
+    network: 'ethereum',
+    address: '0xdcaad9fd9a74144d226dbf94ce6162ca9f09ed7e',
+    name: 'CryptoStrikers',
+    symbol: 'STRK',
+    logo: cryptostrikers,
+    coverImage: cryptostrikersCover,
+    primaryColor: '#BEC4CB',
+    secondaryColor: '#2D1F18',
+    shadowColor: 'rgba(200,249,255,0.6)',
+  },
+  {
+    network: 'ethereum',
+    address: '0x4fece400c0d3db0937162ab44bab34445626ecfe',
+    name: 'ETH TOWN',
+    symbol: 'HERO',
+    logo: ethtown,
+    coverImage: ethtownCover,
     primaryColor: '#121212',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
