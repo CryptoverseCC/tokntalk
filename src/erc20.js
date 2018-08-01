@@ -39,6 +39,9 @@ import omgCover from './img/tokens/omisego.png';
 import avocado from './img/tokens/avocado-icon.png';
 import avocadoCover from './img/tokens/avocado.jpg';
 
+import knownorigin from './img/tokens/knownorigin-icon.svg';
+import knownoriginCover from './img/tokens/knownorigin.jpg';
+
 const ercs20 = [
   {
     network: 'ethereum',
@@ -183,6 +186,17 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
   },*/
+  {
+    network: 'ethereum',
+    address: '0xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72',
+    name: 'Known Origin',
+    symbol: 'KODA',
+    logo: knownorigin,
+    coverImage: knownoriginCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+  },
 ];
 
 const sizes = {
