@@ -37,4 +37,12 @@ export default [
     external_link: 'http://digitalartchain.com/',
     entityPrefix: 'Digital Art ',
   },
+  {
+    address: '0xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72',
+    name: 'KnownOrigin',
+    symbol: 'KODA',
+    image_url: 'https://storage.googleapis.com/opensea-static/known-origin-logo.png',
+    external_link: 'https://knownorigin.io',
+    entityPrefix: 'Art ',
+  }
 ];
