@@ -295,7 +295,7 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(31,54,90,0.5)',
   },*/
-  /*{
+  {
     network: 'ethereum',
     address: '0xd26114cd6ee289accf82350c8d8487fedb8a0c07',
     name: 'OmiseGO',
@@ -305,7 +305,7 @@ const ercs20 = [
     primaryColor: '#1A52EF',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(26,82,239,0.5)',
-  },*/
+  },
   {
     network: 'ethereum',
     address: '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7',
