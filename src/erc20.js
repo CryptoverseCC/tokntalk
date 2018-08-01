@@ -51,6 +51,15 @@ import cryptostrikersCover from './img/tokens/cryptostrikers.png';
 import ethtown from './img/tokens/ethtown-icon.png';
 import ethtownCover from './img/tokens/ethtown.png';
 
+import cryptosaga from './img/tokens/cryptosaga-icon.png';
+import cryptosagaCover from './img/tokens/cryptosaga.png';
+
+import chibi from './img/tokens/chibi-icon.png';
+import chibiCover from './img/tokens/chibi.png';
+
+import cryptofighters from './img/tokens/cryptofighters-icon.png';
+import cryptofightersCover from './img/tokens/cryptofighters.png';
+
 const ercs20 = [
   {
     network: 'ethereum',
@@ -131,6 +140,42 @@ const ercs20 = [
     symbol: 'HERO',
     logo: ethtown,
     coverImage: ethtownCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: '0x71c118b00759b0851785642541ceb0f4ceea0bd5',
+    name: "Chibi Fighters",
+    symbol: "CBF",
+    logo: chibi,
+    coverImage: chibiCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: '0x87d598064c736dd0c712d329afcfaa0ccc1921a1',
+    name: "CryptoFighters",
+    symbol: "FIGHTER",
+    logo: cryptofighters,
+    coverImage: cryptofightersCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: "0xabc7e6c01237e8eef355bba2bf925a730b714d5f",
+    name: "CryptoSaga",
+    symbol: "SAGA",
+    logo: cryptosaga,
+    coverImage: cryptosagaCover,
     primaryColor: '#121212',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',

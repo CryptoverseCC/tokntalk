@@ -60,5 +60,29 @@ export default [
     image_url: 'https://storage.googleapis.com/opensea-static/eth-town-logo.png',
     external_link: 'https://eth.town/',
     entityPrefix: 'Hero #',
+  },
+  {
+    address: "0x71c118b00759b0851785642541ceb0f4ceea0bd5",
+    name: "Chibi Fighters",
+    symbol: "CBF",
+    image_url: "https://storage.googleapis.com/opensea-static/chibi-logo.png",
+    external_link: "https://chibifighters.io/",
+    entityPrefix: "Fighter #"
+  },
+  {
+    address: "0x87d598064c736dd0c712d329afcfaa0ccc1921a1",
+    name: "CryptoFighters",
+    symbol: "FIGHTER",
+    image_url: "https://storage.googleapis.com/opensea-static/cryptofighters-logo.png",
+    external_link: "https://cryptofighters.io",
+    entityPrefix: "Fighter #"
+  },
+  {
+    address: "0xabc7e6c01237e8eef355bba2bf925a730b714d5f",
+    name: "CryptoSaga",
+    symbol: "SAGA",
+    image_url: "https://cdn-images-1.medium.com/fit/c/200/200/1*9FWNQRTi1eIfogVJyAwHXg.png",
+    external_link: "https://cryptosaga.io/",
+    entityPrefix: "Hero #"
   }
 ];
