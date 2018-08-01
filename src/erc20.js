@@ -48,7 +48,6 @@ import cryptostrikersCover from './img/tokens/cryptostrikers.png';
 import ethtown from './img/tokens/ethtown-icon.png';
 import ethtownCover from './img/tokens/ethtown.png';
 
-
 const ercs20 = [
   {
     network: 'ethereum',
@@ -60,6 +59,7 @@ const ercs20 = [
     primaryColor: '#ffffff',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
+    is721: true,
   },
   {
     network: 'ethereum',
@@ -71,6 +71,7 @@ const ercs20 = [
     primaryColor: '#ffffff',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
+    is721: true,
   },
   {
     network: 'ethereum',
@@ -82,6 +83,7 @@ const ercs20 = [
     primaryColor: '#ffffff',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
+    is721: true,
   },
   {
     network: 'ethereum',
@@ -203,6 +205,7 @@ const ercs20 = [
     primaryColor: '#121212',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
   },
   {
     network: 'ethereum',
@@ -214,6 +217,7 @@ const ercs20 = [
     primaryColor: '#BEC4CB',
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
   },
   {
     network: 'ethereum',
@@ -225,6 +229,7 @@ const ercs20 = [
     primaryColor: '#121212',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
   },
 ];
 

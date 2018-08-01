@@ -123,3 +123,25 @@ export const IfActiveEntityHasToken = ({ asset, children, then, other }) => (
     }}
   </Context.Consumer>
 );
+
+export const IfActiveEntityIs = ({ asset, children, then, other }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) => {
+      if (!activeEntity) return other;
+      const [network, address] = activeEntity.split(':');
+      const is = `${network}:${address}` === asset;
+      return is ? then || children : other;
+    }}
+  </Context.Consumer>
+);
+
+export const IsActiveEntityFromFamily = ({ asset, children }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) => {
+      if (!activeEntity) return children(false);
+      const [network, address] = activeEntity.split(':');
+      const is = `${network}:${address}` === asset;
+      return children(is);
+    }}
+  </Context.Consumer>
+);

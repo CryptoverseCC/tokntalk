@@ -23,6 +23,8 @@ import {
   EntityName,
   LinkedEntityAvatar,
   IfActiveEntity,
+  IfActiveEntityIs,
+  IsActiveEntityFromFamily,
   Entity,
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
@@ -213,20 +215,35 @@ const ByToken = ({ match, token }) => (
             </Link>
           </H2>
           <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
-            <FormContainer>
-              <ConnectedClubForm token={token} Form={CommentForm} />
-            </FormContainer>
-          </IfActiveEntityHasToken>
-          <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
-            {(hasToken) => (
-              <FeedForToken
-                disabledInteractions={!hasToken}
-                className="feed-for-token"
-                style={{ marginTop: '60px' }}
+            {token.is721 ? (
+              <IfActiveEntityIs
                 asset={`${token.network}:${token.address}`}
-              />
+                other={<ActiveEntityIsNotFromFamily token={token} />}
+              >
+                <FormContainer>
+                  <ConnectedClubForm token={token} Form={CommentForm} />
+                </FormContainer>
+              </IfActiveEntityIs>
+            ) : (
+              <FormContainer>
+                <ConnectedClubForm token={token} Form={CommentForm} />
+              </FormContainer>
             )}
-          </DoesActiveEntityHasToken>
+          </IfActiveEntityHasToken>
+          <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
+            {(isActiveEntityFromFamily) => (
+              <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+                {(hasToken) => (
+                  <FeedForToken
+                    disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
+                    className="feed-for-token"
+                    style={{ marginTop: '60px' }}
+                    asset={`${token.network}:${token.address}`}
+                  />
+                )}
+              </DoesActiveEntityHasToken>
+            )}
+          </IsActiveEntityFromFamily>
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer>
@@ -507,20 +524,35 @@ const FeedPage = ({ token }) => (
     </Hero>
     <DiscoveryContainer>
       <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
-        <FormContainer>
-          <ConnectedClubForm token={token} Form={CommentForm} />
-        </FormContainer>
-      </IfActiveEntityHasToken>
-      <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
-        {(hasToken) => (
-          <FeedForToken
-            disabledInteractions={!hasToken}
-            className="feed-for-token"
-            style={{ marginTop: '60px' }}
+        {token.is721 ? (
+          <IfActiveEntityIs
             asset={`${token.network}:${token.address}`}
-          />
+            other={<ActiveEntityIsNotFromFamily token={token} />}
+          >
+            <FormContainer>
+              <ConnectedClubForm token={token} Form={CommentForm} />
+            </FormContainer>
+          </IfActiveEntityIs>
+        ) : (
+          <FormContainer>
+            <ConnectedClubForm token={token} Form={CommentForm} />
+          </FormContainer>
         )}
-      </DoesActiveEntityHasToken>
+      </IfActiveEntityHasToken>
+      <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
+        {(isActiveEntityFromFamily) => (
+          <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+            {(hasToken) => (
+              <FeedForToken
+                disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
+                className="feed-for-token"
+                style={{ marginTop: '60px' }}
+                asset={`${token.network}:${token.address}`}
+              />
+            )}
+          </DoesActiveEntityHasToken>
+        )}
+      </IsActiveEntityFromFamily>
     </DiscoveryContainer>
   </React.Fragment>
 );
@@ -592,6 +624,16 @@ const NoTokensWarning = ({ token }) => (
     <div>
       <p style={{ fontSize: '21px' }}>You can’t participate</p>
       <p style={{ fontSize: '14px' }}>Aquire {token.name} to join this club</p>
+    </div>
+  </WarningContainer>
+);
+
+const ActiveEntityIsNotFromFamily = ({ token }) => (
+  <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
+    <ExclamationMark style={{ marginRight: '30px' }} />
+    <div>
+      <p style={{ fontSize: '21px' }}>You can’t participate</p>
+      <p style={{ fontSize: '14px' }}>Switch your avatar to {token.name}</p>
     </div>
   </WarningContainer>
 );
