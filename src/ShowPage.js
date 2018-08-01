@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
 import {
@@ -10,14 +11,22 @@ import {
   LinkedActiveEntityAvatar,
   ActiveEntityName,
 } from './Entity';
+import AppContext from './Context';
 import IdentityAvatar from './Avatar';
 import Modal from './Modal';
-import { FacebookIcon, GithubIcon, TwitterIcon, InstagramIcon, socialColors } from './Icons';
+import { socialIcons } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
-import { FeedCatvertised } from './Catvertised';
+import Catvertised from './Catvertised';
 import { TokenImage } from './erc20';
 import { HeaderSpacer } from './Header';
+import { FlatContainer, ContentContainer, H1, H2, H3, SocialUsername } from './Components';
+
+const Advertised = styled(Catvertised)`
+  box-shadow: unset;
+  padding: unset;
+  border: unset;
+`;
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -43,106 +52,105 @@ export default class ShowPage extends Component {
     clearInterval(this.refreshInterval);
   }
 
-  static HeroImageContainer = styled.div`
+  static ProfileImageContainer = styled.div`
     position: relative;
-    background-color: ${({ backgroundColor }) => backgroundColor || 'none'};
-    height: 30rem;
-    text-align: center;
+    padding-top: 69%;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden;
+    background-color: ${({ backgroundColor }) => backgroundColor || '#f8f9fd'};
+  `;
 
-    @media (max-width: 770px) {
-      height: 15rem;
-    }
+  static ProfileImage = styled.img`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   `;
 
   static FeedContainer = styled.div`
     padding: 20px 0.75rem;
   `;
 
-  static EntityName = styled.h1`
-    font-size: 3rem;
-    @media (max-width: 770px) {
-      font-size: 2rem;
-      text-align: center;
-    }
-  `;
-
   render() {
     const { entityId } = this.props.match.params;
+
     return (
-      <React.Fragment>
-        <Entity id={entityId}>
-          {(entity) => (
-            <React.Fragment>
-              <ShowPage.HeroImageContainer backgroundColor={entity.color}>
-                <HeaderSpacer />
-                <img src={entity.image_url} style={{ height: '100%' }} alt={entity.id} />
-                <EntityTokensContainer>
-                  {entity.tokens.map((token) => <Erc20Token key={token} asset={token} />)}
-                </EntityTokensContainer>
-              </ShowPage.HeroImageContainer>
-              <ShowPage.FeedContainer className="container">
-                <div className="columns">
-                  <div className="column is-6 is-offset-3">
-                    <ShowPage.EntityName>
-                      <EntityName id={entity.id} />
-                    </ShowPage.EntityName>
-                  </div>
-                </div>
-                <div className="columns">
-                  <div className="column is-6 is-offset-3" style={{ display: 'flex' }}>
-                    <IfIsActiveEntity
-                      id={entity.id.toString()}
-                      then={<SocialBadges editable {...entity} />}
-                      other={<SocialBadges {...entity} />}
-                    />
-                  </div>
-                </div>
-                <IfActiveEntity>
-                  {(token) => (
-                    <div className="columns">
-                      <div className="column is-6 is-offset-3">
-                        <div
-                          className="box cp-box"
-                          style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}
-                        >
-                          <article className="media">
-                            <div className="media-left">
-                              <LinkedActiveEntityAvatar size="large" />
+      <Entity id={entityId}>
+        {(entity) => (
+          <ContentContainer>
+            <HeaderSpacer style={{ marginBottom: '60px' }} />
+            <div className="columns">
+              <div className="column is-3">
+                <ShowPage.ProfileImageContainer backgroundColor={entity.color}>
+                  <ShowPage.ProfileImage src={entity.image_url} alt={entity.id} />
+                </ShowPage.ProfileImageContainer>
+                <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
+                  <H2>
+                    <EntityName id={entity.id} />
+                  </H2>
+                  <H3>Seen In</H3>
+                  <IfIsActiveEntity
+                    id={entity.id.toString()}
+                    then={<SocialList editable {...entity} />}
+                    other={<SocialList {...entity} />}
+                  />
+                </FlatContainer>
+                <FlatContainer style={{ marginTop: '30px' }}>
+                  <AppContext.Consumer>
+                    {({ boostStore: { getBoosts } }) => <Advertised getBoosts={getBoosts} token={entityId} />}
+                  </AppContext.Consumer>
+                </FlatContainer>
+              </div>
+              <div className="column is-8 is-offset-1">
+                <ShowPage.FeedContainer>
+                  <IfActiveEntity>
+                    {(token) => (
+                      <div
+                        className="box cp-box"
+                        style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}
+                      >
+                        <article className="media">
+                          <div className="media-left">
+                            <LinkedActiveEntityAvatar size="large" />
+                          </div>
+                          <div className="media-content">
+                            <div className="content">
+                              <Link
+                                to={`/${token}`}
+                                style={{
+                                  fontFamily: 'Rubik',
+                                  fontSize: '1.1rem',
+                                  fontWeight: '500',
+                                }}
+                              >
+                                <ActiveEntityName />
+                              </Link>
+                              <IfIsActiveEntity
+                                id={entity.id.toString()}
+                                then={<ConnectedCommentForm Form={CommentForm} />}
+                                other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
+                              />
                             </div>
-                            <div className="media-content">
-                              <div className="content">
-                                <Link
-                                  to={`/${token}`}
-                                  style={{
-                                    fontFamily: 'Rubik',
-                                    fontSize: '1.1rem',
-                                    fontWeight: '500',
-                                  }}
-                                >
-                                  <ActiveEntityName />
-                                </Link>
-                                <IfIsActiveEntity
-                                  id={entity.id.toString()}
-                                  then={<ConnectedCommentForm Form={CommentForm} />}
-                                  other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
-                                />
-                              </div>
-                            </div>
-                          </article>
-                        </div>
+                          </div>
+                        </article>
                       </div>
-                    </div>
-                  )}
-                </IfActiveEntity>
-                <div className="columns">
-                  <FeedCatvertised token={entityId} />
-                  <ConnectedFeed forEntity={entity} className={'column is-6'} />
-                </div>
-              </ShowPage.FeedContainer>
+                    )}
+                  </IfActiveEntity>
+                  <ConnectedFeed forEntity={entity} className="todo" />
+                </ShowPage.FeedContainer>
+              </div>
+            </div>
+            <React.Fragment>
+              <EntityTokensContainer>
+                {entity.tokens.map((token) => <Erc20Token key={token} asset={token} />)}
+              </EntityTokensContainer>
             </React.Fragment>
-          )}
-        </Entity>
-      </React.Fragment>
+          </ContentContainer>
+        )}
+      </Entity>
     );
   }
 }
@@ -166,28 +174,14 @@ const EntityTokensContainer = styled.div`
   bottom: 0;
 `;
 
-const Badge = styled.a`
-  width: 60px;
-  height: 60px;
-  outline: none;
-  border: none;
-  border-radius: 50%;
-  position: relative;
-  z-index: 1;
+const SocialBadge = styled.a`
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: ${({ href }) => (href ? 'pointer' : 'default')};
-  color: ${({ href }) => (href ? 'white !important' : '#94919c')};
-  background-color: ${({ href, activeColor }) => (href ? activeColor : '#eef2f5')}
+  padding-bottom: 15px;
+  cursor: pointer;
 
-  &:hover {
-    color: ${({ href }) => (href ? 'white' : '#94919c')};
-  }
-
-  @media (max-width: 770px) {
-    width: 50px;
-    height: 50px;
+  :last-child {
+    padding-bottom: 0;
   }
 `;
 
@@ -197,23 +191,11 @@ const InlineButton = styled.button`
   border: none;
   cursor: pointer;
   color: #623cea;
-  &:hover {
-    color: #2f2670;
-  }
 `;
 
-const SocialBadge = styled.div`
-  text-align: center;
-
-  & + & {
-    margin-left: 20px;
-  }
-
-  @media (max-width: 770px) {
-    & + & {
-      margin-left: 0;
-    }
-  }
+const SocialIcon = styled(({ type, ...restProps }) => React.createElement(socialIcons[type], restProps))`
+  width: 24px;
+  height: 24px;
 `;
 
 const LabelModal = styled(Modal)`
@@ -227,7 +209,7 @@ const LabelModal = styled(Modal)`
   border-radius: 4px;
 `;
 
-export class SocialBadges extends React.Component {
+export class SocialList extends React.Component {
   static VALID_LABEL_EXPRESSIONS = {
     facebook: /http(s)?:\/\/(www\.)?(facebook|fb)\.com\/(A-z 0-9 _ - \.)\/?/,
     twitter: /http(s)?:\/\/(.*\.)?twitter\.com\/[A-z 0-9 _]+\/?/,
@@ -251,14 +233,14 @@ export class SocialBadges extends React.Component {
   };
 
   EditButton = ({ labelType }) => (
-    <InlineButton onClick={this.editLabel(labelType)} style={{ fontSize: '1rem' }}>
+    <InlineButton onClick={this.editLabel(labelType)} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
       {this.props.editable && 'Edit'}
     </InlineButton>
   );
 
   validate = (label) => {
     const { editing: labelType } = this.state;
-    return label === '' || SocialBadges.VALID_LABEL_EXPRESSIONS[labelType].test(label);
+    return label === '' || SocialList.VALID_LABEL_EXPRESSIONS[labelType].test(label);
   };
 
   normalizeHref = (href) => {
@@ -266,61 +248,68 @@ export class SocialBadges extends React.Component {
   };
 
   static Container = styled.div`
+    width: 100%;
     position: relative;
     display: flex;
-    width: 100%;
-
-    @media (max-width: 770px) {
-      justify-content: space-between;
-    }
+    flex-direction: column;
   `;
 
   render() {
     const {
       EditButton,
       normalizeHref,
-      props: { facebook, twitter, instagram, github, id },
+      props: { facebook, twitter, instagram, github, id, editable },
     } = this;
     return (
-      <SocialBadges.Container>
-        <SocialBadge>
-          <Entity id={id}>
-            {({ url, color, image_url }) => (
-              <Badge
-                href={url}
-                children={<IdentityAvatar entity={id} backgroundColor={color} size="medium" src={image_url} />}
-              />
-            )}
-          </Entity>
-        </SocialBadge>
-        <SocialBadge>
-          <Badge activeColor={socialColors.facebook} href={normalizeHref(facebook)} children={<FacebookIcon />} />
-          <EditButton labelType="facebook" />
-        </SocialBadge>
-        <SocialBadge>
-          <Badge activeColor={socialColors.twitter} href={normalizeHref(twitter)} children={<TwitterIcon />} />
-          <EditButton labelType="twitter" />
-        </SocialBadge>
-        <SocialBadge>
-          <Badge activeColor={socialColors.instagram} href={normalizeHref(instagram)} children={<InstagramIcon />} />
-          <EditButton labelType="instagram" />
-        </SocialBadge>
-        <SocialBadge>
-          <Badge activeColor={socialColors.github} href={normalizeHref(github)} children={<GithubIcon />} />
-          <EditButton labelType="github" />
-        </SocialBadge>
+      <SocialList.Container>
+        <Entity id={id}>
+          {({ url, color, name, image_url }) => (
+            <SocialBadge href={url}>
+              <IdentityAvatar entity={id} backgroundColor={color} size="verySmall" src={image_url} />
+              <span style={{ marginLeft: '15px' }}>{name}</span>
+            </SocialBadge>
+          )}
+        </Entity>
+        {(facebook || editable) && (
+          <SocialBadge href={normalizeHref(facebook)}>
+            <SocialIcon type="facebook" />
+            <SocialUsername link={facebook} style={{ marginLeft: '15px' }} />
+            <EditButton labelType="facebook" />
+          </SocialBadge>
+        )}
+        {(twitter || editable) && (
+          <SocialBadge>
+            <SocialIcon type="twitter" />
+            <SocialUsername link={twitter} style={{ marginLeft: '15px' }} />
+            <EditButton labelType="twitter" />
+          </SocialBadge>
+        )}
+        {(instagram || editable) && (
+          <SocialBadge>
+            <SocialIcon type="instagram" />
+            <SocialUsername link={instagram} style={{ marginLeft: '15px' }} />
+            <EditButton labelType="instagram" />
+          </SocialBadge>
+        )}
+        {(github || editable) && (
+          <SocialBadge>
+            <SocialIcon type="github" />
+            <SocialUsername link={github} style={{ marginLeft: '15px' }} />
+            <EditButton labelType="github" />
+          </SocialBadge>
+        )}
         {this.state.editing && (
           <LabelModal onClose={this.editLabel(undefined)}>
             <ConnectedLabelForm
               Form={ReplyForm}
               validate={this.validate}
-              placeholder={SocialBadges.PLACEHOLDERS[this.state.editing]}
+              placeholder={SocialList.PLACEHOLDERS[this.state.editing]}
               labelType={this.state.editing}
               onSubmit={this.editLabel(undefined)}
             />
           </LabelModal>
         )}
-      </SocialBadges.Container>
+      </SocialList.Container>
     );
   }
 }

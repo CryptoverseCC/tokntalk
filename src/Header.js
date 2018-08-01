@@ -37,7 +37,6 @@ const StyledHeader = styled.div`
 
   @media (max-width: 1280px) {
     width: 100%;
-    border-radius: 0;
   }
 `;
 

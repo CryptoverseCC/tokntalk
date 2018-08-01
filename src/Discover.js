@@ -18,7 +18,8 @@ import { ExclamationMark } from './Icons';
 import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem } from './api';
-import { GithubIcon, TwitterIcon, InstagramIcon, FacebookIcon, socialColors } from './Icons';
+import { socialIcons } from './Icons';
+import { FlatContainer, WarningContainer, H1, H2, H3, SocialUsername, ContentContainer } from './Components';
 import {
   EntityName,
   LinkedEntityAvatar,
@@ -74,7 +75,7 @@ class Index extends Component {
 
   render() {
     return (
-      <DiscoveryContainer>
+      <ContentContainer>
         <HeaderSpacer />
         <H1 style={{ margin: '60px 0' }}>Discover</H1>
         <div className="columns">
@@ -102,7 +103,7 @@ class Index extends Component {
           </div>
           <div className="column is-3 is-offset-1" />
         </div>
-      </DiscoveryContainer>
+      </ContentContainer>
     );
   }
 }
@@ -165,7 +166,7 @@ const ByToken = ({ match, token }) => (
       className="is-flex"
       style={{ alignItems: 'center' }}
     >
-      <DiscoveryContainer style={{ flex: 1 }}>
+      <ContentContainer style={{ flex: 1 }}>
         <Link to="/discover">
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1">
@@ -196,9 +197,9 @@ const ByToken = ({ match, token }) => (
             <H1>{token.name}</H1>
           </div>
         </div>
-      </DiscoveryContainer>
+      </ContentContainer>
     </Hero>
-    <DiscoveryContainer>
+    <ContentContainer>
       <div className="columns">
         <div className="column is-8">
           <FlatContainer>
@@ -258,7 +259,7 @@ const ByToken = ({ match, token }) => (
           </FlatContainer>
         </div>
       </div>
-    </DiscoveryContainer>
+    </ContentContainer>
   </React.Fragment>
 );
 
@@ -343,7 +344,7 @@ const RecentlyActivePage = ({ token }) => (
       className="is-flex"
       style={{ alignItems: 'center' }}
     >
-      <DiscoveryContainer style={{ flex: 1 }}>
+      <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1">
@@ -364,22 +365,15 @@ const RecentlyActivePage = ({ token }) => (
             <H1>Recently active</H1>
           </div>
         </div>
-      </DiscoveryContainer>
+      </ContentContainer>
     </Hero>
-    <DiscoveryContainer>
+    <ContentContainer>
       <FlatContainer>
         <RecentlyActive asset={`${token.network}:${token.address}`} />
       </FlatContainer>
-    </DiscoveryContainer>
+    </ContentContainer>
   </React.Fragment>
 );
-
-const socialIcons = {
-  github: (props) => <GithubIcon color={socialColors.github} {...props} />,
-  twitter: (props) => <TwitterIcon color={socialColors.twitter} {...props} />,
-  instagram: (props) => <InstagramIcon color={socialColors.instagram} {...props} />,
-  facebook: (props) => <FacebookIcon color={socialColors.facebook} {...props} />,
-};
 
 const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
   const Icon = socialIcons[social];
@@ -406,7 +400,9 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
                     <Link to={`/${context}`}>
                       <EntityName id={context} />
                     </Link>
-                    <SocialLink social={social} target={target} />
+                    <a href={target} target="_blank" rel="noopener">
+                      <SocialUsername link={target} />
+                    </a>
                   </EntityInfo>
                 </EntityContainer>
               ))
@@ -422,17 +418,6 @@ const SocialHeader = styled.p`
   font-weight: 600;
 `;
 
-const SocialLink = ({ target, social }) => {
-  const result = /\/([^/]+)(\/?)$/.exec(target);
-  const username = result && result[1] ? result[1] : target;
-
-  return (
-    <a href={target} target="_blank">
-      {username}
-    </a>
-  );
-};
-
 const SocialPage = ({ token }) => (
   <React.Fragment>
     <Hero
@@ -441,7 +426,7 @@ const SocialPage = ({ token }) => (
       className="is-flex"
       style={{ alignItems: 'center' }}
     >
-      <DiscoveryContainer style={{ flex: 1 }}>
+      <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1">
@@ -462,9 +447,9 @@ const SocialPage = ({ token }) => (
             <H1>In Media</H1>
           </div>
         </div>
-      </DiscoveryContainer>
+      </ContentContainer>
     </Hero>
-    <DiscoveryContainer>
+    <ContentContainer>
       <div className="columns">
         <div className="column is-one-fourth">
           <FlatContainer>
@@ -487,7 +472,7 @@ const SocialPage = ({ token }) => (
           </FlatContainer>
         </div>
       </div>
-    </DiscoveryContainer>
+    </ContentContainer>
   </React.Fragment>
 );
 
@@ -499,7 +484,7 @@ const FeedPage = ({ token }) => (
       className="is-flex"
       style={{ alignItems: 'center' }}
     >
-      <DiscoveryContainer style={{ flex: 1 }}>
+      <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1">
@@ -520,9 +505,9 @@ const FeedPage = ({ token }) => (
             <H1>Feed</H1>
           </div>
         </div>
-      </DiscoveryContainer>
+      </ContentContainer>
     </Hero>
-    <DiscoveryContainer>
+    <ContentContainer>
       <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
         {token.is721 ? (
           <IfActiveEntityIs
@@ -553,7 +538,7 @@ const FeedPage = ({ token }) => (
           </DoesActiveEntityHasToken>
         )}
       </IsActiveEntityFromFamily>
-    </DiscoveryContainer>
+    </ContentContainer>
   </React.Fragment>
 );
 
@@ -754,37 +739,6 @@ const FormContainer = styled.div`
   padding: 15px;
   background-color: #ffffff;
   border: solid 1px #f0eef6;
-`;
-
-const FlatContainer = styled.div`
-  border-radius: 12px;
-  padding: 30px;
-  background-color: #f8f9fd;
-`;
-
-const WarningContainer = FlatContainer.extend`
-  background-color: rgba(255, 234, 142, 0.75);
-`;
-
-const H1 = styled.p`
-  font-size: 46px;
-  font-weight: bold;
-`;
-
-const H2 = styled.p`
-  font-size: 28px;
-  font-weight: 600;
-`;
-
-const H3 = styled.p`
-  font-size: 21px;
-  font-weight: 600;
-`;
-
-const DiscoveryContainer = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 const EntityContainer = styled.div`

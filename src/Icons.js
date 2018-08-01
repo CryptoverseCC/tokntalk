@@ -8,6 +8,13 @@ export const socialColors = {
   github: '#24292e',
 };
 
+export const socialIcons = {
+  github: (props) => <GithubIcon color={socialColors.github} {...props} />,
+  twitter: (props) => <TwitterIcon color={socialColors.twitter} {...props} />,
+  instagram: (props) => <InstagramIcon color={socialColors.instagram} {...props} />,
+  facebook: (props) => <FacebookIcon color={socialColors.facebook} {...props} />,
+};
+
 export const FacebookIcon = styled.svg.attrs({
   width: '18px',
   height: '28px',
