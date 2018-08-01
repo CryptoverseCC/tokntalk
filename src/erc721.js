@@ -100,5 +100,13 @@ export default [
     image_url: "https://storage.googleapis.com/opensea-prod.appspot.com/0xc70be5b7c19529ef642d16c10dfe91c58b5c3bf0.png",
     external_link: "https://www.mythereum.io/",
     entityPrefix: "Card #"
+  },
+  {
+    address: "0x663e4229142a27f00bafb5d087e1e730648314c3",
+    name: "PandaEarth",
+    symbol: "PE",
+    image_url: "https://storage.googleapis.com/opensea-static/panda-earth-logo.png",
+    external_link: "https://panda.earth",
+    entityPrefix: "Panda #"
   }
 ];

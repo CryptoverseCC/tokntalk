@@ -66,6 +66,9 @@ import etheremonCover from './img/tokens/etheremon.png';
 import mythereum from './img/tokens/mythereum-icon.png';
 import mythereumCover from './img/tokens/mythereum.png';
 
+import pandaearth from './img/tokens/pandaearth-icon.png';
+import pandaearthCover from './img/tokens/pandaearth.png';
+
 const ercs20 = [
   {
     network: 'ethereum',
@@ -206,6 +209,18 @@ const ercs20 = [
     symbol: "MYTH",
     logo: mythereum,
     coverImage: mythereumCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: "0x663e4229142a27f00bafb5d087e1e730648314c3",
+    name: "PandaEarth",
+    symbol: "PE",
+    logo: pandaearth,
+    coverImage: pandaearthCover,
     primaryColor: '#121212',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
