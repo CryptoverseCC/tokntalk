@@ -1,5 +1,8 @@
 import React from 'react';
 
+import cryptokitties from './img/tokens/cryptobots-icon.svg';
+import cryptokittiesCover from './img/tokens/cryptobots.png';
+
 import cryptobots from './img/tokens/cryptobots-icon.svg';
 import cryptobotsCover from './img/tokens/cryptobots.png';
 
@@ -51,6 +54,18 @@ import ethtownCover from './img/tokens/ethtown.png';
 const ercs20 = [
   {
     network: 'ethereum',
+    address: '0x06012c8cf97bead5deae237070f9587f8e7a266d',
+    name: 'Kitties',
+    symbol: 'CK',
+    logo: cryptokitties,
+    coverImage: cryptokittiesCover,
+    primaryColor: '#ffffff',
+    secondaryColor: '#3D5000',
+    shadowColor: 'rgba(30,59,11,0.2)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
     address: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
     name: 'Bots',
     symbol: 'CBT',
@@ -83,6 +98,42 @@ const ercs20 = [
     primaryColor: '#ffffff',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(30,59,11,0.2)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: '0xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72',
+    name: 'Known Origin',
+    symbol: 'KODA',
+    logo: knownorigin,
+    coverImage: knownoriginCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: '0xdcaad9fd9a74144d226dbf94ce6162ca9f09ed7e',
+    name: 'CryptoStrikers',
+    symbol: 'STRK',
+    logo: cryptostrikers,
+    coverImage: cryptostrikersCover,
+    primaryColor: '#BEC4CB',
+    secondaryColor: '#2D1F18',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: '0x4fece400c0d3db0937162ab44bab34445626ecfe',
+    name: 'ETH TOWN',
+    symbol: 'HERO',
+    logo: ethtown,
+    coverImage: ethtownCover,
+    primaryColor: '#121212',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(200,249,255,0.6)',
     is721: true,
   },
   {
@@ -195,42 +246,6 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
   },*/
-  {
-    network: 'ethereum',
-    address: '0xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72',
-    name: 'Known Origin',
-    symbol: 'KODA',
-    logo: knownorigin,
-    coverImage: knownoriginCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
-    is721: true,
-  },
-  {
-    network: 'ethereum',
-    address: '0xdcaad9fd9a74144d226dbf94ce6162ca9f09ed7e',
-    name: 'CryptoStrikers',
-    symbol: 'STRK',
-    logo: cryptostrikers,
-    coverImage: cryptostrikersCover,
-    primaryColor: '#BEC4CB',
-    secondaryColor: '#2D1F18',
-    shadowColor: 'rgba(200,249,255,0.6)',
-    is721: true,
-  },
-  {
-    network: 'ethereum',
-    address: '0x4fece400c0d3db0937162ab44bab34445626ecfe',
-    name: 'ETH TOWN',
-    symbol: 'HERO',
-    logo: ethtown,
-    coverImage: ethtownCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
-    is721: true,
-  },
 ];
 
 const sizes = {
