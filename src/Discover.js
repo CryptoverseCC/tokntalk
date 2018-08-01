@@ -238,7 +238,7 @@ const ByToken = ({ match, token }) => (
                     disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
                     className="feed-for-token"
                     style={{ marginTop: '60px' }}
-                    asset={`${token.network}:${token.address}`}
+                    token={token}
                   />
                 )}
               </DoesActiveEntityHasToken>
@@ -547,7 +547,7 @@ const FeedPage = ({ token }) => (
                 disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
                 className="feed-for-token"
                 style={{ marginTop: '60px' }}
-                asset={`${token.network}:${token.address}`}
+                token={token}
               />
             )}
           </DoesActiveEntityHasToken>
@@ -651,8 +651,9 @@ export class FeedForToken extends Component {
   }
 
   fetchFeed = async () => {
-    const { asset } = this.props;
     this.setState({ loading: true });
+    const { token } = this.props;
+    const asset = `${token.network}:${token.address}`;
 
     try {
       const { items } = await getRanking([
@@ -661,7 +662,7 @@ export class FeedForToken extends Component {
           params: { id: asset },
         },
         {
-          algorithm: 'experimental_author_balance',
+          algorithm: token.is721 ? 'experimental_filter_origin' : 'experimental_author_balance',
           params: { asset },
         },
       ]);
@@ -680,8 +681,9 @@ export class FeedForToken extends Component {
   };
 
   render() {
-    const { className, style, asset, disabledInteractions } = this.props;
+    const { className, style, token, disabledInteractions } = this.props;
     const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
+    const asset = `${token.network}:${token.address}`;
 
     return (
       <AppContext.Consumer>
