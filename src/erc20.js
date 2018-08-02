@@ -69,8 +69,8 @@ import mythereumCover from './img/tokens/mythereum.png';
 import pandaearth from './img/tokens/pandaearth-icon.png';
 import pandaearthCover from './img/tokens/pandaearth.png';
 
-import sanmari from './img/tokens/sanmaricoin-icon.png';
-import sanmariCover from './img/tokens/sanmaricoin.png';
+import sanmaricoin from './img/tokens/sanmaricoin-icon.png';
+import sanmaricoinCover from './img/tokens/sanmaricoin.png';
 
 import kiyosalo from './img/tokens/kst-icon.png';
 import kiyosaloCover from './img/tokens/kst.jpg';
@@ -230,7 +230,7 @@ const ercs20 = [
     symbol: 'PE',
     logo: pandaearth,
     coverImage: pandaearthCover,
-    primaryColor: '#ffffff',
+    primaryColor: '#EEEEEE',
     secondaryColor: '#332f2c',
     shadowColor: 'rgba(51,47,44,0.1)',
     is721: true,
@@ -242,9 +242,9 @@ const ercs20 = [
     symbol: 'AVO',
     logo: avocado,
     coverImage: avocadoCover,
-    primaryColor: '#ffffff',
+    primaryColor: '#CDFA7F',
     secondaryColor: '#3D5000',
-    shadowColor: 'rgba(30,59,11,0.2)',
+    shadowColor: 'rgba(61,80,0,0.2)',
   },
   /*{
     network: 'ethereum',
@@ -361,8 +361,8 @@ const ercs20 = [
     address: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
     name: 'Kiyosalo',
     symbol: 'KST',
-    logo: kst,
-    coverImage: kstCover,
+    logo: kiyosalo,
+    coverImage: kiyosaloCover,
     primaryColor: '#9AF6E1',
     secondaryColor: '#1F987B',
     shadowColor: 'rgba(31,152,123,0.2)',
