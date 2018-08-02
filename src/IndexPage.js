@@ -6,7 +6,8 @@ import Hero from './Hero';
 import { FeedCatvertised } from './Catvertised';
 import { HeaderSpacer } from './Header';
 
-const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
+const { REACT_APP_DEFAULT_OWNER: DEFAULT_OWNER } = process.env;
+const { REACT_APP_DEFAULT_TOKEN: DEFAULT_TOKEN } = process.env;
 
 export default class IndexPage extends Component {
   componentDidMount() {
@@ -26,7 +27,7 @@ export default class IndexPage extends Component {
         <HeaderSpacer />
         <Hero />
         <FeedContainer>
-          <FeedCatvertised token={DEFAULT_TOKEN_ID} />
+          <FeedCatvertised owner={DEFAULT_OWNER} token={DEFAULT_TOKEN}/>
           <ConnectedFeed className="column is-6" />
         </FeedContainer>
       </React.Fragment>

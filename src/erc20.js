@@ -93,6 +93,10 @@ const ercs20 = [
     secondaryColor: '#C23DA8',
     shadowColor: 'rgba(194,61,168,0.2)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -117,6 +121,10 @@ const ercs20 = [
     secondaryColor: '#1D132D',
     shadowColor: 'rgba(193,205,109,0.3)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -129,6 +137,10 @@ const ercs20 = [
     secondaryColor: '#FFFFFF',
     shadowColor: 'rgba(224,81,184,0.3)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -141,6 +153,10 @@ const ercs20 = [
     secondaryColor: '#F05E40',
     shadowColor: 'rgba(247,165,148,0.3)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0x323a3e1693e7a0959f65972f3bf2dfcb93239dfe:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -153,6 +169,10 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -165,6 +185,10 @@ const ercs20 = [
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(190,196,203,0.4)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0xdcaad9fd9a74144d226dbf94ce6162ca9f09ed7e:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -177,6 +201,10 @@ const ercs20 = [
     secondaryColor: '#283861',
     shadowColor: 'rgba(118,103,170,0.26)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0x4fece400c0d3db0937162ab44bab34445626ecfe:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -189,6 +217,10 @@ const ercs20 = [
     secondaryColor: '#FCE478',
     shadowColor: 'rgba(52,58,64,0.2)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0x71c118b00759b0851785642541ceb0f4ceea0bd5:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -201,6 +233,10 @@ const ercs20 = [
     secondaryColor: '#030F23',
     shadowColor: 'rgba(186,210,237,0.3)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0x87d598064c736dd0c712d329afcfaa0ccc1921a1:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -213,6 +249,10 @@ const ercs20 = [
     secondaryColor: '#382320',
     shadowColor: 'rgba(216,206,203,0.6)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0xabc7e6c01237e8eef355bba2bf925a730b714d5f:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -225,6 +265,10 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(1,2,6,0.2)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0xb2c0782ae4a299f7358758b2d15da9bf29e1dd99:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -237,6 +281,10 @@ const ercs20 = [
     secondaryColor: '#F7DC8D',
     shadowColor: 'rgba(75,30,6,0.4)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0xc70be5b7c19529ef642d16c10dfe91c58b5c3bf0:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -249,6 +297,10 @@ const ercs20 = [
     secondaryColor: '#332f2c',
     shadowColor: 'rgba(51,47,44,0.1)',
     is721: true,
+    payments: {
+      owner: 'ethereum:0x663e4229142a27f00bafb5d087e1e730648314c3:1',
+      token: 'ethereum'
+    }
   },
   {
     network: 'ethereum',
@@ -260,6 +312,9 @@ const ercs20 = [
     primaryColor: '#CDFA7F',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(61,80,0,0.2)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   /*{
     network: 'ethereum',
@@ -282,6 +337,9 @@ const ercs20 = [
     primaryColor: '#BEC4CB',
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(88,66,54,0.25)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   {
     network: 'ethereum',
@@ -293,6 +351,9 @@ const ercs20 = [
     primaryColor: '#1F1826',
     secondaryColor: '#30D7A9',
     shadowColor: 'rgba(31,24,38,0.3)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   {
     network: 'ethereum',
@@ -304,6 +365,9 @@ const ercs20 = [
     primaryColor: '#C6FFF4',
     secondaryColor: '#276C5E',
     shadowColor: 'rgba(82,211,185,0.3)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   /*{
     network: 'ethereum',
@@ -315,6 +379,9 @@ const ercs20 = [
     primaryColor: '#002D64',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(31,54,90,0.5)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },*/
   {
     network: 'ethereum',
@@ -326,6 +393,9 @@ const ercs20 = [
     primaryColor: '#1A52EF',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(26,82,239,0.3)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   {
     network: 'ethereum',
@@ -337,6 +407,9 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   /*{
     network: 'ethereum',
@@ -348,6 +421,9 @@ const ercs20 = [
     primaryColor: '#5B6CEE',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(91,108,238,0.5)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },*/
   /*{
     network: 'ethereum',
@@ -359,6 +435,9 @@ const ercs20 = [
     primaryColor: '#3C3C3C',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },*/
   {
     network: 'ethereum',
@@ -370,6 +449,9 @@ const ercs20 = [
     primaryColor: '#C8D5FF',
     secondaryColor: '#1639AA',
     shadowColor: 'rgba(22,57,170,0.2)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   {
     network: 'ethereum',
@@ -381,6 +463,9 @@ const ercs20 = [
     primaryColor: '#9AF6E1',
     secondaryColor: '#1F987B',
     shadowColor: 'rgba(31,152,123,0.2)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
   {
     network: 'ethereum',
@@ -392,6 +477,9 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
+    payments: {
+      owner: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+    }
   },
 ];
 

@@ -100,7 +100,7 @@ export default class ShowPage extends Component {
                 </FlatContainer>
                 <FlatContainer style={{ marginTop: '30px' }}>
                   <AppContext.Consumer>
-                    {({ boostStore: { getBoosts } }) => <Advertised getBoosts={getBoosts} token={entityId} />}
+                    {({ boostStore: { getBoosts } }) => <Advertised getBoosts={getBoosts} owner={entityId} token="ethereum"/>}
                   </AppContext.Consumer>
                 </FlatContainer>
               </div>

@@ -181,9 +181,7 @@ export default class App extends Component {
 
   getBoosts = async (tokenId) => {
     const boosts = await getBoosts(tokenId);
-    if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
-      this.setState({ boosts });
-    }
+    this.setState({ boosts });
   };
 
   get isBoostable() {
