@@ -57,11 +57,14 @@ import cryptosagaCover from './img/tokens/cryptosaga.png';
 import chibi from './img/tokens/chibi-icon.png';
 import chibiCover from './img/tokens/chibi.png';
 
-import cryptofighters from './img/tokens/cryptofighters-icon.png';
+import cryptofighters from './img/tokens/cryptofighters-icon.svg';
 import cryptofightersCover from './img/tokens/cryptofighters.png';
 
 import etheremon from './img/tokens/etheremon-icon.png';
 import etheremonCover from './img/tokens/etheremon.png';
+
+import kst from './img/tokens/kst-icon.png';
+import kstCover from './img/tokens/kst.jpg';
 
 import mythereum from './img/tokens/mythereum-icon.png';
 import mythereumCover from './img/tokens/mythereum.png';
@@ -69,32 +72,35 @@ import mythereumCover from './img/tokens/mythereum.png';
 import pandaearth from './img/tokens/pandaearth-icon.png';
 import pandaearthCover from './img/tokens/pandaearth.png';
 
-import percent from './img/tokens/pandaearth-icon.png';
-import percentCover from './img/tokens/pandaearth.png';
+import percent from './img/tokens/percent-icon.svg';
+import percentCover from './img/tokens/percent.png';
+
+import sanmaricoin from './img/tokens/sanmaricoin-icon.png';
+import sanmaricoinCover from './img/tokens/sanmaricoin.png';
 
 const ercs20 = [
   {
     network: 'ethereum',
     address: '0x06012c8cf97bead5deae237070f9587f8e7a266d',
-    name: 'Kitties',
+    name: 'Cryptokitties',
     symbol: 'CK',
     logo: cryptokitties,
     coverImage: cryptokittiesCover,
-    primaryColor: '#ffffff',
-    secondaryColor: '#3D5000',
-    shadowColor: 'rgba(30,59,11,0.2)',
+    primaryColor: '#FFD9FF',
+    secondaryColor: '#C23DA8',
+    shadowColor: 'rgba(194,61,168,0.2)',
     is721: true,
   },
   {
     network: 'ethereum',
     address: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
-    name: 'Bots',
+    name: 'Cryptobots',
     symbol: 'CBT',
     logo: cryptobots,
     coverImage: cryptobotsCover,
-    primaryColor: '#ffffff',
-    secondaryColor: '#3D5000',
-    shadowColor: 'rgba(30,59,11,0.2)',
+    primaryColor: '#EFF7B6',
+    secondaryColor: '#1D132D',
+    shadowColor: 'rgba(193,205,109,0.3)',
     is721: true,
   },
   {
@@ -104,9 +110,9 @@ const ercs20 = [
     symbol: 'MOJI',
     logo: ethmoji,
     coverImage: ethmojiCover,
-    primaryColor: '#ffffff',
-    secondaryColor: '#3D5000',
-    shadowColor: 'rgba(30,59,11,0.2)',
+    primaryColor: '#E051BA',
+    secondaryColor: '#FFFFFF',
+    shadowColor: 'rgba(224,81,184,0.3)',
     is721: true,
   },
   {
@@ -116,9 +122,9 @@ const ercs20 = [
     symbol: 'DAC',
     logo: dac,
     coverImage: dacCover,
-    primaryColor: '#ffffff',
-    secondaryColor: '#3D5000',
-    shadowColor: 'rgba(30,59,11,0.2)',
+    primaryColor: '#DDE1F1',
+    secondaryColor: '#F05E40',
+    shadowColor: 'rgba(247,165,148,0.3)',
     is721: true,
   },
   {
@@ -128,7 +134,7 @@ const ercs20 = [
     symbol: 'KODA',
     logo: knownorigin,
     coverImage: knownoriginCover,
-    primaryColor: '#121212',
+    primaryColor: '#0418D8',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
     is721: true,
@@ -142,7 +148,7 @@ const ercs20 = [
     coverImage: cryptostrikersCover,
     primaryColor: '#BEC4CB',
     secondaryColor: '#2D1F18',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    shadowColor: 'rgba(190,196,203,0.4)',
     is721: true,
   },
   {
@@ -152,9 +158,9 @@ const ercs20 = [
     symbol: 'HERO',
     logo: ethtown,
     coverImage: ethtownCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    primaryColor: '#E8EDFB',
+    secondaryColor: '#283861',
+    shadowColor: 'rgba(118,103,170,0.26)',
     is721: true,
   },
   {
@@ -164,9 +170,9 @@ const ercs20 = [
     symbol: 'CBF',
     logo: chibi,
     coverImage: chibiCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    primaryColor: '#4881ae',
+    secondaryColor: '#FCE478',
+    shadowColor: 'rgba(52,58,64,0.2)',
     is721: true,
   },
   {
@@ -176,9 +182,9 @@ const ercs20 = [
     symbol: 'FIGHTER',
     logo: cryptofighters,
     coverImage: cryptofightersCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    primaryColor: '#BAD2ED',
+    secondaryColor: '#030F23',
+    shadowColor: 'rgba(186,210,237,0.3)',
     is721: true,
   },
   {
@@ -188,9 +194,9 @@ const ercs20 = [
     symbol: 'SAGA',
     logo: cryptosaga,
     coverImage: cryptosagaCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    primaryColor: '#D8CECB',
+    secondaryColor: '#382320',
+    shadowColor: 'rgba(216,206,203,0.6)',
     is721: true,
   },
   {
@@ -200,9 +206,9 @@ const ercs20 = [
     symbol: 'MON',
     logo: etheremon,
     coverImage: etheremonCover,
-    primaryColor: '#121212',
+    primaryColor: '#010206',
     secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    shadowColor: 'rgba(1,2,6,0.2)',
     is721: true,
   },
   {
@@ -212,9 +218,9 @@ const ercs20 = [
     symbol: 'MYTH',
     logo: mythereum,
     coverImage: mythereumCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    primaryColor: '#4B1E06',
+    secondaryColor: '#F7DC8D',
+    shadowColor: 'rgba(75,30,6,0.4)',
     is721: true,
   },
   {
@@ -224,9 +230,9 @@ const ercs20 = [
     symbol: 'PE',
     logo: pandaearth,
     coverImage: pandaearthCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    primaryColor: '#ffffff',
+    secondaryColor: '#332f2c',
+    shadowColor: 'rgba(51,47,44,0.1)',
     is721: true,
   },
   {
@@ -260,7 +266,7 @@ const ercs20 = [
     coverImage: benCover,
     primaryColor: '#BEC4CB',
     secondaryColor: '#2D1F18',
-    shadowColor: 'rgba(88,66,54,0.3)',
+    shadowColor: 'rgba(88,66,54,0.25)',
   },
   {
     network: 'ethereum',
@@ -269,9 +275,9 @@ const ercs20 = [
     symbol: 'MANA',
     logo: mana,
     coverImage: manaCover,
-    primaryColor: '#121212',
-    secondaryColor: '#ffffff',
-    shadowColor: 'rgba(11,63,75,0.4)',
+    primaryColor: '#1F1826',
+    secondaryColor: '#30D7A9',
+    shadowColor: 'rgba(31,24,38,0.3)',
   },
   {
     network: 'ethereum',
@@ -282,8 +288,21 @@ const ercs20 = [
     coverImage: mkrCover,
     primaryColor: '#C6FFF4',
     secondaryColor: '#276C5E',
-    shadowColor: 'rgba(82,211,185,0.5)',
+    shadowColor: 'rgba(82,211,185,0.3)',
   },
+
+  {
+    network: 'ethereum',
+    address: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
+    name: 'Kiyosalo',
+    symbol: 'KST',
+    logo: kst,
+    coverImage: kstCover,
+    primaryColor: '#9AF6E1',
+    secondaryColor: '#1F987B',
+    shadowColor: 'rgba(31,152,123,0.2)',
+  },
+
   /*{
     network: 'ethereum',
     address: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d',
@@ -304,7 +323,7 @@ const ercs20 = [
     coverImage: omgCover,
     primaryColor: '#1A52EF',
     secondaryColor: '#ffffff',
-    shadowColor: 'rgba(26,82,239,0.5)',
+    shadowColor: 'rgba(26,82,239,0.3)',
   },
   {
     network: 'ethereum',
@@ -316,6 +335,17 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
+  },
+  {
+    network: 'ethereum',
+    address: '0xc5fdd3e4665b5d7bc4dc9102622d7cb0fe510b65',
+    name: 'Sanmaricoin',
+    symbol: 'SMC',
+    logo: sanmaricoin,
+    coverImage: sanmaricoinCover,
+    primaryColor: '#C8D5FF',
+    secondaryColor: '#1639AA',
+    shadowColor: 'rgba(22,57,170,0.2)',
   },
   /*{
     network: 'ethereum',
