@@ -31,6 +31,9 @@ import {
   DoesActiveEntityHasToken,
 } from './Entity';
 
+import exportIcon from './img/export.svg';
+
+
 const DiscoveryContext = React.createContext();
 
 export default class Discover extends Component {
@@ -401,7 +404,7 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
                       <EntityName id={context} />
                     </Link>
                     <a href={target} target="_blank" rel="noopener">
-                      <SocialUsername link={target} />
+                      <img alt="" src={exportIcon} style={{ marginRight: '5px' }} /><SocialUsername link={target} />
                     </a>
                   </EntityInfo>
                 </EntityContainer>
