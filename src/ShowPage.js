@@ -20,7 +20,7 @@ import Link from './Link';
 import Advertised from './Catvertised';
 import { TokenImage } from './erc20';
 import { HeaderSpacer } from './Header';
-import { FlatContainer, ContentContainer, H1, H2, H3, SocialUsername } from './Components';
+import { FlatContainer, ContentContainer, H1, H2, H3, H4, SocialUsername } from './Components';
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -85,7 +85,7 @@ export default class ShowPage extends Component {
                   <H2>
                     <EntityName id={entity.id} />
                   </H2>
-                  <H3>Seen In</H3>
+                  <H4 style={{ marginTop: '10px', marginBottom: '10px'}}>Seen In</H4>
                   <IfIsActiveEntity
                     id={entity.id.toString()}
                     then={<SocialList editable {...entity} />}

@@ -115,11 +115,11 @@ const formatCurrency = (value) => {
 };
 
 const CatvertisedTitle = styled.div`
-  font-family: Rubik;
-  font-size: 1.2rem;
+  font-family: 'AvenirNext';
+  font-size: 1rem;
   line-height: 1;
-  font-weight: 500;
-  margin-top: 10px;
+  font-weight: 600;
+  margin-bottom:15px;
 
   ${({ hiddenOnMobile }) =>
     hiddenOnMobile
@@ -133,14 +133,15 @@ const CatvertisedTitle = styled.div`
 `;
 
 const AddAKitty = styled.button`
-  margin-top: 10px;
+  margin-top: 30px;
+  margin-bottom:30px;
   align-self: flex-start;
   border: none;
   outline: none;
   background: none;
   color: #623cea;
-  font-weight: 500;
-  font-size: 0.8rem;
+  font-weight: 600;
+  font-size: 1rem;
   padding: 0;
   cursor: pointer;
 
@@ -167,9 +168,25 @@ const CatvertisedScore = styled.div`
 `;
 
 const CatvertisedList = styled.ul`
-  margin-top: 20px;
   max-height: 340px;
   overflow-y: scroll;
+  position:relative;
+
+
+
+
+  ::-webkit-scrollbar {
+      width: 10px;
+  }
+   
+  ::-webkit-scrollbar-track {
+      border-radius: 10px;
+  }
+   
+  ::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color:#DDE0EB; }
+
 
   @media (max-width: 770px) {
     display: flex;
@@ -195,6 +212,10 @@ const CatvertisedItem = styled.li`
   flex-shrink: 0;
   & + & {
     margin-top: 20px;
+  }
+
+  :last-child {
+    margin-bottom:30px;
   }
 
   @media (max-width: 770px) {
@@ -251,21 +272,6 @@ const Purrmoter = styled(({ hiddenOnMobile, ...restProps }) => <Link {...restPro
       : ''};
 `;
 
-const HeaderSplit = styled.div`
-  height: 2px;
-  background-color: #cdf5d4;
-  width: calc(100% + 40px);
-  position: relative;
-  left: -20px;
-  margin-top: 10px;
-  ${({ hiddenOnMobile }) =>
-    hiddenOnMobile
-      ? `
-    @media (max-width: 770px) {
-      display: none;
-    }`
-      : ''};
-`;
 
 const CatvertisedItemButton = styled.button`
   border: none;
@@ -404,6 +410,18 @@ export default class Catvertised extends React.Component {
     width: 100%;
     position: relative;
     flex-direction: column;
+
+
+    ::before {
+      display:block;
+      content: '';
+      width:100%;
+      height:40px;
+      bottom:0;
+      position:absolute;
+      z-index:999;
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 100%); 
+    }
   `;
 
   calculatePosition = (boosts) => {
@@ -436,6 +454,7 @@ export default class Catvertised extends React.Component {
             {this.state.step === 'catvertised' && (
               <React.Fragment>
                 <CatvertisedHeader>
+                  <CatvertisedTitle hiddenOnMobile>Promotion box</CatvertisedTitle>
                   <Purrmoter to={`/${this.props.token}`} hiddenOnMobile>
                     <EntityAvatar size="medium" id={this.props.token} />
                     <EntityDescription>
@@ -447,8 +466,8 @@ export default class Catvertised extends React.Component {
                       <CatvertisedScore>Space Owner</CatvertisedScore>
                     </EntityDescription>
                   </Purrmoter>
-                  <HeaderSplit hiddenOnMobile />
-                  <CatvertisedTitle hiddenOnMobile>Promoted</CatvertisedTitle>
+                  
+                  
                   <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Promote yourself</AddAKitty>
                 </CatvertisedHeader>
                 {Object.keys(boosts).length > 0 && (
@@ -487,7 +506,7 @@ export default class Catvertised extends React.Component {
                     <CatvertisedScore>Space Owner</CatvertisedScore>
                   </EntityDescription>
                 </Purrmoter>
-                <HeaderSplit />
+                
                 <CatvertisedTitle style={{ marginTop: '10px' }}>Promote yourself</CatvertisedTitle>
                 <CatvertisedBack
                   onClick={() => {
@@ -573,7 +592,7 @@ export default class Catvertised extends React.Component {
                     <CatvertisedScore>Space Owner</CatvertisedScore>
                   </EntityDescription>
                 </Purrmoter>
-                <HeaderSplit />
+                
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px', overflow: 'hidden' }}>
                   <LinkedEntityAvatar size="medium" id={this.state.entityId} />
                   <CatvertisedName>

@@ -209,12 +209,12 @@ const ByToken = ({ match, token }) => (
             </Link>
             <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
           </FlatContainer>
-          <H2 style={{ marginTop: '60px', marginBottom: '30px' }}>
+          <H3 style={{ marginTop: '60px', marginBottom: '30px' }}>
             Messages in this community
             <Link to={`${match.url}/feed`}>
               <SeeMore style={{ marginLeft: '15px' }}>See more</SeeMore>
             </Link>
-          </H2>
+          </H3>
           <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
             {token.is721 ? (
               <IfActiveEntityIs
@@ -287,7 +287,7 @@ const BackArrow = styled.div`
 
 const SeeMore = styled.span`
   display: inline-block;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 600;
   color: #264dd9;
 
@@ -322,7 +322,7 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
                 <EntityInfo>
                   <Link
                     to={`/${context}`}
-                    style={{ fontSize: '18px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                    style={{ fontSize: '1rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
                   >
                     <EntityName id={context} />
                   </Link>
@@ -413,7 +413,7 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
   );
 };
 const SocialHeader = styled.p`
-  font-size: 18px;
+  font-size: 1rem;
   text-transform: capitalize;
   font-weight: 600;
 `;
@@ -607,7 +607,7 @@ const NoTokensWarning = ({ token }) => (
   <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
     <ExclamationMark style={{ marginRight: '30px' }} />
     <div>
-      <p style={{ fontSize: '21px' }}>You can’t participate</p>
+      <p style={{ fontSize: '1.5rem' }}>You can’t participate</p>
       <p style={{ fontSize: '14px' }}>Acquire {token.name} to join this club</p>
     </div>
   </WarningContainer>
@@ -617,7 +617,7 @@ const ActiveEntityIsNotFromFamily = ({ token }) => (
   <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
     <ExclamationMark style={{ marginRight: '30px' }} />
     <div>
-      <p style={{ fontSize: '21px' }}>You can’t participate</p>
+      <p style={{ fontSize: '1.5rem' }}>You can’t participate</p>
       <p style={{ fontSize: '14px' }}>Switch your avatar to {token.name}</p>
     </div>
   </WarningContainer>

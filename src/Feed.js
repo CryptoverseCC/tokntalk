@@ -170,7 +170,8 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reaction, su
         <p
           style={{
             marginTop: '20px',
-            fontSize: '1.1rem',
+            fontSize: '1.5rem',
+            fontWeight: '500',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
             overflowWrap: 'break-word',
@@ -193,13 +194,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, 
           alignItems: 'center',
           justifyContent: 'center',
         }}
-      >
-        <svg width="16px" height="16px" version="1.1">
-          <g fill="#e1dfec" fillRule="nonzero">
-            <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
-          </g>
-        </svg>
-      </div>
+      />
     </div>
 
     <div className="media-content columns is-mobile" style={{ overflow: 'hidden' }}>
@@ -209,26 +204,23 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, 
       <div className="column">
         <div
           style={{
-            backgroundColor: 'rgba(246,244,255,0.7)',
             width: '100%',
-            padding: '12px',
-            borderRadius: '12px',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
             overflowWrap: 'break-word',
           }}
         >
-          <Link to={`/${from}`}>
+          <Link to={`/${from}`} style={{ display: 'block' }}>
             <b>
               <EntityName id={from} />
             </b>
-          </Link>{' '}
+          </Link>
           <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
         </div>
-        <div style={{ paddingLeft: '12px', marginTop: '6px' }}>
+        <div>
           <small style={{ color: '#928F9B' }}>
             {disabledInteractions ? (
-              <span style={{ color: '#ffa6d8' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
+              <span style={{ color: '#FF7777' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
             ) : (
               <IfActiveEntityLiked
                 reactions={reactions}
@@ -243,7 +235,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, 
                           display: 'inline-block',
                           padding: 0,
                           margin: 0,
-                          color: '#ffa6d8',
+                          color: '#FF7777',
                           cursor: 'pointer',
                         }}
                       >
@@ -253,10 +245,10 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, 
                   </Context.Consumer>
                 }
                 liked={
-                  <span style={{ color: '#ffa6d8' }}>Liked {reactions.length ? `(${reactions.length})` : ''}</span>
+                  <span style={{ color: '#FF7777' }}>Liked {reactions.length ? `(${reactions.length})` : ''}</span>
                 }
                 unActive={
-                  <span style={{ color: '#ffa6d8' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
+                  <span style={{ color: '#FF7777' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
                 }
               />
             )}
@@ -280,13 +272,7 @@ const createEtherscanUrl = (item) => {
 const ReplyFormContainer = ({ about }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left is-hidden-mobile">
-      <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <svg width="16px" height="16px" version="1.1">
-          <g fill="#e1dfec" fillRule="nonzero">
-            <path d="M8,0 C3.6,0 0,3.1 0,7 C0,10.9 3.6,14 8,14 C8.4,14 8.8,14 9.1,13.9 L14,16 L14,11.6 C15.2,10.4 16,8.8 16,7 C16,3.1 12.4,0 8,0 Z" />
-          </g>
-        </svg>
-      </div>
+      <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
     </div>
 
     <div className="media-content columns is-mobile">
@@ -301,7 +287,8 @@ const ReplyFormContainer = ({ about }) => (
 );
 
 const SenderName = styled(Link)`
-  font-size: 14px;
+  font-size: 1rem;
+  font-weight: 600;
 `;
 
 const CardTitle = ({ id, from, createdAt, etherscanUrl, family, suffix, share }) => {
@@ -390,13 +377,16 @@ const blink = keyframes`
 `;
 
 const CardBox = styled.div`
+  box-shadow: 0 2rem 5rem -2rem rgba(118, 103, 170, 0.12);
   overflow: hidden;
   border-radius: 12px;
   border: solid 1px #efedf6;
   box-shadow: 0 4px 10px rgba(98, 60, 234, 0.07);
   padding: 1.25rem;
+  background-color: white;
+  border: 1px solid #f0eef6;
   & + & {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
   }
 
   ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};
