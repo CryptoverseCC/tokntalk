@@ -712,13 +712,22 @@ const TokenTileCotainer = styled.div`
   cursor: pointer;
   position: relative;
   width: 100%;
-  padding-top: 102%;
+  padding-top: 105%;
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.3s;
+  transition: all 0.15s ease;
 
   :hover {
     transform: translateY(-3px);
+    box-shadow: 0 3rem 6rem -2rem ${({ shadowColor }) => shadowColor};
+    transition: all 0.15s ease;
+  }
+
+  :active {
+    transform:scale(0.98);
+    box-shadow: 0 3rem 4rem -2rem ${({ shadowColor }) => shadowColor};
+    transitionn: all 0.15s ease;
   }
 `;
 
