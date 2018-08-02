@@ -36,6 +36,7 @@ const IconContainer = styled.div`
 
 const LabelText = styled.span`
   margin-left: 10px;
+  transition: all 0.15s ease-in-out;
 `;
 
 const LabelCounter = styled.span`
@@ -60,6 +61,18 @@ const LabelButton = styled.div`
   cursor: ${({ liked, unActive }) => (liked || unActive ? 'default' : 'pointer')};
 `;
 
+const shaky = keyframes`
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-6px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+`;
+
 const LabelIconContainer = styled(IconContainer)`
   transition: all 0.15s ease-in-out;
   background: ${({ liked, background }) => (liked ? background : 'none')};
@@ -68,6 +81,11 @@ const LabelIconContainer = styled(IconContainer)`
   ${LabelButton}:hover & {
     background: ${({ liked, unActive, background }) => !liked && !unActive && background};
     box-shadow: ${({ liked, unActive, shadow }) => !liked && !unActive && shadow};
+
+    img {
+      animation: ${({ liked, unActive, shadow }) => !liked && !unActive && `${shaky} 1s ease-in-out`};
+      animation-iteration-count: infinite;
+    }
   }
 `;
 
