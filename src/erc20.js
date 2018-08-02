@@ -72,8 +72,8 @@ import pandaearthCover from './img/tokens/pandaearth.png';
 import sanmari from './img/tokens/pandaearth-icon.png';
 import sanmariCover from './img/tokens/pandaearth.png';
 
-import koyisalo from './img/tokens/pandaearth-icon.png';
-import koyisaloCover from './img/tokens/pandaearth.png';
+import kiyosalo from './img/tokens/pandaearth-icon.png';
+import kiyosaloCover from './img/tokens/pandaearth.png';
 
 import percent from './img/tokens/pandaearth-icon.png';
 import percentCover from './img/tokens/pandaearth.png';
