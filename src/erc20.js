@@ -69,6 +69,12 @@ import mythereumCover from './img/tokens/mythereum.png';
 import pandaearth from './img/tokens/pandaearth-icon.png';
 import pandaearthCover from './img/tokens/pandaearth.png';
 
+import sanmari from './img/tokens/pandaearth-icon.png';
+import sanmariCover from './img/tokens/pandaearth.png';
+
+import koyisalo from './img/tokens/pandaearth-icon.png';
+import koyisaloCover from './img/tokens/pandaearth.png';
+
 import percent from './img/tokens/pandaearth-icon.png';
 import percentCover from './img/tokens/pandaearth.png';
 
@@ -339,6 +345,28 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
   },*/
+  {
+    network: 'ethereum',
+    address: '0xc5fdd3e4665b5d7bc4dc9102622d7cb0fe510b65',
+    name: 'Sanmari',
+    symbol: 'SMC',
+    logo: sanmari,
+    coverImage: sanmariCover,
+    primaryColor: '#C8F9FF',
+    secondaryColor: '#5B3D9D',
+    shadowColor: 'rgba(200,249,255,0.6)',
+  },
+  {
+    network: 'ethereum',
+    address: '0x97d392337cc92564085ac51b99178a371c8bdcf3',
+    name: 'Kiyosalo',
+    symbol: 'KST',
+    logo: kiyosalo,
+    coverImage: kiyosaloCover,
+    primaryColor: '#C8F9FF',
+    secondaryColor: '#5B3D9D',
+    shadowColor: 'rgba(200,249,255,0.6)',
+  },
   {
     network: 'ethereum',
     address: '0xc93058ca0cc2330b847c001c835fc926fedf5a07',
