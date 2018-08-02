@@ -14,6 +14,14 @@ export default [
     },
   },
   {
+    address: '0xf5b0a3efb8e8e4c201e2a935f110eaaf3ffecb8d',
+    name: 'Axies',
+    symbol: 'AXIE',
+    image_url: 'https://storage.googleapis.com/opensea-static/axie-logo.png',
+    external_link: 'https://axieinfinity.com/',
+    entityPrefix: 'Axie #',
+  },
+  {
     address: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
     name: 'CryptoBots',
     symbol: 'CBT',
