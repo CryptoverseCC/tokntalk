@@ -30,6 +30,7 @@ import {
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
 } from './Entity';
+import Catvertised from './Catvertised';
 
 const DiscoveryContext = React.createContext();
 
@@ -256,6 +257,13 @@ const ByToken = ({ match, token }) => (
             <Social asset={`${token.network}:${token.address}`} social="twitter" limit={2} />
             <Social asset={`${token.network}:${token.address}`} social="instagram" limit={2} />
             <Social asset={`${token.network}:${token.address}`} social="facebook" limit={2} />
+          </FlatContainer>
+          <hr/>
+          <FlatContainer>
+            <H3>VIP</H3>
+            <AppContext.Consumer>
+              {({ boostStore: { getBoosts } }) => <Catvertised token={token.is721?token.payments.token:token.network+':'+token.address} owner={token.payments.owner} getBoosts={getBoosts}/>}
+            </AppContext.Consumer>
           </FlatContainer>
         </div>
       </div>

@@ -368,7 +368,7 @@ export const label = async (entity, message, labelType, { http } = {}) => {
   };
 };
 
-export const boost = async (entity, aboutEntity, value) => {
+export const boost = async (entity, aboutEntity, token, value) => {
   const { networkName } = await getWeb3State();
   const { ownerAddress } = await getEntityData(aboutEntity);
   const data = {

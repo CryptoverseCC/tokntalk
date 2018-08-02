@@ -387,15 +387,16 @@ export default class Catvertised extends React.Component {
     step: 'catvertised',
     value: 0,
     customCatId: undefined,
+    tokenDecimals: 18 // FIXME: get token decimals from web3
   };
 
   componentDidMount() {
-    this.props.getBoosts(this.props.token);
+    this.props.getBoosts(this.props.owner);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.token !== this.props.token) {
-      this.props.getBoosts(nextProps.token);
+    if (nextProps.owner !== this.props.owner) {
+      this.props.getBoosts(nextProps.owner);
     }
   }
 
@@ -440,20 +441,20 @@ export default class Catvertised extends React.Component {
             {this.state.step === 'catvertised' && (
               <React.Fragment>
                 <CatvertisedHeader>
-                  <Purrmoter to={`/${this.props.token}`} hiddenOnMobile>
-                    <EntityAvatar size="medium" id={this.props.token} />
+                  <Purrmoter to={`/${this.props.owner}`} hiddenOnMobile>
+                    <EntityAvatar size="medium" id={this.props.owner} />
                     <EntityDescription>
                       <CatvertisedName>
                         <EntityNameWrapper>
-                          <EntityName id={this.props.token} />
+                          <EntityName id={this.props.owner} />
                         </EntityNameWrapper>
                       </CatvertisedName>
                       <CatvertisedScore>Space Owner</CatvertisedScore>
                     </EntityDescription>
                   </Purrmoter>
                   <HeaderSplit hiddenOnMobile />
-                  <CatvertisedTitle hiddenOnMobile>Promoted</CatvertisedTitle>
-                  <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Promote yourself</AddAKitty>
+                  <CatvertisedTitle hiddenOnMobile>Supporters</CatvertisedTitle>
+                  <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Support this club</AddAKitty>
                 </CatvertisedHeader>
                 {Object.keys(boosts).length > 0 && (
                   <CatvertisedList>
@@ -480,19 +481,19 @@ export default class Catvertised extends React.Component {
             )}
             {this.state.step === 'pickCat' && (
               <React.Fragment>
-                <Purrmoter to={`/${this.props.token}`}>
-                  <EntityAvatar size="medium" id={this.props.token} />
+                <Purrmoter to={`/${this.props.owner}`}>
+                  <EntityAvatar size="medium" id={this.props.owner} />
                   <EntityDescription>
                     <CatvertisedName>
                       <EntityNameWrapper>
-                        <EntityName id={this.props.token} />
+                        <EntityName id={this.props.owner} />
                       </EntityNameWrapper>
                     </CatvertisedName>
                     <CatvertisedScore>Space Owner</CatvertisedScore>
                   </EntityDescription>
                 </Purrmoter>
                 <HeaderSplit />
-                <CatvertisedTitle style={{ marginTop: '10px' }}>Promote yourself</CatvertisedTitle>
+                <CatvertisedTitle style={{ marginTop: '10px' }}>Support this club</CatvertisedTitle>
                 <CatvertisedBack
                   onClick={() => {
                     this.setState({ step: 'catvertised' });
@@ -566,12 +567,12 @@ export default class Catvertised extends React.Component {
             )}
             {this.state.step === 'form' && (
               <React.Fragment>
-                <Purrmoter to={`/${this.props.token}`}>
-                  <EntityAvatar size="medium" id={this.props.token} />
+                <Purrmoter to={`/${this.props.owner}`}>
+                  <EntityAvatar size="medium" id={this.props.owner} />
                   <EntityDescription>
                     <CatvertisedName>
                       <EntityNameWrapper>
-                        <EntityName id={this.props.token} />
+                        <EntityName id={this.props.owner} />
                       </EntityNameWrapper>
                     </CatvertisedName>
                     <CatvertisedScore>Space Owner</CatvertisedScore>
@@ -600,7 +601,7 @@ export default class Catvertised extends React.Component {
                     marginTop: '20px',
                   }}
                 >
-                  Promote with
+                  Support with
                 </div>
                 <form
                   style={{ marginBottom: '-5px' }}
@@ -608,8 +609,9 @@ export default class Catvertised extends React.Component {
                     e.preventDefault();
                     const { transactionHash, networkName } = await boost(
                       this.state.entityId,
+                      this.props.owner,
                       this.props.token,
-                      this.state.value * 10 ** 18,
+                      this.state.value * 10 ** this.state.tokenDecimals,
                     );
                     this.setState({
                       etherscanUrl: createEtherscanUrl(transactionHash, networkName),
@@ -629,7 +631,7 @@ export default class Catvertised extends React.Component {
                   <Position>Position: {this.renderPosition(this.calculatePosition(boosts))}</Position>
 
                   <StyledButton disabled={!isBoostable || this.state.value <= 0}>
-                    {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Promote!'}
+                    {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Support!'}
                   </StyledButton>
                 </form>
               </React.Fragment>
@@ -661,7 +663,7 @@ export default class Catvertised extends React.Component {
                   Success!
                 </div>
                 <div style={{ fontSize: '18px' }}>
-                  You've promoted <EntityName id={this.state.entityId} />
+                  You've added <EntityName id={this.state.entityId} />
                 </div>
                 <A href={this.state.etherscanUrl}>See it on Etherscan</A>
               </div>
