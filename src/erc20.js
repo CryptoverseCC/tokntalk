@@ -3,6 +3,9 @@ import React from 'react';
 import cryptokitties from './img/tokens/cryptokitties-icon.svg';
 import cryptokittiesCover from './img/tokens/cryptokitties.png';
 
+import axie from './img/tokens/status-icon.svg';
+import axieCover from './img/tokens/status.png';
+
 import cryptobots from './img/tokens/cryptobots-icon.svg';
 import cryptobotsCover from './img/tokens/cryptobots.png';
 
@@ -86,6 +89,18 @@ const ercs20 = [
     symbol: 'CK',
     logo: cryptokitties,
     coverImage: cryptokittiesCover,
+    primaryColor: '#FFD9FF',
+    secondaryColor: '#C23DA8',
+    shadowColor: 'rgba(194,61,168,0.2)',
+    is721: true,
+  },
+  {
+    network: 'ethereum',
+    address: '0xf5b0a3efb8e8e4c201e2a935f110eaaf3ffecb8d',
+    name: 'Axies',
+    symbol: 'AXIE',
+    logo: axie,
+    coverImage: axieCover,
     primaryColor: '#FFD9FF',
     secondaryColor: '#C23DA8',
     shadowColor: 'rgba(194,61,168,0.2)',
