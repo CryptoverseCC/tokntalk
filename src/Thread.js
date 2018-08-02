@@ -6,6 +6,7 @@ import Modal from './Modal';
 import { Card } from './Feed';
 import Loader from './Loader';
 import Context from './Context';
+import { HeaderSpacer } from './Header';
 
 export class Thread extends Component {
   componentDidMount() {
@@ -14,28 +15,31 @@ export class Thread extends Component {
 
   render() {
     return (
-      <Context.Consumer>
-        {({ feedStore: { feedItemLoading, feedItem } }) =>
-          !!feedItem || (!feedItemLoading && !!feedItem) ? (
-            <Card
-              feedItem={feedItem}
-              replies={feedItem.replies}
-              reactions={feedItem.likes}
-              style={{ background: '#ffffff' }}
-            />
-          ) : (
-            <div
-              style={{
-                paddingTop: '20px',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Loader />
-            </div>
-          )
-        }
-      </Context.Consumer>
+      <React.Fragment>
+        <HeaderSpacer />
+        <Context.Consumer>
+          {({ feedStore: { feedItemLoading, feedItem } }) =>
+            !!feedItem || (!feedItemLoading && !!feedItem) ? (
+              <Card
+                feedItem={feedItem}
+                replies={feedItem.replies}
+                reactions={feedItem.likes}
+                style={{ background: '#ffffff' }}
+              />
+            ) : (
+              <div
+                style={{
+                  paddingTop: '20px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Loader />
+              </div>
+            )
+          }
+        </Context.Consumer>
+      </React.Fragment>
     );
   }
 }
