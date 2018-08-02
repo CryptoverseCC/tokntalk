@@ -608,7 +608,7 @@ const NoTokensWarning = ({ token }) => (
     <ExclamationMark style={{ marginRight: '30px' }} />
     <div>
       <p style={{ fontSize: '21px' }}>You can’t participate</p>
-      <p style={{ fontSize: '14px' }}>Aquire {token.name} to join this club</p>
+      <p style={{ fontSize: '14px' }}>Acquire {token.name} to join this club</p>
     </div>
   </WarningContainer>
 );
