@@ -539,21 +539,6 @@ export class Card extends React.Component {
   }
 }
 
-export const FeedContainer = styled(({ children, className }) => (
-  <div className={`${className} container`}>
-    <div className="columns" style={{ marginTop: 0 }}>
-      {children}
-    </div>
-  </div>
-))`
-  padding: 40px 0.75rem;
-  position: relative;
-
-  @media (max-width: 770px) {
-    padding: 0px 0.75rem 20px;
-  }
-`;
-
 const EmptyFeedPlaceholder = styled.div`
   display: flex;
   flex: 1;

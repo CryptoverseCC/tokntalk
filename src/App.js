@@ -26,7 +26,6 @@ import {
 import { getEntityData } from './entityApi';
 import Header from './Header';
 import { PositionedFooter } from './Footer';
-import NetworkWarning from './NetworkWarning';
 import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
@@ -403,7 +402,6 @@ export default class App extends Component {
       >
         <Router>
           <React.Fragment>
-            <NetworkWarning />
             <Header />
             <RoutesWithRouter
               getFeedItem={this.getFeedItem}

@@ -17,16 +17,10 @@ import Modal from './Modal';
 import { socialIcons } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
-import Catvertised from './Catvertised';
+import Advertised from './Catvertised';
 import { TokenImage } from './erc20';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H1, H2, H3, SocialUsername } from './Components';
-
-const Advertised = styled(Catvertised)`
-  box-shadow: unset;
-  padding: unset;
-  border: unset;
-`;
 
 export default class ShowPage extends Component {
   state = { editing: undefined };

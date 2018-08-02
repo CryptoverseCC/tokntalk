@@ -1,6 +1,8 @@
 import React from 'react';
-import Link from './Link';
 import styled from 'styled-components';
+
+import Link from './Link';
+import NetworkWarning from './NetworkWarning';
 import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityName, EntityAvatar } from './Entity';
 import TranslationsContext from './Translations';
 import Locked from './img/locked.svg';
@@ -16,13 +18,7 @@ export const HeaderSpacer = styled.div`
 `;
 
 const StyledHeader = styled.div`
-  position: fixed;
   height: 65px;
-  width: 1280px;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
   display: flex;
   align-items: center;
   background-color: #f5f8fd;
@@ -30,6 +26,15 @@ const StyledHeader = styled.div`
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0 2rem;
+`;
+
+const HeaderContainer = styled.div`
+  position: fixed;
+  width: 1280px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
 
   @media (max-width: 770px) {
     padding: 0 0.75rem;
@@ -71,24 +76,27 @@ const ToggleHttpButton = styled.button`
 
 const Header = () => {
   return (
-    <StyledHeader>
-      <Link to="/">
-        <Logo />
-      </Link>
-      <LinkDropdown />
-      <LinkContainer>
-        <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
-        <CrossLink to="/discover">Discover</CrossLink>
-      </LinkContainer>
-      <Context.Consumer>
-        {({ appStore: { http, toggleHttpClaims } }) => (
-          <ToggleHttpButton http={http} onClick={toggleHttpClaims}>
-            {http ? 'Off Chain' : 'On Chain'}
-          </ToggleHttpButton>
-        )}
-      </Context.Consumer>
-      <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
-    </StyledHeader>
+    <HeaderContainer>
+      <NetworkWarning />
+      <StyledHeader>
+        <Link to="/">
+          <Logo />
+        </Link>
+        <LinkDropdown />
+        <LinkContainer>
+          <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
+          <CrossLink to="/discover">Discover</CrossLink>
+        </LinkContainer>
+        <Context.Consumer>
+          {({ appStore: { http, toggleHttpClaims } }) => (
+            <ToggleHttpButton http={http} onClick={toggleHttpClaims}>
+              {http ? 'Off Chain' : 'On Chain'}
+            </ToggleHttpButton>
+          )}
+        </Context.Consumer>
+        <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
+      </StyledHeader>
+    </HeaderContainer>
   );
 };
 

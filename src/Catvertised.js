@@ -404,10 +404,6 @@ export default class Catvertised extends React.Component {
     width: 100%;
     position: relative;
     flex-direction: column;
-    box-shadow: 0 4px 10px 0 rgba(98, 60, 234, 0.07);
-    border-radius: 12px;
-    padding: 20px;
-    border: 2px solid #cdf5d4;
   `;
 
   calculatePosition = (boosts) => {
