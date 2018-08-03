@@ -4,6 +4,9 @@ import Link, { A } from './Link';
 import Context from './Context';
 import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from './Entity';
 
+import checkmarkIcon from './img/checkmark.svg';
+
+
 const StyledInput = styled.div.attrs({
   children: (props) => (
     <input
@@ -61,9 +64,11 @@ const StyledButton = styled.button`
   font-weight: 500;
   outline: none;
   border: none;
-  border-radius: 0 0 12px 12px;
+  border-radius: 12px 12px 12px 12px;
+  transition: all 0.2s ease;
   &:disabled {
     background: #e4dcfb;
+    transition: all 0.2s ease;
   }
 `;
 
@@ -146,7 +151,7 @@ const AddAKitty = styled.button`
   cursor: pointer;
 
   @media (max-width: 770px) {
-    margin-top: auto;
+    margin-top: -3px;
     margin-left: 10px;
   }
 `;
@@ -279,11 +284,11 @@ const CatvertisedItemButton = styled.button`
   background: none;
   display: flex;
   align-items: center;
-  padding: 0.375rem;
-  margin: -0.375rem;
+  padding: 0.5rem;
+  margin: -0.5rem;
   font-size: 1rem;
   width: 100%;
-  border-radius: 33px;
+  border-radius: 12px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -296,10 +301,14 @@ const CatvertisedItemButton = styled.button`
       display: block;
       position: absolute;
       top: 50%;
-      right: 2rem;
+      right:0;
+      padding:8px 10px;
+      border-radius:12px 0px 0px 12px;
       font-size: 0.8rem;
-      font-weight: 500;
+      font-weight: 600;
+      color:white;
       content: 'Add';
+      background: #623cea; 
       transform: translateY(-50%);
     }
   }
@@ -374,8 +383,8 @@ const CatvertisedBack = styled.button`
 
 const CatvertisedClose = styled.button`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  right: 0;
   outline: none;
   background: none;
   border: none;
@@ -410,18 +419,6 @@ export default class Catvertised extends React.Component {
     width: 100%;
     position: relative;
     flex-direction: column;
-
-
-    ::before {
-      display:block;
-      content: '';
-      width:100%;
-      height:40px;
-      bottom:0;
-      position:absolute;
-      z-index:999;
-      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 100%); 
-    }
   `;
 
   calculatePosition = (boosts) => {
@@ -507,7 +504,7 @@ export default class Catvertised extends React.Component {
                   </EntityDescription>
                 </Purrmoter>
                 
-                <CatvertisedTitle style={{ marginTop: '10px' }}>Promote yourself</CatvertisedTitle>
+                <CatvertisedTitle style={{ marginTop: '30px' }}>Promote yourself</CatvertisedTitle>
                 <CatvertisedBack
                   onClick={() => {
                     this.setState({ step: 'catvertised' });
@@ -593,7 +590,7 @@ export default class Catvertised extends React.Component {
                   </EntityDescription>
                 </Purrmoter>
                 
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px', overflow: 'hidden' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px', overflow: 'hidden' }}>
                   <LinkedEntityAvatar size="medium" id={this.state.entityId} />
                   <CatvertisedName>
                     <EntityNameWrapper>
@@ -665,20 +662,20 @@ export default class Catvertised extends React.Component {
                 >
                   ✖
                 </CatvertisedClose>
-                <div style={{ color: 'green', fontSize: '24px' }}>✔</div>
+                <img alt="" src={checkmarkIcon} style={{transform:'scale(2)', marginBottom:'10px'}} />
                 <div
                   style={{
-                    fontWeight: 500,
-                    fontSize: '32px',
-                    color: '#060310',
+                    fontWeight: 600,
+                    fontSize: '2rem',
+                    color: '#1b2437',
                   }}
                 >
                   Success!
                 </div>
-                <div style={{ fontSize: '18px' }}>
+                <div style={{ fontSize: '1rem' }}>
                   You've promoted <EntityName id={this.state.entityId} />
                 </div>
-                <A href={this.state.etherscanUrl}>See it on Etherscan</A>
+                <A href={this.state.etherscanUrl} style={{ marginTop: '10px' }}>Check it on Etherscan</A>
               </div>
             )}
           </Catvertised.Container>
