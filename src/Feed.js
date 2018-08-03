@@ -128,8 +128,8 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
 
 const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
   <article style={{ display: 'flex', margin: '20px 0' }}>
-    <div className="is-hidden-mobile" style={{ width: '70px' }} />
-    <div className="columns" style={{ width: '100%' }}>
+    <div className="" style={{ width: '70px' }} />
+    <div className="columns is-mobile" style={{ width: '100%' }}>
       <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
         {disabledInteractions ? (
           <LikeLabel unActive count={reactions.length} />
@@ -564,7 +564,7 @@ const EmptyFeedPlaceholder = styled.div`
   flex: 1;
   padding: 4rem 0.75rem;
   font-size: 2rem;
-  font-weight:600;
+  font-weight: 600;
   border-radius: 20px;
   background-color: white;
   color: #1b2437;
