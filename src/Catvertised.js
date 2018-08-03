@@ -414,17 +414,6 @@ export default class Catvertised extends React.Component {
     width: 100%;
     position: relative;
     flex-direction: column;
-
-    ::before {
-      display: block;
-      content: '';
-      width: 100%;
-      height: 40px;
-      bottom: 0;
-      position: absolute;
-      z-index: 999;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 100%);
-    }
   `;
 
   calculatePosition = (boosts) => {
