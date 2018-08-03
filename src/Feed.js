@@ -20,7 +20,7 @@ import {
   IfActiveEntityLiked,
 } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
-import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon } from './Icons';
+import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon, empty } from './Icons';
 import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
@@ -563,10 +563,11 @@ const EmptyFeedPlaceholder = styled.div`
   display: flex;
   flex: 1;
   padding: 4rem 0.75rem;
-  font-size: 3rem;
+  font-size: 2rem;
+  font-weight:600;
   border-radius: 20px;
-  background-color: rgba(246, 244, 255, 0.7);
-  color: #623cea;
+  background-color: white;
+  color: #1b2437;
   justify-content: center;
 `;
 

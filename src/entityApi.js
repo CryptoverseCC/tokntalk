@@ -38,7 +38,7 @@ export const entityTranslations = {
   commentPlaceholder: 'Write your story',
   replyPlaceholder: 'Write your reply',
   noEntitiesError: 'No tokens found',
-  emptyFeed: 'No messages yet',
+  emptyFeed: 'No messages yet. Be the first one!',
 };
 
 export const getAvatarSizes = (entity) => {

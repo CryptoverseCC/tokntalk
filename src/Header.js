@@ -108,6 +108,7 @@ export default Header;
 
 const DropdownEntityName = styled.div`
   margin-left: 12px;
+  font-size:0.9rem;
   @media (max-width: 770px) {
     display: none;
   }
@@ -218,7 +219,7 @@ const CatDropdown = () => {
           <Entities>
             {({ entities, changeActiveEntityTo }) =>
               entities.map((entity) => (
-                <li className="dropdown-item" style={{ padding: 0, minWidth: '11rem' }} key={entity.id}>
+                <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
                   <PickEntity
                     onClick={() => {
                       changeActiveEntityTo(entity);
@@ -226,7 +227,7 @@ const CatDropdown = () => {
                     }}
                   >
                     <EntityAvatar id={entity.id} size="small" lazy={false} />
-                    <b style={{ marginLeft: '5px' }}>
+                    <b style={{ marginLeft: '5px', fontSize:'0.9rem' }}>
                       <EntityName id={entity.id} />
                     </b>
                   </PickEntity>
