@@ -387,6 +387,17 @@ const ercs20 = [
   },
   {
     network: 'ethereum',
+    address: '0xb7fc08177bcba924255132f361084d7994eafcf0',
+    name: 'TokenX',
+    symbol: 'TKX',
+    logo: x,
+    coverImage: xCover,
+    primaryColor: '#03FFFF',
+    secondaryColor: '#5E22AE',
+    shadowColor: 'rgba(3,255,255,0.5)',
+  },
+  {
+    network: 'ethereum',
     address: '0xc93058ca0cc2330b847c001c835fc926fedf5a07',
     name: 'Percent',
     symbol: '％',
@@ -395,17 +406,6 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
-  },
-  {
-    network: 'ethereum',
-    address: '0xB7fC08177Bcba924255132f361084d7994eafCf0',
-    name: 'TokenX',
-    symbol: 'X',
-    logo: x,
-    coverImage: xCover,
-    primaryColor: '#03FFFF',
-    secondaryColor: '#5E22AE',
-    shadowColor: 'rgba(3,255,255,0.5)',
   },
 ];
 
