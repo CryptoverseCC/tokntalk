@@ -402,7 +402,7 @@ const CardBox = styled.div`
   padding: 1.25rem;
   background-color: white;
   border: 1px solid #f0eef6;
-  & + & {
+  :not(:first-child) {
     margin-top: 2rem;
   }
 

@@ -64,9 +64,7 @@ export default class ShowPage extends Component {
     object-fit: contain;
   `;
 
-  static FeedContainer = styled.div`
-    padding: 20px 0.75rem;
-  `;
+  static FeedContainer = styled.div``;
 
   render() {
     const { entityId } = this.props.match.params;
@@ -85,7 +83,7 @@ export default class ShowPage extends Component {
                   <H2>
                     <EntityName id={entity.id} />
                   </H2>
-                  <H4 style={{ marginTop: '10px', marginBottom: '10px'}}>Seen In</H4>
+                  <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
                   <IfIsActiveEntity
                     id={entity.id.toString()}
                     then={<SocialList editable {...entity} />}
