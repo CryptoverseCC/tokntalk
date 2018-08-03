@@ -388,7 +388,7 @@ const ercs20 = [
   {
     network: 'ethereum',
     address: '0xb7fc08177bcba924255132f361084d7994eafcf0',
-    name: 'TokenX',
+    name: 'Token X',
     symbol: 'TKX',
     logo: x,
     coverImage: xCover,
