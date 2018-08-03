@@ -81,6 +81,9 @@ import kiyosaloCover from './img/tokens/kst.jpg';
 import percent from './img/tokens/percent-icon.svg';
 import percentCover from './img/tokens/percent.png';
 
+import x from './img/tokens/x.svg';
+import xCover from './img/tokens/tokenX.png';
+
 const ercs20 = [
   {
     network: 'ethereum',
@@ -392,6 +395,17 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
+  },
+  {
+    network: 'ethereum',
+    address: '0xB7fC08177Bcba924255132f361084d7994eafCf0',
+    name: 'TokenX',
+    symbol: 'X',
+    logo: x,
+    coverImage: xCover,
+    primaryColor: '#03FFFF',
+    secondaryColor: '#5E22AE',
+    shadowColor: 'rgba(3,255,255,0.5)',
   },
 ];
 
