@@ -160,7 +160,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
 );
 
 export const sanitizeMessage = (message) => {
-  const expression = /(\bhttps?:\/\/[-\w~@#$%&*()+=[\]'/]+(?:[!;:,.?]+[-\w~@#$%&*()+=[\]'/]+)+)/g;
+  const expression = /(\bhttps?:\/\/[^.,?!:;\s<>"]+(?:[.,?!:;]+[^.,?!:;\s<>"]+)+)/g;
   const replaceMatchWithLink = (match) => {
     return `<a href="${match}">${escapeHtml(match)}</a>`;
   };
