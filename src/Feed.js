@@ -465,9 +465,9 @@ export class Card extends React.Component {
           suffix={this.getSuffix(feedItem)}
           reaction={
             (feedItem.type === 'response' && <ReplyReaction />) ||
-            (feedItem.type === 'labels' &&
-              Object.keys(LabelItems).includes(feedItem.labels[0]) &&
-              React.createElement(LabelItems[feedItem.labels[0]]))
+            (feedItem.type === 'social' &&
+              Object.keys(LabelItems).includes(feedItem.label) &&
+              React.createElement(LabelItems[feedItem.label]))
           }
         />
         <PostReactions

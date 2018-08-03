@@ -238,7 +238,7 @@ export default class App extends Component {
     const temporaryFeedItem = await label(activeEntity, message, labelType, { http });
     this.setState(
       produce((draft) => {
-        draft.entityLabels[activeEntity][labelType] = temporaryFeedItem.target.id;
+        draft.entityLabels[activeEntity][labelType] = temporaryFeedItem.target;
         draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems];
       }),
     );

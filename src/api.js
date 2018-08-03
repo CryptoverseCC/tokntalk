@@ -30,7 +30,7 @@ export const hasValidContext = ({ context }) => {
 };
 
 export const isValidFeedItem = (feedItem) => {
-  if (!['regular', 'like', 'post_to', 'post_about', 'post_club'].includes(feedItem.type)) {
+  if (!['regular', 'like', 'post_to', 'post_about', 'post_club', 'social'].includes(feedItem.type)) {
     return false;
   }
   if (!hasValidContext(feedItem)) {
@@ -359,12 +359,9 @@ export const label = async (entity, message, labelType, { http } = {}) => {
   const feedItemBase = await createFeedItemBase(id, entity, http);
   return {
     ...feedItemBase,
-    about: null,
-    abouted: [],
-    target: { id: message },
-    targeted: [],
-    type: 'labels',
-    labels: [labelType],
+    target: message,
+    type: 'social',
+    label: labelType,
   };
 };
 

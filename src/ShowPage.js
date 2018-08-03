@@ -220,7 +220,10 @@ export class SocialList extends React.Component {
     editing: undefined,
   };
 
-  editLabel = (labelType) => () => {
+  editLabel = (labelType) => (e) => {
+    if (e) {
+      e.preventDefault();
+    }
     this.setState({ editing: labelType });
   };
 
