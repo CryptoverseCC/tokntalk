@@ -11,7 +11,7 @@ const FooterContainer = styled.div`
   border: 1px solid #e6dfff;
   padding: 1rem 2rem 0.9rem 1rem;
   color: #95929e;
-  background-color: transparent;
+  background-color: #f5f8fd;
   display: flex;
   justify-content: space-between;
   align-items: center;
