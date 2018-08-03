@@ -20,9 +20,7 @@ import {
   IfActiveEntityLiked,
 } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
-import LikeIcon from './img/like.svg';
-import ReplyIcon from './img/reply.svg';
-import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from './Icons';
+import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon } from './Icons';
 import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
@@ -36,59 +34,112 @@ const IconContainer = styled.div`
   color: white;
 `;
 
-const LabelIconContainer = styled(IconContainer)`
-  height: 40px;
-  width: 40px;
-  transition: all 0.15s ease-in-out;
-  background-color: #ffa6d8;
-`;
-
 const LabelText = styled.span`
   margin-left: 10px;
 `;
 
 const LabelCounter = styled.span`
-  margin-left: auto;
-  margin-right: 8px;
+  margin-left: 5px;
+  height: 20px;
+  padding: 0 10px;
+  line-height: 20px;
+  border-radius: 10px;
+  background: ${({ unActive, background }) => (!unActive ? background : '#cfd3e2')};
+  color: ${({ unActive }) => unActive && '#000000'};
 `;
 
-const LabelButton = styled.button`
-  box-sizing: border-box;
-  outline: none;
-  border: none;
-  background: none;
+const LabelButton = styled.div`
   padding: 4px;
-  margin: 0;
   display: flex;
-  flex-shrink: 0;
   align-items: center;
-  height: 50px;
-  width: 140px;
-  border-radius: 25px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #ffe4f3;
-  font-size: 1rem;
+  flex-shrink: 0;
+  font-size: 14px !important; //TODO
+  font-weight: 600;
   transition: all 0.15s ease-in-out;
-  color: ${({ liked }) => (liked ? '#ffa6d8' : 'inherit')};
+  color: ${({ unActive, color }) => (!unActive ? color : '#918f9b')};
   cursor: ${({ liked, unActive }) => (liked || unActive ? 'default' : 'pointer')};
+`;
 
-  &:hover {
-    box-shadow: ${({ liked, unActive }) => (liked || unActive ? 'none' : '0 5px 20px rgba(255, 166, 216, 0.4)')};
+const LabelIconContainer = styled(IconContainer)`
+  transition: all 0.15s ease-in-out;
+  background: ${({ liked, background }) => (liked ? background : 'none')};
+  box-shadow: ${({ liked, shadow }) => (liked ? shadow : '')};
+
+  ${LabelButton}:hover & {
+    background: ${({ liked, unActive, background }) => !liked && !unActive && background};
+    box-shadow: ${({ liked, unActive, shadow }) => !liked && !unActive && shadow};
   }
 `;
 
-const Label = ({ onClick, liked, unActive, count }) => {
+const LikeLabel = ({ onClick, liked, unActive, count }) => {
   return (
-    <LabelButton onClick={onClick} liked={liked} unActive={unActive}>
-      <LabelIconContainer>
-        <img alt="" src={LikeIcon} />
+    <LabelButton onClick={onClick} liked={liked} unActive={unActive} color="#ff8482">
+      <LabelIconContainer
+        liked={liked}
+        unActive={unActive}
+        shadow="0 0 20px 9px rgba(255, 117, 117, 0.4)"
+        background="rgba(255, 117, 117, 0.4)"
+      >
+        <LikeIcon inactive={unActive} />
       </LabelIconContainer>
       <LabelText>Like{liked && 'd'}</LabelText>
-      <LabelCounter>{count}</LabelCounter>
+      <LabelCounter unActive={unActive} background="#ffebeb">
+        {count}
+      </LabelCounter>
     </LabelButton>
   );
 };
+
+const ReplyLabel = ({ onClick, unActive, count }) => {
+  return (
+    <LabelButton onClick={onClick} unActive={unActive} color="#2850d9">
+      <LabelIconContainer
+        unActive={unActive}
+        shadow="0 0 20px 9px rgba(89, 123, 246, 0.25)"
+        background="rgba(89, 123, 246, 0.25)"
+      >
+        <ReplyIcon inactive={unActive} />
+      </LabelIconContainer>
+      <LabelText>Reply</LabelText>
+      <LabelCounter unActive={unActive} background="#ebefff">
+        {count}
+      </LabelCounter>
+    </LabelButton>
+  );
+};
+
+const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
+  <article style={{ display: 'flex', margin: '20px 0' }}>
+    <div className="is-hidden-mobile" style={{ width: '54px' }} />
+    <div className="columns" style={{ width: '100%' }}>
+      <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
+        {disabledInteractions ? (
+          <LikeLabel unActive count={reactions.length} />
+        ) : (
+          <IfActiveEntityLiked
+            reactions={reactions}
+            unActive={<LikeLabel unActive count={reactions.length} />}
+            notLiked={
+              <Context.Consumer>
+                {({ feedStore: { react } }) => <LikeLabel onClick={() => react(id)} count={reactions.length} />}
+              </Context.Consumer>
+            }
+            liked={<LikeLabel liked count={reactions.length} />}
+          />
+        )}
+      </div>
+      <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
+        {disabledInteractions ? (
+          <ReplyLabel unActive count={replies.length} />
+        ) : (
+          <IfActiveEntity other={<ReplyLabel unActive count={replies.length} />}>
+            {() => <ReplyLabel count={replies.length} />}
+          </IfActiveEntity>
+        )}
+      </div>
+    </div>
+  </article>
+);
 
 export const sanitizeMessage = (message) => {
   const expression = /(\bhttps?:\/\/[-\w~@#$%&*()+=[\]'/]+(?:[!;:,.?]+[-\w~@#$%&*()+=[\]'/]+)+)/g;
@@ -101,19 +152,7 @@ export const sanitizeMessage = (message) => {
     .join('');
 };
 
-const Post = ({
-  id,
-  from,
-  createdAt,
-  etherscanUrl,
-  family,
-  message,
-  reactions,
-  reaction,
-  suffix,
-  disabledInteractions,
-  style = {},
-}) => {
+const Post = ({ id, from, createdAt, etherscanUrl, family, message, reaction, suffix, style = {} }) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
@@ -138,28 +177,6 @@ const Post = ({
           }}
           dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
-        {reactions && (
-          <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
-            {disabledInteractions ? (
-              <Label unActive count={reactions.length} />
-            ) : (
-              <IfActiveEntityLiked
-                reactions={reactions}
-                unActive={<Label unActive count={reactions.length} />}
-                notLiked={
-                  <Context.Consumer>
-                    {({ feedStore: { react } }) => <Label onClick={() => react(id)} count={reactions.length} />}
-                  </Context.Consumer>
-                }
-                liked={<Label liked count={reactions.length} />}
-              />
-            )}
-            {reactions.map((reaction, index) => {
-              const id = reaction.context;
-              return <LinkedEntityAvatar key={index} id={id} size="verySmall" style={{ marginLeft: '8px' }} />;
-            })}
-          </div>
-        )}
       </div>
     </article>
   );
@@ -284,7 +301,7 @@ const ReplyFormContainer = ({ about }) => (
 );
 
 const SenderName = styled(Link)`
-  font-size: 1.1rem;
+  font-size: 14px;
 `;
 
 const CardTitle = ({ id, from, createdAt, etherscanUrl, family, suffix, share }) => {
@@ -292,40 +309,33 @@ const CardTitle = ({ id, from, createdAt, etherscanUrl, family, suffix, share })
     <React.Fragment>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <SenderName to={`/${from}`}>
-          <b>
-            <EntityName id={from} />
-          </b>
+          <EntityName id={from} />
         </SenderName>{' '}
-        {suffix}
-        {share ? share : null}
-      </div>
-      <div>
-        <small style={{ color: '#928F9B' }}>
-          {id ? (
-            <Link to={{ pathname: `/thread/${id}`, state: { modal: true } }}>{timeago().format(createdAt)} </Link>
-          ) : (
-            timeago().format(createdAt) + ' '
-          )}
-          <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+        {/* {share ? share : null} */}
+        <span style={{ color: '#928F9B', marginLeft: '15px', fontSize: '14px' }}>
+          {/* <Link to={{ pathname: `/thread/${id}`, state: { modal: true } }}>{timeago().format(createdAt)} </Link> */}
+          {timeago().format(createdAt)}
+          <A href={etherscanUrl} style={{ marginLeft: '15px', textTransform: 'capitalize' }}>
             {family}
           </A>
-        </small>
+        </span>
       </div>
+      {suffix}
     </React.Fragment>
   );
 };
 
 const Reaction = styled(IconContainer)`
-  height: 30px;
-  width: 30px;
+  height: 15px;
+  width: 15px;
 `;
 
-const LikeReaction = styled(Reaction).attrs({ children: <img alt="" src={LikeIcon} style={{ width: '12px' }} /> })`
-  background-color: #ffa6d8;
-  box-shadow: 0 4px 15px 4px rgba(255, 166, 216, 0.4);
+const LikeReaction = styled(Reaction).attrs({ children: <LikeIcon style={{ width: '15px' }} /> })`
+  background-color: rgba(255, 117, 117, 0.4);
+  box-shadow: 0 0 20px 9px rgba(255, 117, 117, 0.4);
 `;
 
-const ReplyReaction = styled(Reaction).attrs({ children: <img alt="" src={ReplyIcon} style={{ width: '12px' }} /> })`
+const ReplyReaction = styled(Reaction).attrs({ children: <ReplyIcon style={{ width: '12px' }} /> })`
   background-color: #623cea;
   box-shadow: 0 4px 15px 4px rgba(98, 60, 234, 0.3);
 `;
@@ -380,9 +390,10 @@ const blink = keyframes`
 `;
 
 const CardBox = styled.div`
-  box-shadow: 0 4px 10px rgba(98, 60, 234, 0.07);
   overflow: hidden;
   border-radius: 12px;
+  border: solid 1px #efedf6;
+  box-shadow: 0 4px 10px rgba(98, 60, 234, 0.07);
   padding: 1.25rem;
   & + & {
     margin-top: 1.5rem;
@@ -413,7 +424,7 @@ export class Card extends React.Component {
                 etherscanUrl={createEtherscanUrl(feedItem)}
                 family={feedItem.family}
                 suffix={
-                  <span style={{ marginLeft: '10px' }}>
+                  <span>
                     reacted to <b>Post</b>
                   </span>
                 }
@@ -438,14 +449,12 @@ export class Card extends React.Component {
       <React.Fragment>
         <Post
           id={feedItem.id}
-          disabledInteractions={disabledInteractions}
           style={{ borderTop: 'none' }}
           from={feedItem.context}
           createdAt={feedItem.created_at}
           message={feedItem.target}
           family={feedItem.family}
           etherscanUrl={createEtherscanUrl(feedItem)}
-          reactions={reactions}
           suffix={this.getSuffix(feedItem)}
           reaction={
             (feedItem.type === 'response' && <ReplyReaction />) ||
@@ -453,6 +462,12 @@ export class Card extends React.Component {
               Object.keys(LabelItems).includes(feedItem.labels[0]) &&
               React.createElement(LabelItems[feedItem.labels[0]]))
           }
+        />
+        <PostReactions
+          id={feedItem.id}
+          reactions={reactions}
+          replies={replies}
+          disabledInteractions={disabledInteractions}
         />
         {replies.map((reply) => (
           <Reply
@@ -480,7 +495,7 @@ export class Card extends React.Component {
 
         return (
           <React.Fragment>
-            <span style={{ marginLeft: '10px' }}>wrote in</span>
+            <span>wrote in</span>
             <Link to={`/discover/byToken/${token.symbol}/feed`} style={{ marginLeft: '10px' }}>
               <b>{token.name} club </b>
             </Link>
@@ -491,19 +506,17 @@ export class Card extends React.Component {
         const id = feedItem.about;
         return (
           <React.Fragment>
-            <span style={{ marginLeft: '10px' }}>wrote to</span>
-            <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px' }} id={id} />
+            <span>wrote to</span>
+            <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px', display: 'inline-block' }} id={id} />
             <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
-              <b>
-                <EntityName id={id} />
-              </b>
+              <EntityName id={id} />
             </Link>
           </React.Fragment>
         );
       },
       post_about: () => (
         <React.Fragment>
-          <span style={{ marginLeft: '10px' }}>wrote about</span>
+          <span>wrote about</span>
           <b
             style={{
               marginLeft: '10px',
@@ -517,7 +530,7 @@ export class Card extends React.Component {
           />
         </React.Fragment>
       ),
-      labels: (feedItem) => <span style={{ marginLeft: '10px' }}>changed its {capitalize(feedItem.labels[0])}</span>,
+      labels: (feedItem) => <span>changed its {capitalize(feedItem.labels[0])}</span>,
     };
 
     return suffix[feedItem.type] && suffix[feedItem.type](feedItem);

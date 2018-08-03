@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M7,0 C3.15,0 0,2.7125 0,6.125 C0,9.5375 3.15,12.25 7,12.25 C7.35,12.25 7.7,12.25 7.9625,12.1625 L12.25,14 L12.25,10.15 C13.3,9.1 14,7.7 14,6.125 C14,2.7125 10.85,0 7,0 Z" id="path-1"></path>
+    </defs>
+    <g id="Feed" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-660.000000, -1739.000000)">
+        <g id="kom-copy" transform="translate(426.000000, 1736.000000)">
+            <g id="chat-round-copy" transform="translate(235.000000, 4.000000)">
+                <g id="Shape">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Mask" stroke-linecap="round" stroke-linejoin="round" fill-rule="nonzero">
+                        <use fill="#3858CD" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <path stroke="#264DD9" stroke-width="1" d="M12.75,10.3527856 L12.75,14.7582695 L7.92614036,12.6909011 C7.70196244,12.7402091 7.45275234,12.75 7,12.75 C2.87073715,12.75 -0.5,9.81513404 -0.5,6.125 C-0.5,2.43486596 2.87073715,-0.5 7,-0.5 C11.1292629,-0.5 14.5,2.43486596 14.5,6.125 C14.5,7.69593163 13.8616551,9.17435475 12.75,10.3527856 Z"></path>
+                    </g>
+                    <path d="M6.125,1.75 C2.275,1.75 -0.875,4.4625 -0.875,7.875 C-0.875,11.2875 2.275,14 6.125,14 C6.475,14 6.825,14 7.0875,13.9125 L12.4364507,14 C12.8954836,10.9666667 13.125,8.925 13.125,7.875 C13.125,4.4625 9.975,1.75 6.125,1.75 Z" fill="#597BF6" fill-rule="nonzero" mask="url(#mask-2)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

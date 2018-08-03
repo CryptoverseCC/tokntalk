@@ -1,6 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import replyActive from './img/reply_active.svg';
+import replyInactive from './img/reply_inactive.svg';
+
+import likeActive from './img/like_active.svg';
+import likeInactive from './img/like_inactive.svg';
+
+export const ReplyIcon = styled.img.attrs({ src: ({ inactive }) => (!inactive ? replyActive : replyInactive) })``;
+export const LikeIcon = styled.img.attrs({ src: ({ inactive }) => (!inactive ? likeActive : likeInactive) })``;
+
 export const socialColors = {
   facebook: '#4167b2',
   twitter: '#1CA1F2',
