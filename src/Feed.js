@@ -42,9 +42,9 @@ const LabelText = styled.span`
 const LabelCounter = styled.span`
   margin-left: 5px;
   height: 20px;
-  padding: 0 10px;
+  padding: 2px 10px;
   line-height: 20px;
-  border-radius: 10px;
+  border-radius: 15px;
   background: ${({ unActive, background }) => (!unActive ? background : '#cfd3e2')};
   color: ${({ unActive }) => unActive && '#000000'};
 `;
@@ -54,7 +54,7 @@ const LabelButton = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  font-size: 14px !important; //TODO
+  font-size: 1rem !important; //TODO
   font-weight: 600;
   transition: all 0.15s ease-in-out;
   color: ${({ unActive, color }) => (!unActive ? color : '#918f9b')};
@@ -95,8 +95,8 @@ const LikeLabel = ({ onClick, liked, unActive, count }) => {
       <LabelIconContainer
         liked={liked}
         unActive={unActive}
-        shadow="0 0 20px 9px rgba(255, 117, 117, 0.4)"
-        background="rgba(255, 117, 117, 0.4)"
+        shadow="0 0 20px 9px rgba(255, 117, 117, 0.2)"
+        background="rgba(255, 117, 117, 0.2)"
       >
         <LikeIcon inactive={unActive} />
       </LabelIconContainer>
@@ -113,8 +113,8 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
     <LabelButton onClick={onClick} unActive={unActive} color="#2850d9">
       <LabelIconContainer
         unActive={unActive}
-        shadow="0 0 20px 9px rgba(89, 123, 246, 0.25)"
-        background="rgba(89, 123, 246, 0.25)"
+        shadow="0 0 20px 9px rgba(89, 123, 246, 0.11)"
+        background="rgba(89, 123, 246, 0.11)"
       >
         <ReplyIcon inactive={unActive} />
       </LabelIconContainer>
@@ -128,7 +128,7 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
 
 const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
   <article style={{ display: 'flex', margin: '20px 0' }}>
-    <div className="is-hidden-mobile" style={{ width: '54px' }} />
+    <div className="is-hidden-mobile" style={{ width: '70px' }} />
     <div className="columns" style={{ width: '100%' }}>
       <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
         {disabledInteractions ? (
@@ -399,7 +399,6 @@ const CardBox = styled.div`
   overflow: hidden;
   border-radius: 12px;
   border: solid 1px #efedf6;
-  box-shadow: 0 4px 10px rgba(98, 60, 234, 0.07);
   padding: 1.25rem;
   background-color: white;
   border: 1px solid #f0eef6;
