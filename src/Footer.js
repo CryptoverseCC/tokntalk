@@ -51,7 +51,7 @@ const Footer = ({ className }) => {
         </div>
         <FooterLinksContainer>
           <A href="https://t.me/userfeeds" style={{ marginRight: '8px' }}>Telegram</A>
-          <A href="https://t.me/userfeeds">Twitter</A>
+          <A href="https://twitter.com/tokntalkclub">Twitter</A>
         </FooterLinksContainer>
       </FotterInnerContainer>
       <Intercom />
