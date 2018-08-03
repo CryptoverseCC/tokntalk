@@ -10,7 +10,7 @@ export const ContentContainer = styled.div`
 export const FlatContainer = styled.div`
   border-radius: 12px;
   padding: 30px;
-  background-color: #f8f9fd;
+  background-color: white;
 `;
 
 export const WarningContainer = FlatContainer.extend`
@@ -18,17 +18,22 @@ export const WarningContainer = FlatContainer.extend`
 `;
 
 export const H1 = styled.p`
-  font-size: 46px;
+  font-size: 4rem;
   font-weight: bold;
 `;
 
 export const H2 = styled.p`
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: 600;
 `;
 
 export const H3 = styled.p`
-  font-size: 21px;
+  font-size: 1.5rem;
+  font-weight: 600;
+`;
+
+export const H4 = styled.p`
+  font-size: 1rem;
   font-weight: 600;
 `;
 

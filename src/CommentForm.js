@@ -12,9 +12,9 @@ export const CommentForm = styled.form`
 
 export const StyledTextArea = styled(TextArea)`
   background: transparent;
-  font-family: Rubik;
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-family: 'AvenirNext';
+  font-size: 2rem;
+  font-weight: 600;
   color: #1b2437;
   border: none;
   resize: none;
@@ -25,6 +25,7 @@ export const StyledTextArea = styled(TextArea)`
   &::placeholder {
     transition: color 0.15s ease-in-out;
     color: #1b2437;
+
   }
 
   &:-ms-input-placeholder {
@@ -35,7 +36,6 @@ export const StyledTextArea = styled(TextArea)`
     color: #1b2437;
   }
 
-  &:hover::placeholder,
   &:focus::placeholder {
     color: #928f9b;
   }
@@ -48,14 +48,15 @@ export const StyledTextArea = styled(TextArea)`
   &:hover::-ms-input-placeholder,
   &:focus::-ms-input-placeholder {
     color: #928f9b;
+
   }
 `;
 
 export const ReplyForm = styled(CommentForm)`
-  background-color: rgba(246, 244, 255, 0.7);
+  background-color: #F3F6FF;
   width: 100%;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 20px 0 14px 15px;
+  border-radius: 6px 6px 40px 6px;
   align-items: center;
   border: 1px solid ${({ valid }) => (valid ? 'transparent' : 'red')};
 
@@ -68,10 +69,13 @@ export const ReplyForm = styled(CommentForm)`
       color: #623cea;
     }
 
+
     &:-ms-input-placeholder {
       font-weight: 500;
       color: #623cea;
     }
+
+
 
     &::-ms-input-placeholder {
       font-weight: 500;
@@ -90,22 +94,24 @@ const MetamaskButton = styled.button`
   outline: none;
   border: none;
   transition: all 0.15s ease-in-out;
-  background: transparent url(${Paw});
+  background: #264DD9 url(${Paw});
   background-position: 50% 50%;
   background-size: 50%;
   background-repeat: no-repeat;
+  transform:translateY(5px);
   ${({ disabled }) =>
     disabled
       ? css`
-          opacity: 0.7;
+          opacity: 0;
         `
       : css`
           opacity: 1;
-          box-shadow: 0 3px 10px rgba(98, 60, 234, 0.2);
+          box-shadow: 0 0.7rem 1.5rem -0.35rem rgba(118,103,170,0.8);
+          transform:translateY(0px);
           cursor: pointer;
           &:hover,
           &:focus {
-            box-shadow: 0 3px 6px rgba(98, 60, 234, 0.4);
+            box-shadow: 0 0.7rem 1.5rem -0.35rem rgba(118,103,170,1);
           }
         `};
 `;

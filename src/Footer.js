@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import StyledLink, { A } from './Link';
 import Intercom from './Intercom';
 
+import LikeIcon from './img/like.svg';
+
+
 const FooterContainer = styled.div`
-  border-radius: 12px;
+  border-radius: 0 3rem 3rem 0rem;
   border: 1px solid #e6dfff;
-  padding: 1rem;
+  padding: 1rem 2rem 0.9rem 1rem;
   color: #95929e;
-  background-color: white;
+  background-color: transparent;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,12 +47,11 @@ const Footer = ({ className }) => {
     <FooterContainer className={className}>
       <FotterInnerContainer>
         <div>
-          Powered by <A href="https://userfeeds.io">Userfeeds</A>
+          Support
         </div>
         <FooterLinksContainer>
-          <A href="https://gitter.im/userfeeds">Gitter</A>
-          <A href="https://t.me/userfeeds">Telegram</A>
-          <StyledLink to="/faq">FAQ</StyledLink>
+          <A href="https://t.me/userfeeds" style={{ marginRight: '8px' }}>Telegram</A>
+          <A href="https://t.me/userfeeds">Twitter</A>
         </FooterLinksContainer>
       </FotterInnerContainer>
       <Intercom />
@@ -61,7 +63,7 @@ export const PositionedFooter = styled(Footer)`
   position: fixed;
   z-index: 1000;
   bottom: 10px;
-  right: 2rem;
+  left: 0;
 
   @media (max-width: 770px) {
     left: 0;

@@ -11,7 +11,7 @@ const Hero = (props) => (
     {(entity) => (
       <div {...props}>
         <HeroContainer>
-          <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}>
+          <div className="box cp-box" style={{ boxShadow: '0 2rem 5rem -2rem rgba(118,103,170,0.12)', borderRadius: '12px' }}>
             <article className="media">
               <div className="media-left">
                 <LinkedActiveEntityAvatar size="large" />

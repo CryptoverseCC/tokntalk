@@ -21,7 +21,7 @@ const StyledHeader = styled.div`
   height: 65px;
   display: flex;
   align-items: center;
-  background-color: #f5f8fd;
+  background-color: white;
   border-radius: 0 0 30px 30px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -67,11 +67,15 @@ const LinkContainer = styled.ul`
 
 const ToggleHttpButton = styled.button`
   margin-left: 10px;
+  margin-top:-3px;
   padding: 5px 10px;
-  background-color: ${({ http }) => (http ? '#623cea' : '#fdcf0b')};
+  background-color: ${({ http }) => (http ? '#f4f6ff' : '#fdcf0b')};
   border: none;
+  font-weight:600;
+  font-size:0.9rem;
   border-radius: 3px;
-  color: ${({ http }) => (http ? 'white' : '#2f343a')};
+  outline:0;
+  color: ${({ http }) => (http ? '#808080' : '#2f343a')};
 `;
 
 const Header = () => {
@@ -189,6 +193,17 @@ const CatDropdownContent = styled.ul`
   max-height: 50vh;
   overflow-y: scroll;
   margin: 0;
+  ::-webkit-scrollbar {
+      width: 10px;
+  }
+   
+  ::-webkit-scrollbar-track {
+      border-radius: 10px;
+  }
+   
+  ::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color:#DDE0EB; }
 `;
 
 const CatDropdown = () => {
