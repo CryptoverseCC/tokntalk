@@ -270,21 +270,21 @@ export class SocialList extends React.Component {
           </SocialBadge>
         )}
         {(twitter || editable) && (
-          <SocialBadge>
+          <SocialBadge href={normalizeHref(twitter)}>
             <SocialIcon type="twitter" />
             <SocialUsername link={twitter} style={{ marginLeft: '15px' }} />
             <EditButton labelType="twitter" />
           </SocialBadge>
         )}
         {(instagram || editable) && (
-          <SocialBadge>
+          <SocialBadge href={normalizeHref(instagram)}>
             <SocialIcon type="instagram" />
             <SocialUsername link={instagram} style={{ marginLeft: '15px' }} />
             <EditButton labelType="instagram" />
           </SocialBadge>
         )}
         {(github || editable) && (
-          <SocialBadge>
+          <SocialBadge href={normalizeHref(github)}>
             <SocialIcon type="github" />
             <SocialUsername link={github} style={{ marginLeft: '15px' }} />
             <EditButton labelType="github" />
