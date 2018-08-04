@@ -280,6 +280,21 @@ const ByToken = ({ match, token }) => (
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer>
+            <H3>External links</H3>
+            <ul>
+              <li>
+                <a href={`https://etherscan.io/address/${token.address}`}>
+                  etherscan.io
+                </a>
+              </li>
+              {token.externalLinks.map(entry => {
+                return <li><a href={entry.url}>
+                  {entry.name}
+                </a></li>})}
+            </ul>
+          </FlatContainer>
+          <hr/>
+          <FlatContainer>
             <H3>In social</H3>
             <Link to={`${match.url}/social`}>
               <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>

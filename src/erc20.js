@@ -95,8 +95,21 @@ const ercs20 = [
     primaryColor: '#FFD9FF',
     secondaryColor: '#C23DA8',
     shadowColor: 'rgba(194,61,168,0.2)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://www.cryptokitties.co/'
+      },
+      {
+        name: 'Marketplace',
+        url: 'https://www.cryptokitties.co/search'
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/cryptokitties'
+      }
+    ],
     is721: true,
-    marketplaces: ['https://www.cryptokitties.co/search'],
   },
   {
     network: 'ethereum',
@@ -108,8 +121,21 @@ const ercs20 = [
     primaryColor: '#2b6a93',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(43,106,147,0.2)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://axieinfinity.com/'
+      },
+      {
+        name: 'Marketplace',
+        url: 'https://axieinfinity.com/marketplace'
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/axie'
+      }
+    ],
     is721: true,
-    marketplaces: ['https://axieinfinity.com/marketplace'],
   },
   {
     network: 'ethereum',
@@ -121,8 +147,21 @@ const ercs20 = [
     primaryColor: '#EFF7B6',
     secondaryColor: '#1D132D',
     shadowColor: 'rgba(193,205,109,0.3)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'http://cryptobots.me/',
+      },
+      {
+        name: 'Marketplace',
+        url: 'https://cryptobots.me/auction/1#sale'
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/cryptobots'
+      }
+    ],
     is721: true,
-    marketplaces: ['https://cryptobots.me/auction/1#sale'],
   },
   {
     network: 'ethereum',
@@ -134,8 +173,21 @@ const ercs20 = [
     primaryColor: '#E051BA',
     secondaryColor: '#FFFFFF',
     shadowColor: 'rgba(224,81,184,0.3)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://ethmoji.io/',
+      },
+      {
+        name: 'Marketplace',
+        url: 'https://ethmoji.io/compose/base'
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/ethmoji'
+      }
+    ],
     is721: true,
-    marketplaces: ['https://ethmoji.io/compose/base'],
   },
   {
     network: 'ethereum',
@@ -147,8 +199,21 @@ const ercs20 = [
     primaryColor: '#DDE1F1',
     secondaryColor: '#F05E40',
     shadowColor: 'rgba(247,165,148,0.3)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'http://digitalartchain.com/',
+      },
+      {
+        name: 'Marketplace',
+        url: 'http://digitalartchain.com/publish.html'
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/digitalartchain'
+      }
+    ],
     is721: true,
-    marketplaces: ['http://digitalartchain.com/publish.html'],
   },
   {
     network: 'ethereum',
@@ -160,8 +225,18 @@ const ercs20 = [
     primaryColor: '#0418D8',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://knownorigin.io',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/knownorigin'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -173,8 +248,18 @@ const ercs20 = [
     primaryColor: '#BEC4CB',
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(190,196,203,0.4)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://www.cryptostrikers.com/',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/cryptostrikers'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -186,8 +271,18 @@ const ercs20 = [
     primaryColor: '#E8EDFB',
     secondaryColor: '#283861',
     shadowColor: 'rgba(118,103,170,0.26)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://eth.town/',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/ethtown'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -199,8 +294,18 @@ const ercs20 = [
     primaryColor: '#4881ae',
     secondaryColor: '#FCE478',
     shadowColor: 'rgba(52,58,64,0.2)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://chibifighters.io/',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/chibifighters'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -212,8 +317,18 @@ const ercs20 = [
     primaryColor: '#BAD2ED',
     secondaryColor: '#030F23',
     shadowColor: 'rgba(186,210,237,0.3)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://cryptofighters.io',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/cryptofighters'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -225,8 +340,18 @@ const ercs20 = [
     primaryColor: '#D8CECB',
     secondaryColor: '#382320',
     shadowColor: 'rgba(216,206,203,0.6)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://cryptosaga.io/',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/cryptosaga'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -238,8 +363,18 @@ const ercs20 = [
     primaryColor: '#010206',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(1,2,6,0.2)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://www.etheremon.com/',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/etheremon'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -251,8 +386,18 @@ const ercs20 = [
     primaryColor: '#4B1E06',
     secondaryColor: '#F7DC8D',
     shadowColor: 'rgba(75,30,6,0.4)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://www.mythereum.io/',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/mythereum'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -264,8 +409,18 @@ const ercs20 = [
     primaryColor: '#EEEEEE',
     secondaryColor: '#332f2c',
     shadowColor: 'rgba(51,47,44,0.1)',
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://panda.earth',
+      },
+      {
+        name: 'OpenSea',
+        url: 'https://opensea.io/assets/pandaearth'
+      }
+    ],
     is721: true,
-    marketplaces: [],
+    
   },
   {
     network: 'ethereum',
@@ -277,7 +432,12 @@ const ercs20 = [
     primaryColor: '#CDFA7F',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(61,80,0,0.2)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://tokntalk.club'
+      }
+    ]
   },
   /*{
     network: 'ethereum',
@@ -289,7 +449,12 @@ const ercs20 = [
     primaryColor: '#818181',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(75,75,75,0.4)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://???.??'
+      }
+    ]
   },*/
   {
     network: 'ethereum',
@@ -301,7 +466,16 @@ const ercs20 = [
     primaryColor: '#BEC4CB',
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(88,66,54,0.25)',
-    marketplaces: ['https://coinbe.net/market'],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://www.youtube.com/channel/UCcMCMdVFhU25uCpC4kJAo3A'
+      },
+      {
+        name: 'Exchange - Coinbe.net',
+        url: 'https://coinbe.net/market'
+      }
+    ]
   },
   {
     network: 'ethereum',
@@ -313,7 +487,12 @@ const ercs20 = [
     primaryColor: '#1F1826',
     secondaryColor: '#30D7A9',
     shadowColor: 'rgba(31,24,38,0.3)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://decentraland.org/'
+      }
+    ]
   },
   {
     network: 'ethereum',
@@ -325,7 +504,12 @@ const ercs20 = [
     primaryColor: '#C6FFF4',
     secondaryColor: '#276C5E',
     shadowColor: 'rgba(82,211,185,0.3)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://makerdao.com/'
+      }
+    ]
   },
   /*{
     network: 'ethereum',
@@ -337,7 +521,12 @@ const ercs20 = [
     primaryColor: '#002D64',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(31,54,90,0.5)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://golem.network/'
+      }
+    ]
   },*/
   {
     network: 'ethereum',
@@ -349,7 +538,12 @@ const ercs20 = [
     primaryColor: '#1A52EF',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(26,82,239,0.3)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://omisego.network/'
+      }
+    ]
   },
   {
     network: 'ethereum',
@@ -361,7 +555,16 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
-    marketplaces: ['https://www.ethereum.org/donate'],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://www.ethereum.org/'
+      },
+      {
+        name: 'Donations',
+        url: 'https://www.ethereum.org/donate'
+      }
+    ]
   },
   /*{
     network: 'ethereum',
@@ -373,7 +576,12 @@ const ercs20 = [
     primaryColor: '#5B6CEE',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(91,108,238,0.5)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://status.im'
+      }
+    ]
   },*/
   /*{
     network: 'ethereum',
@@ -385,7 +593,12 @@ const ercs20 = [
     primaryColor: '#3C3C3C',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://0xproject.com'
+      }
+    ]
   },*/
   {
     network: 'ethereum',
@@ -397,7 +610,12 @@ const ercs20 = [
     primaryColor: '#C8D5FF',
     secondaryColor: '#1639AA',
     shadowColor: 'rgba(22,57,170,0.2)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://twitter.com/sanmaricoin'
+      }
+    ]
   },
   {
     network: 'ethereum',
@@ -409,7 +627,12 @@ const ercs20 = [
     primaryColor: '#9AF6E1',
     secondaryColor: '#1F987B',
     shadowColor: 'rgba(31,152,123,0.2)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://???.??'
+      }
+    ]
   },
   {
     network: 'ethereum',
@@ -421,7 +644,16 @@ const ercs20 = [
     primaryColor: '#03FFFF',
     secondaryColor: '#5E22AE',
     shadowColor: 'rgba(3,255,255,0.5)',
-    marketplaces: ['https://forkdelta.github.io/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH'],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://???.??'
+      },
+      {
+        name: 'ForkDelta',
+        url: 'https://forkdelta.github.io/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH'
+      }
+    ]
   },
   {
     network: 'ethereum',
@@ -433,7 +665,12 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
-    marketplaces: [],
+    externalLinks: [
+      {
+        name: 'Project page',
+        url: 'https://???.??'
+      }
+    ]
   },
 ];
 
