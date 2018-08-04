@@ -31,6 +31,8 @@
 body {
   color: #1b2437;
   font-family: 'AvenirNext', sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 b {

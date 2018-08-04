@@ -34,6 +34,28 @@ const IconContainer = styled.div`
   color: white;
 `;
 
+const StartingMessage = styled.p`
+  margin-top: 20px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  @media (max-width: 770px) {
+    font-size:1.3rem;
+  }
+`;
+
+const ArticleReactions = styled.article`
+  display:flex;
+  margin:20px 0;
+  @media (max-width: 770px) {
+    margin-top:10px;
+    margin-bottom:20px;
+  }
+`;
+
+
 const LabelText = styled.span`
   margin-left: 10px;
   transition: all 0.15s ease-in-out;
@@ -127,7 +149,7 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
 };
 
 const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
-  <article style={{ display: 'flex', margin: '20px 0' }}>
+  <ArticleReactions>
     <div className="" style={{ width: '70px' }} />
     <div className="columns is-mobile" style={{ width: '100%' }}>
       <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
@@ -156,7 +178,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
         )}
       </div>
     </div>
-  </article>
+  </ArticleReactions>
 );
 
 export const sanitizeMessage = (message) => {
@@ -185,15 +207,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reaction, su
           family={family}
           suffix={suffix}
         />
-        <p
-          style={{
-            marginTop: '20px',
-            fontSize: '1.5rem',
-            fontWeight: '500',
-            wordBreak: 'break-word',
-            whiteSpace: 'pre-wrap',
-            overflowWrap: 'break-word',
-          }}
+        <StartingMessage
           dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
         />
       </div>
@@ -404,6 +418,15 @@ const CardBox = styled.div`
   border: 1px solid #f0eef6;
   :not(:first-child) {
     margin-top: 2rem;
+  }
+
+  @media (max-width: 770px) {
+    width:96%;
+    margin-left:2%;
+    :not(:first-child) {
+      margin-top:1rem;
+    }
+
   }
 
   ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};

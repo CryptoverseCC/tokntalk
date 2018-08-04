@@ -126,13 +126,13 @@ const ToggleButton = styled.button`
     &:before {
       border-radius: 50%;
       background-color: white;
-      box-shadow: 0 1px 4px 1px rgba(98, 60, 234, 0.2);
+      box-shadow: 0 0.2rem 1.5rem -0.2rem rgba(118, 103, 170, 0.4);
       z-index: 1;
       content: '▾';
       display: flex;
-      width: 20px;
-      height: 20px;
-      font-size: 12px;
+      width: 30px;
+      height: 30px;
+      font-size: 20px;
       color: rgb(98, 60, 234);
       position: absolute;
       bottom: 0;
@@ -197,11 +197,11 @@ const CatDropdownContent = styled.ul`
   ::-webkit-scrollbar {
       width: 10px;
   }
-   
+
   ::-webkit-scrollbar-track {
       border-radius: 10px;
   }
-   
+
   ::-webkit-scrollbar-thumb {
       border-radius: 10px;
       background-color:#DDE0EB; }
@@ -245,6 +245,8 @@ const DropdownLink = styled(CrossLink)`
   padding: 10px;
   margin: 0;
   min-width: 5rem;
+  color:#623cea;
+  font-weight:600;
 `;
 
 const LinkDropdownContent = styled.ul`
@@ -276,21 +278,9 @@ const LinkDropdownToggle = styled.button`
 
 const LinkDropdown = () => (
   <LinkDropdownContainer>
-    <Dropdown
-      Content={LinkDropdownContent}
-      toggle={({ openDropdown }) => (
-        <LinkDropdownToggle onClick={openDropdown}>
-          More <span style={{ position: 'relative', top: '-2px' }}>⌄</span>
-        </LinkDropdownToggle>
-      )}
-      position="left"
-    >
-      {() => (
-        <React.Fragment>
-          <DropdownLink to="/discover">Discover</DropdownLink>
-        </React.Fragment>
-      )}
-    </Dropdown>
+    <React.Fragment>
+      <DropdownLink to="/discover">Discover</DropdownLink>
+    </React.Fragment>
   </LinkDropdownContainer>
 );
 
