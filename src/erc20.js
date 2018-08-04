@@ -472,7 +472,7 @@ const ercs20 = [
         url: 'https://www.youtube.com/channel/UCcMCMdVFhU25uCpC4kJAo3A'
       },
       {
-        name: 'Exchange - Coinbe.net'
+        name: 'Exchange - Coinbe.net',
         url: 'https://coinbe.net/market'
       }
     ]

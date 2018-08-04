@@ -288,7 +288,7 @@ const ByToken = ({ match, token }) => (
                 </a>
               </li>
               {token.externalLinks.map(entry => {
-                return <li><a to={entry.url}>
+                return <li><a href={entry.url}>
                   {entry.name}
                 </a></li>})}
             </ul>
