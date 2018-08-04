@@ -376,7 +376,7 @@ const ercs20 = [
   },
   {
     network: 'ethereum',
-    address: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
+    address: '0x97d392337cc92564085ac51b99178a371c8bdcf3',
     name: 'Kiyosalo',
     symbol: 'KST',
     logo: kiyosalo,
