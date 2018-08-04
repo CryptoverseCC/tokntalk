@@ -109,10 +109,9 @@ class Index extends Component {
     return (
       <ContentContainer>
         <HeaderSpacer />
-        <H1Discover>Discover</H1Discover>
+        <H1Discover>Token Communities</H1Discover>
         <div className="columns">
           <div className="column is-12">
-            <H2Discover>Communities</H2Discover>
             <IfActiveEntity
               then={(entityId) => (
                 <Entity id={entityId}>

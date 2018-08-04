@@ -53,8 +53,14 @@ const TitleLink = styled(Link)`
 `;
 
 const CrossLink = styled(Link)`
-  margin-left: 1rem;
-  color: gray;
+  margin-left: 10px;
+  margin-top:-3px;
+  padding: 5px 10px;
+  border: 1px solid #2850d9;
+  font-weight:600;
+  font-size:0.9rem;
+  border-radius: 6px;
+  outline:1;
 `;
 
 const LinkContainer = styled.ul`
@@ -89,7 +95,7 @@ const Header = () => {
         <LinkDropdown />
         <LinkContainer>
           <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
-          <CrossLink to="/discover">Discover</CrossLink>
+          <CrossLink to="/discover">Token Communities</CrossLink>
         </LinkContainer>
         <Context.Consumer>
           {({ appStore: { http, toggleHttpClaims } }) => (
