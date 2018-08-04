@@ -33,6 +33,35 @@ import {
 
 import exportIcon from './img/export.svg';
 
+const H1Discover = styled.h1`
+  margin:60px 0;
+  font-size:4rem;
+  font-weight:bold;
+  @media (max-width: 770px) {
+    margin-left:2%;
+  }
+`;
+
+const H2Discover = styled.h2`
+  font-size:2rem;
+  font-weight:bold;
+  @media (max-width: 770px) {
+    margin-left:2%;
+  }
+`;
+
+
+const H3Discover = styled.h3`
+  margin-top:30px;
+  margin-bottom:15px;
+  font-size:1.5rem;
+  font-weight:bold;
+  @media (max-width: 770px) {
+    margin-left:2%;
+  }
+`;
+
+
 
 const DiscoveryContext = React.createContext();
 
@@ -80,18 +109,18 @@ class Index extends Component {
     return (
       <ContentContainer>
         <HeaderSpacer />
-        <H1 style={{ margin: '60px 0' }}>Discover</H1>
+        <H1Discover>Discover</H1Discover>
         <div className="columns">
           <div className="column is-12">
-            <H2>Communities</H2>
+            <H2Discover>Communities</H2Discover>
             <IfActiveEntity
               then={(entityId) => (
                 <Entity id={entityId}>
                   {(entity) => (
                     <React.Fragment>
-                      <H3 style={{ marginTop: '30px', marginBottom: '15px' }}>Yours</H3>
+                      <H3Discover>Yours</H3Discover>
                       {this.renderEntityTokens(entity)}
-                      <H3 style={{ marginTop: '30px', marginBottom: '15px' }}>Others</H3>
+                      <H3Discover>Others</H3Discover>
                       {this.renderOthersTokens()}
                     </React.Fragment>
                   )}
@@ -99,7 +128,7 @@ class Index extends Component {
               )}
               other={
                 <React.Fragment>
-                  <H3 style={{ marginTop: '30px', marginBottom: '15px' }}>Others</H3> {this.renderOthersTokens()}
+                  <H3Discover>Others</H3Discover> {this.renderOthersTokens()}
                 </React.Fragment>
               }
             />
@@ -273,9 +302,9 @@ const Hero = styled.div`
   height: calc(15rem + 65px);
   margin-bottom: 68px;
 
-  @media (max-width: 770px) {
-    height: 7.5rem;
-  }
+  // @media (max-width: 770px) {
+  //   height: 7.5rem;
+  // }
 `;
 
 const Back = Link.withComponent('div');
@@ -732,6 +761,11 @@ const TokenTileCotainer = styled.div`
     box-shadow: 0 3rem 4rem -2rem ${({ shadowColor }) => shadowColor};
     transitionn: all 0.15s ease;
   }
+
+  @media (max-width: 770px) {
+    width:96%;
+    margin-left:2%;
+
 `;
 
 const TokenTileWrapper = styled.div`

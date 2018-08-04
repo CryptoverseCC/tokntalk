@@ -6,12 +6,24 @@ import styled from 'styled-components';
 
 const HeroContainer = styled.div``;
 
+const AddStory = styled.div`
+  box-shadow: rgba(118, 103, 170, 0.12) 0px 2rem 5rem -2rem;
+  border-radius: 12px;
+  display: block;
+  padding: 1.25rem;
+  background-color:white;
+  @media (max-width: 770px) {
+    width:96%;
+    margin-left:2%;
+  }
+`;
+
 const Hero = (props) => (
   <IfActiveEntity>
     {(entity) => (
       <div {...props}>
         <HeroContainer>
-          <div className="box cp-box" style={{ boxShadow: '0 2rem 5rem -2rem rgba(118,103,170,0.12)', borderRadius: '12px' }}>
+          <AddStory>
             <article className="media">
               <div className="media-left">
                 <LinkedActiveEntityAvatar size="large" />
@@ -21,9 +33,11 @@ const Hero = (props) => (
                   <Link
                     to={`/${entity}`}
                     style={{
-                      fontFamily: 'Rubik',
-                      fontSize: '1.1rem',
-                      fontWeight: '500',
+                      fontFamily: 'AvenirNext',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      marginBottom:'20px',
+                      marginTop:'10px',
                     }}
                   >
                     <ActiveEntityName />
@@ -32,7 +46,7 @@ const Hero = (props) => (
                 </div>
               </div>
             </article>
-          </div>
+          </AddStory>
         </HeroContainer>
       </div>
     )}

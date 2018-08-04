@@ -22,6 +22,7 @@ export const StyledTextArea = styled(TextArea)`
   outline: none;
   overflow: auto;
 
+
   &::placeholder {
     transition: color 0.15s ease-in-out;
     color: #1b2437;
@@ -50,6 +51,7 @@ export const StyledTextArea = styled(TextArea)`
     color: #928f9b;
 
   }
+  
 `;
 
 export const ReplyForm = styled(CommentForm)`
