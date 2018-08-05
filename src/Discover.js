@@ -34,34 +34,31 @@ import {
 import exportIcon from './img/export.svg';
 
 const H1Discover = styled.h1`
-  margin:60px 0;
-  font-size:4rem;
-  font-weight:bold;
+  margin: 60px 0;
+  font-size: 4rem;
+  font-weight: bold;
   @media (max-width: 770px) {
-    margin-left:2%;
+    margin-left: 2%;
   }
 `;
 
 const H2Discover = styled.h2`
-  font-size:2rem;
-  font-weight:bold;
+  font-size: 2rem;
+  font-weight: bold;
   @media (max-width: 770px) {
-    margin-left:2%;
+    margin-left: 2%;
   }
 `;
-
 
 const H3Discover = styled.h3`
-  margin-top:30px;
-  margin-bottom:15px;
-  font-size:1.5rem;
-  font-weight:bold;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
   @media (max-width: 770px) {
-    margin-left:2%;
+    margin-left: 2%;
   }
 `;
-
-
 
 const DiscoveryContext = React.createContext();
 
@@ -282,17 +279,18 @@ const ByToken = ({ match, token }) => (
             <H3>External links</H3>
             <ul>
               <li>
-                <a href={`https://etherscan.io/address/${token.address}`}>
-                  etherscan.io
-                </a>
+                <a href={`https://etherscan.io/address/${token.address}`}>etherscan.io</a>
               </li>
-              {token.externalLinks.map(entry => {
-                return <li><a href={entry.url}>
-                  {entry.name}
-                </a></li>})}
+              {token.externalLinks.map((entry) => {
+                return (
+                  <li key={entry.name}>
+                    <a href={entry.url}>{entry.name}</a>
+                  </li>
+                );
+              })}
             </ul>
           </FlatContainer>
-          <hr/>
+          <hr />
           <FlatContainer>
             <H3>In social</H3>
             <Link to={`${match.url}/social`}>
@@ -447,7 +445,8 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
                       <EntityName id={context} />
                     </Link>
                     <a href={target} target="_blank" rel="noopener">
-                      <img alt="" src={exportIcon} style={{ marginRight: '5px' }} /><SocialUsername link={target} />
+                      <img alt="" src={exportIcon} style={{ marginRight: '5px' }} />
+                      <SocialUsername link={target} />
                     </a>
                   </EntityInfo>
                 </EntityContainer>

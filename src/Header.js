@@ -54,13 +54,13 @@ const TitleLink = styled(Link)`
 
 const CrossLink = styled(Link)`
   margin-left: 10px;
-  margin-top:-3px;
+  margin-top: -3px;
   padding: 5px 10px;
   border: 1px solid #2850d9;
-  font-weight:600;
-  font-size:0.9rem;
+  font-weight: 600;
+  font-size: 0.9rem;
   border-radius: 6px;
-  outline:1;
+  outline: 1;
 `;
 
 const LinkContainer = styled.ul`
@@ -73,14 +73,14 @@ const LinkContainer = styled.ul`
 
 const ToggleHttpButton = styled.button`
   margin-left: 10px;
-  margin-top:-3px;
+  margin-top: -3px;
   padding: 5px 10px;
   background-color: ${({ http }) => (http ? '#f4f6ff' : '#fdcf0b')};
   border: none;
-  font-weight:600;
-  font-size:0.9rem;
+  font-weight: 600;
+  font-size: 0.9rem;
   border-radius: 3px;
-  outline:0;
+  outline: 0;
   color: ${({ http }) => (http ? '#808080' : '#2f343a')};
 `;
 
@@ -114,7 +114,7 @@ export default Header;
 
 const DropdownEntityName = styled.div`
   margin-left: 12px;
-  font-size:0.9rem;
+  font-size: 0.9rem;
   @media (max-width: 770px) {
     display: none;
   }
@@ -201,16 +201,17 @@ const CatDropdownContent = styled.ul`
   overflow-y: scroll;
   margin: 0;
   ::-webkit-scrollbar {
-      width: 10px;
+    width: 10px;
   }
 
   ::-webkit-scrollbar-track {
-      border-radius: 10px;
+    border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      background-color:#DDE0EB; }
+    border-radius: 10px;
+    background-color: #dde0eb;
+  }
 `;
 
 const CatDropdown = () => {
@@ -233,7 +234,7 @@ const CatDropdown = () => {
                     }}
                   >
                     <EntityAvatar id={entity.id} size="small" lazy={false} />
-                    <b style={{ marginLeft: '5px', fontSize:'0.9rem' }}>
+                    <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>
                       <EntityName id={entity.id} />
                     </b>
                   </PickEntity>
@@ -251,8 +252,8 @@ const DropdownLink = styled(CrossLink)`
   padding: 10px;
   margin: 0;
   min-width: 5rem;
-  color:#623cea;
-  font-weight:600;
+  color: #623cea;
+  font-weight: 600;
 `;
 
 const LinkDropdownContent = styled.ul`

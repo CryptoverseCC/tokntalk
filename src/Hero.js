@@ -11,10 +11,10 @@ const AddStory = styled.div`
   border-radius: 12px;
   display: block;
   padding: 1.25rem;
-  background-color:white;
+  background-color: white;
   @media (max-width: 770px) {
-    width:96%;
-    margin-left:2%;
+    width: 96%;
+    margin-left: 2%;
   }
 `;
 
@@ -36,8 +36,8 @@ const Hero = (props) => (
                       fontFamily: 'AvenirNext',
                       fontSize: '1rem',
                       fontWeight: '600',
-                      marginBottom:'20px',
-                      marginTop:'10px',
+                      marginBottom: '20px',
+                      marginTop: '10px',
                     }}
                   >
                     <ActiveEntityName />

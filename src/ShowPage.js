@@ -137,7 +137,9 @@ export default class ShowPage extends Component {
             </div>
             <React.Fragment>
               <EntityTokensContainer>
-                {entity.tokens.map((token) => <Erc20Token key={token} asset={token} />)}
+                {entity.tokens.map((token) => (
+                  <Erc20Token key={token} asset={token} />
+                ))}
               </EntityTokensContainer>
             </React.Fragment>
           </ContentContainer>

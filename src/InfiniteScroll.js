@@ -4,7 +4,7 @@ import throttle from 'lodash/throttle';
 export default class InfiniteScroll extends React.Component {
   static defaultProps = {
     threshold: 100,
-    throttle: 64
+    throttle: 64,
   };
 
   componentDidMount() {
@@ -34,7 +34,7 @@ export default class InfiniteScroll extends React.Component {
     return (
       <div style={this.props.style}>
         {this.props.children}
-        <div ref={i => (this.sentinel = i)} />
+        <div ref={(i) => (this.sentinel = i)} />
       </div>
     );
   }

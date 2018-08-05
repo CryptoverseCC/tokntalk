@@ -12,8 +12,8 @@ export const FlatContainer = styled.div`
   padding: 30px;
   background-color: white;
   @media (max-width: 770px) {
-    width:96%;
-    margin-left:2%;
+    width: 96%;
+    margin-left: 2%;
   }
 `;
 
@@ -25,20 +25,18 @@ export const H1 = styled.p`
   font-size: 4rem;
   font-weight: bold;
   @media (max-width: 770px) {
-    margin-left:2%;
+    margin-left: 2%;
   }
 `;
 
 export const H2 = styled.p`
   font-size: 2rem;
   font-weight: 600;
-
 `;
 
 export const H3 = styled.p`
   font-size: 1.5rem;
   font-weight: 600;
-
 `;
 
 export const H4 = styled.p`

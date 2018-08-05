@@ -22,11 +22,9 @@ export const StyledTextArea = styled(TextArea)`
   outline: none;
   overflow: auto;
 
-
   &::placeholder {
     transition: color 0.15s ease-in-out;
     color: #1b2437;
-
   }
 
   &:-ms-input-placeholder {
@@ -49,13 +47,11 @@ export const StyledTextArea = styled(TextArea)`
   &:hover::-ms-input-placeholder,
   &:focus::-ms-input-placeholder {
     color: #928f9b;
-
   }
-  
 `;
 
 export const ReplyForm = styled(CommentForm)`
-  background-color: #F3F6FF;
+  background-color: #f3f6ff;
   width: 100%;
   padding: 20px 0 14px 15px;
   border-radius: 6px 6px 40px 6px;
@@ -71,13 +67,10 @@ export const ReplyForm = styled(CommentForm)`
       color: #623cea;
     }
 
-
     &:-ms-input-placeholder {
       font-weight: 500;
       color: #623cea;
     }
-
-
 
     &::-ms-input-placeholder {
       font-weight: 500;
@@ -96,11 +89,11 @@ const MetamaskButton = styled.button`
   outline: none;
   border: none;
   transition: all 0.15s ease-in-out;
-  background: #264DD9 url(${Paw});
+  background: #264dd9 url(${Paw});
   background-position: 50% 50%;
   background-size: 50%;
   background-repeat: no-repeat;
-  transform:translateY(5px);
+  transform: translateY(5px);
   ${({ disabled }) =>
     disabled
       ? css`
@@ -108,12 +101,12 @@ const MetamaskButton = styled.button`
         `
       : css`
           opacity: 1;
-          box-shadow: 0 0.7rem 1.5rem -0.35rem rgba(118,103,170,0.8);
-          transform:translateY(0px);
+          box-shadow: 0 0.7rem 1.5rem -0.35rem rgba(118, 103, 170, 0.8);
+          transform: translateY(0px);
           cursor: pointer;
           &:hover,
           &:focus {
-            box-shadow: 0 0.7rem 1.5rem -0.35rem rgba(118,103,170,1);
+            box-shadow: 0 0.7rem 1.5rem -0.35rem rgba(118, 103, 170, 1);
           }
         `};
 `;

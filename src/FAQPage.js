@@ -274,9 +274,9 @@ const FAQ = () => {
                     <p>And we want to help!</p>
                     <p>
                       Cryptopurr is an open source project.{' '}
-                      <a href="https://github.com/Userfeeds/cryptopurr">Fork it on Github </a>or contact us on{' '}
-                      <a href="gitter.im/Userfeeds/">Gitter</a> <span style={{ color: '#D5D2DE' }}>/</span>{' '}
-                      <a href="https://t.me/userfeeds">Telegram</a>
+                      <a href="https://github.com/Userfeeds/cryptopurr">Fork it on Github </a>
+                      or contact us on <a href="gitter.im/Userfeeds/">Gitter</a>{' '}
+                      <span style={{ color: '#D5D2DE' }}>/</span> <a href="https://t.me/userfeeds">Telegram</a>
                     </p>
                   </div>
                 </div>

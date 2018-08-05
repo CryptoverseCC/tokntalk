@@ -96,18 +96,9 @@ const ercs20 = [
     secondaryColor: '#C23DA8',
     shadowColor: 'rgba(194,61,168,0.2)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://www.cryptokitties.co/'
-      },
-      {
-        name: 'Marketplace',
-        url: 'https://www.cryptokitties.co/search'
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/cryptokitties'
-      }
+      { name: 'Project page', url: 'https://www.cryptokitties.co/' },
+      { name: 'Marketplace', url: 'https://www.cryptokitties.co/search' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/cryptokitties' },
     ],
     is721: true,
   },
@@ -122,18 +113,9 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(43,106,147,0.2)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://axieinfinity.com/'
-      },
-      {
-        name: 'Marketplace',
-        url: 'https://axieinfinity.com/marketplace'
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/axie'
-      }
+      { name: 'Project page', url: 'https://axieinfinity.com/' },
+      { name: 'Marketplace', url: 'https://axieinfinity.com/marketplace' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/axie' },
     ],
     is721: true,
   },
@@ -148,18 +130,9 @@ const ercs20 = [
     secondaryColor: '#1D132D',
     shadowColor: 'rgba(193,205,109,0.3)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'http://cryptobots.me/',
-      },
-      {
-        name: 'Marketplace',
-        url: 'https://cryptobots.me/auction/1#sale'
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/cryptobots'
-      }
+      { name: 'Project page', url: 'http://cryptobots.me/' },
+      { name: 'Marketplace', url: 'https://cryptobots.me/auction/1#sale' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/cryptobots' },
     ],
     is721: true,
   },
@@ -174,18 +147,9 @@ const ercs20 = [
     secondaryColor: '#FFFFFF',
     shadowColor: 'rgba(224,81,184,0.3)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://ethmoji.io/',
-      },
-      {
-        name: 'Marketplace',
-        url: 'https://ethmoji.io/compose/base'
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/ethmoji'
-      }
+      { name: 'Project page', url: 'https://ethmoji.io/' },
+      { name: 'Marketplace', url: 'https://ethmoji.io/compose/base' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/ethmoji' },
     ],
     is721: true,
   },
@@ -200,18 +164,9 @@ const ercs20 = [
     secondaryColor: '#F05E40',
     shadowColor: 'rgba(247,165,148,0.3)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'http://digitalartchain.com/',
-      },
-      {
-        name: 'Marketplace',
-        url: 'http://digitalartchain.com/publish.html'
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/digitalartchain'
-      }
+      { name: 'Project page', url: 'http://digitalartchain.com/' },
+      { name: 'Marketplace', url: 'http://digitalartchain.com/publish.html' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/digitalartchain' },
     ],
     is721: true,
   },
@@ -226,17 +181,10 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://knownorigin.io',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/knownorigin'
-      }
+      { name: 'Project page', url: 'https://knownorigin.io' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/knownorigin' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -249,17 +197,10 @@ const ercs20 = [
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(190,196,203,0.4)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://www.cryptostrikers.com/',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/cryptostrikers'
-      }
+      { name: 'Project page', url: 'https://www.cryptostrikers.com/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/cryptostrikers' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -272,17 +213,10 @@ const ercs20 = [
     secondaryColor: '#283861',
     shadowColor: 'rgba(118,103,170,0.26)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://eth.town/',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/ethtown'
-      }
+      { name: 'Project page', url: 'https://eth.town/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/ethtown' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -295,17 +229,10 @@ const ercs20 = [
     secondaryColor: '#FCE478',
     shadowColor: 'rgba(52,58,64,0.2)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://chibifighters.io/',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/chibifighters'
-      }
+      { name: 'Project page', url: 'https://chibifighters.io/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/chibifighters' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -318,17 +245,10 @@ const ercs20 = [
     secondaryColor: '#030F23',
     shadowColor: 'rgba(186,210,237,0.3)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://cryptofighters.io',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/cryptofighters'
-      }
+      { name: 'Project page', url: 'https://cryptofighters.io' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/cryptofighters' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -341,17 +261,10 @@ const ercs20 = [
     secondaryColor: '#382320',
     shadowColor: 'rgba(216,206,203,0.6)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://cryptosaga.io/',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/cryptosaga'
-      }
+      { name: 'Project page', url: 'https://cryptosaga.io/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/cryptosaga' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -364,17 +277,10 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(1,2,6,0.2)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://www.etheremon.com/',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/etheremon'
-      }
+      { name: 'Project page', url: 'https://www.etheremon.com/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/etheremon' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -387,17 +293,10 @@ const ercs20 = [
     secondaryColor: '#F7DC8D',
     shadowColor: 'rgba(75,30,6,0.4)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://www.mythereum.io/',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/mythereum'
-      }
+      { name: 'Project page', url: 'https://www.mythereum.io/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/mythereum' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -410,17 +309,10 @@ const ercs20 = [
     secondaryColor: '#332f2c',
     shadowColor: 'rgba(51,47,44,0.1)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://panda.earth',
-      },
-      {
-        name: 'OpenSea',
-        url: 'https://opensea.io/assets/pandaearth'
-      }
+      { name: 'Project page', url: 'https://panda.earth' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/pandaearth' },
     ],
     is721: true,
-    
   },
   {
     network: 'ethereum',
@@ -432,12 +324,7 @@ const ercs20 = [
     primaryColor: '#CDFA7F',
     secondaryColor: '#3D5000',
     shadowColor: 'rgba(61,80,0,0.2)',
-    externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://tokntalk.club'
-      }
-    ]
+    externalLinks: [{ name: 'Project page', url: 'https://tokntalk.club' }],
   },
   /*{
     network: 'ethereum',
@@ -467,15 +354,9 @@ const ercs20 = [
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(88,66,54,0.25)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://www.youtube.com/channel/UCcMCMdVFhU25uCpC4kJAo3A'
-      },
-      {
-        name: 'Exchange - Coinbe.net',
-        url: 'https://coinbe.net/market'
-      }
-    ]
+      { name: 'Project page', url: 'https://www.youtube.com/channel/UCcMCMdVFhU25uCpC4kJAo3A' },
+      { name: 'Exchange - Coinbe.net', url: 'https://coinbe.net/market' },
+    ],
   },
   {
     network: 'ethereum',
@@ -487,12 +368,7 @@ const ercs20 = [
     primaryColor: '#1F1826',
     secondaryColor: '#30D7A9',
     shadowColor: 'rgba(31,24,38,0.3)',
-    externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://decentraland.org/'
-      }
-    ]
+    externalLinks: [{ name: 'Project page', url: 'https://decentraland.org/' }],
   },
   {
     network: 'ethereum',
@@ -504,12 +380,7 @@ const ercs20 = [
     primaryColor: '#C6FFF4',
     secondaryColor: '#276C5E',
     shadowColor: 'rgba(82,211,185,0.3)',
-    externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://makerdao.com/'
-      }
-    ]
+    externalLinks: [{ name: 'Project page', url: 'https://makerdao.com/' }],
   },
   /*{
     network: 'ethereum',
@@ -538,12 +409,7 @@ const ercs20 = [
     primaryColor: '#1A52EF',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(26,82,239,0.3)',
-    externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://omisego.network/'
-      }
-    ]
+    externalLinks: [{ name: 'Project page', url: 'https://omisego.network/' }],
   },
   {
     network: 'ethereum',
@@ -556,15 +422,9 @@ const ercs20 = [
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://www.ethereum.org/'
-      },
-      {
-        name: 'Donations',
-        url: 'https://www.ethereum.org/donate'
-      }
-    ]
+      { name: 'Project page', url: 'https://www.ethereum.org/' },
+      { name: 'Donations', url: 'https://www.ethereum.org/donate' },
+    ],
   },
   /*{
     network: 'ethereum',
@@ -610,12 +470,7 @@ const ercs20 = [
     primaryColor: '#C8D5FF',
     secondaryColor: '#1639AA',
     shadowColor: 'rgba(22,57,170,0.2)',
-    externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://twitter.com/sanmaricoin'
-      }
-    ]
+    externalLinks: [{ name: 'Project page', url: 'https://twitter.com/sanmaricoin' }],
   },
   {
     network: 'ethereum',
@@ -627,12 +482,7 @@ const ercs20 = [
     primaryColor: '#9AF6E1',
     secondaryColor: '#1F987B',
     shadowColor: 'rgba(31,152,123,0.2)',
-    externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://???.??'
-      }
-    ]
+    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
   {
     network: 'ethereum',
@@ -645,15 +495,9 @@ const ercs20 = [
     secondaryColor: '#5E22AE',
     shadowColor: 'rgba(3,255,255,0.5)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://???.??'
-      },
-      {
-        name: 'ForkDelta',
-        url: 'https://forkdelta.github.io/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH'
-      }
-    ]
+      { name: 'Project page', url: 'https://???.??' },
+      { name: 'ForkDelta', url: 'https://forkdelta.github.io/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH' },
+    ],
   },
   {
     network: 'ethereum',
@@ -665,12 +509,7 @@ const ercs20 = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
-    externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://???.??'
-      }
-    ]
+    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
 ];
 

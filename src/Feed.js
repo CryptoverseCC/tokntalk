@@ -42,19 +42,18 @@ const StartingMessage = styled.p`
   white-space: pre-wrap;
   overflow-wrap: break-word;
   @media (max-width: 770px) {
-    font-size:1.3rem;
+    font-size: 1.3rem;
   }
 `;
 
 const ArticleReactions = styled.article`
-  display:flex;
-  margin:20px 0;
+  display: flex;
+  margin: 20px 0;
   @media (max-width: 770px) {
-    margin-top:10px;
-    margin-bottom:20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 `;
-
 
 const LabelText = styled.span`
   margin-left: 10px;
@@ -122,7 +121,10 @@ const LikeLabel = ({ onClick, liked, unActive, count }) => {
       >
         <LikeIcon inactive={unActive} />
       </LabelIconContainer>
-      <LabelText>Like{liked && 'd'}</LabelText>
+      <LabelText>
+        Like
+        {liked && 'd'}
+      </LabelText>
       <LabelCounter unActive={unActive} background="#ffebeb">
         {count}
       </LabelCounter>
@@ -207,9 +209,7 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reaction, su
           family={family}
           suffix={suffix}
         />
-        <StartingMessage
-          dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }}
-        />
+        <StartingMessage dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
       </div>
     </article>
   );
@@ -421,12 +421,11 @@ const CardBox = styled.div`
   }
 
   @media (max-width: 770px) {
-    width:96%;
-    margin-left:2%;
+    width: 96%;
+    margin-left: 2%;
     :not(:first-child) {
-      margin-top:1rem;
+      margin-top: 1rem;
     }
-
   }
 
   ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};

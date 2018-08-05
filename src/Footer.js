@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import StyledLink, { A } from './Link';
+import { A } from './Link';
 import Intercom from './Intercom';
-
-import LikeIcon from './img/like.svg';
-
 
 const FooterContainer = styled.div`
   border-radius: 0 3rem 3rem 0rem;
@@ -46,11 +43,11 @@ const Footer = ({ className }) => {
   return (
     <FooterContainer className={className}>
       <FotterInnerContainer>
-        <div>
-          Support
-        </div>
+        <div>Support</div>
         <FooterLinksContainer>
-          <A href="https://t.me/userfeeds" style={{ marginRight: '8px' }}>Telegram</A>
+          <A href="https://t.me/userfeeds" style={{ marginRight: '8px' }}>
+            Telegram
+          </A>
           <A href="https://twitter.com/tokntalkclub">Twitter</A>
         </FooterLinksContainer>
       </FotterInnerContainer>
