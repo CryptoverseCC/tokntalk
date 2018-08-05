@@ -104,7 +104,7 @@ const LabelIconContainer = styled(IconContainer)`
     box-shadow: ${({ liked, unActive, shadow }) => !liked && !unActive && shadow};
 
     img {
-      animation: ${({ liked, unActive, shadow }) => !liked && !unActive && `${shaky} 1s ease-in-out`};
+      animation: ${({ liked, unActive }) => !liked && !unActive && `${shaky} 1s ease-in-out`};
       animation-iteration-count: infinite;
     }
   }
@@ -150,7 +150,7 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
   );
 };
 
-const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
+const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply }) => (
   <ArticleReactions>
     <div className="" style={{ width: '70px' }} />
     <div className="columns is-mobile" style={{ width: '100%' }}>
@@ -175,7 +175,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions }) => (
           <ReplyLabel unActive count={replies.length} />
         ) : (
           <IfActiveEntity other={<ReplyLabel unActive count={replies.length} />}>
-            {() => <ReplyLabel count={replies.length} />}
+            {() => <ReplyLabel count={replies.length} onClick={onReply} />}
           </IfActiveEntity>
         )}
       </div>
@@ -301,7 +301,7 @@ const createEtherscanUrl = (item) => {
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
 
-const ReplyFormContainer = ({ about }) => (
+const ReplyFormContainer = ({ about, ...props }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left is-hidden-mobile">
       <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
@@ -312,7 +312,7 @@ const ReplyFormContainer = ({ about }) => (
         <LinkedActiveEntityAvatar size="medium" />
       </div>
       <div className="column">
-        <ConnectedReplyForm Form={ReplyForm} about={about} />
+        <ConnectedReplyForm Form={ReplyForm} about={about} {...props} />
       </div>
     </div>
   </article>
@@ -436,6 +436,14 @@ export class Card extends React.Component {
     wasShown: !this.props.added,
   };
 
+  replyForm = null;
+
+  focusReply = () => {
+    if (this.replyForm && this.replyForm.focus) {
+      this.replyForm.focus();
+    }
+  };
+
   renderItem = () => {
     const { feedItem, replies, reactions, disabledInteractions } = this.props;
 
@@ -497,6 +505,7 @@ export class Card extends React.Component {
           reactions={reactions}
           replies={replies}
           disabledInteractions={disabledInteractions}
+          onReply={this.focusReply}
         />
         {replies.map((reply) => (
           <Reply
@@ -511,7 +520,11 @@ export class Card extends React.Component {
             disabledInteractions={disabledInteractions}
           />
         ))}{' '}
-        {!disabledInteractions && <IfActiveEntity>{() => <ReplyFormContainer about={feedItem.id} />}</IfActiveEntity>}
+        {!disabledInteractions && (
+          <IfActiveEntity>
+            {() => <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)} />}
+          </IfActiveEntity>
+        )}
       </React.Fragment>
     );
   };

@@ -1,5 +1,6 @@
 import React from 'react';
 import TextArea from 'react-autosize-textarea';
+
 import styled, { css } from 'styled-components';
 import Context from './Context';
 import Paw from './img/paw.svg';
@@ -10,7 +11,7 @@ export const CommentForm = styled.form`
   display: flex;
 `;
 
-export const StyledTextArea = styled(TextArea)`
+export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea innerRef={inputRef} {...props} />)`
   background: transparent;
   font-family: 'AvenirNext';
   font-size: 2rem;
@@ -129,7 +130,7 @@ export class TextAreaForm extends React.Component {
   };
 
   render() {
-    const { placeholder, className, Form } = this.props;
+    const { placeholder, className, Form, inputRef } = this.props;
     return (
       <Form
         onSubmit={(e) => {
@@ -140,6 +141,7 @@ export class TextAreaForm extends React.Component {
         valid={this.props.validate ? this.props.validate(this.state.comment) : true}
       >
         <StyledTextArea
+          inputRef={inputRef}
           placeholder={placeholder}
           value={this.state.comment}
           onChange={(e) => this.setState({ comment: e.target.value })}
