@@ -8,6 +8,7 @@ import sortBy from 'lodash/fp/sortBy';
 import reverse from 'lodash/fp/reverse';
 import find from 'lodash/fp/find';
 
+import { pageView } from './Analytics';
 import Link from './Link';
 import Feed from './Feed';
 import Loader from './Loader';
@@ -63,6 +64,17 @@ const H3Discover = styled.h3`
 const DiscoveryContext = React.createContext();
 
 export default class Discover extends Component {
+  componentDidMount() {
+    pageView();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.location.pathname !== this.props.location.pathname) {
+      pageView();
+      window.scrollTo(0, 0);
+    }
+  }
+
   render() {
     const { match } = this.props;
 
