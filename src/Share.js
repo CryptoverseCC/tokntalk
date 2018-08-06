@@ -35,7 +35,7 @@ const SharePopup = styled(Modal)`
 `;
 
 const ShareItem = styled.p`
-  color: #623cea;
+  color: #264dd9;
   cursor: default;
 
   &:hover {
@@ -45,7 +45,7 @@ const ShareItem = styled.p`
 `;
 
 const Status = styled.p`
-  color: #623cea;
+  color: #264dd9;
   text-align: center;
 `;
 

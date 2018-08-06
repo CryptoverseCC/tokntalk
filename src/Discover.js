@@ -20,7 +20,7 @@ import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem } from './api';
 import { socialIcons } from './Icons';
-import { FlatContainer, WarningContainer, H1, H2, H3, SocialUsername, ContentContainer } from './Components';
+import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
   EntityName,
   LinkedEntityAvatar,
@@ -38,6 +38,7 @@ const H1Discover = styled.h1`
   margin: 60px 0;
   font-size: 4rem;
   font-weight: bold;
+  line-height: 1.1;
   @media (max-width: 770px) {
     margin-left: 2%;
   }
@@ -118,7 +119,11 @@ class Index extends Component {
     return (
       <ContentContainer>
         <HeaderSpacer />
-        <H1Discover>Token Communities</H1Discover>
+        <H1Discover>
+          Token
+          <br />
+          Communities
+        </H1Discover>
         <div className="columns">
           <div className="column is-12">
             <IfActiveEntity
@@ -243,7 +248,7 @@ const ByToken = ({ match, token }) => (
       <div className="columns">
         <div className="column is-8">
           <FlatContainer>
-            <H3>Recently active</H3>
+            <H4>Recently active</H4>
             <Link to={`${match.url}/recentlyActive`}>
               <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>
             </Link>
@@ -287,24 +292,23 @@ const ByToken = ({ match, token }) => (
           </IsActiveEntityFromFamily>
         </div>
         <div className="column is-3 is-offset-1">
-          <FlatContainer>
-            <H3>External links</H3>
+          <FlatContainer style={{ marginBottom: '4rem' }}>
+            <H4 style={{ marginBottom: '15px' }}>External links</H4>
             <ul>
-              <li>
-                <a href={`https://etherscan.io/address/${token.address}`}>etherscan.io</a>
+              <li style={{ marginBottom: '7px' }}>
+                <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
               </li>
               {token.externalLinks.map((entry) => {
                 return (
-                  <li key={entry.name}>
+                  <li key={entry.name} style={{ marginBottom: '7px' }}>
                     <a href={entry.url}>{entry.name}</a>
                   </li>
                 );
               })}
             </ul>
           </FlatContainer>
-          <hr />
           <FlatContainer>
-            <H3>In social</H3>
+            <H4>In social</H4>
             <Link to={`${match.url}/social`}>
               <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>
             </Link>

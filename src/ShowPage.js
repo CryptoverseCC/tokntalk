@@ -21,8 +21,52 @@ import Link from './Link';
 import Advertised from './Catvertised';
 import ercs20 from './erc20';
 import { HeaderSpacer } from './Header';
-import { FlatContainer, ContentContainer, H2, H4, SocialUsername } from './Components';
+import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
+
+const CommunitiesListContainer = styled.div`
+  position: relative;
+  min-width: 100%;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    width: 80px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    z-index: 1;
+  }
+  @media (max-width: 770px) {
+    &:before {
+      content: '';
+      display: none;
+    }
+  }
+`;
+
+const CommunitiesList = styled.div`
+  overflow-x: scroll;
+  min-width: 100%;
+  display: flex;
+
+  ::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #dde0eb;
+  }
+
+  @media (max-width: 770px) {
+    display: block;
+  }
+`;
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -100,24 +144,28 @@ export default class ShowPage extends Component {
               </div>
               <div className="column is-8 is-offset-1">
                 <FlatContainer style={{ marginBottom: '2rem' }}>
-                  <H2 style={{ marginBottom: '15px' }}>
+                  <H4 style={{ marginBottom: '15px' }}>
                     <EntityName id={entityId} /> Communities
-                  </H2>
-                  <div className="columns" style={{ overflowX: 'scroll' }}>
-                    {entity.tokens.map((asset) => {
-                      const [network, address] = asset.split(':');
-                      const token = find({ network, address })(ercs20);
+                  </H4>
+                  <div className="columns">
+                    <CommunitiesListContainer>
+                      <CommunitiesList>
+                        {entity.tokens.map((asset) => {
+                          const [network, address] = asset.split(':');
+                          const token = find({ network, address })(ercs20);
 
-                      return (
-                        <TokenTile
-                          key={asset}
-                          small
-                          linkTo={`/discover/byToken/${token.symbol}`}
-                          token={token}
-                          className="column is-one-fifth"
-                        />
-                      );
-                    })}
+                          return (
+                            <TokenTile
+                              key={asset}
+                              small
+                              linkTo={`/discover/byToken/${token.symbol}`}
+                              token={token}
+                              className="column is-one-fifth"
+                            />
+                          );
+                        })}
+                      </CommunitiesList>
+                    </CommunitiesListContainer>
                   </div>
                 </FlatContainer>
                 <ShowPage.FeedContainer>
@@ -181,7 +229,7 @@ const InlineButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  color: #623cea;
+  color: #264dd9;
 `;
 
 const SocialIcon = styled(({ type, ...restProps }) => React.createElement(socialIcons[type], restProps))`

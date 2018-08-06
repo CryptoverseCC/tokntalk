@@ -47,6 +47,7 @@ const HeaderContainer = styled.div`
 
 const TitleLink = styled(Link)`
   margin-left: 1rem;
+  color: #1b2437;
   @media (max-width: 770px) {
     display: none;
   }
@@ -54,13 +55,10 @@ const TitleLink = styled(Link)`
 
 const CrossLink = styled(Link)`
   margin-left: 10px;
-  margin-top: -3px;
-  padding: 5px 10px;
-  border: 1px solid #2850d9;
   font-weight: 600;
   font-size: 0.9rem;
-  border-radius: 6px;
-  outline: 1;
+  padding-left: 10px;
+  border-left: 1px solid #dce0eb;
 `;
 
 const LinkContainer = styled.ul`
@@ -75,13 +73,13 @@ const ToggleHttpButton = styled.button`
   margin-left: 10px;
   margin-top: -3px;
   padding: 5px 10px;
-  background-color: ${({ http }) => (http ? '#f4f6ff' : '#fdcf0b')};
+  background-color: ${({ http }) => (http ? '#ecf1f9' : '#fdcf0b')};
   border: none;
+  font-size: 0.7rem;
   font-weight: 600;
-  font-size: 0.9rem;
   border-radius: 3px;
   outline: 0;
-  color: ${({ http }) => (http ? '#808080' : '#2f343a')};
+  color: ${({ http }) => (http ? '#8c91a2' : '#2f343a')};
 `;
 
 const Header = () => {
@@ -154,10 +152,8 @@ const CatDropdownToggle = ({ openDropdown }) => {
   return (
     <ToggleButton className="level" onClick={openDropdown}>
       <ActiveEntityAvatar size="small" />
-      <DropdownEntityName>
-        <b>
-          <ActiveEntityName />
-        </b>
+      <DropdownEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }}>
+        <ActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }} />
         <span
           style={{
             display: 'inline-flex',
@@ -189,7 +185,7 @@ const PickEntity = styled.button`
 
   &:hover {
     background-color: #f4f1ff;
-    color: #623cea;
+    color: #264dd9;
   }
 `;
 
@@ -252,7 +248,7 @@ const DropdownLink = styled(CrossLink)`
   padding: 10px;
   margin: 0;
   min-width: 5rem;
-  color: #623cea;
+  color: #264dd9;
   font-weight: 600;
 `;
 

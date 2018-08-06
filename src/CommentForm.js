@@ -65,17 +65,17 @@ export const ReplyForm = styled(CommentForm)`
 
     &::placeholder {
       font-weight: 500;
-      color: #623cea;
+      color: #264dd9;
     }
 
     &:-ms-input-placeholder {
       font-weight: 500;
-      color: #623cea;
+      color: #264dd9;
     }
 
     &::-ms-input-placeholder {
       font-weight: 500;
-      color: #623cea;
+      color: #264dd9;
     }
   }
 `;

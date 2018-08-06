@@ -12,8 +12,37 @@ import { HeaderSpacer } from './Header';
 import { IfActiveEntity, Entity } from './Entity';
 import { FlatContainer, ContentContainer, H4 } from './Components';
 import ercs20, { TokenImage } from './erc20';
+import { FacebookIcon, DiscoverIcon } from './Icons';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
+
+const YourCommunitiesContainer = styled.div`
+  margin-bottom: 3rem;
+  background-color: 'transparent';
+  padding: 0;
+  border-radius: 0;
+  background-color: #ecf1f9;
+  position: relative;
+  padding: 30px;
+  border-radius: 12px;
+  @media (max-width: 770px) {
+    width: 96%;
+    margin-left: 2%;
+  }
+`;
+
+const YourCommunitiesLinks = styled.a`
+  display: flex;
+  align-items: center;
+  padding: 7px 0;
+  font-size: 1rem;
+  color: #1b2437;
+  transition: all 0.15s ease;
+  :hover {
+    color: #264dd9;
+    transition: all 0.15s ease;
+  }
+`;
 
 export default class IndexPage extends Component {
   componentDidMount() {
@@ -55,13 +84,13 @@ const ActiveEntityTokens = () => (
     {(activeEntityId) => (
       <Entity id={activeEntityId}>
         {(entity) => (
-          <FlatContainer style={{ marginBottom: '2rem' }}>
-            <H4>Your communities</H4>
+          <YourCommunitiesContainer>
+            <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
             {entity.tokens.map((asset) => (
               <Token key={asset} asset={asset} />
             ))}
             <DiscoverMore />
-          </FlatContainer>
+          </YourCommunitiesContainer>
         )}
       </Entity>
     )}
@@ -70,7 +99,25 @@ const ActiveEntityTokens = () => (
 
 const DiscoverMore = styled((props) => (
   <div {...props}>
-    <Link to="/discover">Discover more</Link>
+    <Link
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '15px',
+        paddingTop: '15px',
+        borderTop: '1px solid #dce0eb',
+      }}
+      to="/discover"
+    >
+      <DiscoverIcon
+        style={{
+          width: '24px',
+          height: '24px',
+          marginRight: '15px',
+        }}
+      />
+      Discover more
+    </Link>
   </div>
 ))`
   // styles
@@ -81,9 +128,9 @@ const Token = ({ asset }) => {
   const token = find({ network, address })(ercs20);
 
   return (
-    <Link to={`/discover/byToken/${token.symbol}`} style={{ display: 'flex', alignItems: 'center', padding: '5px 0' }}>
-      <TokenImage token={token} style={{ width: '30px', height: '30px', marginRight: '15px' }} />
+    <YourCommunitiesLinks to={`/discover/byToken/${token.symbol}`}>
+      <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
-    </Link>
+    </YourCommunitiesLinks>
   );
 };
