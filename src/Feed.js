@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
 import find from 'lodash/fp/find';
@@ -9,6 +9,7 @@ import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 
+import { FixedModal } from './Modal';
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
@@ -25,6 +26,7 @@ import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
 import ercs20 from './erc20';
+import { H3 } from './Components';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -68,17 +70,18 @@ const LabelCounter = styled.span`
   border-radius: 15px;
   background: ${({ unActive, background }) => (!unActive ? background : '#cfd3e2')};
   color: ${({ unActive }) => unActive && '#000000'};
+  cursor: ${({ disabled }) => !disabled && 'pointer'};
+  transition: transform 0.15s ease-in-out;
+
+  :hover {
+    transform: ${({ disabled }) => !disabled && 'translateY(-3px)'};
+  }
 `;
 
 const LabelButton = styled.div`
-  padding: 4px;
   display: flex;
   align-items: center;
-  flex-shrink: 0;
-  font-size: 1rem !important; //TODO
-  font-weight: 600;
   transition: all 0.15s ease-in-out;
-  color: ${({ unActive, color }) => (!unActive ? color : '#918f9b')};
   cursor: ${({ liked, unActive }) => (liked || unActive ? 'default' : 'pointer')};
 `;
 
@@ -92,6 +95,16 @@ const shaky = keyframes`
   60% {
     transform: translateY(-3px);
   }
+`;
+
+const LabelContainer = styled.div`
+  color: ${({ unActive, color }) => (!unActive ? color : '#918f9b')};
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 1rem !important;
+  font-weight: 600;
+  padding: 4px;
 `;
 
 const LabelIconContainer = styled(IconContainer)`
@@ -110,47 +123,51 @@ const LabelIconContainer = styled(IconContainer)`
   }
 `;
 
-const LikeLabel = ({ onClick, liked, unActive, count }) => {
+const LikeLabel = ({ onLike, onShowLikers, liked, unActive, count }) => {
   return (
-    <LabelButton onClick={onClick} liked={liked} unActive={unActive} color="#ff8482">
-      <LabelIconContainer
-        liked={liked}
-        unActive={unActive}
-        shadow="0 0 20px 9px rgba(255, 117, 117, 0.2)"
-        background="rgba(255, 117, 117, 0.2)"
-      >
-        <LikeIcon inactive={unActive} />
-      </LabelIconContainer>
-      <LabelText>
-        Like
-        {liked && 'd'}
-      </LabelText>
-      <LabelCounter unActive={unActive} background="#ffebeb">
+    <LabelContainer color="#ff8482" unActive={unActive}>
+      <LabelButton onClick={onLike} liked={liked} unActive={unActive}>
+        <LabelIconContainer
+          liked={liked}
+          unActive={unActive}
+          shadow="0 0 20px 9px rgba(255, 117, 117, 0.2)"
+          background="rgba(255, 117, 117, 0.2)"
+        >
+          <LikeIcon inactive={unActive} />
+        </LabelIconContainer>
+        <LabelText>
+          Like
+          {liked && 'd'}
+        </LabelText>
+      </LabelButton>
+      <LabelCounter unActive={unActive} background="#ffebeb" onClick={onShowLikers} disabled={count === 0}>
         {count}
       </LabelCounter>
-    </LabelButton>
+    </LabelContainer>
   );
 };
 
 const ReplyLabel = ({ onClick, unActive, count }) => {
   return (
-    <LabelButton onClick={onClick} unActive={unActive} color="#2850d9">
-      <LabelIconContainer
-        unActive={unActive}
-        shadow="0 0 20px 9px rgba(89, 123, 246, 0.11)"
-        background="rgba(89, 123, 246, 0.11)"
-      >
-        <ReplyIcon inactive={unActive} />
-      </LabelIconContainer>
-      <LabelText>Reply</LabelText>
-      <LabelCounter unActive={unActive} background="#ebefff">
+    <LabelContainer unActive={unActive} color="#2850d9">
+      <LabelButton onClick={onClick} unActive={unActive}>
+        <LabelIconContainer
+          unActive={unActive}
+          shadow="0 0 20px 9px rgba(89, 123, 246, 0.11)"
+          background="rgba(89, 123, 246, 0.11)"
+        >
+          <ReplyIcon inactive={unActive} />
+        </LabelIconContainer>
+        <LabelText>Reply</LabelText>
+      </LabelButton>
+      <LabelCounter unActive={unActive} disabled background="#ebefff">
         {count}
       </LabelCounter>
-    </LabelButton>
+    </LabelContainer>
   );
 };
 
-const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply }) => (
+const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, onShowLikers }) => (
   <ArticleReactions>
     <div className="" style={{ width: '70px' }} />
     <div className="columns is-mobile" style={{ width: '100%' }}>
@@ -160,13 +177,15 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply }
         ) : (
           <IfActiveEntityLiked
             reactions={reactions}
-            unActive={<LikeLabel unActive count={reactions.length} />}
+            unActive={<LikeLabel unActive count={reactions.length} onShowLikers={onShowLikers} />}
             notLiked={
               <Context.Consumer>
-                {({ feedStore: { react } }) => <LikeLabel onClick={() => react(id)} count={reactions.length} />}
+                {({ feedStore: { react } }) => (
+                  <LikeLabel onLike={() => react(id)} count={reactions.length} onShowLikers={onShowLikers} />
+                )}
               </Context.Consumer>
             }
-            liked={<LikeLabel liked count={reactions.length} />}
+            liked={<LikeLabel liked count={reactions.length} onShowLikers={onShowLikers} />}
           />
         )}
       </div>
@@ -444,6 +463,10 @@ export class Card extends React.Component {
     }
   };
 
+  onShowLikers = () => {
+    this.props.onShowLikers(this.props.feedItem, this.props.reactions);
+  };
+
   renderItem = () => {
     const { feedItem, replies, reactions, disabledInteractions } = this.props;
 
@@ -506,6 +529,7 @@ export class Card extends React.Component {
           replies={replies}
           disabledInteractions={disabledInteractions}
           onReply={this.focusReply}
+          onShowLikers={this.onShowLikers}
         />
         {replies.map((reply) => (
           <Reply
@@ -606,66 +630,102 @@ const EmptyFeedPlaceholder = styled.div`
   justify-content: center;
 `;
 
-const Feed = ({
-  feedItems,
-  feedLoading,
-  temporaryReplies,
-  temporaryReactions,
-  getMoreFeedItems,
-  feedLoadingMore,
-  className,
-  style,
-  disabledInteractions,
-}) => (
-  <div
-    className={className || 'column is-6 is-offset-3'}
-    style={{ display: 'flex', justifyContent: 'center', ...style }}
-  >
-    {feedLoading ? (
-      <div style={{ paddingTop: '20px' }}>
-        <Loader />
+const LikersModal = styled(({ likes, onClose, className }) => (
+  <FixedModal onClose={onClose}>
+    <div className={className}>
+      <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
+      {likes.map(({ context }) => (
+        <div style={{ display: 'flex', marginBottom: '15px' }}>
+          <LinkedActiveEntityAvatar id={context} size="medium" />
+          <Link to={`/${context}`} style={{ display: 'block', marginLeft: '15px' }}>
+            <b>
+              <EntityName id={context} />
+            </b>
+          </Link>
+        </div>
+      ))}
+    </div>
+  </FixedModal>
+))`
+  border-radius: 30px;
+  padding: 30px;
+  background: #ffffff;
+`;
+
+class Feed extends Component {
+  state = {
+    showModal: false,
+    feedItemLikes: [],
+  };
+
+  onShowLikers = (feedItem, reactions) => {
+    this.setState({ showModal: true, feedItemLikes: reactions });
+  };
+
+  render() {
+    const {
+      feedItems,
+      feedLoading,
+      temporaryReplies,
+      temporaryReactions,
+      getMoreFeedItems,
+      feedLoadingMore,
+      className,
+      style,
+      disabledInteractions,
+    } = this.props;
+    const { showModal, feedItemLikes } = this.state;
+
+    return (
+      <div className={className} style={{ display: 'flex', justifyContent: 'center', ...style }}>
+        {feedLoading ? (
+          <div style={{ paddingTop: '20px' }}>
+            <Loader />
+          </div>
+        ) : feedItems.length > 0 ? (
+          <InfiniteScroll
+            style={{ width: '100%' }}
+            hasMore={true}
+            onLoadMore={getMoreFeedItems}
+            throttle={100}
+            threshold={300}
+            isLoading={feedLoadingMore || feedLoading}
+          >
+            {feedItems.map((feedItem) => {
+              const replies = pipe(
+                sortBy('created_at'),
+                uniqBy((about) => about.id),
+              )([...(temporaryReplies[feedItem.id] || []), ...(feedItem.replies || [])]);
+
+              const reactions = uniqBy((target) => target.id)([
+                ...(temporaryReactions[feedItem.id] || []),
+                ...(feedItem.likes || []),
+              ]);
+              return (
+                <Card
+                  disabledInteractions={disabledInteractions}
+                  feedItem={feedItem}
+                  replies={replies}
+                  reactions={reactions}
+                  key={feedItem.id}
+                  added={feedItem.added}
+                  onShowLikers={this.onShowLikers}
+                />
+              );
+            })}
+          </InfiniteScroll>
+        ) : (
+          <EmptyFeedPlaceholder>
+            <b>
+              <TranslationsContext.Consumer>{({ emptyFeed }) => emptyFeed}</TranslationsContext.Consumer>
+            </b>
+          </EmptyFeedPlaceholder>
+        )}
+        {showModal && <LikersModal onClose={() => this.setState({ showModal: false })} likes={feedItemLikes} />}
       </div>
-    ) : feedItems.length > 0 ? (
-      <InfiniteScroll
-        style={{ width: '100%' }}
-        hasMore={true}
-        onLoadMore={getMoreFeedItems}
-        throttle={100}
-        threshold={300}
-        isLoading={feedLoadingMore || feedLoading}
-      >
-        {feedItems.map((feedItem) => {
-          const replies = pipe(
-            sortBy('created_at'),
-            uniqBy((about) => about.id),
-          )([...(temporaryReplies[feedItem.id] || []), ...(feedItem.replies || [])]);
-
-          const reactions = uniqBy((target) => target.id)([
-            ...(temporaryReactions[feedItem.id] || []),
-            ...(feedItem.likes || []),
-          ]);
-          return (
-            <Card
-              disabledInteractions={disabledInteractions}
-              feedItem={feedItem}
-              replies={replies}
-              reactions={reactions}
-              key={feedItem.id}
-              added={feedItem.added}
-            />
-          );
-        })}
-      </InfiniteScroll>
-    ) : (
-      <EmptyFeedPlaceholder>
-        <b>
-          <TranslationsContext.Consumer>{({ emptyFeed }) => emptyFeed}</TranslationsContext.Consumer>
-        </b>
-      </EmptyFeedPlaceholder>
-    )}
-  </div>
-);
-
+    );
+  }
+}
 export default Feed;
 
 export const ConnectedFeed = ({ forEntity, className }) => (

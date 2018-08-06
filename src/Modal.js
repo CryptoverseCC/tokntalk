@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import transition from 'styled-transition-group';
 
 export default class Modal extends React.Component {
   componentDidMount() {
@@ -27,6 +29,91 @@ export default class Modal extends React.Component {
       <div ref={(el) => (this.el = el)} className={this.props.className}>
         {this.props.children}
       </div>
+    );
+  }
+}
+
+const FixedModalContent = styled(Modal)`
+  min-width: 400px;
+`;
+
+const Overlay = transition.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  height: 100vh;
+  left: 0;
+  width: 100vw;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.6);
+
+  &:enter {
+    background: rgba(0, 0, 0, 0.0);
+  }
+
+  &:enter-active {
+    background: rgba(0, 0, 0, 0.6);
+    transition: background-color 300ms linear;
+  }
+
+  &:exit-active {
+    background: rgba(0, 0, 0, 0.0);
+    transition: background 300ms linear;
+  }
+
+  &:exit {
+    background: rgba(0, 0, 0, 0.6);
+  }
+`;
+
+const Fade = transition.div`
+  &:enter {
+    opacity: 0.01;
+  }
+
+  &:enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+
+  }
+
+  &:exit-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-out;
+  }
+
+  &:exit {
+    opacity: 1;
+  }
+`;
+
+export class FixedModal extends Component {
+  state = {
+    show: false,
+  };
+
+  componentDidMount() {
+    this.setState({ show: true });
+  }
+
+  onClose = () => {
+    this.setState({ show: false }, () => setTimeout(this.props.onClose, 300));
+  };
+
+  render() {
+    const { show } = this.state;
+    const { children } = this.props;
+
+    return (
+      <Overlay timeout={300} in={show}>
+        <FixedModalContent onClose={this.onClose}>
+          <Fade timeout={300} in={show}>
+            {children}
+          </Fade>
+        </FixedModalContent>
+      </Overlay>
     );
   }
 }
