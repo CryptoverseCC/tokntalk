@@ -339,9 +339,9 @@ const ercs20 = [
     externalLinks: [
       {
         name: 'Project page',
-        url: 'https://???.??'
-      }
-    ]
+        url: 'https://???.??',
+      },
+    ],
   },
   {
     network: 'ethereum',
@@ -395,9 +395,9 @@ const ercs20 = [
     externalLinks: [
       {
         name: 'Project page',
-        url: 'https://golem.network/'
-      }
-    ]
+        url: 'https://golem.network/',
+      },
+    ],
   },
   {
     network: 'ethereum',
@@ -439,9 +439,9 @@ const ercs20 = [
     externalLinks: [
       {
         name: 'Project page',
-        url: 'https://status.im'
-      }
-    ]
+        url: 'https://status.im',
+      },
+    ],
   },
   {
     network: 'ethereum',
@@ -456,9 +456,9 @@ const ercs20 = [
     externalLinks: [
       {
         name: 'Project page',
-        url: 'https://0xproject.com'
-      }
-    ]
+        url: 'https://0xproject.com',
+      },
+    ],
   },
   {
     network: 'ethereum',
