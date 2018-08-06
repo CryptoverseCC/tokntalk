@@ -384,7 +384,7 @@ const ercs20 = [
   },
   {
     network: 'ethereum',
-    address: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d',
+    address: '0xa74476443119a942de498590fe1f2454d7d4ac0d',
     name: 'Golem',
     symbol: 'GNT',
     logo: gnt,
