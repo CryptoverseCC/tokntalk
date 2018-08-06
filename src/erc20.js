@@ -21,6 +21,9 @@ import batCover from './img/tokens/bat.jpg';
 import ben from './img/tokens/bentyn-icon.png';
 import benCover from './img/tokens/bentyn.jpg';
 
+import ddgt from './img/tokens/okimaki-icon.png';
+import ddgtCover from './img/tokens/okimaki.png';
+
 import gnt from './img/tokens/golem-icon.svg';
 import gntCover from './img/tokens/golem.png';
 
@@ -146,6 +149,14 @@ const ercs20 = [
       { name: 'Reddit', url: 'https://www.reddit.com/r/ethmoji/' }
     ],
     is721: true,
+  },
+  {
+    ...mapping.DDGT,
+    logo: ddgt,
+    coverImage: ddgtCover,
+    primaryColor: '#86d0f7',
+    secondaryColor: '#1b4556',
+    shadowColor: 'rgba(134,208,247,0.25)',
   },
   {
     ...mapping.DIGITAL_ART_CHAIN,
