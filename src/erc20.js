@@ -99,6 +99,7 @@ const ercs20 = [
       { name: 'Project page', url: 'https://www.cryptokitties.co/' },
       { name: 'Marketplace', url: 'https://www.cryptokitties.co/search' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptokitties' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoKitties/' }
     ],
     is721: true,
   },
@@ -116,6 +117,7 @@ const ercs20 = [
       { name: 'Project page', url: 'https://axieinfinity.com/' },
       { name: 'Marketplace', url: 'https://axieinfinity.com/marketplace' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/axie' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/AxieInfinity/' }
     ],
     is721: true,
   },
@@ -130,9 +132,10 @@ const ercs20 = [
     secondaryColor: '#1D132D',
     shadowColor: 'rgba(193,205,109,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'http://cryptobots.me/' },
+      { name: 'Project page', url: 'http://cryptobots.me/', },
       { name: 'Marketplace', url: 'https://cryptobots.me/auction/1#sale' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptobots' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/cryptobots_game/' }
     ],
     is721: true,
   },
@@ -147,9 +150,10 @@ const ercs20 = [
     secondaryColor: '#FFFFFF',
     shadowColor: 'rgba(224,81,184,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'https://ethmoji.io/' },
+      { name: 'Project page', url: 'https://ethmoji.io/', },
       { name: 'Marketplace', url: 'https://ethmoji.io/compose/base' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethmoji' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/ethmoji/' }
     ],
     is721: true,
   },
@@ -197,8 +201,9 @@ const ercs20 = [
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(190,196,203,0.4)',
     externalLinks: [
-      { name: 'Project page', url: 'https://www.cryptostrikers.com/' },
+      { name: 'Project page', url: 'https://www.cryptostrikers.com/', },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptostrikers' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/cryptostrikers/' }
     ],
     is721: true,
   },
@@ -213,8 +218,9 @@ const ercs20 = [
     secondaryColor: '#283861',
     shadowColor: 'rgba(118,103,170,0.26)',
     externalLinks: [
-      { name: 'Project page', url: 'https://eth.town/' },
+      { name: 'Project page', url: 'https://eth.town/', },
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethtown' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/EtherTown/' }
     ],
     is721: true,
   },
@@ -229,8 +235,9 @@ const ercs20 = [
     secondaryColor: '#FCE478',
     shadowColor: 'rgba(52,58,64,0.2)',
     externalLinks: [
-      { name: 'Project page', url: 'https://chibifighters.io/' },
+      { name: 'Project page', url: 'https://chibifighters.io/', },
       { name: 'OpenSea', url: 'https://opensea.io/assets/chibifighters' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/ChibiFighters/' }
     ],
     is721: true,
   },
@@ -245,8 +252,9 @@ const ercs20 = [
     secondaryColor: '#030F23',
     shadowColor: 'rgba(186,210,237,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'https://cryptofighters.io' },
+      { name: 'Project page', url: 'https://cryptofighters.io', },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptofighters' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoFighters/' }
     ],
     is721: true,
   },
@@ -277,8 +285,9 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(1,2,6,0.2)',
     externalLinks: [
-      { name: 'Project page', url: 'https://www.etheremon.com/' },
+      { name: 'Project page', url: 'https://www.etheremon.com/', },
       { name: 'OpenSea', url: 'https://opensea.io/assets/etheremon' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/etheremon/' }
     ],
     is721: true,
   },
@@ -293,8 +302,9 @@ const ercs20 = [
     secondaryColor: '#F7DC8D',
     shadowColor: 'rgba(75,30,6,0.4)',
     externalLinks: [
-      { name: 'Project page', url: 'https://www.mythereum.io/' },
+      { name: 'Project page', url: 'https://www.mythereum.io/', },
       { name: 'OpenSea', url: 'https://opensea.io/assets/mythereum' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/mythereum/' }
     ],
     is721: true,
   },
@@ -337,10 +347,7 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(75,75,75,0.4)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://???.??',
-      },
+      { name: 'Project page', url: 'https://???.??', },
     ],
   },
   {
@@ -356,7 +363,8 @@ const ercs20 = [
     externalLinks: [
       { name: 'Project page', url: 'https://www.youtube.com/channel/UCcMCMdVFhU25uCpC4kJAo3A' },
       { name: 'Exchange - Coinbe.net', url: 'https://coinbe.net/market' },
-    ],
+      { name: 'YouTube', url: 'https://www.youtube.com/c/SzczepanBentyn' }
+    ]
   },
   {
     network: 'ethereum',
@@ -368,7 +376,10 @@ const ercs20 = [
     primaryColor: '#1F1826',
     secondaryColor: '#30D7A9',
     shadowColor: 'rgba(31,24,38,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://decentraland.org/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://decentraland.org/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/decentraland/' }
+    ]
   },
   {
     network: 'ethereum',
@@ -380,7 +391,10 @@ const ercs20 = [
     primaryColor: '#C6FFF4',
     secondaryColor: '#276C5E',
     shadowColor: 'rgba(82,211,185,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://makerdao.com/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://makerdao.com/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/MakerDAO/' }
+    ]
   },
   {
     network: 'ethereum',
@@ -393,10 +407,7 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(31,54,90,0.5)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://golem.network/',
-      },
+      { name: 'Project page', url: 'https://golem.network/', },
     ],
   },
   {
@@ -409,7 +420,10 @@ const ercs20 = [
     primaryColor: '#1A52EF',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(26,82,239,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://omisego.network/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://omisego.network/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/omise_go/' }
+    ]
   },
   {
     network: 'ethereum',
@@ -437,10 +451,7 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(91,108,238,0.5)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://status.im',
-      },
+      { name: 'Project page', url: 'https://status.im', },
     ],
   },
   {
@@ -454,10 +465,7 @@ const ercs20 = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
     externalLinks: [
-      {
-        name: 'Project page',
-        url: 'https://0xproject.com',
-      },
+      { name: 'Project page', url: 'https://0xproject.com', },
     ],
   },
   {
