@@ -326,7 +326,7 @@ const ercs20 = [
     shadowColor: 'rgba(61,80,0,0.2)',
     externalLinks: [{ name: 'Project page', url: 'https://tokntalk.club' }],
   },
-  /*{
+  {
     network: 'ethereum',
     address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
     name: 'Basic Attention Token',
@@ -342,7 +342,7 @@ const ercs20 = [
         url: 'https://???.??'
       }
     ]
-  },*/
+  },
   {
     network: 'ethereum',
     address: '0x108c05cac356d93b351375434101cfd3e14f7e44',
@@ -382,7 +382,7 @@ const ercs20 = [
     shadowColor: 'rgba(82,211,185,0.3)',
     externalLinks: [{ name: 'Project page', url: 'https://makerdao.com/' }],
   },
-  /*{
+  {
     network: 'ethereum',
     address: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d',
     name: 'Golem',
@@ -398,7 +398,7 @@ const ercs20 = [
         url: 'https://golem.network/'
       }
     ]
-  },*/
+  },
   {
     network: 'ethereum',
     address: '0xd26114cd6ee289accf82350c8d8487fedb8a0c07',
@@ -426,7 +426,7 @@ const ercs20 = [
       { name: 'Donations', url: 'https://www.ethereum.org/donate' },
     ],
   },
-  /*{
+  {
     network: 'ethereum',
     address: '0x744d70fdbe2ba4cf95131626614a1763df805b9e',
     name: 'Status',
@@ -442,8 +442,8 @@ const ercs20 = [
         url: 'https://status.im'
       }
     ]
-  },*/
-  /*{
+  },
+  {
     network: 'ethereum',
     address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
     name: 'ZRX',
@@ -459,7 +459,7 @@ const ercs20 = [
         url: 'https://0xproject.com'
       }
     ]
-  },*/
+  },
   {
     network: 'ethereum',
     address: '0xc5fdd3e4665b5d7bc4dc9102622d7cb0fe510b65',
