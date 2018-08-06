@@ -21,6 +21,9 @@ import batCover from './img/tokens/bat.jpg';
 import ben from './img/tokens/bentyn-icon.png';
 import benCover from './img/tokens/bentyn.jpg';
 
+import ddgt from './img/tokens/okimaki-icon.png';
+import ddgtCover from './img/tokens/okimaki.png';
+
 import gnt from './img/tokens/golem-icon.svg';
 import gntCover from './img/tokens/golem.png';
 
@@ -84,12 +87,11 @@ import percentCover from './img/tokens/percent.png';
 import x from './img/tokens/x.svg';
 import xCover from './img/tokens/tokenX.png';
 
+import * as mapping from 'contract-mapping/mapping.json';
+
 const ercs20 = [
   {
-    network: 'ethereum',
-    address: '0x06012c8cf97bead5deae237070f9587f8e7a266d',
-    name: 'Cryptokitties',
-    symbol: 'CK',
+    ...mapping.CRYPTOKITTIES,
     logo: cryptokitties,
     coverImage: cryptokittiesCover,
     primaryColor: '#FFD9FF',
@@ -99,15 +101,12 @@ const ercs20 = [
       { name: 'Project page', url: 'https://www.cryptokitties.co/' },
       { name: 'Marketplace', url: 'https://www.cryptokitties.co/search' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptokitties' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoKitties/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoKitties/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xf5b0a3efb8e8e4c201e2a935f110eaaf3ffecb8d',
-    name: 'Axies',
-    symbol: 'AXIE',
+    ...mapping.AXIES,
     logo: axie,
     coverImage: axieCover,
     primaryColor: '#2b6a93',
@@ -117,51 +116,50 @@ const ercs20 = [
       { name: 'Project page', url: 'https://axieinfinity.com/' },
       { name: 'Marketplace', url: 'https://axieinfinity.com/marketplace' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/axie' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/AxieInfinity/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/AxieInfinity/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
-    name: 'Cryptobots',
-    symbol: 'CBT',
+    ...mapping.CRYPTOBOTS,
     logo: cryptobots,
     coverImage: cryptobotsCover,
     primaryColor: '#EFF7B6',
     secondaryColor: '#1D132D',
     shadowColor: 'rgba(193,205,109,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'http://cryptobots.me/', },
+      { name: 'Project page', url: 'http://cryptobots.me/' },
       { name: 'Marketplace', url: 'https://cryptobots.me/auction/1#sale' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptobots' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/cryptobots_game/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/cryptobots_game/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9',
-    name: 'EthMoji',
-    symbol: 'MOJI',
+    ...mapping.ETH_MOJI,
     logo: ethmoji,
     coverImage: ethmojiCover,
     primaryColor: '#E051BA',
     secondaryColor: '#FFFFFF',
     shadowColor: 'rgba(224,81,184,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'https://ethmoji.io/', },
+      { name: 'Project page', url: 'https://ethmoji.io/' },
       { name: 'Marketplace', url: 'https://ethmoji.io/compose/base' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethmoji' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/ethmoji/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/ethmoji/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0x323a3e1693e7a0959f65972f3bf2dfcb93239dfe',
-    name: 'DigitalArtChain',
-    symbol: 'DAC',
+    ...mapping.DDGT,
+    logo: ddgt,
+    coverImage: ddgtCover,
+    primaryColor: '#86d0f7',
+    secondaryColor: '#1b4556',
+    shadowColor: 'rgba(134,208,247,0.25)',
+  },
+  {
+    ...mapping.DIGITAL_ART_CHAIN,
     logo: dac,
     coverImage: dacCover,
     primaryColor: '#DDE1F1',
@@ -175,10 +173,7 @@ const ercs20 = [
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72',
-    name: 'Known Origin',
-    symbol: 'KODA',
+    ...mapping.KNOWN_ORIGIN,
     logo: knownorigin,
     coverImage: knownoriginCover,
     primaryColor: '#0418D8',
@@ -191,78 +186,63 @@ const ercs20 = [
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xdcaad9fd9a74144d226dbf94ce6162ca9f09ed7e',
-    name: 'CryptoStrikers',
-    symbol: 'STRK',
+    ...mapping.CRYPTO_STRIKERS,
     logo: cryptostrikers,
     coverImage: cryptostrikersCover,
     primaryColor: '#BEC4CB',
     secondaryColor: '#2D1F18',
     shadowColor: 'rgba(190,196,203,0.4)',
     externalLinks: [
-      { name: 'Project page', url: 'https://www.cryptostrikers.com/', },
+      { name: 'Project page', url: 'https://www.cryptostrikers.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptostrikers' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/cryptostrikers/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/cryptostrikers/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0x4fece400c0d3db0937162ab44bab34445626ecfe',
-    name: 'ETH TOWN',
-    symbol: 'HERO',
+    ...mapping.ETH_TOWN,
     logo: ethtown,
     coverImage: ethtownCover,
     primaryColor: '#E8EDFB',
     secondaryColor: '#283861',
     shadowColor: 'rgba(118,103,170,0.26)',
     externalLinks: [
-      { name: 'Project page', url: 'https://eth.town/', },
+      { name: 'Project page', url: 'https://eth.town/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethtown' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/EtherTown/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/EtherTown/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0x71c118b00759b0851785642541ceb0f4ceea0bd5',
-    name: 'Chibi Fighters',
-    symbol: 'CBF',
+    ...mapping.CHIBI_FIGHTERS,
     logo: chibi,
     coverImage: chibiCover,
     primaryColor: '#4881ae',
     secondaryColor: '#FCE478',
     shadowColor: 'rgba(52,58,64,0.2)',
     externalLinks: [
-      { name: 'Project page', url: 'https://chibifighters.io/', },
+      { name: 'Project page', url: 'https://chibifighters.io/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/chibifighters' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/ChibiFighters/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/ChibiFighters/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0x87d598064c736dd0c712d329afcfaa0ccc1921a1',
-    name: 'CryptoFighters',
-    symbol: 'FIGHTER',
+    ...mapping.CRYPTO_FIGHTERS,
     logo: cryptofighters,
     coverImage: cryptofightersCover,
     primaryColor: '#BAD2ED',
     secondaryColor: '#030F23',
     shadowColor: 'rgba(186,210,237,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'https://cryptofighters.io', },
+      { name: 'Project page', url: 'https://cryptofighters.io' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptofighters' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoFighters/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoFighters/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xabc7e6c01237e8eef355bba2bf925a730b714d5f',
-    name: 'CryptoSaga',
-    symbol: 'SAGA',
+    ...mapping.CRYPTO_SAGA,
     logo: cryptosaga,
     coverImage: cryptosagaCover,
     primaryColor: '#D8CECB',
@@ -275,44 +255,35 @@ const ercs20 = [
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xb2c0782ae4a299f7358758b2d15da9bf29e1dd99',
-    name: 'Etheremon',
-    symbol: 'MON',
+    ...mapping.ETHEREMON,
     logo: etheremon,
     coverImage: etheremonCover,
     primaryColor: '#010206',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(1,2,6,0.2)',
     externalLinks: [
-      { name: 'Project page', url: 'https://www.etheremon.com/', },
+      { name: 'Project page', url: 'https://www.etheremon.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/etheremon' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/etheremon/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/etheremon/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xc70be5b7c19529ef642d16c10dfe91c58b5c3bf0',
-    name: 'Mythereum',
-    symbol: 'MYTH',
+    ...mapping.MYTHEREUM,
     logo: mythereum,
     coverImage: mythereumCover,
     primaryColor: '#4B1E06',
     secondaryColor: '#F7DC8D',
     shadowColor: 'rgba(75,30,6,0.4)',
     externalLinks: [
-      { name: 'Project page', url: 'https://www.mythereum.io/', },
+      { name: 'Project page', url: 'https://www.mythereum.io/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/mythereum' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/mythereum/' }
+      { name: 'Reddit', url: 'https://www.reddit.com/r/mythereum/' },
     ],
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0x663e4229142a27f00bafb5d087e1e730648314c3',
-    name: 'PandaEarth',
-    symbol: 'PE',
+    ...mapping.PANDA_EARTH,
     logo: pandaearth,
     coverImage: pandaearthCover,
     primaryColor: '#EEEEEE',
@@ -325,10 +296,7 @@ const ercs20 = [
     is721: true,
   },
   {
-    network: 'ethereum',
-    address: '0xfa6f7881e52fdf912c4a285d78a3141b089ce859',
-    name: 'Avocado',
-    symbol: 'AVO',
+    ...mapping.AVOCADO,
     logo: avocado,
     coverImage: avocadoCover,
     primaryColor: '#CDFA7F',
@@ -337,24 +305,16 @@ const ercs20 = [
     externalLinks: [{ name: 'Project page', url: 'https://tokntalk.club' }],
   },
   {
-    network: 'ethereum',
-    address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-    name: 'Basic Attention Token',
-    symbol: 'BAT',
+    ...mapping.BASIC_ATTENTION_TOKEN,
     logo: bat,
     coverImage: batCover,
     primaryColor: '#818181',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(75,75,75,0.4)',
-    externalLinks: [
-      { name: 'Project page', url: 'https://???.??', },
-    ],
+    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
   {
-    network: 'ethereum',
-    address: '0x108c05cac356d93b351375434101cfd3e14f7e44',
-    name: 'Bentyn',
-    symbol: 'BEN',
+    ...mapping.BENTYN,
     logo: ben,
     coverImage: benCover,
     primaryColor: '#BEC4CB',
@@ -363,14 +323,11 @@ const ercs20 = [
     externalLinks: [
       { name: 'Project page', url: 'https://www.youtube.com/channel/UCcMCMdVFhU25uCpC4kJAo3A' },
       { name: 'Exchange - Coinbe.net', url: 'https://coinbe.net/market' },
-      { name: 'YouTube', url: 'https://www.youtube.com/c/SzczepanBentyn' }
-    ]
+      { name: 'YouTube', url: 'https://www.youtube.com/c/SzczepanBentyn' },
+    ],
   },
   {
-    network: 'ethereum',
-    address: '0x0f5d2fb29fb7d3cfee444a200298f468908cc942',
-    name: 'Decentraland MANA',
-    symbol: 'MANA',
+    ...mapping.DECENTRALAND_MANA,
     logo: mana,
     coverImage: manaCover,
     primaryColor: '#1F1826',
@@ -378,14 +335,11 @@ const ercs20 = [
     shadowColor: 'rgba(31,24,38,0.3)',
     externalLinks: [
       { name: 'Project page', url: 'https://decentraland.org/' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/decentraland/' }
-    ]
+      { name: 'Reddit', url: 'https://www.reddit.com/r/decentraland/' },
+    ],
   },
   {
-    network: 'ethereum',
-    address: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
-    name: 'Maker',
-    symbol: 'MKR',
+    ...mapping.MAKER,
     logo: mkr,
     coverImage: mkrCover,
     primaryColor: '#C6FFF4',
@@ -393,28 +347,20 @@ const ercs20 = [
     shadowColor: 'rgba(82,211,185,0.3)',
     externalLinks: [
       { name: 'Project page', url: 'https://makerdao.com/' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/MakerDAO/' }
-    ]
+      { name: 'Reddit', url: 'https://www.reddit.com/r/MakerDAO/' },
+    ],
   },
   {
-    network: 'ethereum',
-    address: '0xa74476443119a942de498590fe1f2454d7d4ac0d',
-    name: 'Golem',
-    symbol: 'GNT',
+    ...mapping.GOLEM,
     logo: gnt,
     coverImage: gntCover,
     primaryColor: '#002D64',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(31,54,90,0.5)',
-    externalLinks: [
-      { name: 'Project page', url: 'https://golem.network/', },
-    ],
+    externalLinks: [{ name: 'Project page', url: 'https://golem.network/' }],
   },
   {
-    network: 'ethereum',
-    address: '0xd26114cd6ee289accf82350c8d8487fedb8a0c07',
-    name: 'OmiseGO',
-    symbol: 'OMG',
+    ...mapping.OMNISE_GO,
     logo: omg,
     coverImage: omgCover,
     primaryColor: '#1A52EF',
@@ -422,14 +368,11 @@ const ercs20 = [
     shadowColor: 'rgba(26,82,239,0.3)',
     externalLinks: [
       { name: 'Project page', url: 'https://omisego.network/' },
-      { name: 'Reddit', url: 'https://www.reddit.com/r/omise_go/' }
-    ]
+      { name: 'Reddit', url: 'https://www.reddit.com/r/omise_go/' },
+    ],
   },
   {
-    network: 'ethereum',
-    address: '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7',
-    name: 'Unicorn',
-    symbol: '🦄',
+    ...mapping.UNICORN,
     logo: unicorn,
     coverImage: unicornCover,
     primaryColor: '#C8F9FF',
@@ -441,38 +384,25 @@ const ercs20 = [
     ],
   },
   {
-    network: 'ethereum',
-    address: '0x744d70fdbe2ba4cf95131626614a1763df805b9e',
-    name: 'Status',
-    symbol: 'SNT',
+    ...mapping.STATUS,
     logo: snt,
     coverImage: sntCover,
     primaryColor: '#5B6CEE',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(91,108,238,0.5)',
-    externalLinks: [
-      { name: 'Project page', url: 'https://status.im', },
-    ],
+    externalLinks: [{ name: 'Project page', url: 'https://status.im' }],
   },
   {
-    network: 'ethereum',
-    address: '0xe41d2489571d322189246dafa5ebde1f4699f498',
-    name: 'ZRX',
-    symbol: 'ZRX',
+    ...mapping.ZRX,
     logo: zrx,
     coverImage: zrxCover,
     primaryColor: '#3C3C3C',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.5)',
-    externalLinks: [
-      { name: 'Project page', url: 'https://0xproject.com', },
-    ],
+    externalLinks: [{ name: 'Project page', url: 'https://0xproject.com' }],
   },
   {
-    network: 'ethereum',
-    address: '0xc5fdd3e4665b5d7bc4dc9102622d7cb0fe510b65',
-    name: 'Sanmaricoin',
-    symbol: 'SMC',
+    ...mapping.SANMARICOIN,
     logo: sanmaricoin,
     coverImage: sanmaricoinCover,
     primaryColor: '#C8D5FF',
@@ -481,10 +411,7 @@ const ercs20 = [
     externalLinks: [{ name: 'Project page', url: 'https://twitter.com/sanmaricoin' }],
   },
   {
-    network: 'ethereum',
-    address: '0x97d392337cc92564085ac51b99178a371c8bdcf3',
-    name: 'Kiyosalo',
-    symbol: 'KST',
+    ...mapping.KIYOSALO,
     logo: kiyosalo,
     coverImage: kiyosaloCover,
     primaryColor: '#9AF6E1',
@@ -493,10 +420,7 @@ const ercs20 = [
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
   {
-    network: 'ethereum',
-    address: '0xb7fc08177bcba924255132f361084d7994eafcf0',
-    name: 'Token X',
-    symbol: 'TKX',
+    ...mapping.TOKEN_X,
     logo: x,
     coverImage: xCover,
     primaryColor: '#03FFFF',
@@ -508,10 +432,7 @@ const ercs20 = [
     ],
   },
   {
-    network: 'ethereum',
-    address: '0xc93058ca0cc2330b847c001c835fc926fedf5a07',
-    name: 'Percent',
-    symbol: '％',
+    ...mapping.PERCENT,
     logo: percent,
     coverImage: percentCover,
     primaryColor: '#C8F9FF',
