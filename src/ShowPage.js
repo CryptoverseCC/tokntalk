@@ -19,9 +19,9 @@ import { socialIcons } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
 import Advertised from './Catvertised';
-import ercs20, { TokenImage } from './erc20';
+import ercs20 from './erc20';
 import { HeaderSpacer } from './Header';
-import { FlatContainer, ContentContainer, H1, H2, H3, H4, SocialUsername } from './Components';
+import { FlatContainer, ContentContainer, H2, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 
 export default class ShowPage extends Component {

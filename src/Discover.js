@@ -639,6 +639,7 @@ export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
   return (
     <Link to={linkTo} {...restProps}>
       <TokenTileCotainer
+        small={small}
         primaryColor={token.primaryColor}
         secondaryColor={token.secondaryColor}
         coverImage={token.coverImage}
@@ -761,11 +762,11 @@ export class FeedForToken extends Component {
 
 const TokenTileCotainer = styled.div`
   background-color: ${({ primaryColor }) => primaryColor};
-  background-image: url(${({ coverImage }) => coverImage});
+  background-image: ${({ coverImage, small }) => !small && `url(${coverImage})`};
   background-repeat: no-repeat;
   background-size: cover;
   color: ${({ secondaryColor }) => secondaryColor};
-  box-shadow: 0 3rem 5rem -2rem ${({ shadowColor }) => shadowColor};
+  box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 5rem -2rem ${shadowColor}`};
   cursor: pointer;
   position: relative;
   width: 100%;
@@ -777,20 +778,20 @@ const TokenTileCotainer = styled.div`
 
   :hover {
     transform: translateY(-3px);
-    box-shadow: 0 3rem 6rem -2rem ${({ shadowColor }) => shadowColor};
+    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 6rem -2rem  ${shadowColor}`};
     transition: all 0.15s ease;
   }
 
   :active {
-    transform:scale(0.98);
-    box-shadow: 0 3rem 4rem -2rem ${({ shadowColor }) => shadowColor};
+    transform: scale(0.98);
+    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 4rem -2rem  ${shadowColor}`};
     transitionn: all 0.15s ease;
   }
 
   @media (max-width: 770px) {
-    width:96%;
-    margin-left:2%;
-
+    width: 96%;
+    margin-left: 2%;
+  }
 `;
 
 const TokenTileWrapper = styled.div`
