@@ -151,14 +151,6 @@ const ercs20 = [
     is721: true,
   },
   {
-    ...mapping.DDGT,
-    logo: ddgt,
-    coverImage: ddgtCover,
-    primaryColor: '#86d0f7',
-    secondaryColor: '#1b4556',
-    shadowColor: 'rgba(134,208,247,0.25)',
-  },
-  {
     ...mapping.DIGITAL_ART_CHAIN,
     logo: dac,
     coverImage: dacCover,
@@ -417,6 +409,15 @@ const ercs20 = [
     primaryColor: '#9AF6E1',
     secondaryColor: '#1F987B',
     shadowColor: 'rgba(31,152,123,0.2)',
+    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
+  },
+  {
+    ...mapping.DDGT,
+    logo: ddgt,
+    coverImage: ddgtCover,
+    primaryColor: '#86d0f7',
+    secondaryColor: '#1b4556',
+    shadowColor: 'rgba(134,208,247,0.25)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
   {
