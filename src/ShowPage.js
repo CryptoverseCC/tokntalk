@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import find from 'lodash/fp/find';
 
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
@@ -18,9 +19,10 @@ import { socialIcons } from './Icons';
 import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
 import Advertised from './Catvertised';
-import { TokenImage } from './erc20';
+import ercs20, { TokenImage } from './erc20';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H1, H2, H3, H4, SocialUsername } from './Components';
+import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 
 export default class ShowPage extends Component {
   state = { editing: undefined };
@@ -97,6 +99,27 @@ export default class ShowPage extends Component {
                 </FlatContainer>
               </div>
               <div className="column is-8 is-offset-1">
+                <FlatContainer style={{ marginBottom: '2rem' }}>
+                  <H2 style={{ marginBottom: '15px' }}>
+                    <EntityName id={entityId} /> Communities
+                  </H2>
+                  <div className="columns" style={{ overflowX: 'scroll' }}>
+                    {entity.tokens.map((asset) => {
+                      const [network, address] = asset.split(':');
+                      const token = find({ network, address })(ercs20);
+
+                      return (
+                        <TokenTile
+                          key={asset}
+                          small
+                          linkTo={`/discover/byToken/${token.symbol}`}
+                          token={token}
+                          className="column is-one-fifth"
+                        />
+                      );
+                    })}
+                  </div>
+                </FlatContainer>
                 <ShowPage.FeedContainer>
                   <IfActiveEntity>
                     {(token) => (
@@ -135,38 +158,12 @@ export default class ShowPage extends Component {
                 </ShowPage.FeedContainer>
               </div>
             </div>
-            <React.Fragment>
-              <EntityTokensContainer>
-                {entity.tokens.map((token) => (
-                  <Erc20Token key={token} asset={token} />
-                ))}
-              </EntityTokensContainer>
-            </React.Fragment>
           </ContentContainer>
         )}
       </Entity>
     );
   }
 }
-
-const Erc20Token = styled(({ asset, className }) => (
-  <Link className={className} to={`/discover/byToken/${asset}`}>
-    <TokenImage asset={asset} />
-  </Link>
-))`
-  display: block;
-  transition: transform 0.2s;
-
-  :hover {
-    transform: translateY(-3px);
-  }
-`;
-
-const EntityTokensContainer = styled.div`
-  position: absolute;
-  right: 10px;
-  bottom: 0;
-`;
 
 const SocialBadge = styled.a`
   display: flex;

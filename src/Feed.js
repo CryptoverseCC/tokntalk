@@ -634,8 +634,8 @@ const LikersModal = styled(({ likes, onClose, className }) => (
   <FixedModal onClose={onClose}>
     <div className={className}>
       <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
-      {likes.map(({ context }) => (
-        <div style={{ display: 'flex', marginBottom: '15px' }}>
+      {likes.map(({ context }, index) => (
+        <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
           <LinkedActiveEntityAvatar id={context} size="medium" />
           <Link to={`/${context}`} style={{ display: 'block', marginLeft: '15px' }}>
             <b>

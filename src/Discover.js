@@ -635,7 +635,7 @@ const mapTokenUrlParam = (Cmp) => (props) => {
 
 const decoratedByTokenIndex = validateTokenParam(mapTokenUrlParam(ByTokenIndex));
 
-const TokenTile = ({ linkTo, token, ...restProps }) => {
+export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
   return (
     <Link to={linkTo} {...restProps}>
       <TokenTileCotainer
@@ -648,7 +648,7 @@ const TokenTile = ({ linkTo, token, ...restProps }) => {
           <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
           <div>
             <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
-            <H3>{token.name}</H3>
+            {!small && <H3>{token.name}</H3>}
           </div>
         </TokenTileWrapper>
       </TokenTileCotainer>
