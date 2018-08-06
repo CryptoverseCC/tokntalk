@@ -136,7 +136,7 @@ const ercs20 = [
     is721: true,
   },
   {
-    ...mapping.ETHMOJI,
+    ...mapping.ETH_MOJI,
     logo: ethmoji,
     coverImage: ethmojiCover,
     primaryColor: '#E051BA',
@@ -214,7 +214,7 @@ const ercs20 = [
     is721: true,
   },
   {
-    ...mapping.CHIBI_FIGTHERS,
+    ...mapping.CHIBI_FIGHTERS,
     logo: chibi,
     coverImage: chibiCover,
     primaryColor: '#4881ae',
