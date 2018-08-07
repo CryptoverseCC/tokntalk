@@ -87,6 +87,12 @@ import percentCover from './img/tokens/percent.png';
 import x from './img/tokens/x.svg';
 import xCover from './img/tokens/tokenX.png';
 
+import cows from './img/tokens/cryptocows-icon.png';
+import cowsCover from './img/tokens/cryptocows.png';
+
+import cryptovoxel from './img/tokens/cryptovoxels-icon.svg';
+import cryptovoxelCover from './img/tokens/cryptovoxels.jpg';
+
 import * as mapping from 'contract-mapping/mapping.json';
 
 const ercs20 = [
@@ -443,12 +449,21 @@ const ercs20 = [
   },
   {
     ...mapping.CRYPTO_COWS,
-    logo: percent,
-    coverImage: percentCover,
-    primaryColor: '#C8F9FF',
-    secondaryColor: '#5B3D9D',
-    shadowColor: 'rgba(200,249,255,0.6)',
-    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
+    logo: cows,
+    coverImage: cowsCover,
+    primaryColor: '#f5cd4a',
+    secondaryColor: '#221f20',
+    shadowColor: 'rgba(245,205,74,0.4)',
+    externalLinks: [{ name: 'Project page', url: 'https://www.cryptotoons.io/toons/cryptocows' }],
+  },
+  {
+    ...mapping.CRYPTO_VOXEL,
+    logo: cryptovoxel,
+    coverImage: cryptovoxelCover,
+    primaryColor: '#2C2C2C',
+    secondaryColor: '#D8D8D8',
+    shadowColor: 'rgba(44,44,44,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://www.cryptovoxels.com/' }],
   },
 ];
 
