@@ -457,7 +457,7 @@ const ercs20 = [
     externalLinks: [{ name: 'Project page', url: 'https://www.cryptotoons.io/toons/cryptocows' }],
   },
   {
-    ...mapping.CRYPTO_VOXEL,
+    ...mapping.CRYPTO_VOXELS,
     logo: cryptovoxel,
     coverImage: cryptovoxelCover,
     primaryColor: '#2C2C2C',
