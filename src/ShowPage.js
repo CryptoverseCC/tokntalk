@@ -27,6 +27,8 @@ import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 const CommunitiesListContainer = styled.div`
   position: relative;
   min-width: 100%;
+  overflow: hidden;
+
   &:before {
     content: '';
     display: block;
@@ -37,6 +39,7 @@ const CommunitiesListContainer = styled.div`
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
     z-index: 1;
   }
+
   @media (max-width: 770px) {
     &:before {
       content: '';
@@ -47,8 +50,6 @@ const CommunitiesListContainer = styled.div`
 
 const CommunitiesList = styled.div`
   overflow-x: scroll;
-  min-width: 100%;
-  display: flex;
 
   ::-webkit-scrollbar {
     height: 10px;
@@ -61,10 +62,6 @@ const CommunitiesList = styled.div`
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #dde0eb;
-  }
-
-  @media (max-width: 770px) {
-    display: block;
   }
 `;
 
@@ -147,26 +144,24 @@ export default class ShowPage extends Component {
                   <H4 style={{ marginBottom: '15px' }}>
                     <EntityName id={entityId} /> Communities
                   </H4>
-                  <div className="columns">
-                    <CommunitiesListContainer>
-                      <CommunitiesList>
-                        {entity.tokens.map((asset) => {
-                          const [network, address] = asset.split(':');
-                          const token = find({ network, address })(ercs20);
+                  <CommunitiesListContainer>
+                    <CommunitiesList className="columns is-mobile">
+                      {entity.tokens.map((asset) => {
+                        const [network, address] = asset.split(':');
+                        const token = find({ network, address })(ercs20);
 
-                          return (
-                            <TokenTile
-                              key={asset}
-                              small
-                              linkTo={`/discover/byToken/${token.symbol}`}
-                              token={token}
-                              className="column is-one-fifth"
-                            />
-                          );
-                        })}
-                      </CommunitiesList>
-                    </CommunitiesListContainer>
-                  </div>
+                        return (
+                          <TokenTile
+                            key={asset}
+                            small
+                            linkTo={`/discover/byToken/${token.symbol}`}
+                            token={token}
+                            className="column is-one-fifth-desktop is-one-third-mobile"
+                          />
+                        );
+                      })}
+                    </CommunitiesList>
+                  </CommunitiesListContainer>
                 </FlatContainer>
                 <ShowPage.FeedContainer>
                   <IfActiveEntity>
