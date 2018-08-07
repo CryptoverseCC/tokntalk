@@ -339,7 +339,6 @@ const ReplyFormContainer = ({ about, ...props }) => (
 
 const SenderName = styled(Link)`
   font-size: 1rem;
-  font-weight: 600;
 `;
 
 const CardTitle = ({ id, from, createdAt, etherscanUrl, family, suffix, share }) => {
@@ -374,7 +373,7 @@ const LikeReaction = styled(Reaction).attrs({ children: <LikeIcon style={{ width
 `;
 
 const ReplyReaction = styled(Reaction).attrs({ children: <ReplyIcon style={{ width: '12px' }} /> })`
-  background-color: #623cea;
+  background-color: #264dd9;
   box-shadow: 0 4px 15px 4px rgba(98, 60, 234, 0.3);
 `;
 
@@ -419,7 +418,7 @@ const LabelItems = {
 
 const blink = keyframes`
   0% {
-    background-color: #623cea;
+    background-color: #264dd9;
   }
 
   100% {

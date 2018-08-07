@@ -12,7 +12,7 @@ const StyledInput = styled.div.attrs({
       style={{
         fontSize: '18px',
         fontWeight: 500,
-        color: '#623cea',
+        color: '#264dd9',
         width: 'calc(100% - 30px)',
         padding: '15px',
         height: '57px',
@@ -30,7 +30,7 @@ const StyledInput = styled.div.attrs({
   box-shadow: inset 0 1px 3px 0 #d8d4e7;
   font-size: 18px;
   font-weight: 500;
-  color: #623cea;
+  color: #264dd9;
   outline: none;
   border: none;
   position: relative;
@@ -56,7 +56,7 @@ const Position = styled.div`
 const StyledButton = styled.button`
   height: 60px;
   width: calc(100% + 44px);
-  background: linear-gradient(180deg, #9b6ff6 0%, #623cea 100%);
+  background: linear-gradient(180deg, #9b6ff6 0%, #264dd9 100%);
   margin: 18px -22px -22px;
   color: white;
   font-size: 18px;
@@ -82,7 +82,7 @@ const CustomCatFormButton = styled.button`
   outline: none;
   margin: 0 5px 0 0;
   padding: 0;
-  background: linear-gradient(180deg, #9b6ff6 0%, #623cea 100%);
+  background: linear-gradient(180deg, #9b6ff6 0%, #264dd9 100%);
   box-shadow: 0 2px 10px 0 rgba(99, 61, 234, 0.3);
   border: none;
   color: white;
@@ -105,7 +105,7 @@ const CustomCatFormInput = styled.div`
   box-shadow: inset 0 1px 3px 0 #d8d4e7;
   font-size: 18px;
   font-weight: 500;
-  color: #623cea;
+  color: #264dd9;
   outline: none;
   border: none;
   position: relative;
@@ -123,7 +123,7 @@ const CatvertisedTitle = styled.div`
   font-size: 1rem;
   line-height: 1;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 
   ${({ hiddenOnMobile }) =>
     hiddenOnMobile
@@ -143,8 +143,7 @@ const AddAKitty = styled.button`
   border: none;
   outline: none;
   background: none;
-  color: #623cea;
-  font-weight: 600;
+  color: #264dd9;
   font-size: 1rem;
   padding: 0;
   cursor: pointer;
@@ -290,7 +289,7 @@ const CatvertisedItemButton = styled.button`
 
   &:hover {
     background-color: #f4f1ff;
-    color: #623cea;
+    color: #264dd9;
 
     &:before {
       display: block;
@@ -303,7 +302,7 @@ const CatvertisedItemButton = styled.button`
       font-weight: 600;
       color: white;
       content: 'Add';
-      background: #623cea;
+      background: #264dd9;
       transform: translateY(-50%);
     }
   }
@@ -513,7 +512,7 @@ export default class Catvertised extends React.Component {
                       style={{
                         fontSize: '18px',
                         fontWeight: 500,
-                        color: '#623cea',
+                        color: '#264dd9',
                         width: 'calc(100% - 40px)',
                         padding: '15px',
                         height: '57px',

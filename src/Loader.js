@@ -5,7 +5,7 @@ const Block = styled.div`
   position: relative;
   width: 100px;
   height: 100px;
-  background: #623cea;
+  background: #264dd9;
   animation: blockAnimation 1s linear infinite;
   border-radius: 6px;
   will-change: transform;

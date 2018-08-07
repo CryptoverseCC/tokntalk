@@ -5,7 +5,7 @@ const StyledLink = styled(Link)`
   ${({ href, to }) =>
     href || to
       ? `
-    color: #623cea;
+    color: #264dd9;
     cursor: default;
   `
       : `

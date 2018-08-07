@@ -7,8 +7,6 @@ import replyInactive from './img/reply_inactive.svg';
 import likeActive from './img/like_active.svg';
 import likeInactive from './img/like_inactive.svg';
 
-import empty from './img/like_active.svg';
-
 export const ReplyIcon = styled.img.attrs({ src: ({ inactive }) => (!inactive ? replyActive : replyInactive) })``;
 export const LikeIcon = styled.img.attrs({ src: ({ inactive }) => (!inactive ? likeActive : likeInactive) })``;
 
@@ -98,6 +96,22 @@ export const ExternalLink = styled.svg.attrs({
         <path d="M6,0 L6,1.5 L9.4395,1.5 L5.46975,5.46975 L6.53025,6.53025 L10.5,2.5605 L10.5,6 L12,6 L12,0.75 C12,0.336 11.664,0 11.25,0 L6,0 Z" />
         <path d="M12,12 L0.75,12 C0.336,12 0,11.664 0,11.25 L0,0 L1.5,0 L1.5,10.5 L12,10.5 L12,12 Z" />
       </g>
+    </g>
+  ),
+})`
+  max-width: 100%;
+  max-height: 100%;
+`;
+
+export const DiscoverIcon = styled.svg.attrs({
+  width: '24px',
+  height: '24px',
+  version: '1.1',
+  viewBox: '0 0 24 24',
+  children: (
+    <g fill="#264DD9" fill-rule="nonzero">
+      <path d="M12,0 C5.4,0 0,5.4 0,12 C0,18.6 5.4,24 12,24 C18.6,24 24,18.6 24,12 C24,5.4 18.6,0 12,0 Z M12,21 C7.05,21 3,16.95 3,12 C3,7.05 7.05,3 12,3 C16.95,3 21,7.05 21,12 C21,16.95 16.95,21 12,21 Z" />
+      <path d="M15.3,7.2 L10.8,9.3 C10.2,9.75 9.75,10.2 9.45,10.8 L7.35,15.3 C6.9,16.2 7.8,17.1 8.7,16.65 L13.2,14.55 C13.8,14.25 14.4,13.8 14.55,13.2 L16.65,8.7 C17.1,7.8 16.2,6.9 15.3,7.2 Z" />
     </g>
   ),
 })`
