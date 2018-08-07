@@ -58,6 +58,12 @@ const CommunitiesList = styled.div`
   }
 `;
 
+const StyledTokenTile = styled(TokenTile)`
+  :last-child {
+    z-index: 2;
+  }
+`;
+
 export default class ShowPage extends Component {
   state = { editing: undefined };
 
@@ -144,7 +150,7 @@ export default class ShowPage extends Component {
                         const token = find({ network, address })(ercs20);
 
                         return (
-                          <TokenTile
+                          <StyledTokenTile
                             key={asset}
                             small
                             linkTo={`/discover/byToken/${token.symbol}`}
