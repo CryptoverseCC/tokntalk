@@ -82,4 +82,9 @@ export default [
     image_url: 'https://storage.googleapis.com/opensea-prod.appspot.com/0xd4202b234c15255bf0511d3380e83bda9172a72b.a',
     entityPrefix: 'Cow #',
   },
+  {
+    ...mapping.CRYPTO_VOXELS,
+    image_url: 'https://storage.googleapis.com/opensea-static/cryptovoxels-logo.jpg',
+    entityPrefix: 'Voxel #',
+  },
 ];
