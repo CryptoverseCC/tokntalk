@@ -39,13 +39,6 @@ const CommunitiesListContainer = styled.div`
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
     z-index: 1;
   }
-
-  @media (max-width: 770px) {
-    &:before {
-      content: '';
-      display: none;
-    }
-  }
 `;
 
 const CommunitiesList = styled.div`
