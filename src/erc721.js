@@ -77,4 +77,9 @@ export default [
     image_url: 'https://storage.googleapis.com/opensea-static/panda-earth-logo.png',
     entityPrefix: 'Panda #',
   },
+  {
+    ...mapping.CRYPTO_COWS,
+    image_url: 'https://storage.googleapis.com/opensea-prod.appspot.com/0xd4202b234c15255bf0511d3380e83bda9172a72b.a',
+    entityPrefix: 'Cow #',
+  },
 ];

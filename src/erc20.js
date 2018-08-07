@@ -441,6 +441,15 @@ const ercs20 = [
     shadowColor: 'rgba(200,249,255,0.6)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
+  {
+    ...mapping.CRYPTO_COWS,
+    logo: percent,
+    coverImage: percentCover,
+    primaryColor: '#C8F9FF',
+    secondaryColor: '#5B3D9D',
+    shadowColor: 'rgba(200,249,255,0.6)',
+    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
+  },
 ];
 
 const sizes = {
