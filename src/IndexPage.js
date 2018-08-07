@@ -31,7 +31,7 @@ const YourCommunitiesContainer = styled.div`
   }
 `;
 
-const YourCommunitiesLinks = styled(Link)`
+const YourCommunitiesLink = styled(Link)`
   display: flex;
   align-items: center;
   padding: 7px 0;
@@ -81,7 +81,7 @@ export default class IndexPage extends Component {
 }
 
 const ActiveEntityTokens = () => (
-  <IfActiveEntity>
+  <IfActiveEntity other={<NoActiveEntity />}>
     {(activeEntityId) => (
       <Entity id={activeEntityId}>
         {(entity) => (
@@ -96,6 +96,22 @@ const ActiveEntityTokens = () => (
       </Entity>
     )}
   </IfActiveEntity>
+);
+
+const NoActiveEntity = () => (
+  <YourCommunitiesContainer>
+    <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
+    <span
+      style={{
+        color: '#fc0035',
+        fontWeight: 600,
+        textShadow: '0 0 10px rgba(252,0,53,0.3)',
+      }}
+    >
+      Unlock your wallet to see where you belong
+    </span>
+    <DiscoverMore />
+  </YourCommunitiesContainer>
 );
 
 const DiscoverMore = styled((props) => (
@@ -129,9 +145,9 @@ const Token = ({ asset }) => {
   const token = find({ network, address })(ercs20);
 
   return (
-    <YourCommunitiesLinks to={`/discover/byToken/${token.symbol}`}>
+    <YourCommunitiesLink to={`/discover/byToken/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
-    </YourCommunitiesLinks>
+    </YourCommunitiesLink>
   );
 };
