@@ -12,7 +12,7 @@ import { HeaderSpacer } from './Header';
 import { IfActiveEntity, Entity } from './Entity';
 import { FlatContainer, ContentContainer, H4 } from './Components';
 import ercs20, { TokenImage } from './erc20';
-import { FacebookIcon, DiscoverIcon } from './Icons';
+import { DiscoverIcon } from './Icons';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -31,13 +31,14 @@ const YourCommunitiesContainer = styled.div`
   }
 `;
 
-const YourCommunitiesLinks = styled.a`
+const YourCommunitiesLinks = styled(Link)`
   display: flex;
   align-items: center;
   padding: 7px 0;
   font-size: 1rem;
   color: #1b2437;
   transition: all 0.15s ease;
+
   :hover {
     color: #264dd9;
     transition: all 0.15s ease;
