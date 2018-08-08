@@ -51,7 +51,12 @@ export const EntityAvatar = ({ id, ...props }) => (
   <Context.Consumer>
     {({ entityStore: { getEntity } }) =>
       id ? (
-        <IdentityAvatar entity={id} {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} />
+        <IdentityAvatar
+          entity={id}
+          {...props}
+          backgroundColor={getEntity(id).color}
+          src={getEntity(id).image_preview_url}
+        />
       ) : (
         <AvatarPlaceholder entity={id} {...props} />
       )
@@ -63,7 +68,12 @@ export const LinkedEntityAvatar = ({ id, ...props }) => (
   <Context.Consumer>
     {({ entityStore: { getEntity } }) => (
       <StyledLink to={`/${id}`}>
-        <IdentityAvatar entity={id} {...props} backgroundColor={getEntity(id).color} src={getEntity(id).image_url} />
+        <IdentityAvatar
+          entity={id}
+          {...props}
+          backgroundColor={getEntity(id).color}
+          src={getEntity(id).image_preview_url}
+        />
       </StyledLink>
     )}
   </Context.Consumer>
