@@ -467,7 +467,7 @@ const ercs20 = [
     shadowColor: 'rgba(200,249,255,0.6)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
-];
+].map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }));
 
 const sizes = {
   small: { width: '44px', height: '44px' },

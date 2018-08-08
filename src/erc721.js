@@ -87,4 +87,4 @@ export default [
     image_url: 'https://storage.googleapis.com/opensea-static/cryptovoxels-logo.jpg',
     entityPrefix: 'Voxel #',
   },
-];
+].map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }));
