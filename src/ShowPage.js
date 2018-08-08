@@ -119,7 +119,7 @@ export default class ShowPage extends Component {
             <div className="columns">
               <div className="column is-3">
                 <ShowPage.ProfileImageContainer backgroundColor={entity.color}>
-                  <ShowPage.ProfileImage src={entity.image_url} alt={entity.id} />
+                  <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
                 </ShowPage.ProfileImageContainer>
                 <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
                   <H2>
@@ -299,9 +299,9 @@ export class SocialList extends React.Component {
     return (
       <SocialList.Container>
         <Entity id={id}>
-          {({ url, color, name, image_url }) => (
+          {({ url, color, name, image_preview_url }) => (
             <SocialBadge href={url}>
-              <IdentityAvatar entity={id} backgroundColor={color} size="verySmall" src={image_url} />
+              <IdentityAvatar entity={id} backgroundColor={color} size="verySmall" src={image_preview_url} />
               <span style={{ marginLeft: '15px' }}>{name}</span>
             </SocialBadge>
           )}
