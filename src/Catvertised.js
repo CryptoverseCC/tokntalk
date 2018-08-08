@@ -464,15 +464,13 @@ export default class Catvertised extends React.Component {
                   <CatvertisedList>
                     {Object.entries(boosts)
                       .sort(([, { score: a }], [, { score: b }]) => b - a)
-                      .map(([id, { score }]) => (
+                      .map(([id, { score, context_info: contextInfo }]) => (
                         <CatvertisedItem key={id}>
                           <CatvertisedItemLink to={`/${id}`}>
-                            <EntityAvatar size="medium" id={id} />
+                            <EntityAvatar size="medium" id={id} entityInfo={contextInfo} />
                             <EntityDescription>
                               <CatvertisedName>
-                                <EntityNameWrapper>
-                                  <EntityName id={id} />
-                                </EntityNameWrapper>
+                                <EntityNameWrapper>{contextInfo.name}</EntityNameWrapper>
                               </CatvertisedName>
                               <CatvertisedScore>{formatCurrency(score)} ETH</CatvertisedScore>
                             </EntityDescription>

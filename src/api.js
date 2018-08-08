@@ -65,21 +65,21 @@ export const getFeedItems = async ({ lastVersion, oldestKnown, size, entityId })
   const oldestParam = oldestKnown ? `oldestKnown=${oldestKnown}` : '';
   const sizeParam = size ? `size=${size}` : '';
 
-  const response = await fetch(
-    entityId
-      ? `${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_single_feed;id=${entityId}`
-      : `${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${versionParam}&${oldestParam}&${sizeParam}`,
-  );
+  const response = await (entityId
+    ? getRanking([{ algorithm: 'cryptoverse_single_feed', params: { id: entityId } }], 'api/decorate-with-opensea')
+    : fetch(`${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${versionParam}&${oldestParam}&${sizeParam}`).then(
+        (r) => r.json(),
+      ));
 
-  const { items, total, version } = await response.json();
+  const { items, total, version } = response;
   const validFeedItems = items.filter(isValidFeedItem);
   const lastItem = last(items);
 
   return { feedItems: validFeedItems.slice(0, 30), total, version, lastItemId: lastItem ? lastItem.id : undefined };
 };
 
-export const getRanking = (flow) => {
-  return fetch(`${USERFEEDS_API_ADDRESS}/ranking`, {
+export const getRanking = (flow, path = 'ranking') => {
+  return fetch(`${USERFEEDS_API_ADDRESS}/${path}`, {
     method: 'POST',
     body: JSON.stringify({ flow }),
     headers: {
@@ -94,11 +94,11 @@ export const getMyEntities = async () => {
     const [from] = await web3.eth.getAccounts();
     if (!from) return [];
 
-    const identities = await fetch('https://api.userfeeds.io/ranking', {
+    const identities = await fetch('https://api.userfeeds.io/api/decorate-with-opensea', {
       body: JSON.stringify({
         flow: [
           {
-            algorithm: 'experimental_tokens',
+            algorithm: 'cryptoverse_tokens',
             params: {
               identity: from.toLowerCase(),
               asset: ercs721.map(({ address: erc721Address }) => `ethereum:${erc721Address.toLowerCase()}`),
@@ -112,7 +112,13 @@ export const getMyEntities = async () => {
       },
     })
       .then((res) => res.json())
-      .then(({ items }) => items.map(({ asset, token }) => `${asset}:${token}`));
+      .then(({ items }) =>
+        items.map(({ context, context_info }) => ({
+          id: context,
+          ...context_info,
+        })),
+      );
+
     return identities;
   } catch (e) {
     return [];
@@ -145,12 +151,24 @@ export const getEntityTokens = async (entityId) => {
 
 export const getBoosts = async (token) => {
   try {
-    const res = await fetch(
-      `${USERFEEDS_API_ADDRESS}/ranking/experimental_boost_721;asset=${INTERFACE_BOOST_NETWORK};entity=${token};fee_address=${INTERFACE_BOOST_ADDRESS}`,
+    const res = await getRanking(
+      [
+        {
+          algorithm: 'experimental_boost_721',
+          params: {
+            asset: INTERFACE_BOOST_NETWORK,
+            entity: token,
+            fee_address: INTERFACE_BOOST_ADDRESS,
+          },
+        },
+      ],
+      'api/decorate-with-opensea',
     );
-    const { items: boosts } = await res.json();
+
+    const { items: boosts } = res;
     const boostsMap = boosts.reduce((acc, boost) => {
       const [, address] = boost.id.split(':');
+      // ToDo or isAddress
       if (!find({ address })(ercs721)) {
         return acc;
       }
@@ -224,7 +242,8 @@ const createFeedItemBase = async (id, entity, http) => {
     family: http ? 'http' : networkName,
     id,
     sequence: blockNumber + 1,
-    context: entity,
+    context: entity.id,
+    context_info: entity,
   };
 };
 
@@ -275,7 +294,7 @@ const claimWithValueTransfer = async (data, value, ownerAddress) => {
 export const sendMessage = async (entity, message, { http } = {}) => {
   const data = {
     claim: { target: message },
-    context: entity,
+    context: entity.id,
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -294,7 +313,7 @@ export const reply = async (entity, message, to, { http } = {}) => {
   const data = {
     type: ['about'],
     claim: { target: message, about: to },
-    context: entity,
+    context: entity.id,
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -305,15 +324,16 @@ export const reply = async (entity, message, to, { http } = {}) => {
 export const writeTo = async (entity, message, entityTo, { http } = {}) => {
   const data = {
     type: ['about'],
-    claim: { target: message, about: entityTo },
-    context: entity,
+    claim: { target: message, about: entityTo.id },
+    context: entity.id,
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
   const feedItemBase = await createFeedItemBase(id, entity, http);
   return {
     ...feedItemBase,
-    about: { id: entityTo },
+    about: entityTo,
+    about_info: entity,
     target: message,
     type: 'post_to',
   };
@@ -323,7 +343,7 @@ export const writeAbout = async (entity, message, about, { http } = {}) => {
   const data = {
     type: ['about'],
     claim: { target: message, about: about },
-    context: entity,
+    context: entity.id,
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -340,7 +360,7 @@ export const react = async (entity, to, { http } = {}) => {
   const data = {
     type: ['labels'],
     claim: { target: to, labels: ['like'] },
-    context: entity,
+    context: entity.id,
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -352,7 +372,7 @@ export const label = async (entity, message, labelType, { http } = {}) => {
   const data = {
     type: ['labels'],
     claim: { target: message, labels: [labelType] },
-    context: entity,
+    context: entity.id,
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -370,7 +390,7 @@ export const boost = async (entity, aboutEntity, value) => {
   const { ownerAddress } = await getEntityData(aboutEntity);
   const data = {
     type: ['about'],
-    claim: { target: entity, about: aboutEntity },
+    claim: { target: entity.id, about: aboutEntity },
     credits: getCreditsData(),
   };
   const transactionHash = await claimWithValueTransfer(data, value, ownerAddress);

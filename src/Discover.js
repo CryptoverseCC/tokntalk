@@ -703,16 +703,19 @@ export class FeedForToken extends Component {
     const asset = `${token.network}:${token.address}`;
 
     try {
-      const { items } = await getRanking([
-        {
-          algorithm: 'cryptoverse_club_feed',
-          params: { id: asset },
-        },
-        {
-          algorithm: token.is721 ? 'experimental_filter_origin' : 'experimental_author_balance',
-          params: { asset },
-        },
-      ]);
+      const { items } = await getRanking(
+        [
+          {
+            algorithm: 'cryptoverse_club_feed',
+            params: { id: asset },
+          },
+          {
+            algorithm: token.is721 ? 'experimental_filter_origin' : 'experimental_author_balance',
+            params: { asset },
+          },
+        ],
+        'api/decorate-with-opensea',
+      );
       const feedItems = items.filter(isValidFeedItem);
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
     } catch (e) {

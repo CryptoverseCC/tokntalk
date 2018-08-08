@@ -13,13 +13,7 @@ import { FixedModal } from './Modal';
 import Link, { A } from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
-import {
-  EntityName,
-  IfActiveEntity,
-  LinkedActiveEntityAvatar,
-  LinkedEntityAvatar,
-  IfActiveEntityLiked,
-} from './Entity';
+import { IfActiveEntity, LinkedActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon, empty } from './Icons';
 import styled, { keyframes } from 'styled-components';
@@ -213,16 +207,17 @@ export const sanitizeMessage = (message) => {
     .join('');
 };
 
-const Post = ({ id, from, createdAt, etherscanUrl, family, message, reaction, suffix, style = {} }) => {
+const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, reaction, suffix, style = {} }) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '54px' }}>
-        <LinkedEntityAvatar size="medium" reaction={reaction} id={from} />
+        <LinkedEntityAvatar size="medium" reaction={reaction} id={from} entityInfo={entityInfo} />
       </div>
       <div className="media-content">
         <CardTitle
           id={id}
           from={from}
+          entityInfo={entityInfo}
           createdAt={createdAt}
           etherscanUrl={etherscanUrl}
           family={family}
@@ -234,7 +229,18 @@ const Post = ({ id, from, createdAt, etherscanUrl, family, message, reaction, su
   );
 };
 
-const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, disabledInteractions, style = {} }) => (
+const Reply = ({
+  id,
+  from,
+  entityInfo,
+  createdAt,
+  etherscanUrl,
+  family,
+  message,
+  reactions,
+  disabledInteractions,
+  style = {},
+}) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
     <div className="media-left is-hidden-mobile" style={{ position: 'relative' }}>
       <div
@@ -250,7 +256,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, 
 
     <div className="media-content columns is-mobile" style={{ overflow: 'hidden' }}>
       <div className="column is-narrow">
-        <LinkedEntityAvatar size="medium" id={from} />
+        <LinkedEntityAvatar size="medium" id={from} entityInfo={entityInfo} />
       </div>
       <div className="column">
         <div
@@ -262,9 +268,7 @@ const Reply = ({ id, from, createdAt, etherscanUrl, family, message, reactions, 
           }}
         >
           <Link to={`/${from}`} style={{ display: 'block' }}>
-            <b>
-              <EntityName id={from} />
-            </b>
+            <b>{entityInfo.name} </b>
           </Link>
           <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
         </div>
@@ -341,16 +345,12 @@ const SenderName = styled(Link)`
   font-size: 1rem;
 `;
 
-const CardTitle = ({ id, from, createdAt, etherscanUrl, family, suffix, share }) => {
+const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suffix, share }) => {
   return (
     <React.Fragment>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <SenderName to={`/${from}`}>
-          <EntityName id={from} />
-        </SenderName>{' '}
-        {/* {share ? share : null} */}
+        <SenderName to={`/${from}`}>{entityInfo.name}</SenderName>
         <span style={{ color: '#928F9B', marginLeft: '15px', fontSize: '14px' }}>
-          {/* <Link to={{ pathname: `/thread/${id}`, state: { modal: true } }}>{timeago().format(createdAt)} </Link> */}
           {timeago().format(createdAt)}
           <A href={etherscanUrl} style={{ marginLeft: '15px', textTransform: 'capitalize' }}>
             {family}
@@ -474,11 +474,17 @@ export class Card extends React.Component {
         <React.Fragment>
           <article className="media">
             <div className="media-left" style={{ width: '54px' }}>
-              <LinkedEntityAvatar size="medium" reaction={<LikeReaction />} id={feedItem.context} />
+              <LinkedEntityAvatar
+                size="medium"
+                reaction={<LikeReaction />}
+                id={feedItem.context}
+                entityInfo={feedItem.context_info}
+              />
             </div>
             <div className="media-content">
               <CardTitle
                 from={feedItem.context}
+                entityInfo={feedItem.context_info}
                 createdAt={feedItem.created_at}
                 etherscanUrl={createEtherscanUrl(feedItem)}
                 family={feedItem.family}
@@ -493,6 +499,7 @@ export class Card extends React.Component {
           <Post
             style={{ marginTop: '20px' }}
             from={feedItem.target.context}
+            entityInfo={feedItem.target.context_info}
             createdAt={feedItem.target.created_at}
             message={feedItem.target.target}
             family={feedItem.target.family}
@@ -510,6 +517,7 @@ export class Card extends React.Component {
           id={feedItem.id}
           style={{ borderTop: 'none' }}
           from={feedItem.context}
+          entityInfo={feedItem.context_info}
           createdAt={feedItem.created_at}
           message={feedItem.target}
           family={feedItem.family}
@@ -535,6 +543,7 @@ export class Card extends React.Component {
             id={reply.id}
             key={reply.id}
             from={reply.context}
+            entityInfo={reply.context_info}
             createdAt={reply.created_at}
             message={reply.target}
             family={reply.family}
@@ -569,12 +578,18 @@ export class Card extends React.Component {
       },
       post_to: () => {
         const id = feedItem.about;
+        const about = feedItem.about_info;
         return (
           <React.Fragment>
             <span>wrote to</span>
-            <LinkedEntityAvatar size="verySmall" style={{ marginLeft: '10px', display: 'inline-block' }} id={id} />
+            <LinkedEntityAvatar
+              size="verySmall"
+              style={{ marginLeft: '10px', display: 'inline-block' }}
+              entity={id}
+              entityInfo={about}
+            />
             <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
-              <EntityName id={id} />
+              {about.name}
             </Link>
           </React.Fragment>
         );
@@ -633,13 +648,11 @@ const LikersModal = styled(({ likes, onClose, className }) => (
   <FixedModal onClose={onClose}>
     <div className={className}>
       <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
-      {likes.map(({ context }, index) => (
+      {likes.map(({ context, context_info }, index) => (
         <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
           <LinkedActiveEntityAvatar id={context} size="medium" />
           <Link to={`/${context}`} style={{ display: 'block', marginLeft: '15px' }}>
-            <b>
-              <EntityName id={context} />
-            </b>
+            <b>{context_info.name}</b>
           </Link>
         </div>
       ))}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import jazzicon from 'jazzicon';
 
 export const validateParams = (validators, redirectTo) => (Cmp) => {
   return class extends Component {

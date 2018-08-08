@@ -204,7 +204,7 @@ export const ConnectedLabelForm = ({ labelType, ...props }) => (
 export const ConnectedWriteToForm = ({ to, ...props }) => (
   <Context.Consumer>
     {({ feedStore: { writeTo } }) => (
-      <TextAreaForm placeholder={`Write to ${to.name}`} sendMessage={(message) => writeTo(message, to.id)} {...props} />
+      <TextAreaForm placeholder={`Write to ${to.name}`} sendMessage={(message) => writeTo(message, to)} {...props} />
     )}
   </Context.Consumer>
 );

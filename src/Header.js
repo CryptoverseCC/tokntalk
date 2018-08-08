@@ -221,21 +221,22 @@ const CatDropdown = () => {
         {({ closeDropdown }) => (
           <Entities>
             {({ entities, changeActiveEntityTo }) =>
-              entities.map((entity) => (
-                <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
-                  <PickEntity
-                    onClick={() => {
-                      changeActiveEntityTo(entity);
-                      closeDropdown();
-                    }}
-                  >
-                    <EntityAvatar id={entity.id} size="small" lazy={false} />
-                    <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>
-                      <EntityName id={entity.id} />
-                    </b>
-                  </PickEntity>
-                </li>
-              ))
+              entities.map((entity) => {
+                const { id, ...entityInfo } = entity;
+                return (
+                  <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
+                    <PickEntity
+                      onClick={() => {
+                        changeActiveEntityTo(entity);
+                        closeDropdown();
+                      }}
+                    >
+                      <EntityAvatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
+                      <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
+                    </PickEntity>
+                  </li>
+                );
+              })
             }
           </Entities>
         )}

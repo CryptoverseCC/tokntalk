@@ -16,21 +16,21 @@ export const IfOnMainnet = ({ children, then, other }) => (
 export const IfActiveEntity = ({ children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) =>
-      activeEntity ? (then && then(activeEntity)) || children(activeEntity) : other || null
+      activeEntity ? (then && then(activeEntity.id)) || children(activeEntity.id) : other || null
     }
   </Context.Consumer>
 );
 
 export const IfIsActiveEntity = ({ id, children, then, other }) => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity } }) => (activeEntity && activeEntity === id ? then || children : other || null)}
+    {({ entityStore: { activeEntity } }) => (activeEntity && activeEntity.id === id ? then || children : other || null)}
   </Context.Consumer>
 );
 
 export const IfOwnerOfEntity = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { myEntities } }) =>
-      !!myEntities.find((entity) => id.toString() === entity) ? then || children : other || null
+      !!myEntities.find(({ id: myId }) => id.toString() === myId) ? then || children : other || null
     }
   </Context.Consumer>
 );
@@ -47,60 +47,87 @@ export const EntityName = ({ id }) => {
   );
 };
 
-export const EntityAvatar = ({ id, ...props }) => (
-  <Context.Consumer>
-    {({ entityStore: { getEntity } }) =>
-      id ? (
-        <IdentityAvatar
-          entity={id}
-          {...props}
-          backgroundColor={getEntity(id).color}
-          src={getEntity(id).image_preview_url}
-        />
-      ) : (
-        <AvatarPlaceholder entity={id} {...props} />
-      )
-    }
-  </Context.Consumer>
-);
+export const EntityAvatar = ({ id, entityInfo, ...props }) => {
+  if (!!entityInfo) {
+    const { background_color, image_preview_url } = entityInfo;
+    return <IdentityAvatar entity={id} {...props} backgroundColor={`#${background_color}`} src={image_preview_url} />;
+  }
 
-export const LinkedEntityAvatar = ({ id, ...props }) => (
-  <Context.Consumer>
-    {({ entityStore: { getEntity } }) => (
+  return (
+    <Context.Consumer>
+      {({ entityStore: { getEntity } }) =>
+        id ? (
+          <IdentityAvatar
+            entity={id}
+            {...props}
+            backgroundColor={getEntity(id).color}
+            src={getEntity(id).image_preview_url}
+          />
+        ) : (
+          <AvatarPlaceholder entity={id} {...props} />
+        )
+      }
+    </Context.Consumer>
+  );
+};
+
+export const LinkedEntityAvatar = ({ id, entityInfo, ...props }) => {
+  if (!!entityInfo) {
+    const { background_color, image_preview_url } = entityInfo;
+
+    return (
       <StyledLink to={`/${id}`}>
-        <IdentityAvatar
-          entity={id}
-          {...props}
-          backgroundColor={getEntity(id).color}
-          src={getEntity(id).image_preview_url}
-        />
+        <IdentityAvatar entity={id} {...props} backgroundColor={`#${background_color}`} src={image_preview_url} />
       </StyledLink>
-    )}
-  </Context.Consumer>
-);
+    );
+  }
+
+  return (
+    <Context.Consumer>
+      {({ entityStore: { getEntity } }) => (
+        <StyledLink to={`/${id}`}>
+          <IdentityAvatar
+            entity={id}
+            {...props}
+            backgroundColor={getEntity(id).color}
+            src={getEntity(id).image_preview_url}
+          />
+        </StyledLink>
+      )}
+    </Context.Consumer>
+  );
+};
 
 export const Entities = ({ children }) => (
   <Context.Consumer>
-    {({ entityStore: { myEntities, changeActiveEntityTo }, entityStore: { getEntity } }) => {
-      const entities = myEntities.map((myEntity) => getEntity(myEntity));
-      return children({ entities, changeActiveEntityTo });
+    {({ entityStore: { myEntities, changeActiveEntityTo } }) => {
+      // const entities = myEntities.map((myEntity) => getEntity(myEntity));
+      return children({ entities: myEntities, changeActiveEntityTo });
     }}
   </Context.Consumer>
 );
 
 export const ActiveEntityName = () => (
-  <Context.Consumer>{({ entityStore: { activeEntity } }) => <EntityName id={activeEntity} />}</Context.Consumer>
+  <Context.Consumer>{({ entityStore: { activeEntity } }) => activeEntity.name}</Context.Consumer>
 );
 
 export const LinkedActiveEntityAvatar = (props) => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity } }) => <LinkedEntityAvatar id={activeEntity} {...props} />}
+    {({
+      entityStore: {
+        activeEntity: { id, ...entityInfo },
+      },
+    }) => <LinkedEntityAvatar id={id} entityInfo={entityInfo} {...props} />}
   </Context.Consumer>
 );
 
 export const ActiveEntityAvatar = (props) => (
   <Context.Consumer>
-    {({ entityStore: { activeEntity } }) => <EntityAvatar id={activeEntity} {...props} />}
+    {({
+      entityStore: {
+        activeEntity: { id, ...entityInfo },
+      },
+    }) => <EntityAvatar id={id} entityInfo={entityInfo} {...props} />}
   </Context.Consumer>
 );
 
@@ -108,7 +135,7 @@ export const IfActiveEntityLiked = ({ reactions, children, liked, notLiked, unAc
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => {
       if (!activeEntity) return unActive;
-      const entityHasLiked = reactions && reactions.find(({ context }) => context === activeEntity);
+      const entityHasLiked = reactions && reactions.find(({ context }) => context === activeEntity.id);
       return entityHasLiked ? liked || children : notLiked;
     }}
   </Context.Consumer>
@@ -118,7 +145,7 @@ export const DoesActiveEntityHasToken = ({ asset, children }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity, getEntity } }) => {
       if (!activeEntity) return children(false);
-      const hasToken = getEntity(activeEntity).tokens.indexOf(asset) !== -1;
+      const hasToken = getEntity(activeEntity.id).tokens.indexOf(asset) !== -1;
       return children(hasToken);
     }}
   </Context.Consumer>
@@ -128,7 +155,7 @@ export const IfActiveEntityHasToken = ({ asset, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity, getEntity } }) => {
       if (!activeEntity) return other;
-      const hasToken = getEntity(activeEntity).tokens.indexOf(asset) !== -1;
+      const hasToken = getEntity(activeEntity.id).tokens.indexOf(asset) !== -1;
       return hasToken ? then || children : other;
     }}
   </Context.Consumer>
@@ -138,7 +165,7 @@ export const IfActiveEntityIs = ({ asset, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => {
       if (!activeEntity) return other;
-      const [network, address] = activeEntity.split(':');
+      const [network, address] = activeEntity.id.split(':');
       const is = `${network}:${address}` === asset;
       return is ? then || children : other;
     }}
@@ -149,7 +176,7 @@ export const IsActiveEntityFromFamily = ({ asset, children }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => {
       if (!activeEntity) return children(false);
-      const [network, address] = activeEntity.split(':');
+      const [network, address] = activeEntity.id.split(':');
       const is = `${network}:${address}` === asset;
       return children(is);
     }}

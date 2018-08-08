@@ -47,11 +47,13 @@ const Storage = (storage = localStorage) => ({
 });
 
 export const produceEntities = (myEntities, previousActiveEntity) => {
-  let activeEntity = myEntities[0];
-  if (myEntities.includes(previousActiveEntity)) {
-    activeEntity = previousActiveEntity;
-  }
-  return { myEntities, activeEntity };
+  const firstEntity = myEntities[0];
+  const refreshedPreviousActiveEntity = myEntities.find(
+    ({ id }) =>
+      !!previousActiveEntity && typeof previousActiveEntity === 'object' ? id === previousActiveEntity.id : false,
+  );
+
+  return { myEntities, activeEntity: refreshedPreviousActiveEntity ? refreshedPreviousActiveEntity : firstEntity };
 };
 
 export default class App extends Component {
@@ -101,17 +103,24 @@ export default class App extends Component {
   };
 
   previousActiveEntity = () => {
-    return this.storage.getItem('activeEntity') || null;
+    const activeEntity = this.storage.getItem('activeEntity');
+    try {
+      return JSON.parse(activeEntity) || null;
+    } catch (e) {
+      return null;
+    }
   };
 
   changeActiveEntityTo = (newActiveEntity) => {
-    if (!this.state.myEntities.includes(newActiveEntity.id)) return;
-    this.setState({ activeEntity: newActiveEntity.id }, this.saveActiveEntity);
+    if (!this.state.myEntities.find(({ id }) => id === newActiveEntity.id)) {
+      return;
+    }
+    this.setState({ activeEntity: newActiveEntity }, this.saveActiveEntity);
   };
 
   saveActiveEntity = () => {
     const { activeEntity } = this.state;
-    if (activeEntity) this.storage.setItem('activeEntity', activeEntity);
+    if (activeEntity) this.storage.setItem('activeEntity', JSON.stringify(activeEntity));
   };
 
   refreshWeb3State = async () => {
