@@ -48,6 +48,11 @@ const Inside = styled.div`
   ${Eye}:hover & {
     animation: ${rainbow} 2s ease infinite;
   }
+  @media (max-width: 770px) {
+    ${Eye}:hover & {
+      animation: none;
+    }
+  }
 `;
 
 const Dot = styled.div`
@@ -63,6 +68,11 @@ const Dot = styled.div`
 
   ${Eye}:hover & {
     animation: ${dot} 0.4s 0.15s infinite;
+  }
+  @media (max-width: 770px) {
+    ${Eye}:hover & {
+      animation: none;
+    }
   }
 `;
 
@@ -82,6 +92,12 @@ const White = styled.div`
     transform: scale(1.2);
     transition: all 0.15s ease-in;
     animation: ${white} 0.2s 0.15s infinite;
+  }
+  @media (max-width: 770px) {
+    ${Eye}:hover & {
+      transform: none;
+      animation: none;
+    }
   }
 `;
 

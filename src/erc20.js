@@ -16,7 +16,7 @@ import dac from './img/tokens/dac-icon.svg';
 import dacCover from './img/tokens/dac.jpg';
 
 import bat from './img/tokens/bat-icon.svg';
-import batCover from './img/tokens/bat.jpg';
+import batCover from './img/tokens/bat.png';
 
 import ben from './img/tokens/bentyn-icon.png';
 import benCover from './img/tokens/bentyn.jpg';
@@ -34,7 +34,7 @@ import mkr from './img/tokens/maker-icon.svg';
 import mkrCover from './img/tokens/maker.png';
 
 import mana from './img/tokens/decentraland-icon.png';
-import manaCover from './img/tokens/decentraland.jpg';
+import manaCover from './img/tokens/decentraland.png';
 
 import unicorn from './img/tokens/unicorn-icon.png';
 import unicornCover from './img/tokens/unicorn.png';
@@ -46,7 +46,7 @@ import omg from './img/tokens/omisego-icon.svg';
 import omgCover from './img/tokens/omisego.png';
 
 import avocado from './img/tokens/avocado-icon.png';
-import avocadoCover from './img/tokens/avocado.jpg';
+import avocadoCover from './img/tokens/avocado.png';
 
 import knownorigin from './img/tokens/knownorigin-icon.svg';
 import knownoriginCover from './img/tokens/knownorigin.jpg';
@@ -79,7 +79,7 @@ import sanmaricoin from './img/tokens/sanmaricoin-icon.png';
 import sanmaricoinCover from './img/tokens/sanmaricoin.png';
 
 import kiyosalo from './img/tokens/kst-icon.png';
-import kiyosaloCover from './img/tokens/kst.jpg';
+import kiyosaloCover from './img/tokens/kst.png';
 
 import percent from './img/tokens/percent-icon.svg';
 import percentCover from './img/tokens/percent.png';
@@ -91,7 +91,7 @@ import cows from './img/tokens/cryptocows-icon.png';
 import cowsCover from './img/tokens/cryptocows.png';
 
 import cryptovoxel from './img/tokens/cryptovoxels-icon.svg';
-import cryptovoxelCover from './img/tokens/cryptovoxels.jpg';
+import cryptovoxelCover from './img/tokens/cryptovoxels.png';
 
 import cryptocrystal from './img/tokens/cryptocrystals-icon.png';
 import cryptocrystalCover from './img/tokens/cryptocrystals.png';
@@ -166,7 +166,7 @@ const ercs20 = [
     ...mapping.DIGITAL_ART_CHAIN,
     logo: dac,
     coverImage: dacCover,
-    primaryColor: '#DDE1F1',
+    primaryColor: '#ffffff',
     secondaryColor: '#F05E40',
     shadowColor: 'rgba(247,165,148,0.3)',
     externalLinks: [
@@ -180,7 +180,7 @@ const ercs20 = [
     ...mapping.KNOWN_ORIGIN,
     logo: knownorigin,
     coverImage: knownoriginCover,
-    primaryColor: '#0418D8',
+    primaryColor: '#1019cb',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(200,249,255,0.6)',
     externalLinks: [
@@ -357,7 +357,7 @@ const ercs20 = [
     ...mapping.DECENTRALAND_MANA,
     logo: mana,
     coverImage: manaCover,
-    primaryColor: '#1F1826',
+    primaryColor: '#353535',
     secondaryColor: '#30D7A9',
     shadowColor: 'rgba(31,24,38,0.3)',
     externalLinks: [
@@ -381,9 +381,9 @@ const ercs20 = [
     ...mapping.GOLEM,
     logo: gnt,
     coverImage: gntCover,
-    primaryColor: '#002D64',
+    primaryColor: '#68625d',
     secondaryColor: '#ffffff',
-    shadowColor: 'rgba(31,54,90,0.5)',
+    shadowColor: 'rgba(104,98,93,0.25)',
     externalLinks: [{ name: 'Project page', url: 'https://golem.network/' }],
   },
   {
@@ -425,7 +425,7 @@ const ercs20 = [
     coverImage: zrxCover,
     primaryColor: '#3C3C3C',
     secondaryColor: '#ffffff',
-    shadowColor: 'rgba(60,60,60,0.5)',
+    shadowColor: 'rgba(60,60,60,0.25)',
     externalLinks: [{ name: 'Project page', url: 'https://0xproject.com' }],
   },
   {
@@ -441,18 +441,18 @@ const ercs20 = [
     ...mapping.KIYOSALO,
     logo: kiyosalo,
     coverImage: kiyosaloCover,
-    primaryColor: '#9AF6E1',
-    secondaryColor: '#1F987B',
-    shadowColor: 'rgba(31,152,123,0.2)',
+    primaryColor: '#ffffff',
+    secondaryColor: '#3267a5',
+    shadowColor: 'rgba(50,103,165,0.2)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
   {
     ...mapping.DDGT,
     logo: ddgt,
     coverImage: ddgtCover,
-    primaryColor: '#86d0f7',
-    secondaryColor: '#1b4556',
-    shadowColor: 'rgba(134,208,247,0.25)',
+    primaryColor: '#122d4b',
+    secondaryColor: '#65d9ff',
+    shadowColor: 'rgba(18,45,75,0.25)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
   {
