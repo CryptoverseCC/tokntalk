@@ -96,6 +96,9 @@ import cryptovoxelCover from './img/tokens/cryptovoxels.jpg';
 import cryptocrystal from './img/tokens/cryptocrystals-icon.png';
 import cryptocrystalCover from './img/tokens/cryptocrystals.png';
 
+import blockchaincuties from './img/tokens/blockchaincuties-icon.svg';
+import blockchaincutiesCover from './img/tokens/blockchaincuties.png';
+
 import * as mapping from 'contract-mapping/mapping.json';
 
 const ercs20 = [
@@ -472,6 +475,19 @@ const ercs20 = [
     secondaryColor: '#67616E',
     shadowColor: 'rgba(188,175,202,0.3)',
     externalLinks: [{ name: 'Project page', url: 'https://cryptocrystal.io/' }],
+  },
+  {
+    ...mapping.BLOCKCHAIN_CUTIES,
+    logo: blockchaincuties,
+    coverImage: blockchaincutiesCover,
+    primaryColor: '#525079',
+    secondaryColor: '#F1B9AA',
+    shadowColor: 'rgba(82,80,121,0.2)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://blockchaincuties.com/' },
+      { name: 'OpenSea', url: 'https://opensea.io/category/blockchaincuties' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/blockchaincuties/' },
+    ],
   },
   {
     ...mapping.PERCENT,
