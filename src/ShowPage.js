@@ -122,7 +122,7 @@ export default class ShowPage extends Component {
                   <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
                 </ShowPage.ProfileImageContainer>
                 <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
-                  <H2>
+                  <H2 style={{ wordBreak: 'break-word' }}>
                     <EntityName id={entity.id} />
                   </H2>
                   <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>

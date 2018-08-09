@@ -468,6 +468,7 @@ export class Card extends React.Component {
 
   renderItem = () => {
     const { feedItem, replies, reactions, disabledInteractions } = this.props;
+    const { isFromAddress } = feedItem;
 
     if (feedItem.type === 'like') {
       return (
@@ -477,14 +478,14 @@ export class Card extends React.Component {
               <LinkedEntityAvatar
                 size="medium"
                 reaction={<LikeReaction />}
-                id={feedItem.context}
-                entityInfo={feedItem.context_info}
+                id={isFromAddress ? feedItem.author : feedItem.context}
+                entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
               />
             </div>
             <div className="media-content">
               <CardTitle
-                from={feedItem.context}
-                entityInfo={feedItem.context_info}
+                from={isFromAddress ? feedItem.author : feedItem.context}
+                entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
                 createdAt={feedItem.created_at}
                 etherscanUrl={createEtherscanUrl(feedItem)}
                 family={feedItem.family}
@@ -498,8 +499,8 @@ export class Card extends React.Component {
           </article>
           <Post
             style={{ marginTop: '20px' }}
-            from={feedItem.target.context}
-            entityInfo={feedItem.target.context_info}
+            from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
+            entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
             createdAt={feedItem.target.created_at}
             message={feedItem.target.target}
             family={feedItem.target.family}
@@ -516,8 +517,8 @@ export class Card extends React.Component {
         <Post
           id={feedItem.id}
           style={{ borderTop: 'none' }}
-          from={feedItem.context}
-          entityInfo={feedItem.context_info}
+          from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
+          entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
           createdAt={feedItem.created_at}
           message={feedItem.target}
           family={feedItem.family}
@@ -542,8 +543,8 @@ export class Card extends React.Component {
           <Reply
             id={reply.id}
             key={reply.id}
-            from={reply.context}
-            entityInfo={reply.context_info}
+            from={reply.isFromAddress ? reply.author : reply.context}
+            entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
             createdAt={reply.created_at}
             message={reply.target}
             family={reply.family}
@@ -589,25 +590,27 @@ export class Card extends React.Component {
               entityInfo={about}
             />
             <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
-              {about.name}
+              <b>{about.name}</b>
             </Link>
           </React.Fragment>
         );
       },
       post_about: () => (
         <React.Fragment>
-          <span>wrote about</span>
-          <b
-            style={{
-              marginLeft: '10px',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              maxWidth: '300px',
-              display: 'inline-block',
-              whiteSpace: 'nowrap',
-            }}
-            dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
-          />
+          <span style={{ display: 'inline-flex' }}>
+            wrote about
+            <b
+              style={{
+                marginLeft: '10px',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                maxWidth: '300px',
+                display: 'inline-block',
+                whiteSpace: 'nowrap',
+              }}
+              dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
+            />
+          </span>
         </React.Fragment>
       ),
       labels: (feedItem) => <span>changed its {capitalize(feedItem.labels[0])}</span>,
@@ -648,11 +651,15 @@ export const LikersModal = styled(({ likes, onClose, className }) => (
   <FixedModal onClose={onClose}>
     <div className={className}>
       <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
-      {likes.map(({ context, context_info }, index) => (
+      {likes.map(({ context, context_info, isFromAddress, author, author_info }, index) => (
         <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
-          <LinkedEntityAvatar id={context} entityInfo={context_info} size="medium" />
-          <Link to={`/${context}`} style={{ display: 'block', marginLeft: '15px' }}>
-            <b>{context_info.name}</b>
+          <LinkedEntityAvatar
+            id={isFromAddress ? author : context}
+            entityInfo={isFromAddress ? author_info : context_info}
+            size="medium"
+          />
+          <Link to={`/${isFromAddress ? author : context}`} style={{ display: 'block', marginLeft: '15px' }}>
+            <b>{(isFromAddress ? author_info : context_info).name}</b>
           </Link>
         </div>
       ))}

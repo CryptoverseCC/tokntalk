@@ -18,7 +18,7 @@ import { validateParams } from './utils';
 import { ExclamationMark } from './Icons';
 import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
-import { hasValidContext, getRanking, isValidFeedItem } from './api';
+import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { socialIcons } from './Icons';
 import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
@@ -395,16 +395,21 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
         <div className="columns is-multiline">
           {latest
             .filter(hasValidContext)
+            .map(enhanceFeedItem)
             .slice(0, limit)
-            .map(({ context, created_at }) => (
+            .map(({ context, context_info, isFromAddress, author, author_info, created_at }) => (
               <EntityContainer key={context} to={`/${context}`} className="column is-one-third">
-                <LinkedEntityAvatar id={context} size="medium" />
+                <LinkedEntityAvatar
+                  id={isFromAddress ? author : context}
+                  entityInfo={isFromAddress ? author_info : context_info}
+                  size="medium"
+                />
                 <EntityInfo>
                   <Link
-                    to={`/${context}`}
+                    to={`/${isFromAddress ? author : context}`}
                     style={{ fontSize: '1rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
                   >
-                    <EntityName id={context} />
+                    {isFromAddress ? author_info.name : context_info.name}
                   </Link>
                   <Timeago>{timeago().format(created_at)}</Timeago>
                 </EntityInfo>
@@ -472,13 +477,18 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
           {(data) =>
             data[social]
               .filter(hasValidContext)
+              .map(enhanceFeedItem)
               .slice(0, limit)
-              .map(({ context, target }) => (
+              .map(({ context, context_info, target, isFromAddress, author, author_info }) => (
                 <EntityContainer key={context} className="column is-12">
-                  <LinkedEntityAvatar id={context} size="medium" />
+                  <LinkedEntityAvatar
+                    id={isFromAddress ? author : context}
+                    entityInfo={isFromAddress ? author_info : context_info}
+                    size="medium"
+                  />
                   <EntityInfo>
-                    <Link to={`/${context}`}>
-                      <EntityName id={context} />
+                    <Link to={`/${isFromAddress ? author : context}`}>
+                      {isFromAddress ? author_info.name : context_info.name}
                     </Link>
                     <a href={target} target="_blank" rel="noopener">
                       <img alt="" src={exportIcon} style={{ marginRight: '5px' }} />
@@ -736,7 +746,7 @@ export class FeedForToken extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      const feedItems = items.filter(isValidFeedItem);
+      const feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
     } catch (e) {
       console.warn(e);

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router
 import find from 'lodash/fp/find';
 import isEqual from 'lodash/isEqual';
 import produce from 'immer';
+import { isAddress } from 'web3-utils';
 
 import Context from './Context';
 import IndexPage from './IndexPage';
@@ -30,6 +31,7 @@ import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
 import NotFound from './NotFound';
+import { getEntityInfoForAddress } from './utils';
 
 const {
   REACT_APP_NAME: APP_NAME,
@@ -157,9 +159,15 @@ export default class App extends Component {
 
   getEntityInfo = async (entityId) => {
     if (this.entityInfoRequests[entityId]) return;
-    const entityInfoRequest = getEntityData(entityId);
-    this.entityInfoRequests[entityId] = entityInfoRequest;
-    const entityData = await entityInfoRequest;
+    let entityData;
+    if (isAddress(entityId)) {
+      entityData = getEntityInfoForAddress(entityId);
+    } else {
+      const entityInfoRequest = getEntityData(entityId);
+      this.entityInfoRequests[entityId] = entityInfoRequest;
+      entityData = await entityInfoRequest;
+    }
+
     this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, () => {
       this.storage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
     });

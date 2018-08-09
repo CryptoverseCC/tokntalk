@@ -30,6 +30,9 @@ export const getEntityId = (entity) => {
 
 export const getEntityPrefix = (entity) => {
   const [, address] = entity.split(':');
+  if (!address) {
+    return '';
+  }
   const { entityPrefix } = find({ address })(ercs721);
   return entityPrefix;
 };
