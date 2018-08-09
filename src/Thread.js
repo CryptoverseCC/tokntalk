@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 
 import { FixedModal } from './Modal';
-import { Card } from './Feed';
+import { Card, LikersModal } from './Feed';
 import Loader from './Loader';
 import Context from './Context';
 import { HeaderSpacer } from './Header';
 
 export class Thread extends Component {
+  state = {
+    showModal: false,
+    feedItemLikes: [],
+  };
+
   componentDidMount() {
     this.props.getFeedItem(this.props.match.params.claimId);
   }
 
+  onShowLikers = (feedItem, reactions) => {
+    this.setState({ showModal: true, feedItemLikes: reactions });
+  };
+
   render() {
+    const { showModal, feedItemLikes } = this.state;
+
     return (
       <React.Fragment>
         <HeaderSpacer />
@@ -23,6 +34,7 @@ export class Thread extends Component {
                 replies={feedItem.replies}
                 reactions={feedItem.likes}
                 style={{ background: '#ffffff' }}
+                onShowLikers={this.onShowLikers}
               />
             ) : (
               <div
@@ -37,6 +49,7 @@ export class Thread extends Component {
             )
           }
         </Context.Consumer>
+        {showModal && <LikersModal onClose={() => this.setState({ showModal: false })} likes={feedItemLikes} />}
       </React.Fragment>
     );
   }

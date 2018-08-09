@@ -644,13 +644,13 @@ const EmptyFeedPlaceholder = styled.div`
   justify-content: center;
 `;
 
-const LikersModal = styled(({ likes, onClose, className }) => (
+export const LikersModal = styled(({ likes, onClose, className }) => (
   <FixedModal onClose={onClose}>
     <div className={className}>
       <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
       {likes.map(({ context, context_info }, index) => (
         <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
-          <LinkedActiveEntityAvatar id={context} size="medium" />
+          <LinkedActiveEntityAvatar id={context} entityInfo={context_info} size="medium" />
           <Link to={`/${context}`} style={{ display: 'block', marginLeft: '15px' }}>
             <b>{context_info.name}</b>
           </Link>
