@@ -157,7 +157,7 @@ class Index extends Component {
                     <React.Fragment>
                       <H3Discover>Yours</H3Discover>
                       {this.renderEntityTokens(entity)}
-                      <H3Discover>Others</H3Discover>
+                      <H3Discover>Most active</H3Discover>
                       {this.renderOthersTokens()}
                     </React.Fragment>
                   )}
@@ -165,7 +165,7 @@ class Index extends Component {
               )}
               other={
                 <React.Fragment>
-                  <H3Discover>Others</H3Discover> {this.renderOthersTokens()}
+                  <H3Discover>Most active</H3Discover> {this.renderOthersTokens()}
                 </React.Fragment>
               }
             />
