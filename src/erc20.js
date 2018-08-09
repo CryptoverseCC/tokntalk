@@ -310,7 +310,10 @@ const ercs20 = [
     primaryColor: '#D8D8D8',
     secondaryColor: '#2C2C2C',
     shadowColor: 'rgba(44,44,44,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://www.cryptovoxels.com/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.cryptovoxels.com/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/cryptovoxels' },
+    ],
     is721: true,
   },
   {
