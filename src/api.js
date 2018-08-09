@@ -51,8 +51,9 @@ export const isValidFeedItem = (feedItem) => {
 };
 
 export const getFeedItem = async ({ claimId }) => {
-  let { items: feedItems } = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_thread_feed;id=${claimId}`).then(
-    (res) => res.json(),
+  let { items: feedItems } = await getRanking(
+    [{ algorithm: 'cryptoverse_thread_feed', params: { id: claimId } }],
+    'api/decorate-with-opensea',
   );
 
   feedItems = feedItems.filter(isValidFeedItem);
