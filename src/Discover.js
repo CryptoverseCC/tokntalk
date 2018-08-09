@@ -819,6 +819,7 @@ const TokenTileCotainer = styled.div`
     width: 96%;
     margin-left: 2%;
     padding-top: ${({ small }) => !small && '50%'};
+
     background-size: 50%;
     background-position: 100% 50%;
   }
