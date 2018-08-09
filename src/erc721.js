@@ -87,4 +87,9 @@ export default [
     image_url: 'https://storage.googleapis.com/opensea-static/cryptovoxels-logo.jpg',
     entityPrefix: 'Voxel #',
   },
+  {
+    ...mapping.CRYPTO_CRYSTALS,
+    image_url: 'https://storage.googleapis.com/opensea-static/cryptocrystal-logo.png',
+    entityPrefix: 'Crystal #',
+  },
 ].map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }));
