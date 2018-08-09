@@ -93,6 +93,9 @@ import cowsCover from './img/tokens/cryptocows.png';
 import cryptovoxel from './img/tokens/cryptovoxels-icon.svg';
 import cryptovoxelCover from './img/tokens/cryptovoxels.jpg';
 
+import cryptocrystal from './img/tokens/cryptocrystals-icon.png';
+import cryptocrystalCover from './img/tokens/cryptocrystals.png';
+
 import * as mapping from 'contract-mapping/mapping.json';
 
 const ercs20 = [
@@ -460,6 +463,15 @@ const ercs20 = [
       { name: 'Project page', url: 'https://???.??' },
       { name: 'ForkDelta', url: 'https://forkdelta.github.io/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH' },
     ],
+  },
+  {
+    ...mapping.CRYPTO_CRYSTALS,
+    logo: cryptocrystal,
+    coverImage: cryptocrystalCover,
+    primaryColor: '#F0EAF6',
+    secondaryColor: '#67616E',
+    shadowColor: 'rgba(188,175,202,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://cryptocrystal.io/' }],
   },
   {
     ...mapping.PERCENT,
