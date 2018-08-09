@@ -353,10 +353,6 @@ const Hero = styled.div`
   padding-top: 65px;
   height: calc(15rem + 65px);
   margin-bottom: 68px;
-
-  // @media (max-width: 770px) {
-  //   height: 7.5rem;
-  // }
 `;
 
 const Back = Link.withComponent('div');
@@ -822,6 +818,9 @@ const TokenTileCotainer = styled.div`
   @media (max-width: 770px) {
     width: 96%;
     margin-left: 2%;
+    padding-top: ${({ small }) => !small && '50%'};
+    background-size: 50%;
+    background-position: 100% 50%;
   }
 `;
 
