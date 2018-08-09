@@ -391,9 +391,10 @@ export const boost = async (entity, aboutEntity, value) => {
   const { ownerAddress } = await getEntityData(aboutEntity);
   const data = {
     type: ['about'],
-    claim: { target: entity.id, about: aboutEntity },
+    claim: { target: entity, about: aboutEntity },
     credits: getCreditsData(),
   };
+
   const transactionHash = await claimWithValueTransfer(data, value, ownerAddress);
   return { transactionHash, networkName };
 };
