@@ -89,6 +89,25 @@ export default class Discover extends Component {
 }
 
 class Index extends Component {
+  state = {
+    loading: true,
+    score: [],
+  };
+
+  async componentDidMount() {
+    try {
+      const { items } = await getRanking([
+        {
+          algorithm: 'cryptoverse_clubs_sorted',
+        },
+      ]);
+      this.setState({ loading: false, score: items });
+    } catch (e) {
+      console.warn(e);
+      this.setState({ loading: false });
+    }
+  }
+
   renderEntityTokens = (entity) =>
     this.renderTiles(
       entity.tokens.map((asset) => {
@@ -97,7 +116,12 @@ class Index extends Component {
       }),
     );
 
-  renderOthersTokens = () => this.renderTiles(ercs20);
+  renderOthersTokens = () => this.renderTiles(this.state.loading ? [] : this.sortByScore());
+
+  sortByScore = () => {
+    const tokensMap = ercs20.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
+    return this.state.score.filter((item) => tokensMap[item.id]).map((item) => tokensMap[item.id]);
+  };
 
   renderTiles = (tokens) => {
     const { match } = this.props;
