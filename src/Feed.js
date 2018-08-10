@@ -457,6 +457,9 @@ export class Card extends React.Component {
   };
 
   showMoreReplies = () => this.setState({ areRepliesCollapsed: false });
+  onVerify = () => {
+    this.setState({ showVerify: true });
+  };
 
   onVerify = (feedItem) => {
     this.setState({ showVerify: true, verifiableItem: feedItem });
