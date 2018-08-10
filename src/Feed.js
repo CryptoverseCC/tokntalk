@@ -650,7 +650,7 @@ export const LikersModal = styled(({ likes, onClose, className }) => (
       <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
       {likes.map(({ context, context_info }, index) => (
         <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
-          <LinkedActiveEntityAvatar id={context} entityInfo={context_info} size="medium" />
+          <LinkedEntityAvatar id={context} entityInfo={context_info} size="medium" />
           <Link to={`/${context}`} style={{ display: 'block', marginLeft: '15px' }}>
             <b>{context_info.name}</b>
           </Link>

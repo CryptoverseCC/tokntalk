@@ -36,6 +36,8 @@
     "jest": "20.0.4",
     "lodash": "^4.17.10",
     "object-assign": "4.1.1",
+    "object.entries": "^1.0.4",
+    "object.values": "^1.0.4",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
