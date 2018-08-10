@@ -12,7 +12,7 @@ import {
   claimWithValueTransferContractAddressesForNetworkId,
   claimWithValueTransferContractAbi,
 } from './contract';
-import { getEntityData } from './entityApi';
+import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
 import erc20 from './erc20';
 import ercs721 from './erc721';
 
@@ -55,6 +55,10 @@ export const isValidFeedItem = (feedItem) => {
 };
 
 export const enhanceFeedItem = (feedItem) => {
+  if (!!feedItem.context_info && !feedItem.context_info.name) {
+    feedItem.context_info.name = `${getEntityPrefix(feedItem.context)}${getEntityId(feedItem.context)}`;
+  }
+
   if (feedItem.type === 'post_to_simple') {
     feedItem.about_info = getEntityInfoForAddress(feedItem.about);
     feedItem.type = 'post_to';

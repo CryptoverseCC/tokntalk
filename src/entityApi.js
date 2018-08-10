@@ -14,6 +14,7 @@ export const getEntityData = async (entity) => {
     const [, address, token] = entity.split(':');
     const res = await fetch(`https://opensea-api.herokuapp.com/asset/${address}/${token}/`);
     const data = await res.json();
+    data.name = data.name || `${getEntityPrefix(entity)}${getEntityId(entity)}`;
     data.color = data.background_color ? `#${data.background_color}` : undefined;
     data.url = data.external_link || `https://opensea.io/assets/${address}/${token}`;
     data.ownerAddress = data.owner.address;

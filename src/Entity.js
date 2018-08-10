@@ -42,7 +42,9 @@ export const Entity = ({ id, children }) => (
 export const EntityName = ({ id }) => {
   return (
     <Context.Consumer>
-      {({ entityStore: { getEntity } }) => getEntity(id).name || `${getEntityPrefix(id)}${getEntityId(id)}`}
+      {({ entityStore: { getEntity } }) => {
+        return getEntity(id).name || `${getEntityPrefix(id)}${getEntityId(id)}`;
+      }}
     </Context.Consumer>
   );
 };
