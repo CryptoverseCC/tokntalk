@@ -109,7 +109,7 @@ const Header = () => {
             </ToggleHttpButton>
           )}
         </Context.Consumer>
-        <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
+        <IfActiveEntity then={() => <CatDropdown />} other={<Status />} />
       </StyledHeader>
     </HeaderContainer>
   );
@@ -303,38 +303,55 @@ const Error = styled.span`
   }
 `;
 
+const Loading = styled.span`
+  color: blue;
+  text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
+  @media (max-width: 770px) {
+    display: none;
+  }
+`;
+
+const LoadingStatus = () => (
+  <MessageContainer>
+    <Loading>Loading...</Loading>
+  </MessageContainer>
+);
+
 const NoMetamaskStatus = () => (
-  <ErrorContainer>
+  <MessageContainer>
     <img src={NoMetamask} alt="No metamask" />
     <Error>No Metamask</Error>
-  </ErrorContainer>
+  </MessageContainer>
 );
 
 const MetamaskLockedStatus = () => (
-  <ErrorContainer>
+  <MessageContainer>
     <img src={Locked} alt="Metamask locked" />
     <Error>Metamask locked</Error>
-  </ErrorContainer>
+  </MessageContainer>
 );
 
 const NoIdentitiesStatus = () => (
-  <ErrorContainer>
+  <MessageContainer>
     <img src={NoIdentity} style={{ marginRight: '10px' }} alt="No Identities found" />
     <Error>
       <TranslationsContext.Consumer>{({ noEntitiesError }) => noEntitiesError}</TranslationsContext.Consumer>
     </Error>
-  </ErrorContainer>
+  </MessageContainer>
 );
 
-const ErrorContainer = styled.div`
+const MessageContainer = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
 `;
 
-const ErrorStatus = () => {
+const Status = () => {
   const renderStatus = (provider, from) => {
-    if (!provider) {
+    console.log(provider);
+    if (!provider && typeof provider === 'undefined') {
+      return <LoadingStatus />;
+    } else if (!provider && typeof provider === 'boolean') {
       return <NoMetamaskStatus />;
     } else if (!from) {
       return <MetamaskLockedStatus />;
