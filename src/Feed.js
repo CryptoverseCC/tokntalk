@@ -585,7 +585,7 @@ export class Card extends React.Component {
             <LinkedEntityAvatar
               size="verySmall"
               style={{ marginLeft: '10px', display: 'inline-block' }}
-              entity={id}
+              id={id}
               entityInfo={about}
             />
             <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
