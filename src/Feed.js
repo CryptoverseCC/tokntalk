@@ -205,19 +205,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
   </ArticleReactions>
 );
 
-const Post = ({
-  id,
-  from,
-  entityInfo,
-  createdAt,
-  etherscanUrl,
-  family,
-  message,
-  reaction,
-  suffix,
-  style = {},
-  onVerify,
-}) => {
+const Post = ({ id, from, entityInfo, createdAt, family, message, reaction, suffix, style = {}, onVerify }) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '64px' }}>
@@ -519,7 +507,6 @@ export class Card extends React.Component {
             createdAt={feedItem.target.created_at}
             message={feedItem.target.target}
             family={feedItem.target.family}
-            etherscanUrl={createEtherscanUrl(feedItem.target)}
             suffix={this.getSuffix(feedItem.target)}
             disabledInteractions={disabledInteractions}
             onVerify={this.onVerify}
@@ -538,7 +525,6 @@ export class Card extends React.Component {
           createdAt={feedItem.created_at}
           message={feedItem.target}
           family={feedItem.family}
-          etherscanUrl={createEtherscanUrl(feedItem)}
           suffix={this.getSuffix(feedItem)}
           reaction={
             (feedItem.type === 'response' && <ReplyReaction />) ||
