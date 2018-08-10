@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+
 import { FixedModal } from './Modal';
 import { createEtherscanUrl } from './utils';
 import { getHttpClaimDetails } from './api';
 
-export class VerifyModal extends React.Component {
+const ModalContainer = styled.div`
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  max-width: 400px;
+`;
+
+const Hash = styled.pre`
+  word-break: break-word;
+`;
+
+export class VerifyModal extends Component {
   state = {
     httpClaimDetails: undefined,
   };
+
   componentDidMount() {
-    console.log('didMount');
     const { feedItem } = this.props;
     if (feedItem.family.toLowerCase() === 'http') {
       getHttpClaimDetails(feedItem).then((res) => {
@@ -18,15 +31,13 @@ export class VerifyModal extends React.Component {
   }
 
   render() {
-    console.log('redner');
-    const { feedItem } = this.props;
     return (
       <FixedModal onClose={this.props.onClose}>
-        <div style={{ backgroundColor: 'white' }}>
+        <ModalContainer>
           <h1>Verified!</h1>
           <p>This message is signed cryptographically</p>
           {this.renderByType()}
-        </div>
+        </ModalContainer>
       </FixedModal>
     );
   }
@@ -46,9 +57,13 @@ export class VerifyModal extends React.Component {
         <div>
           {this.renderHttpDescBySignatureValue()}
           <p>Stored on HTTP Server</p>
-          <p>Author {this.props.feedItem.author}</p>
-          <p>Message signature hash {httpClaimDetails.signatureValue}</p>
-          <div style={{ backgroundColor: 'gray' }}>{this.renderHttpClaimDetails()}</div>
+          <p>
+            Author <Hash>{this.props.feedItem.author}</Hash>
+          </p>
+          <p style={{ marginBottom: '1rem' }}>
+            Message signature hash <Hash>{httpClaimDetails.signatureValue}</Hash>
+          </p>
+          <pre>{this.renderHttpClaimDetails()}</pre>
         </div>
       );
     } else {
