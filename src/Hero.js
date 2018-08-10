@@ -1,7 +1,9 @@
 import React from 'react';
 import Link from './Link';
-import { ConnectedCommentForm, CommentForm } from './CommentForm';
-import { LinkedActiveEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
+import Context from './Context';
+import { ConnectedCommentForm, CommentForm, TextAreaForm } from './CommentForm';
+import { LinkedEntityAvatar, IfActiveEntity, ActiveEntityName } from './Entity';
+import TranslationsContext from './Translations';
 import styled from 'styled-components';
 
 const HeroContainer = styled.div``;
@@ -19,30 +21,47 @@ const AddStory = styled.div`
 `;
 
 const Hero = (props) => (
-  <IfActiveEntity>
-    {(entity) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) => (
       <div {...props}>
         <HeroContainer>
           <AddStory>
             <article className="media">
               <div className="media-left">
-                <LinkedActiveEntityAvatar size="large" />
+                {activeEntity ? (
+                  <LinkedEntityAvatar id={activeEntity.id} entityInfo={activeEntity} size="medium" {...props} />
+                ) : (
+                  <span>Empty State (Avatar</span>
+                )}
               </div>
               <div className="media-content">
                 <div className="content">
-                  <Link
-                    to={`/${entity}`}
-                    style={{
-                      fontFamily: 'AvenirNext',
-                      fontSize: '1rem',
-                      fontWeight: '600',
-                      marginBottom: '20px',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <ActiveEntityName />
-                  </Link>
-                  <ConnectedCommentForm Form={CommentForm} />
+                  {activeEntity ? (
+                    <div>
+                      <Link
+                        to={`/${activeEntity.id}`}
+                        style={{
+                          fontFamily: 'AvenirNext',
+                          fontSize: '1rem',
+                          fontWeight: '600',
+                          marginBottom: '20px',
+                          marginTop: '10px',
+                        }}
+                      >
+                        {activeEntity.name}
+                      </Link>
+                      <ConnectedCommentForm Form={CommentForm} />
+                    </div>
+                  ) : (
+                    <div>
+                      <span>Empty State</span>
+                      <TranslationsContext.Consumer>
+                        {({ commentPlaceholder }) => (
+                          <TextAreaForm Form={CommentForm} placeholder={commentPlaceholder} disabled={true} />
+                        )}
+                      </TranslationsContext.Consumer>
+                    </div>
+                  )}
                 </div>
               </div>
             </article>
@@ -50,7 +69,7 @@ const Hero = (props) => (
         </HeroContainer>
       </div>
     )}
-  </IfActiveEntity>
+  </Context.Consumer>
 );
 
 export default Hero;

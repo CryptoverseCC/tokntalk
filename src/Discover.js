@@ -512,35 +512,39 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
       <div className="columns is-multiline">
         <DiscoveryContext.Consumer>
           {(data) =>
-            data[social]
-              .filter(hasValidContext)
-              .map(enhanceFeedItem)
-              .slice(0, limit)
-              .map(({ context, context_info, target, isFromAddress, author, author_info }) => (
-                <EntityContainer key={context} className="column is-12">
-                  <LinkedEntityAvatar
-                    id={isFromAddress ? author : context}
-                    entityInfo={isFromAddress ? author_info : context_info}
-                    size="medium"
-                  />
-                  <EntityInfo>
-                    <Link to={`/${isFromAddress ? author : context}`}>
-                      {isFromAddress ? author_info.name : context_info.name}
-                    </Link>
-                    <a href={target} target="_blank" rel="noopener">
-                      <img alt="" src={exportIcon} style={{ marginRight: '5px' }} />
-                      <SocialUsername
-                        style={{
-                          fontSize: '0.8rem',
-                          fontWeight: '600',
-                          color: '#1b2437',
-                        }}
-                        link={target}
-                      />
-                    </a>
-                  </EntityInfo>
-                </EntityContainer>
-              ))
+            data ? (
+              <span>Empty State</span>
+            ) : (
+              data[social]
+                .filter(hasValidContext)
+                .map(enhanceFeedItem)
+                .slice(0, limit)
+                .map(({ context, context_info, target, isFromAddress, author, author_info }) => (
+                  <EntityContainer key={context} className="column is-12">
+                    <LinkedEntityAvatar
+                      id={isFromAddress ? author : context}
+                      entityInfo={isFromAddress ? author_info : context_info}
+                      size="medium"
+                    />
+                    <EntityInfo>
+                      <Link to={`/${isFromAddress ? author : context}`}>
+                        {isFromAddress ? author_info.name : context_info.name}
+                      </Link>
+                      <a href={target} target="_blank" rel="noopener">
+                        <img alt="" src={exportIcon} style={{ marginRight: '5px' }} />
+                        <SocialUsername
+                          style={{
+                            fontSize: '0.8rem',
+                            fontWeight: '600',
+                            color: '#1b2437',
+                          }}
+                          link={target}
+                        />
+                      </a>
+                    </EntityInfo>
+                  </EntityContainer>
+                ))
+            )
           }
         </DiscoveryContext.Consumer>
       </div>

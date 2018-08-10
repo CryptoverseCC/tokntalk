@@ -93,7 +93,7 @@ const MetamaskButton = styled.button`
   ${({ disabled }) =>
     disabled
       ? css`
-          opacity: 0;
+          opacity: 0.1;
         `
       : css`
           opacity: 1;
@@ -108,6 +108,10 @@ const MetamaskButton = styled.button`
 `;
 
 export class TextAreaForm extends React.Component {
+  static defaultProps = {
+    disabled: false,
+  };
+
   state = {
     comment: '',
     submitting: false,
@@ -130,6 +134,9 @@ export class TextAreaForm extends React.Component {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
+          if (this.props.disabled) {
+            return;
+          }
           this.submitForm();
         }}
         className={className}
@@ -141,8 +148,9 @@ export class TextAreaForm extends React.Component {
           value={this.state.comment}
           onChange={(e) => this.setState({ comment: e.target.value })}
           onKeyPress={(e) => e.key === 'Enter' && e.ctrlKey && this.submitForm()}
+          disabled={this.props.disabled}
         />
-        <MetamaskButton disabled={!this.state.submitting && !this.validate()} type="submit" />
+        <MetamaskButton disabled={this.props.disabled || (!this.state.submitting && !this.validate())} type="submit" />
       </Form>
     );
   }
