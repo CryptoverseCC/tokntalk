@@ -1,7 +1,9 @@
 import uuidv4 from 'uuid/v4';
 import find from 'lodash/fp/find';
 import last from 'lodash/fp/last';
+import { isAddress } from 'web3-utils';
 
+import { getEntityInfoForAddress } from './utils';
 import getWeb3 from './web3';
 import {
   claimContractAddressesForNetworkId,
@@ -10,7 +12,7 @@ import {
   claimWithValueTransferContractAddressesForNetworkId,
   claimWithValueTransferContractAbi,
 } from './contract';
-import { getEntityData } from './entityApi';
+import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
 import erc20 from './erc20';
 import ercs721 from './erc721';
 
@@ -24,16 +26,18 @@ const {
 export const isValidAndSupportedErc721 = (address) => !!find({ address })(ercs721);
 
 export const hasValidContext = ({ context }) => {
-  if (!context) return false;
+  if (!context) return true;
   const [, address] = context.split(':');
   return isValidAndSupportedErc721(address);
 };
 
 export const isValidFeedItem = (feedItem) => {
-  if (!['regular', 'like', 'post_to', 'post_about', 'post_club', 'social'].includes(feedItem.type)) {
+  if (!['regular', 'like', 'post_to', 'post_about', 'post_club', 'social', 'post_to_simple'].includes(feedItem.type)) {
     return false;
   }
-  if (!hasValidContext(feedItem)) {
+  if (!feedItem.context) {
+    return true;
+  } else if (!hasValidContext(feedItem)) {
     return false;
   }
 
@@ -50,13 +54,45 @@ export const isValidFeedItem = (feedItem) => {
   return true;
 };
 
+export const enhanceFeedItem = (feedItem) => {
+  if (!!feedItem.context_info && !feedItem.context_info.name) {
+    feedItem.context_info.name = `${getEntityPrefix(feedItem.context)}${getEntityId(feedItem.context)}`;
+  }
+
+  if (feedItem.type === 'post_to_simple') {
+    feedItem.about_info = getEntityInfoForAddress(feedItem.about);
+    feedItem.type = 'post_to';
+  }
+
+  if (feedItem.likes) {
+    feedItem.likes = feedItem.likes.map(enhanceFeedItem);
+  }
+
+  if (feedItem.replies) {
+    feedItem.replies = feedItem.replies.map(enhanceFeedItem).map((reply) => {
+      reply.likes = reply.likes.map(enhanceFeedItem);
+      return reply;
+    });
+  }
+
+  if (typeof feedItem.target === 'object') {
+    feedItem.target = enhanceFeedItem(feedItem.target);
+  }
+
+  if (!!feedItem.context) {
+    return feedItem;
+  }
+
+  return { ...feedItem, author_info: getEntityInfoForAddress(feedItem.author), isFromAddress: true };
+};
+
 export const getFeedItem = async ({ claimId }) => {
   let { items: feedItems } = await getRanking(
     [{ algorithm: 'cryptoverse_thread_feed', params: { id: claimId } }],
     'api/decorate-with-opensea',
   );
 
-  feedItems = feedItems.filter(isValidFeedItem);
+  feedItems = feedItems.filter(isValidFeedItem).map(enhanceFeedItem);
 
   return feedItems[0];
 };
@@ -73,7 +109,7 @@ export const getFeedItems = async ({ lastVersion, oldestKnown, size, entityId })
       ));
 
   const { items, total, version } = response;
-  const validFeedItems = items.filter(isValidFeedItem);
+  const validFeedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
   const lastItem = last(items);
 
   return { feedItems: validFeedItems.slice(0, 30), total, version, lastItemId: lastItem ? lastItem.id : undefined };
@@ -120,7 +156,7 @@ export const getMyEntities = async () => {
         })),
       );
 
-    return identities;
+    return [getEntityInfoForAddress(from), ...identities];
   } catch (e) {
     return [];
   }
@@ -139,9 +175,10 @@ export const getLabels = async (entityId) => {
 export const getEntityTokens = async (entityId) => {
   const tokens = await getRanking([
     {
-      algorithm: 'experimental_assets_balances_erc721',
+      algorithm: isAddress(entityId) ? 'experimental_assets_balances' : 'experimental_assets_balances_erc721',
       params: {
         context: entityId,
+        identity: entityId,
         asset: erc20.map(({ network, address }) => `${network}:${address}`),
       },
     },
@@ -155,7 +192,7 @@ export const getBoosts = async (token) => {
     const res = await getRanking(
       [
         {
-          algorithm: 'experimental_boost_721',
+          algorithm: 'cryptoverse_boost',
           params: {
             asset: INTERFACE_BOOST_NETWORK,
             entity: token,
@@ -168,8 +205,10 @@ export const getBoosts = async (token) => {
 
     const { items: boosts } = res;
     const boostsMap = boosts.reduce((acc, boost) => {
+      if (isAddress(boost.id)) {
+        return { ...acc, [boost.id]: { ...boost, context_info: getEntityInfoForAddress(boost.id) } };
+      }
       const [, address] = boost.id.split(':');
-      // ToDo or isAddress
       if (!find({ address })(ercs721)) {
         return acc;
       }
@@ -238,13 +277,14 @@ const createFeedItemBase = async (id, entity, http) => {
   const { from, blockNumber, networkName } = await getWeb3State();
 
   return {
-    author: from,
+    author: from.toLowerCase(),
     created_at: new Date().getTime(),
     family: http ? 'http' : networkName,
     id,
     sequence: blockNumber + 1,
-    context: entity.id,
-    context_info: entity,
+    ...(!entity.isAddress ? { context: entity.id } : null),
+    ...(!entity.isAddress ? { context_info: entity } : { author_info: entity }),
+    ...(entity.isAddress ? { isFromAddress: true } : null),
   };
 };
 
@@ -295,7 +335,7 @@ const claimWithValueTransfer = async (data, value, ownerAddress) => {
 export const sendMessage = async (entity, message, { http } = {}) => {
   const data = {
     claim: { target: message },
-    context: entity.id,
+    ...(!entity.isAddress ? { context: entity.id } : null),
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -314,7 +354,7 @@ export const reply = async (entity, message, to, { http } = {}) => {
   const data = {
     type: ['about'],
     claim: { target: message, about: to },
-    context: entity.id,
+    ...(!entity.isAddress ? { context: entity.id } : null),
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -326,7 +366,7 @@ export const writeTo = async (entity, message, entityTo, { http } = {}) => {
   const data = {
     type: ['about'],
     claim: { target: message, about: entityTo.id },
-    context: entity.id,
+    ...(!entity.isAddress ? { context: entity.id } : null),
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -344,7 +384,7 @@ export const writeAbout = async (entity, message, about, { http } = {}) => {
   const data = {
     type: ['about'],
     claim: { target: message, about: about },
-    context: entity.id,
+    ...(!entity.isAddress ? { context: entity.id } : null),
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -361,7 +401,7 @@ export const react = async (entity, to, { http } = {}) => {
   const data = {
     type: ['labels'],
     claim: { target: to, labels: ['like'] },
-    context: entity.id,
+    ...(!entity.isAddress ? { context: entity.id } : null),
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -373,7 +413,7 @@ export const label = async (entity, message, labelType, { http } = {}) => {
   const data = {
     type: ['labels'],
     claim: { target: message, labels: [labelType] },
-    context: entity.id,
+    ...(!entity.isAddress ? { context: entity.id } : null),
     credits: getCreditsData(),
   };
   const id = await sendClaim(data, http);
@@ -388,10 +428,16 @@ export const label = async (entity, message, labelType, { http } = {}) => {
 
 export const boost = async (entity, aboutEntity, value) => {
   const { networkName } = await getWeb3State();
-  const { ownerAddress } = await getEntityData(aboutEntity);
+  let ownerAddress;
+  if (isAddress(aboutEntity)) {
+    ownerAddress = aboutEntity;
+  } else {
+    ownerAddress = (await getEntityData(aboutEntity)).ownerAddress;
+  }
+
   const data = {
     type: ['about'],
-    claim: { target: entity, about: aboutEntity },
+    claim: { target: entity.id, about: aboutEntity },
     credits: getCreditsData(),
   };
 

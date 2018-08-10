@@ -396,6 +396,7 @@ export default class Catvertised extends React.Component {
     step: 'catvertised',
     value: 0,
     customCatId: undefined,
+    entity: undefined,
   };
 
   componentDidMount() {
@@ -548,15 +549,13 @@ export default class Catvertised extends React.Component {
                               onClick={() =>
                                 this.setState({
                                   step: 'form',
-                                  entityId: entity.id,
+                                  entity,
                                 })
                               }
                             >
-                              <EntityAvatar size="medium" id={entity.id} />
+                              <EntityAvatar size="medium" id={entity.id} entityInfo={entity} />
                               <CatvertisedName>
-                                <EntityNameWrapper>
-                                  <EntityName id={entity.id} />
-                                </EntityNameWrapper>
+                                <EntityNameWrapper>{entity.name}</EntityNameWrapper>
                               </CatvertisedName>
                             </CatvertisedItemButton>
                           </CatvertisedItem>
@@ -582,11 +581,9 @@ export default class Catvertised extends React.Component {
                 </Purrmoter>
 
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px', overflow: 'hidden' }}>
-                  <LinkedEntityAvatar size="medium" id={this.state.entityId} />
+                  <LinkedEntityAvatar size="medium" id={this.state.entity.id} entityInfo={this.state.entity} />
                   <CatvertisedName>
-                    <EntityNameWrapper>
-                      <EntityName id={this.state.entityId} />
-                    </EntityNameWrapper>
+                    <EntityNameWrapper>{this.state.entity.name}</EntityNameWrapper>
                   </CatvertisedName>
                 </div>
                 <CatvertisedBack
@@ -610,7 +607,7 @@ export default class Catvertised extends React.Component {
                   onSubmit={async (e) => {
                     e.preventDefault();
                     const { transactionHash, networkName } = await boost(
-                      this.state.entityId,
+                      this.state.entity,
                       this.props.token,
                       this.state.value * 10 ** 18,
                     );
@@ -664,7 +661,7 @@ export default class Catvertised extends React.Component {
                   Success!
                 </div>
                 <div style={{ fontSize: '1rem' }}>
-                  You've promoted <EntityName id={this.state.entityId} />
+                  You've promoted <EntityName id={this.state.entity.id} />
                 </div>
                 <A href={this.state.etherscanUrl} style={{ marginTop: '10px' }}>
                   Check it on Etherscan

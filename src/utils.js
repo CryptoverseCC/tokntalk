@@ -21,3 +21,24 @@ export const validateParams = (validators, redirectTo) => (Cmp) => {
     }
   };
 };
+
+const iconCache = {};
+export const getAvatarUrlForAddress = (address) => {
+  if (!iconCache[address]) {
+    const icon = jazzicon(100, parseInt(address.slice(2, 10), 16)).firstChild;
+    const serializer = new XMLSerializer();
+    const blob = new Blob([serializer.serializeToString(icon)], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    iconCache[address] = url;
+  }
+
+  return iconCache[address];
+};
+
+export const getEntityInfoForAddress = (address) => ({
+  isAddress: true,
+  id: address.toLowerCase(),
+  url: `https://etherscan.io/address/${address}`,
+  image_preview_url: getAvatarUrlForAddress(address),
+  name: `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`,
+});

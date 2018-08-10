@@ -42,7 +42,9 @@ export const Entity = ({ id, children }) => (
 export const EntityName = ({ id }) => {
   return (
     <Context.Consumer>
-      {({ entityStore: { getEntity } }) => getEntity(id).name || `${getEntityPrefix(id)}${getEntityId(id)}`}
+      {({ entityStore: { getEntity } }) => {
+        return getEntity(id).name || `${getEntityPrefix(id)}${getEntityId(id)}`;
+      }}
     </Context.Consumer>
   );
 };
@@ -135,7 +137,12 @@ export const IfActiveEntityLiked = ({ reactions, children, liked, notLiked, unAc
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => {
       if (!activeEntity) return unActive;
-      const entityHasLiked = reactions && reactions.find(({ context }) => context === activeEntity.id);
+      const entityHasLiked =
+        reactions &&
+        reactions.find(
+          ({ context, author, isFromAddress }) =>
+            isFromAddress ? author === activeEntity.id : context === activeEntity.id,
+        );
       return entityHasLiked ? liked || children : notLiked;
     }}
   </Context.Consumer>
