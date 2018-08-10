@@ -30,6 +30,7 @@ import { PositionedFooter } from './Footer';
 import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
+import Landing from './Landing';
 import NotFound from './NotFound';
 import { getEntityInfoForAddress } from './utils';
 
@@ -465,8 +466,18 @@ class Routes extends Component {
 
   renderDiscover = (props) => <Discover {...props} />;
 
+  renderLanding = (props) => <Landing {...props} />;
+
   render() {
-    const { renderModalThread, renderShowPage, renderFaqPage, renderIndexPage, renderThread, renderDiscover } = this;
+    const {
+      renderModalThread,
+      renderShowPage,
+      renderFaqPage,
+      renderIndexPage,
+      renderThread,
+      renderDiscover,
+      renderLanding,
+    } = this;
     const { location } = this.props;
     const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
 
@@ -476,6 +487,7 @@ class Routes extends Component {
           <Route exact path="/" component={renderIndexPage} />
           <Route exact path="/faq" component={renderFaqPage} />
           <Route path="/discover" component={renderDiscover} />
+          <Route path="/landing" component={renderLanding} />
           <Route path="/404" component={NotFound} />
           <Route exact path="/:entityId" component={renderShowPage} />
           {!isModal ? <Route exact path="/thread/:claimId" component={renderThread} /> : null}
