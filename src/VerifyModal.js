@@ -29,6 +29,8 @@ export class VerifyModal extends Component {
       getHttpClaimDetails(feedItem).then((res) => {
         this.setState({ httpClaimDetails: res, isLoading: false });
       });
+    } else {
+      this.setState({ isLoading: false });
     }
   }
 
