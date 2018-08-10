@@ -60,3 +60,9 @@ export const getEntityInfoForAddress = (address) => ({
   image_preview_url: getAvatarUrlForAddress(address),
   name: `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`,
 });
+
+export const createEtherscanUrl = (item) => {
+  if (item.family.toLowerCase() === 'http') return undefined;
+  const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
+  return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
+};

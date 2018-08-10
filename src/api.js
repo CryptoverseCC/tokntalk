@@ -451,3 +451,9 @@ export const boost = async (entity, aboutEntity, value) => {
   const transactionHash = await claimWithValueTransfer(data, value, ownerAddress);
   return { transactionHash, networkName };
 };
+
+export const getHttpClaimDetails = async ({ id }) => {
+  return fetch(`${USERFEEDS_API_ADDRESS}/api/verify-claim?signatureValue=${id.split(':')[1]}`).then((res) =>
+    res.json(),
+  );
+};

@@ -21,6 +21,8 @@ import Loader from './Loader';
 import clubs from './clubs';
 import { H3 } from './Components';
 import { CollapsableText, ShowMore } from './CollapsableText';
+import { VerifyModal } from './VerifyModal';
+import { createEtherscanUrl } from './utils';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -203,7 +205,19 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
   </ArticleReactions>
 );
 
-const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, reaction, suffix, style = {} }) => {
+const Post = ({
+  id,
+  from,
+  entityInfo,
+  createdAt,
+  etherscanUrl,
+  family,
+  message,
+  reaction,
+  suffix,
+  style = {},
+  onVerify,
+}) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '64px' }}>
@@ -218,6 +232,7 @@ const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, 
           etherscanUrl={etherscanUrl}
           family={family}
           suffix={suffix}
+          onVerify={onVerify}
         />
         <StartingMessage>
           <CollapsableText text={message} />
@@ -291,12 +306,6 @@ const Reply = ({
   </article>
 );
 
-const createEtherscanUrl = (item) => {
-  if (item.family.toLowerCase() === 'http') return undefined;
-  const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
-  return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
-};
-
 const ReplyFormContainer = ({ about, ...props }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left is-hidden-mobile">
@@ -318,7 +327,7 @@ const SenderName = styled(Link)`
   font-size: 1rem;
 `;
 
-const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suffix, share }) => {
+const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suffix, share, onVerify }) => {
   return (
     <React.Fragment>
       <div>
@@ -337,9 +346,9 @@ const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suff
           ) : (
             timeago().format(createdAt)
           )}
-          <A href={etherscanUrl} style={{ marginLeft: '15px', textTransform: 'capitalize' }}>
+          <span onClick={onVerify} style={{ marginLeft: '15px' }}>
             {family}
-          </A>
+          </span>
         </span>
       </div>
       {suffix}
@@ -446,6 +455,7 @@ export class Card extends React.Component {
   state = {
     wasShown: !this.props.added,
     areRepliesCollapsed: this.props.collapseReplies && this.props.replies.length > 3,
+    showVerify: false,
   };
 
   focusReply = () => {
@@ -459,6 +469,9 @@ export class Card extends React.Component {
   };
 
   showMoreReplies = () => this.setState({ areRepliesCollapsed: false });
+  onVerify = () => {
+    this.setState({ showVerify: true });
+  };
 
   renderItem = () => {
     const { areRepliesCollapsed } = this.state;
@@ -489,6 +502,7 @@ export class Card extends React.Component {
                     reacted to <b>Post</b>
                   </span>
                 }
+                onVerify={this.onVerify}
               />
             </div>
           </article>
@@ -510,6 +524,7 @@ export class Card extends React.Component {
             etherscanUrl={createEtherscanUrl(feedItem.target)}
             suffix={this.getSuffix(feedItem.target)}
             disabledInteractions={disabledInteractions}
+            onVerify={this.onVerify}
           />
         </React.Fragment>
       );
@@ -533,6 +548,7 @@ export class Card extends React.Component {
               Object.keys(LabelItems).includes(feedItem.label) &&
               React.createElement(LabelItems[feedItem.label]))
           }
+          onVerify={this.onVerify}
         />
         <PostReactions
           id={feedItem.id}
@@ -643,10 +659,15 @@ export class Card extends React.Component {
     }
   };
 
+  onCloseVerify = () => {
+    this.setState({ showVerify: false });
+  };
+
   render() {
     return (
       <CardBox added={this.props.added && this.state.wasShown} style={this.props.style}>
         {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
+        {this.state.showVerify && <VerifyModal onClose={this.onCloseVerify} feedItem={this.props.feedItem} />}
         {this.renderItem()}
       </CardBox>
     );
