@@ -22,12 +22,17 @@ export const validateParams = (validators, redirectTo) => (Cmp) => {
   };
 };
 
-// Caching
+const iconCache = {};
 export const getAvatarUrlForAddress = (address) => {
-  const icon = jazzicon(100, parseInt(address.slice(2, 10), 16)).firstChild;
-  const serializer = new XMLSerializer();
-  const blob = new Blob([serializer.serializeToString(icon)], { type: 'image/svg+xml' });
-  return URL.createObjectURL(blob);
+  if (!iconCache[address]) {
+    const icon = jazzicon(100, parseInt(address.slice(2, 10), 16)).firstChild;
+    const serializer = new XMLSerializer();
+    const blob = new Blob([serializer.serializeToString(icon)], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    iconCache[address] = url;
+  }
+
+  return iconCache[address];
 };
 
 export const getEntityInfoForAddress = (address) => ({
