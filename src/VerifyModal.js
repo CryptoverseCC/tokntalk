@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FixedModal } from './Modal';
 import { createEtherscanUrl } from './utils';
 import { getHttpClaimDetails } from './api';
+import Loader from './Loader';
 
 const ModalContainer = styled.div`
   background: #ffffff;
@@ -19,26 +20,49 @@ const Hash = styled.pre`
 export class VerifyModal extends Component {
   state = {
     httpClaimDetails: undefined,
+    isLoading: true,
   };
 
   componentDidMount() {
     const { feedItem } = this.props;
     if (feedItem.family.toLowerCase() === 'http') {
       getHttpClaimDetails(feedItem).then((res) => {
-        this.setState({ httpClaimDetails: res });
+        this.setState({ httpClaimDetails: res, isLoading: false });
       });
     }
   }
+
+  sleep = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  };
 
   render() {
     return (
       <FixedModal onClose={this.props.onClose}>
         <ModalContainer>
-          <h1>Verified!</h1>
-          <p>This message is signed cryptographically</p>
-          {this.renderByType()}
+          {!this.state.isLoading && this.renderLoaded()}
+          {this.state.isLoading && (
+            <Loader
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
+            />
+          )}
         </ModalContainer>
       </FixedModal>
+    );
+  }
+
+  renderLoaded() {
+    return (
+      <div>
+        <h1>Verified!</h1>
+        <p>This message is signed cryptographically</p>
+        {this.renderByType()}
+      </div>
     );
   }
 
