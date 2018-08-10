@@ -38,7 +38,7 @@ export const getAvatarUrlForAddress = (address) => {
 export const getEntityInfoForAddress = (address) => ({
   isAddress: true,
   id: address.toLowerCase(),
-  external_link: `https://etherscan.io/address/${address}`,
+  url: `https://etherscan.io/address/${address}`,
   image_preview_url: getAvatarUrlForAddress(address),
   name: `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`,
 });
