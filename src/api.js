@@ -188,7 +188,7 @@ export const getBoosts = async (token) => {
     const res = await getRanking(
       [
         {
-          algorithm: 'experimental_boost_721',
+          algorithm: 'cryptoverse_boost',
           params: {
             asset: INTERFACE_BOOST_NETWORK,
             entity: token,
@@ -201,8 +201,10 @@ export const getBoosts = async (token) => {
 
     const { items: boosts } = res;
     const boostsMap = boosts.reduce((acc, boost) => {
+      if (isAddress(boost.id)) {
+        return { ...acc, [boost.id]: { ...boost, context_info: getEntityInfoForAddress(boost.id) } };
+      }
       const [, address] = boost.id.split(':');
-      // ToDo or isAddress
       if (!find({ address })(ercs721)) {
         return acc;
       }
@@ -422,10 +424,16 @@ export const label = async (entity, message, labelType, { http } = {}) => {
 
 export const boost = async (entity, aboutEntity, value) => {
   const { networkName } = await getWeb3State();
-  const { ownerAddress } = await getEntityData(aboutEntity);
+  let ownerAddress;
+  if (isAddress(aboutEntity)) {
+    ownerAddress = aboutEntity;
+  } else {
+    ownerAddress = (await getEntityData(aboutEntity)).ownerAddress;
+  }
+
   const data = {
     type: ['about'],
-    claim: { target: entity, about: aboutEntity },
+    claim: { target: entity.id, about: aboutEntity },
     credits: getCreditsData(),
   };
 

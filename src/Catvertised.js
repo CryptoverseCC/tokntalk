@@ -607,7 +607,7 @@ export default class Catvertised extends React.Component {
                   onSubmit={async (e) => {
                     e.preventDefault();
                     const { transactionHash, networkName } = await boost(
-                      this.state.entity.id,
+                      this.state.entity,
                       this.props.token,
                       this.state.value * 10 ** 18,
                     );
