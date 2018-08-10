@@ -234,7 +234,7 @@ const Reply = ({
   from,
   entityInfo,
   createdAt,
-  etherscanUrl,
+  onVerify,
   family,
   message,
   reactions,
@@ -282,10 +282,10 @@ const Reply = ({
                 unActive={<InlineLikeLabel count={reactions.length} unActive onShowLikers={onShowLikers} />}
               />
             )}
-            <span style={{ marginLeft: '0.325em' }}>{timeago().format(createdAt)}</span>{' '}
-            <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+            <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
+            <span onClick={onVerify} style={{ marginLeft: '15px' }}>
               {family}
-            </A>
+            </span>
           </small>
         </div>
       </div>
@@ -443,6 +443,7 @@ export class Card extends React.Component {
     wasShown: !this.props.added,
     areRepliesCollapsed: this.props.collapseReplies && this.props.replies.length > 3,
     showVerify: false,
+    verifiableItem: undefined,
   };
 
   focusReply = () => {
@@ -456,8 +457,9 @@ export class Card extends React.Component {
   };
 
   showMoreReplies = () => this.setState({ areRepliesCollapsed: false });
-  onVerify = () => {
-    this.setState({ showVerify: true });
+
+  onVerify = (feedItem) => {
+    this.setState({ showVerify: true, verifiableItem: feedItem });
   };
 
   renderItem = () => {
@@ -488,7 +490,7 @@ export class Card extends React.Component {
                     reacted to <b>Post</b>
                   </span>
                 }
-                onVerify={this.onVerify}
+                onVerify={() => this.onVerify(feedItem)}
               />
             </div>
           </article>
@@ -509,7 +511,7 @@ export class Card extends React.Component {
             family={feedItem.target.family}
             suffix={this.getSuffix(feedItem.target)}
             disabledInteractions={disabledInteractions}
-            onVerify={this.onVerify}
+            onVerify={() => this.onVerify(feedItem)}
           />
         </React.Fragment>
       );
@@ -532,7 +534,7 @@ export class Card extends React.Component {
               Object.keys(LabelItems).includes(feedItem.label) &&
               React.createElement(LabelItems[feedItem.label]))
           }
-          onVerify={this.onVerify}
+          onVerify={() => this.onVerify(feedItem)}
         />
         <PostReactions
           id={feedItem.id}
@@ -562,6 +564,7 @@ export class Card extends React.Component {
               reactions={reactions}
               etherscanUrl={createEtherscanUrl(reply)}
               onShowLikers={this.onShowLikers(reply, reactions)}
+              onVerify={() => this.onVerify(reply)}
               disabledInteractions={disabledInteractions}
             />
           );
@@ -644,14 +647,14 @@ export class Card extends React.Component {
   };
 
   onCloseVerify = () => {
-    this.setState({ showVerify: false });
+    this.setState({ showVerify: false, verifiableItem: undefined });
   };
 
   render() {
     return (
       <CardBox added={this.props.added && this.state.wasShown} style={this.props.style}>
         {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
-        {this.state.showVerify && <VerifyModal onClose={this.onCloseVerify} feedItem={this.props.feedItem} />}
+        {this.state.showVerify && <VerifyModal onClose={this.onCloseVerify} feedItem={this.state.verifiableItem} />}
         {this.renderItem()}
       </CardBox>
     );
