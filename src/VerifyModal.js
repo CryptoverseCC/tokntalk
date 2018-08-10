@@ -34,10 +34,6 @@ export class VerifyModal extends Component {
     }
   }
 
-  sleep = (time) => {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  };
-
   render() {
     return (
       <FixedModal onClose={this.props.onClose}>
