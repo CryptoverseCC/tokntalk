@@ -229,7 +229,6 @@ const Post = ({
           from={from}
           entityInfo={entityInfo}
           createdAt={createdAt}
-          etherscanUrl={etherscanUrl}
           family={family}
           suffix={suffix}
           onVerify={onVerify}
@@ -327,7 +326,7 @@ const SenderName = styled(Link)`
   font-size: 1rem;
 `;
 
-const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suffix, share, onVerify }) => {
+const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onVerify }) => {
   return (
     <React.Fragment>
       <div>
@@ -495,7 +494,6 @@ export class Card extends React.Component {
                 from={isFromAddress ? feedItem.author : feedItem.context}
                 entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
                 createdAt={feedItem.created_at}
-                etherscanUrl={createEtherscanUrl(feedItem)}
                 family={feedItem.family}
                 suffix={
                   <span>
