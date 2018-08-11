@@ -86,7 +86,7 @@ export default class App extends Component {
     from: undefined,
     provider: undefined,
     networkName: undefined,
-    http: this.storage.getItem('http') || true,
+    http: JSON.parse(this.storage.getItem('http') || 'true'),
   };
 
   componentDidMount() {
