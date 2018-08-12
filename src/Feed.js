@@ -571,7 +571,7 @@ export class Card extends React.Component {
         return (
           <React.Fragment>
             <span>wrote in</span>
-            <Link to={`/discover/byToken/${token.symbol}/feed`} style={{ marginLeft: '10px' }}>
+            <Link to={`/discover/byToken/${token.symbol}`} style={{ marginLeft: '10px' }}>
               <b>{token.name} club </b>
             </Link>
           </React.Fragment>

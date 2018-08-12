@@ -5,6 +5,7 @@ import { Card, LikersModal } from './Feed';
 import Loader from './Loader';
 import Context from './Context';
 import { HeaderSpacer } from './Header';
+import { ContentContainer } from './Components';
 
 export class Thread extends Component {
   state = {
@@ -26,29 +27,31 @@ export class Thread extends Component {
     return (
       <React.Fragment>
         <HeaderSpacer />
-        <Context.Consumer>
-          {({ feedStore: { feedItemLoading, feedItem } }) =>
-            !!feedItem || (!feedItemLoading && !!feedItem) ? (
-              <Card
-                feedItem={feedItem}
-                replies={feedItem.replies}
-                reactions={feedItem.likes}
-                style={{ background: '#ffffff' }}
-                onShowLikers={this.onShowLikers}
-              />
-            ) : (
-              <div
-                style={{
-                  paddingTop: '20px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Loader />
-              </div>
-            )
-          }
-        </Context.Consumer>
+        <ContentContainer>
+          <Context.Consumer>
+            {({ feedStore: { feedItemLoading, feedItem } }) =>
+              !!feedItem || (!feedItemLoading && !!feedItem) ? (
+                <Card
+                  feedItem={feedItem}
+                  replies={feedItem.replies}
+                  reactions={feedItem.likes}
+                  style={{ background: '#ffffff' }}
+                  onShowLikers={this.onShowLikers}
+                />
+              ) : (
+                <div
+                  style={{
+                    paddingTop: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Loader />
+                </div>
+              )
+            }
+          </Context.Consumer>
+        </ContentContainer>
         {showModal && <LikersModal onClose={() => this.setState({ showModal: false })} likes={feedItemLikes} />}
       </React.Fragment>
     );
