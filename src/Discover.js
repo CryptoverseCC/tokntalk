@@ -19,10 +19,10 @@ import { ExclamationMark } from './Icons';
 import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
-import { socialIcons } from './Icons';
+import AddToken from './AddToken';
+import { socialIcons, AddIcon } from './Icons';
 import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
-  EntityName,
   LinkedEntityAvatar,
   IfActiveEntity,
   IfActiveEntityIs,
@@ -108,15 +108,23 @@ class Index extends Component {
     }
   }
 
-  renderEntityTokens = (entity) =>
-    this.renderTiles(
-      entity.tokens.map((asset) => {
-        const [network, address] = asset.split(':');
-        return find({ network, address })(ercs20);
-      }),
-    );
+  renderEntityTokens = (entity) => (
+    <div className="columns is-multiline">
+      {this.renderTiles(
+        entity.tokens.map((asset) => {
+          const [network, address] = asset.split(':');
+          return find({ network, address })(ercs20);
+        }),
+      )}
+    </div>
+  );
 
-  renderOthersTokens = () => this.renderTiles(this.state.loading ? [] : this.sortByScore());
+  renderOthersTokens = () => (
+    <div className="columns is-multiline">
+      <AddToken className="column is-one-quarter" />
+      {this.renderTiles(this.state.loading ? [] : this.sortByScore())}
+    </div>
+  );
 
   sortByScore = () => {
     const tokensMap = ercs20.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
@@ -126,7 +134,7 @@ class Index extends Component {
   renderTiles = (tokens) => {
     const { match } = this.props;
     return (
-      <div className="columns is-multiline">
+      <React.Fragment>
         {tokens.map((token) => (
           <TokenTile
             linkTo={`${match.url}/byToken/${token.symbol}`}
@@ -135,7 +143,7 @@ class Index extends Component {
             className="column is-one-quarter"
           />
         ))}
-      </div>
+      </React.Fragment>
     );
   };
 
