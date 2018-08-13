@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import escapeHtml from 'lodash/escape';
 
 const COLLAPSED_TEXT_LENGTH = 200;
+const MAX_NEW_LINES = 5;
 
 const ShowMore = styled.span`
   cursor: pointer;
@@ -19,14 +20,26 @@ export class CollapsableText extends Component {
   constructor(props) {
     super(props);
 
-    const collapsedText = props.text.split(' ').reduce((acc, item) => {
-      if (acc.length < COLLAPSED_TEXT_LENGTH) {
+    const { text } = this.props;
+    let isCollapsed = false;
+    let collapsedText;
+    if (text.length > COLLAPSED_TEXT_LENGTH) {
+      isCollapsed = true;
+      collapsedText = text.split(' ').reduce((acc, item) => {
+        if (acc.length > COLLAPSED_TEXT_LENGTH) {
+          return acc;
+        }
         return acc ? acc + ' ' + item : item;
-      } else {
-        return acc;
-      }
-    }, '');
-    const isCollapsed = collapsedText.length < props.text.length;
+      }, '');
+    } else if (text.split('\n').length > MAX_NEW_LINES) {
+      isCollapsed = true;
+      collapsedText = text
+        .split('\n')
+        .slice(0, MAX_NEW_LINES)
+        .reduce((acc, item) => (acc ? acc + '\n' + item : item), '');
+    } else {
+      collapsedText = text;
+    }
 
     this.state = {
       isCollapsed,
@@ -53,7 +66,7 @@ export class CollapsableText extends Component {
   }
 }
 
-export const sanitizeMessage = (message) => {
+const sanitizeMessage = (message) => {
   const expression = /(\bhttps?:\/\/[^.,?!:;\s<>"]+(?:[.,?!:;]+[^.,?!:;\s<>"]+)+)/g;
   const replaceMatchWithLink = (match) => {
     return `<a href="${match}">${escapeHtml(match)}</a>`;
