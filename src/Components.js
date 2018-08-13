@@ -24,19 +24,27 @@ export const WarningContainer = FlatContainer.extend`
 export const H1 = styled.p`
   font-size: 4rem;
   font-weight: bold;
+  line-height: 1.1;
   @media (max-width: 770px) {
     margin-left: 2%;
+    font-size: 3rem;
   }
 `;
 
 export const H2 = styled.p`
   font-size: 2rem;
   font-weight: 600;
+  @media (max-width: 770px) {
+    font-size: 1.8rem;
+  }
 `;
 
 export const H3 = styled.p`
   font-size: 1.5rem;
   font-weight: 600;
+  @media (max-width: 770px) {
+    font-size: 1.25rem;
+  }
 `;
 
 export const H4 = styled.p`
