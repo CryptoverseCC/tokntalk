@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
 import find from 'lodash/fp/find';
 import uniqBy from 'lodash/fp/uniqBy';
@@ -8,6 +7,7 @@ import reverse from 'lodash/fp/reverse';
 import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
+import styled, { keyframes } from 'styled-components';
 
 import { FixedModal } from './Modal';
 import Link, { A } from './Link';
@@ -16,11 +16,11 @@ import { ConnectedReplyForm, ReplyForm } from './CommentForm';
 import { IfActiveEntity, LinkedActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon, empty } from './Icons';
-import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
 import ercs20 from './erc20';
 import { H3 } from './Components';
+import { CollapsableText } from './CollapsableText';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -196,17 +196,6 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
   </ArticleReactions>
 );
 
-export const sanitizeMessage = (message) => {
-  const expression = /(\bhttps?:\/\/[^.,?!:;\s<>"]+(?:[.,?!:;]+[^.,?!:;\s<>"]+)+)/g;
-  const replaceMatchWithLink = (match) => {
-    return `<a href="${match}">${escapeHtml(match)}</a>`;
-  };
-  return message
-    .split(expression)
-    .map((messagePart, index) => (index % 2 === 0 ? escapeHtml(messagePart) : replaceMatchWithLink(messagePart)))
-    .join('');
-};
-
 const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, reaction, suffix, style = {} }) => {
   return (
     <article className="media" style={style}>
@@ -223,7 +212,9 @@ const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, 
           family={family}
           suffix={suffix}
         />
-        <StartingMessage dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
+        <StartingMessage>
+          <CollapsableText text={message} />
+        </StartingMessage>
       </div>
     </article>
   );
@@ -270,7 +261,7 @@ const Reply = ({
           <Link to={`/${from}`} style={{ display: 'block' }}>
             <b>{entityInfo.name} </b>
           </Link>
-          <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
+          <CollapsableText text={message} />
         </div>
         <div>
           <small style={{ color: '#928F9B' }}>
@@ -608,8 +599,9 @@ export class Card extends React.Component {
                 display: 'inline-block',
                 whiteSpace: 'nowrap',
               }}
-              dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
-            />
+            >
+              <CollapsableText text={feedItem.about} />
+            </b>
           </span>
         </React.Fragment>
       ),
