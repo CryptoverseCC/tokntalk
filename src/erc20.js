@@ -510,7 +510,7 @@ export const TokenImage = ({ token, size = 'small', ...restProps }) => {
     return null;
   }
 
-  return <img src={token.logo} {...sizes[size]} {...restProps} />;
+  return <img src={token.logo} alt={token.name} {...sizes[size]} {...restProps} />;
 };
 
 export default ercs20;

@@ -57,11 +57,11 @@ const LabelText = styled.span`
 `;
 
 const LabelCounter = styled.span`
-  margin-left: 5px;
-  height: 20px;
-  padding: 2px 10px;
-  line-height: 20px;
-  border-radius: 15px;
+  margin-left: 0.3125em;
+  height: 1.25em;
+  padding: 0.125em 0.625em;
+  line-height: 1.25em;
+  border-radius: 1.25em;
   background: ${({ unActive, background }) => (!unActive ? background : '#cfd3e2')};
   color: ${({ unActive }) => unActive && '#000000'};
   cursor: ${({ disabled }) => !disabled && 'pointer'};
@@ -96,12 +96,12 @@ const LabelContainer = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  font-size: 1rem !important;
   font-weight: 600;
   padding: 4px;
 `;
 
 const LabelIconContainer = styled(IconContainer)`
+  height: 1em;
   transition: all 0.15s ease-in-out;
   background: ${({ liked, background }) => (liked ? background : 'none')};
   box-shadow: ${({ liked, shadow }) => (liked ? shadow : '')};
@@ -117,9 +117,9 @@ const LabelIconContainer = styled(IconContainer)`
   }
 `;
 
-const LikeLabel = ({ onLike, onShowLikers, liked, unActive, count }) => {
+const LikeLabel = ({ style, className, onLike, onShowLikers, liked, unActive, count }) => {
   return (
-    <LabelContainer color="#ff8482" unActive={unActive}>
+    <LabelContainer className={className} style={style} color="#ff8482" unActive={unActive}>
       <LabelButton onClick={onLike} liked={liked} unActive={unActive}>
         <LabelIconContainer
           liked={liked}
@@ -127,19 +127,28 @@ const LikeLabel = ({ onLike, onShowLikers, liked, unActive, count }) => {
           shadow="0 0 20px 9px rgba(255, 117, 117, 0.2)"
           background="rgba(255, 117, 117, 0.2)"
         >
-          <LikeIcon inactive={unActive} />
+          <LikeIcon inactive={unActive} style={{ height: '100%' }} />
         </LabelIconContainer>
         <LabelText>
           Like
           {liked && 'd'}
         </LabelText>
       </LabelButton>
-      <LabelCounter unActive={unActive} background="#ffebeb" onClick={onShowLikers} disabled={count === 0}>
+      <LabelCounter
+        unActive={unActive}
+        background="#ffebeb"
+        onClick={() => count > 0 && onShowLikers()}
+        disabled={count === 0}
+      >
         {count}
       </LabelCounter>
     </LabelContainer>
   );
 };
+
+const InlineLikeLabel = styled(LikeLabel)`
+  display: inline-flex;
+`;
 
 const ReplyLabel = ({ onClick, unActive, count }) => {
   return (
@@ -150,7 +159,7 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
           shadow="0 0 20px 9px rgba(89, 123, 246, 0.11)"
           background="rgba(89, 123, 246, 0.11)"
         >
-          <ReplyIcon inactive={unActive} />
+          <ReplyIcon inactive={unActive} style={{ height: '100%' }} />
         </LabelIconContainer>
         <LabelText>Reply</LabelText>
       </LabelButton>
@@ -161,8 +170,8 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
   );
 };
 
-const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, onShowLikers }) => (
-  <ArticleReactions>
+const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, onShowLikers, style }) => (
+  <ArticleReactions style={style}>
     <div className="" style={{ width: '70px' }} />
     <div className="columns is-mobile" style={{ width: '100%' }}>
       <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
@@ -229,6 +238,7 @@ const Reply = ({
   family,
   message,
   reactions,
+  onShowLikers,
   disabledInteractions,
   style = {},
 }) => (
@@ -264,38 +274,21 @@ const Reply = ({
           <CollapsableText text={message} />
         </div>
         <div>
-          <small style={{ color: '#928F9B' }}>
+          <small style={{ color: '#928F9B', display: 'flex', alignItems: 'center' }}>
             {disabledInteractions ? (
-              <span style={{ color: '#FF7777' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
+              <InlineLikeLabel count={reactions.length} unActive onShowLikers={onShowLikers} />
             ) : (
               <IfActiveEntityLiked
                 reactions={reactions}
                 notLiked={
                   <Context.Consumer>
                     {({ feedStore: { react } }) => (
-                      <button
-                        onClick={() => react(id)}
-                        style={{
-                          border: 'none',
-                          background: 'none',
-                          display: 'inline-block',
-                          padding: 0,
-                          margin: 0,
-                          color: '#FF7777',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Like {reactions.length ? `(${reactions.length})` : ''}
-                      </button>
+                      <InlineLikeLabel count={reactions.length} onLike={() => react(id)} onShowLikers={onShowLikers} />
                     )}
                   </Context.Consumer>
                 }
-                liked={
-                  <span style={{ color: '#FF7777' }}>Liked {reactions.length ? `(${reactions.length})` : ''}</span>
-                }
-                unActive={
-                  <span style={{ color: '#FF7777' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
-                }
+                liked={<InlineLikeLabel count={reactions.length} liked onShowLikers={onShowLikers} />}
+                unActive={<InlineLikeLabel count={reactions.length} unActive onShowLikers={onShowLikers} />}
               />
             )}
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
@@ -453,8 +446,8 @@ export class Card extends React.Component {
     }
   };
 
-  onShowLikers = () => {
-    this.props.onShowLikers(this.props.feedItem, this.props.reactions);
+  onShowLikers = (item, likes) => () => {
+    this.props.onShowLikers(item, likes);
   };
 
   renderItem = () => {
@@ -528,22 +521,31 @@ export class Card extends React.Component {
           replies={replies}
           disabledInteractions={disabledInteractions}
           onReply={this.focusReply}
-          onShowLikers={this.onShowLikers}
+          onShowLikers={this.onShowLikers(feedItem, reactions)}
+          style={{ fontSize: '1rem' }}
         />
-        {replies.map((reply) => (
-          <Reply
-            id={reply.id}
-            key={reply.id}
-            from={reply.isFromAddress ? reply.author : reply.context}
-            entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
-            createdAt={reply.created_at}
-            message={reply.target}
-            family={reply.family}
-            reactions={reply.likes}
-            etherscanUrl={createEtherscanUrl(reply)}
-            disabledInteractions={disabledInteractions}
-          />
-        ))}{' '}
+        {replies.map((reply) => {
+          const reactions = uniqBy((target) => target.id)([
+            ...this.props.getTemporaryReactions(reply.id),
+            ...(reply.likes || []),
+          ]);
+
+          return (
+            <Reply
+              id={reply.id}
+              key={reply.id}
+              from={reply.isFromAddress ? reply.author : reply.context}
+              entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
+              createdAt={reply.created_at}
+              message={reply.target}
+              family={reply.family}
+              reactions={reactions}
+              etherscanUrl={createEtherscanUrl(reply)}
+              onShowLikers={this.onShowLikers(reply, reactions)}
+              disabledInteractions={disabledInteractions}
+            />
+          );
+        })}{' '}
         {!disabledInteractions && (
           <IfActiveEntity>
             {() => <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)} />}
@@ -673,12 +675,13 @@ class Feed extends Component {
     this.setState({ showModal: true, feedItemLikes: reactions });
   };
 
+  getTemporaryReactions = (id) => this.props.temporaryReactions[id] || [];
+
   render() {
     const {
       feedItems,
       feedLoading,
       temporaryReplies,
-      temporaryReactions,
       getMoreFeedItems,
       feedLoadingMore,
       className,
@@ -709,9 +712,10 @@ class Feed extends Component {
               )([...(temporaryReplies[feedItem.id] || []), ...(feedItem.replies || [])]);
 
               const reactions = uniqBy((target) => target.id)([
-                ...(temporaryReactions[feedItem.id] || []),
+                ...this.getTemporaryReactions(feedItem.id),
                 ...(feedItem.likes || []),
               ]);
+
               return (
                 <Card
                   disabledInteractions={disabledInteractions}
@@ -721,6 +725,7 @@ class Feed extends Component {
                   key={feedItem.id}
                   added={feedItem.added}
                   onShowLikers={this.onShowLikers}
+                  getTemporaryReactions={this.getTemporaryReactions}
                 />
               );
             })}
