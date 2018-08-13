@@ -6,8 +6,17 @@ import cryptokittiesCover from './img/tokens/cryptokitties.png';
 import axie from './img/tokens/axie-icon.png';
 import axieCover from './img/tokens/axie.png';
 
+import bbsc from './img/tokens/bbsc-icon.svg';
+import bbscCover from './img/tokens/bbsc.png';
+
+import dasabi from './img/tokens/dasabi-icon.svg';
+import dasabiCover from './img/tokens/dasabi.png';
+
 import cryptobots from './img/tokens/cryptobots-icon.svg';
 import cryptobotsCover from './img/tokens/cryptobots.png';
+
+import tokenville from './img/tokens/tokenville-icon.png';
+import tokenvilleCover from './img/tokens/tokenville.jpg';
 
 import ethmoji from './img/tokens/ethmoji-icon.png';
 import ethmojiCover from './img/tokens/ethmoji.jpg';
@@ -475,6 +484,41 @@ const ercs20 = [
     secondaryColor: '#67616E',
     shadowColor: 'rgba(188,175,202,0.3)',
     externalLinks: [{ name: 'Project page', url: 'https://cryptocrystal.io/' }],
+  },
+  {
+    ...mapping.BAOBOSHICOIN,
+    logo: bbsc,
+    coverImage: bbscCover,
+    primaryColor: '#e60300',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(230,3,0,0.3)',
+    externalLinks: [
+      { name: 'Project page', url: 'http://bbsc.rocks/' },
+      { name: 'Exchange', url: 'http://bbsc.rocks/' },
+    ],
+  },
+  {
+    ...mapping.TOKENVILLE,
+    logo: tokenville,
+    coverImage: tokenvilleCover,
+    primaryColor: '#171A4C',
+    secondaryColor: '#FFC626',
+    shadowColor: 'rgba(23,26,76,0.3)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://tokenville.tv/' },
+      { name: 'Exchange', url: 'https://tokenville.tv/token' },
+    ],
+  },
+  {
+    ...mapping.DASABI,
+    logo: dasabi,
+    coverImage: dasabiCover,
+    primaryColor: '#762124',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(118,33,36,0.3)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.facebook.com/DSB-%E5%A4%A7%E7%81%91%E5%B9%A3-144522902894187/' },
+    ],
   },
   {
     ...mapping.BLOCKCHAIN_CUTIES,
