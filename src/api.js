@@ -164,7 +164,7 @@ export const getMyEntities = async () => {
 
 export const getLabels = async (entityId) => {
   try {
-    const res = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptopurr_profile;context=${entityId}`);
+    const res = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_profile;id=${entityId}`);
     const labels = await res.json();
     return labels;
   } catch (e) {
