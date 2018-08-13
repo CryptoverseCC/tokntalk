@@ -19,10 +19,10 @@ import { ExclamationMark } from './Icons';
 import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
-import AddToken from './AddToken';
-import { socialIcons, AddIcon } from './Icons';
+import { socialIcons } from './Icons';
 import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
+  EntityName,
   LinkedEntityAvatar,
   IfActiveEntity,
   IfActiveEntityIs,
@@ -35,7 +35,7 @@ import {
 import exportIcon from './img/export.svg';
 
 const H1Discover = styled.h1`
-  margin: 60px 0;
+  margin: 60px 0 20px 0;
   font-size: 4rem;
   font-weight: bold;
   line-height: 1.1;
@@ -108,23 +108,15 @@ class Index extends Component {
     }
   }
 
-  renderEntityTokens = (entity) => (
-    <div className="columns is-multiline">
-      {this.renderTiles(
-        entity.tokens.map((asset) => {
-          const [network, address] = asset.split(':');
-          return find({ network, address })(ercs20);
-        }),
-      )}
-    </div>
-  );
+  renderEntityTokens = (entity) =>
+    this.renderTiles(
+      entity.tokens.map((asset) => {
+        const [network, address] = asset.split(':');
+        return find({ network, address })(ercs20);
+      }),
+    );
 
-  renderOthersTokens = () => (
-    <div className="columns is-multiline">
-      <AddToken className="column is-one-quarter" />
-      {this.renderTiles(this.state.loading ? [] : this.sortByScore())}
-    </div>
-  );
+  renderOthersTokens = () => this.renderTiles(this.state.loading ? [] : this.sortByScore());
 
   sortByScore = () => {
     const tokensMap = ercs20.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
@@ -134,16 +126,17 @@ class Index extends Component {
   renderTiles = (tokens) => {
     const { match } = this.props;
     return (
-      <React.Fragment>
+      <div className="columns is-multiline">
         {tokens.map((token) => (
           <TokenTile
             linkTo={`${match.url}/byToken/${token.symbol}`}
             key={token.address}
             token={token}
             className="column is-one-quarter"
+            style={{ padding: '1rem' }}
           />
         ))}
-      </React.Fragment>
+      </div>
     );
   };
 
@@ -818,19 +811,18 @@ const TokenTileCotainer = styled.div`
   padding-top: 105%;
   border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.3s;
-  transition: all 0.15s ease;
+  transition: all 0.15s ease-in;
 
   :hover {
-    transform: translateY(-3px);
-    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 6rem -2rem  ${shadowColor}`};
-    transition: all 0.15s ease;
+    transform: translateY(-2px);
+    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 4rem -2rem  ${shadowColor}`};
+    transition: all 0.15s ease-out;
   }
 
   :active {
     transform: scale(0.98);
     box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 4rem -2rem  ${shadowColor}`};
-    transitionn: all 0.15s ease;
+    transitionn: all 0.15s ease-in;
   }
 
   @media (max-width: 770px) {

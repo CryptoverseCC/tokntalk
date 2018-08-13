@@ -108,7 +108,7 @@ const ercs20 = [
     coverImage: cryptokittiesCover,
     primaryColor: '#FFD9FF',
     secondaryColor: '#C23DA8',
-    shadowColor: 'rgba(194,61,168,0.2)',
+    shadowColor: 'rgba(194,61,168,0.23)',
     externalLinks: [
       { name: 'Project page', url: 'https://www.cryptokitties.co/' },
       { name: 'Marketplace', url: 'https://www.cryptokitties.co/search' },
@@ -166,7 +166,7 @@ const ercs20 = [
     ...mapping.DIGITAL_ART_CHAIN,
     logo: dac,
     coverImage: dacCover,
-    primaryColor: '#ffffff',
+    primaryColor: '#FFE5E0',
     secondaryColor: '#F05E40',
     shadowColor: 'rgba(247,165,148,0.3)',
     externalLinks: [
@@ -441,7 +441,7 @@ const ercs20 = [
     ...mapping.KIYOSALO,
     logo: kiyosalo,
     coverImage: kiyosaloCover,
-    primaryColor: '#ffffff',
+    primaryColor: '#DBE8F9',
     secondaryColor: '#3267a5',
     shadowColor: 'rgba(50,103,165,0.2)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
@@ -495,7 +495,7 @@ const ercs20 = [
     coverImage: percentCover,
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
-    shadowColor: 'rgba(200,249,255,0.6)',
+    shadowColor: 'rgba(77,151,252,0.23)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
   },
 ].map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }));
