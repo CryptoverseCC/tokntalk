@@ -43,7 +43,7 @@ export class CollapsableText extends Component {
 
     this.state = {
       isCollapsed,
-      collapsedText: `${collapsedText}...`,
+      collapsedText,
     };
   }
 
@@ -56,7 +56,7 @@ export class CollapsableText extends Component {
     if (isCollapsed) {
       return (
         <span>
-          <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(collapsedText) }} />
+          <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(collapsedText) + '...' }} />
           <ShowMore onClick={this.showMore}>Show more</ShowMore>
         </span>
       );
