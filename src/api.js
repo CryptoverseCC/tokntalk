@@ -35,6 +35,13 @@ export const isValidFeedItem = (feedItem) => {
   if (!['regular', 'like', 'post_to', 'post_about', 'post_club', 'social', 'post_to_simple'].includes(feedItem.type)) {
     return false;
   }
+  if (feedItem.type === 'post_club') {
+    const [network, address] = feedItem.about.split(':');
+    const token = find({ network, address })(erc20);
+    if (!token) {
+      return false;
+    }
+  }
   if (!feedItem.context) {
     return true;
   } else if (!hasValidContext(feedItem)) {
