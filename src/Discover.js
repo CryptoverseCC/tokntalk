@@ -35,6 +35,7 @@ import {
 } from './Entity';
 
 import exportIcon from './img/export.svg';
+import placeholder from './img/anonkitty.svg';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -64,7 +65,7 @@ const H3Discover = styled.h3`
   }
 `;
 
-const WarningContainerERC20 = styled.div`
+const WarningContainerColored = styled.div`
   background: ${({ primaryColor }) => primaryColor};
   color: ${({ secondaryColor }) => secondaryColor};
   display: flex;
@@ -76,6 +77,10 @@ const WarningContainerERC20 = styled.div`
     width: 96%;
     margin-left: 2%;
   }
+`;
+
+const SwitchExplainer = styled.img`
+  margin-left: auto;
 `;
 
 const DiscoveryContext = React.createContext();
@@ -776,7 +781,7 @@ const IsLoading = ({ children }) => (
 );
 
 const NoTokensWarning = ({ token }) => (
-  <WarningContainerERC20
+  <WarningContainerColored
     primaryColor={token.primaryColor}
     secondaryColor={token.secondaryColor}
     className="is-flex"
@@ -789,17 +794,23 @@ const NoTokensWarning = ({ token }) => (
         Then you'll be able to join the conversation.
       </p>
     </div>
-  </WarningContainerERC20>
+  </WarningContainerColored>
 );
 
 const ActiveEntityIsNotFromFamily = ({ token }) => (
-  <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
-    <ExclamationMark style={{ marginRight: '30px' }} />
+  <WarningContainerColored
+    primaryColor={token.primaryColor}
+    secondaryColor={token.secondaryColor}
+    className="is-flex"
+    style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
+  >
+    <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
       <p style={{ fontSize: '1.5rem' }}>You can’t participate</p>
       <p style={{ fontSize: '14px' }}>Switch your avatar to {token.name}</p>
     </div>
-  </WarningContainer>
+    <SwitchExplainer src={placeholder} />
+  </WarningContainerColored>
 );
 
 export class FeedForToken extends Component {
