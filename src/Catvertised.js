@@ -425,7 +425,9 @@ export default class Catvertised extends React.Component {
           onClick={() => {
             this.setState({ step: 'catvertised' });
           }}
-        />
+        >
+          ←
+        </CatvertisedBack>
         <Entities>
           {({ entities }) =>
             entities.length > 0 && (
