@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Link, { A } from './Link';
 import Context from './Context';
 import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from './Entity';
-
+import { Purrmoter } from './Purrmoter';
 import checkmarkIcon from './img/checkmark.svg';
 
 const StyledInput = styled.div.attrs({
@@ -74,42 +74,6 @@ const StyledButton = styled.button`
 const formatCurrency = (value) => {
   return (value * 10 ** -18).toFixed(3);
 };
-
-const CatvertisedTitle = styled.div`
-  font-family: 'AvenirNext';
-  font-size: 1rem;
-  line-height: 1;
-  font-weight: 600;
-  margin-bottom: 30px;
-
-  ${({ hiddenOnMobile }) =>
-    hiddenOnMobile
-      ? `
-    @media (max-width: 770px) {
-      margin-top: 0
-    }`
-      : `@media (max-width: 770px) {
-        margin-top: 10px;
-      }`};
-`;
-
-const AddAKitty = styled.button`
-  margin-top: 30px;
-  margin-bottom: 30px;
-  align-self: flex-start;
-  border: none;
-  outline: none;
-  background: none;
-  color: #264dd9;
-  font-size: 1rem;
-  padding: 0;
-  cursor: pointer;
-
-  @media (max-width: 770px) {
-    margin-top: -3px;
-    margin-left: 10px;
-  }
-`;
 
 const CatvertisedName = styled.span`
   margin-left: 10px;
@@ -217,18 +181,6 @@ const CatvertisedItemLink = styled(Link)`
   }
 `;
 
-const Purrmoter = styled(({ hiddenOnMobile, ...restProps }) => <Link {...restProps} />)`
-  overflow: hidden;
-  display: flex;
-  ${({ hiddenOnMobile }) =>
-    hiddenOnMobile
-      ? `
-    @media (max-width: 770px) {
-      display: none;
-    }`
-      : ''};
-`;
-
 const CatvertisedItemButton = styled.button`
   border: none;
   outline: none;
@@ -275,36 +227,11 @@ const createEtherscanUrl = (transactionHash, networkName) => {
   return `https://${familyPrefix}etherscan.io/tx/${transactionHash}`;
 };
 
-const CatvertisedHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  @media (max-width: 770px) {
-    flex-direction: row;
-    align-items: baseline;
-  }
-`;
-
 const EntityDescription = styled.div`
   @media (max-width: 770px) {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-`;
-
-const CatvertisedBack = styled.button`
-  background: none;
-  outline: none;
-  border: none;
-  padding: 0;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  align-self: flex-start;
-  outline: none;
-  font-size: 30px;
-  line-height: 30px;
-  cursor: pointer;
 `;
 
 const CatvertisedClose = styled.button`
@@ -388,11 +315,7 @@ export default class Catvertised extends React.Component {
   renderCatvertised = (boosts) => {
     return (
       <React.Fragment>
-        <CatvertisedHeader>
-          <CatvertisedTitle hiddenOnMobile>Promotion box</CatvertisedTitle>
-          {this.renderPurrmoter()}
-          <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Promote yourself</AddAKitty>
-        </CatvertisedHeader>
+        <Purrmoter token={this.props.token} onAddKittyClick={() => this.setState({ step: 'pickCat' })} />
         {Object.keys(boosts).length > 0 && (
           <CatvertisedList>
             {Object.entries(boosts)
@@ -419,15 +342,12 @@ export default class Catvertised extends React.Component {
   renderPickCat = () => {
     return (
       <React.Fragment>
-        {this.renderPurrmoter()}
-        <CatvertisedTitle style={{ marginTop: '30px' }}>Promote yourself</CatvertisedTitle>
-        <CatvertisedBack
-          onClick={() => {
+        <Purrmoter
+          token={this.props.token}
+          onBackClick={() => {
             this.setState({ step: 'catvertised' });
           }}
-        >
-          ←
-        </CatvertisedBack>
+        />
         <Entities>
           {({ entities }) =>
             entities.length > 0 && (
@@ -460,20 +380,19 @@ export default class Catvertised extends React.Component {
   renderForm = (boosts, boost, isBoostable) => {
     return (
       <React.Fragment>
-        {this.renderPurrmoter()}
+        <Purrmoter
+          token={this.props.token}
+          onAddKittyClick={() => {}}
+          onBackClick={() => {
+            this.setState({ step: 'pickCat' });
+          }}
+        />
         <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px', overflow: 'hidden' }}>
           <LinkedEntityAvatar size="medium" id={this.state.entity.id} entityInfo={this.state.entity} />
           <CatvertisedName>
             <EntityNameWrapper>{this.state.entity.name}</EntityNameWrapper>
           </CatvertisedName>
         </div>
-        <CatvertisedBack
-          onClick={() => {
-            this.setState({ step: 'pickCat' });
-          }}
-        >
-          ←
-        </CatvertisedBack>
         <div
           style={{
             fontSize: '18px',
@@ -551,22 +470,6 @@ export default class Catvertised extends React.Component {
           Check it on Etherscan
         </A>
       </div>
-    );
-  };
-
-  renderPurrmoter = () => {
-    return (
-      <Purrmoter to={`/${this.props.token}`}>
-        <EntityAvatar size="medium" id={this.props.token} />
-        <EntityDescription>
-          <CatvertisedName>
-            <EntityNameWrapper>
-              <EntityName id={this.props.token} />
-            </EntityNameWrapper>
-          </CatvertisedName>
-          <CatvertisedScore>Space Owner</CatvertisedScore>
-        </EntityDescription>
-      </Purrmoter>
     );
   };
 }
