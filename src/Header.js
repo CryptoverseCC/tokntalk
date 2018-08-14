@@ -109,7 +109,7 @@ const Header = () => {
             </ToggleHttpButton>
           )}
         </Context.Consumer>
-        <IfActiveEntity then={() => <CatDropdown />} other={<ErrorStatus />} />
+        <IfActiveEntity then={() => <CatDropdown />} other={<Status />} />
       </StyledHeader>
     </HeaderContainer>
   );
@@ -279,14 +279,6 @@ const LinkDropdownContainer = styled.div`
   }
 `;
 
-const LinkDropdownToggle = styled.button`
-  font-size: 0.9rem;
-  background: none;
-  border: none;
-  outline: none;
-  font-family: Rubik;
-`;
-
 const LinkDropdown = () => (
   <LinkDropdownContainer>
     <React.Fragment>
@@ -303,38 +295,54 @@ const Error = styled.span`
   }
 `;
 
+const Loading = styled.span`
+  color: blue;
+  text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
+  @media (max-width: 770px) {
+    display: none;
+  }
+`;
+
+const LoadingStatus = () => (
+  <MessageContainer>
+    <Loading>Loading...</Loading>
+  </MessageContainer>
+);
+
 const NoMetamaskStatus = () => (
-  <ErrorContainer>
+  <MessageContainer>
     <img src={NoMetamask} alt="No metamask" />
     <Error>No Metamask</Error>
-  </ErrorContainer>
+  </MessageContainer>
 );
 
 const MetamaskLockedStatus = () => (
-  <ErrorContainer>
+  <MessageContainer>
     <img src={Locked} alt="Metamask locked" />
     <Error>Metamask locked</Error>
-  </ErrorContainer>
+  </MessageContainer>
 );
 
 const NoIdentitiesStatus = () => (
-  <ErrorContainer>
+  <MessageContainer>
     <img src={NoIdentity} style={{ marginRight: '10px' }} alt="No Identities found" />
     <Error>
       <TranslationsContext.Consumer>{({ noEntitiesError }) => noEntitiesError}</TranslationsContext.Consumer>
     </Error>
-  </ErrorContainer>
+  </MessageContainer>
 );
 
-const ErrorContainer = styled.div`
+const MessageContainer = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
 `;
 
-const ErrorStatus = () => {
+const Status = () => {
   const renderStatus = (provider, from) => {
-    if (!provider) {
+    if (typeof provider === 'undefined') {
+      return <LoadingStatus />;
+    } else if (typeof provider === 'boolean' && !provider) {
       return <NoMetamaskStatus />;
     } else if (!from) {
       return <MetamaskLockedStatus />;

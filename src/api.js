@@ -255,7 +255,7 @@ export const getWeb3State = async () => {
       blockNumber: undefined,
       web3: undefined,
       networkName: undefined,
-      provider: undefined,
+      provider: false,
     };
   }
 };

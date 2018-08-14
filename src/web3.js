@@ -1,27 +1,32 @@
-let newWeb3;
 let web3Promise;
-let web3PromiseResolve;
 
-const updateWeb3 = () => {
-  if (typeof window.web3 !== 'undefined') {
-    import('web3').then((Web3) => {
-      newWeb3 = new Web3(window.web3.currentProvider);
-      window.web3 = newWeb3;
-      if (web3PromiseResolve) web3PromiseResolve(newWeb3);
-    });
-  } else {
-    setTimeout(updateWeb3, 100);
+const onReadyState = () => {
+  if (document.readyState === 'complete') {
+    return Promise.resolve();
   }
+
+  return new Promise((resolve) => {
+    const onReadyState = (event) => {
+      if (event.target.readyState === 'complete') {
+        document.removeEventListener('readystatechange', onReadyState);
+        resolve();
+      }
+    };
+    document.addEventListener('readystatechange', onReadyState);
+  });
+};
+
+const setupWeb3 = async () => {
+  const Web3 = await import('web3');
+  await onReadyState();
+  const web3 = new Web3(window.web3.currentProvider);
+  return web3;
 };
 
 export default () => {
-  web3Promise = new Promise((resolve) => {
-    web3PromiseResolve = resolve;
-    if (newWeb3) {
-      resolve(newWeb3);
-    } else {
-      updateWeb3();
-    }
-  });
+  if (!web3Promise) {
+    web3Promise = new Promise((resolve) => resolve(setupWeb3()));
+  }
+
   return web3Promise;
 };
