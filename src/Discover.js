@@ -20,13 +20,15 @@ import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
-import { socialIcons, AddIcon } from './Icons';
+import { socialIcons } from './Icons';
 import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
   LinkedEntityAvatar,
   IfActiveEntity,
   IfActiveEntityIs,
   IsActiveEntityFromFamily,
+  LinkedActiveEntityAvatar,
+  ActiveEntityName,
   Entity,
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
@@ -298,14 +300,10 @@ const ByToken = ({ match, token }) => (
                 asset={`${token.network}:${token.address}`}
                 other={<ActiveEntityIsNotFromFamily token={token} />}
               >
-                <FormContainer>
-                  <ConnectedClubForm token={token} Form={CommentForm} />
-                </FormContainer>
+                <ClubForm token={token} />
               </IfActiveEntityIs>
             ) : (
-              <FormContainer>
-                <ConnectedClubForm token={token} Form={CommentForm} />
-              </FormContainer>
+              <ClubForm token={token} />
             )}
           </IfActiveEntityHasToken>
           <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
@@ -575,6 +573,37 @@ const SocialPage = ({ token }) => (
   </React.Fragment>
 );
 
+const ClubForm = ({ token }) => (
+  <IfActiveEntity>
+    {({ entityId }) => (
+      <FormContainer>
+        <article className="media">
+          <div className="media-left">
+            <LinkedActiveEntityAvatar size="large" />
+          </div>
+          <div className="media-content">
+            <div className="content">
+              <Link
+                to={`/${entityId}`}
+                style={{
+                  fontFamily: 'AvenirNext',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  marginBottom: '20px',
+                  marginTop: '10px',
+                }}
+              >
+                <ActiveEntityName />
+              </Link>
+              <ConnectedClubForm token={token} Form={CommentForm} />
+            </div>
+          </div>
+        </article>
+      </FormContainer>
+    )}
+  </IfActiveEntity>
+);
+
 const FeedPage = ({ token }) => (
   <React.Fragment>
     <Hero
@@ -613,14 +642,10 @@ const FeedPage = ({ token }) => (
             asset={`${token.network}:${token.address}`}
             other={<ActiveEntityIsNotFromFamily token={token} />}
           >
-            <FormContainer>
-              <ConnectedClubForm token={token} Form={CommentForm} />
-            </FormContainer>
+            <ClubForm token={token} />
           </IfActiveEntityIs>
         ) : (
-          <FormContainer>
-            <ConnectedClubForm token={token} Form={CommentForm} />
-          </FormContainer>
+          <ClubForm token={token} />
         )}
       </IfActiveEntityHasToken>
       <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
