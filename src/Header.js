@@ -279,14 +279,6 @@ const LinkDropdownContainer = styled.div`
   }
 `;
 
-const LinkDropdownToggle = styled.button`
-  font-size: 0.9rem;
-  background: none;
-  border: none;
-  outline: none;
-  font-family: Rubik;
-`;
-
 const LinkDropdown = () => (
   <LinkDropdownContainer>
     <React.Fragment>
@@ -348,7 +340,6 @@ const MessageContainer = styled.div`
 
 const Status = () => {
   const renderStatus = (provider, from) => {
-    console.log(provider);
     if (!provider && typeof provider === 'undefined') {
       return <LoadingStatus />;
     } else if (!provider && typeof provider === 'boolean') {
