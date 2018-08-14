@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Link, { A } from './Link';
+import { A } from './Link';
 import Context from './Context';
 import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from './Entity';
-import { Purrmoter } from './Purrmoter';
 import checkmarkIcon from './img/checkmark.svg';
 
 const StyledInput = styled.div.attrs({
@@ -70,10 +69,6 @@ const StyledButton = styled.button`
     transition: all 0.2s ease;
   }
 `;
-
-const formatCurrency = (value) => {
-  return (value * 10 ** -18).toFixed(3);
-};
 
 const CatvertisedName = styled.span`
   margin-left: 10px;
@@ -167,20 +162,6 @@ const CatvertisedPickCatList = styled(CatvertisedList)`
     display: none;
   }
 `;
-
-const CatvertisedItemLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-
-  @media (max-width: 770px) {
-    flex-direction: column;
-    align-items: normal;
-    text-align: center;
-    width: 100%;
-  }
-`;
-
 const CatvertisedItemButton = styled.button`
   border: none;
   outline: none;
@@ -227,13 +208,6 @@ const createEtherscanUrl = (transactionHash, networkName) => {
   return `https://${familyPrefix}etherscan.io/tx/${transactionHash}`;
 };
 
-const EntityDescription = styled.div`
-  @media (max-width: 770px) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`;
-
 const CatvertisedClose = styled.button`
   position: absolute;
   top: 0;
@@ -250,9 +224,22 @@ const EntityNameWrapper = styled.b`
   white-space: nowrap;
 `;
 
+const CatvertisedBack = styled.button`
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0;
+  right: 10px;
+  align-self: flex-start;
+  outline: none;
+  font-size: 30px;
+  line-height: 30px;
+  cursor: pointer;
+`;
+
 export default class Catvertised extends React.Component {
   state = {
-    step: 'catvertised',
+    step: 'pickCat',
     value: 0,
     customCatId: undefined,
     entity: undefined,
@@ -302,7 +289,6 @@ export default class Catvertised extends React.Component {
       <Context.Consumer>
         {({ boostStore: { boosts, boost, isBoostable } }) => (
           <Catvertised.Container className={this.props.className}>
-            {this.state.step === 'catvertised' && this.renderCatvertised(boosts)}
             {this.state.step === 'pickCat' && this.renderPickCat()}
             {this.state.step === 'form' && this.renderForm(boosts, boost, isBoostable)}
             {this.state.step === 'submitted' && this.renderSubmitted()}
@@ -312,42 +298,10 @@ export default class Catvertised extends React.Component {
     );
   }
 
-  renderCatvertised = (boosts) => {
-    return (
-      <React.Fragment>
-        <Purrmoter token={this.props.token} onAddKittyClick={() => this.setState({ step: 'pickCat' })} />
-        {Object.keys(boosts).length > 0 && (
-          <CatvertisedList>
-            {Object.entries(boosts)
-              .sort(([, { score: a }], [, { score: b }]) => b - a)
-              .map(([id, { score, context_info: contextInfo }]) => (
-                <CatvertisedItem key={id}>
-                  <CatvertisedItemLink to={`/${id}`}>
-                    <EntityAvatar size="medium" id={id} entityInfo={contextInfo} />
-                    <EntityDescription>
-                      <CatvertisedName>
-                        <EntityNameWrapper>{contextInfo.name}</EntityNameWrapper>
-                      </CatvertisedName>
-                      <CatvertisedScore>{formatCurrency(score)} ETH</CatvertisedScore>
-                    </EntityDescription>
-                  </CatvertisedItemLink>
-                </CatvertisedItem>
-              ))}
-          </CatvertisedList>
-        )}
-      </React.Fragment>
-    );
-  };
-
   renderPickCat = () => {
     return (
-      <React.Fragment>
-        <Purrmoter
-          token={this.props.token}
-          onBackClick={() => {
-            this.setState({ step: 'catvertised' });
-          }}
-        />
+      <div>
+        <CatvertisedBack onClick={() => this.props.onBackClick()}>←</CatvertisedBack>
         <Entities>
           {({ entities }) =>
             entities.length > 0 && (
@@ -373,20 +327,14 @@ export default class Catvertised extends React.Component {
             )
           }
         </Entities>
-      </React.Fragment>
+      </div>
     );
   };
 
   renderForm = (boosts, boost, isBoostable) => {
     return (
       <React.Fragment>
-        <Purrmoter
-          token={this.props.token}
-          onAddKittyClick={() => {}}
-          onBackClick={() => {
-            this.setState({ step: 'pickCat' });
-          }}
-        />
+        <CatvertisedBack onClick={() => this.setState({ step: 'pickCat' })}>←</CatvertisedBack>
         <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px', overflow: 'hidden' }}>
           <LinkedEntityAvatar size="medium" id={this.state.entity.id} entityInfo={this.state.entity} />
           <CatvertisedName>
