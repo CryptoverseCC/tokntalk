@@ -58,7 +58,6 @@ export const ReplyForm = styled(CommentForm)`
   ${StyledTextArea} {
     font-size: 1rem;
     font-weight: normal;
-    
     &::placeholder {
       font-weight: 500;
       color: #264dd9;
