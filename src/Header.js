@@ -340,9 +340,9 @@ const MessageContainer = styled.div`
 
 const Status = () => {
   const renderStatus = (provider, from) => {
-    if (!provider && typeof provider === 'undefined') {
+    if (typeof provider === 'undefined') {
       return <LoadingStatus />;
-    } else if (!provider && typeof provider === 'boolean') {
+    } else if (typeof provider === 'boolean' && !provider) {
       return <NoMetamaskStatus />;
     } else if (!from) {
       return <MetamaskLockedStatus />;
