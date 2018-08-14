@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import find from 'lodash/fp/find';
 
 import { pageView } from './Analytics';
@@ -14,9 +14,8 @@ import {
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
-import Modal from './Modal';
 import { socialIcons } from './Icons';
-import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
+import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
 import Advertised from './Catvertised';
 import ercs20 from './erc20';
@@ -224,25 +223,39 @@ const InlineButton = styled.button`
   border: none;
   cursor: pointer;
   color: #264dd9;
+
+  :disabled {
+    color: gray;
+  }
 `;
 
 const SocialIcon = styled(({ type, ...restProps }) => React.createElement(socialIcons[type], restProps))`
+  flex-shrink: 0;
   width: 24px;
   height: 24px;
 `;
 
-const LabelModal = styled(Modal)`
-  position: absolute;
-  top: 100%;
-  z-index: 100;
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0 20px 40px 0 rgba(6, 3, 16, 0.09);
-  padding: 25px;
-  border-radius: 4px;
+const LabelInput = styled.input`
+  padding: 10px 0;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: ${({ isValid }) => !isValid && 'red'};
 `;
 
-export class SocialList extends React.Component {
+const EditableLabelContainer = styled.div`
+  flex: 1;
+  display: flex;
+  ${({ editing }) =>
+    editing &&
+    css`
+      border-radius: 6px;
+      background-color: #f3f6ff;
+      box-shadow: inset 0 1px 3px 0 #e0dbf4;
+    `};
+`;
+
+class EditableLabel extends Component {
   static VALID_LABEL_EXPRESSIONS = {
     facebook: /http(s)?:\/\/(www\.)?(facebook|fb)\.com\/(A-z 0-9 _ - \.)\/?/,
     twitter: /http(s)?:\/\/(.*\.)?twitter\.com\/[A-z 0-9 _]+\/?/,
@@ -250,35 +263,70 @@ export class SocialList extends React.Component {
     instagram: /https?:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/,
   };
 
-  static PLACEHOLDERS = {
-    facebook: 'https://facebook.com/profileName',
-    twitter: 'https://twitter.com/profileName',
-    github: 'https://github.com/profileName',
-    instagram: 'https://instagram.com/profileName',
-  };
+  state = { editing: false, isValid: true, editedValue: this.props.value };
 
-  state = {
-    editing: undefined,
+  edit = (e) => {
+    e.preventDefault();
+    this.setState({ editing: true });
   };
-
-  editLabel = (labelType) => (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({ editing: labelType });
-  };
-
-  EditButton = ({ labelType }) => (
-    <InlineButton onClick={this.editLabel(labelType)} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
-      {this.props.editable && 'Edit'}
-    </InlineButton>
-  );
 
   validate = (label) => {
-    const { editing: labelType } = this.state;
-    return label === '' || SocialList.VALID_LABEL_EXPRESSIONS[labelType].test(label);
+    const { type } = this.props;
+    return label === '' || EditableLabel.VALID_LABEL_EXPRESSIONS[type].test(label);
   };
 
+  submitLabel = (label) => () => {
+    label(this.state.editedValue, this.props.type);
+    this.setState({ editing: false });
+  };
+
+  onChange = (e) => {
+    const value = e.target.value;
+    this.setState({ editedValue: value, isValid: this.validate(value) });
+  };
+
+  render() {
+    const { value, editable, type } = this.props;
+    const { editing, isValid, editedValue } = this.state;
+
+    return (
+      <EditableLabelContainer
+        onClick={(e) => editing && e.preventDefault()}
+        editing={editing}
+        style={{ marginLeft: '15px' }}
+      >
+        {editing ? (
+          <LabelInput
+            placeholder={`${type} profile link`}
+            value={editedValue}
+            onChange={this.onChange}
+            isValid={isValid}
+          />
+        ) : (
+          <SocialUsername link={value} />
+        )}
+        {!editing ? (
+          <InlineButton onClick={this.edit} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
+            {editable && 'Edit'}
+          </InlineButton>
+        ) : (
+          <AppContext.Consumer>
+            {({ feedStore: { label } }) => (
+              <InlineButton
+                onClick={this.submitLabel(label)}
+                style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                disabled={!isValid}
+              >
+                Confirm
+              </InlineButton>
+            )}
+          </AppContext.Consumer>
+        )}
+      </EditableLabelContainer>
+    );
+  }
+}
+export class SocialList extends React.Component {
   normalizeHref = (href) => {
     return href ? href : undefined;
   };
@@ -291,11 +339,9 @@ export class SocialList extends React.Component {
   `;
 
   render() {
-    const {
-      EditButton,
-      normalizeHref,
-      props: { facebook, twitter, instagram, github, id, editable },
-    } = this;
+    const { normalizeHref } = this;
+    const { facebook, twitter, instagram, github, id, editable } = this.props;
+
     return (
       <SocialList.Container>
         <Entity id={id}>
@@ -309,41 +355,26 @@ export class SocialList extends React.Component {
         {(facebook || editable) && (
           <SocialBadge href={normalizeHref(facebook)}>
             <SocialIcon type="facebook" />
-            <SocialUsername link={facebook} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="facebook" />
+            <EditableLabel value={facebook} type="facebook" editable={editable} />
           </SocialBadge>
         )}
         {(twitter || editable) && (
           <SocialBadge href={normalizeHref(twitter)}>
             <SocialIcon type="twitter" />
-            <SocialUsername link={twitter} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="twitter" />
+            <EditableLabel value={twitter} type="twitter" editable={editable} />
           </SocialBadge>
         )}
         {(instagram || editable) && (
           <SocialBadge href={normalizeHref(instagram)}>
             <SocialIcon type="instagram" />
-            <SocialUsername link={instagram} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="instagram" />
+            <EditableLabel value={instagram} type="instagram" editable={editable} />
           </SocialBadge>
         )}
         {(github || editable) && (
           <SocialBadge href={normalizeHref(github)}>
             <SocialIcon type="github" />
-            <SocialUsername link={github} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="github" />
+            <EditableLabel value={github} type="github" editable={editable} />
           </SocialBadge>
-        )}
-        {this.state.editing && (
-          <LabelModal onClose={this.editLabel(undefined)}>
-            <ConnectedLabelForm
-              Form={ReplyForm}
-              validate={this.validate}
-              placeholder={SocialList.PLACEHOLDERS[this.state.editing]}
-              labelType={this.state.editing}
-              onSubmit={this.editLabel(undefined)}
-            />
-          </LabelModal>
         )}
       </SocialList.Container>
     );
