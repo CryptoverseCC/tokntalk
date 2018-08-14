@@ -31,7 +31,7 @@ const IconContainer = styled.div`
 `;
 
 const StartingMessage = styled.p`
-  margin-top: 20px;
+  margin-top: 15px;
   font-size: 1.5rem;
   font-weight: 500;
   word-break: break-word;
@@ -44,11 +44,7 @@ const StartingMessage = styled.p`
 
 const ArticleReactions = styled.article`
   display: flex;
-  margin: 20px 0;
-  @media (max-width: 770px) {
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
+  margin: 15px 0;
 `;
 
 const LabelText = styled.span`
@@ -323,9 +319,9 @@ const SenderName = styled(Link)`
 const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suffix, share }) => {
   return (
     <React.Fragment>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div>
         <SenderName to={`/${from}`}>{entityInfo.name}</SenderName>
-        <span style={{ color: '#928F9B', marginLeft: '15px', fontSize: '14px' }}>
+        <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
           {timeago().format(createdAt)}
           <A href={etherscanUrl} style={{ marginLeft: '15px', textTransform: 'capitalize' }}>
             {family}
@@ -338,47 +334,53 @@ const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suff
 };
 
 const Reaction = styled(IconContainer)`
-  height: 15px;
-  width: 15px;
+  height: 33px;
+  width: 33px;
 `;
 
-const LikeReaction = styled(Reaction).attrs({ children: <LikeIcon style={{ width: '15px' }} /> })`
-  background-color: rgba(255, 117, 117, 0.4);
-  box-shadow: 0 0 20px 9px rgba(255, 117, 117, 0.4);
+const LikeReaction = styled(Reaction).attrs({
+  children: <LikeIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
 `;
 
-const ReplyReaction = styled(Reaction).attrs({ children: <ReplyIcon style={{ width: '12px' }} /> })`
-  background-color: #264dd9;
-  box-shadow: 0 4px 15px 4px rgba(98, 60, 234, 0.3);
+const ReplyReaction = styled(Reaction).attrs({
+  children: <ReplyIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
 `;
 
-const FacebookLabel = styled(Reaction).attrs({ children: <FacebookIcon /> })`
-  background-color: #4167b2;
-  box-shadow: 0 4px 15px 4px rgba(65, 103, 178, 0.3);
+const FacebookLabel = styled(Reaction).attrs({
+  children: <FacebookIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${FacebookIcon} {
     height: 60%;
   }
 `;
 
-const GithubLabel = styled(Reaction).attrs({ children: <GithubIcon /> })`
-  background-color: #24292e;
-  box-shadow: 0 4px 15px 4px rgba(36, 41, 46, 0.3);
+const GithubLabel = styled(Reaction).attrs({
+  children: <GithubIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${GithubIcon} {
     height: 60%;
   }
 `;
 
-const TwitterLabel = styled(Reaction).attrs({ children: <TwitterIcon /> })`
-  background-color: #1ca1f2;
-  box-shadow: 0 4px 15px 4px rgba(28, 161, 242, 0.3);
+const TwitterLabel = styled(Reaction).attrs({
+  children: <TwitterIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${TwitterIcon} {
     height: 50%;
   }
 `;
 
-const InstagramLabel = styled(Reaction).attrs({ children: <InstagramIcon /> })`
-  background-color: #f41476;
-  box-shadow: 0 4px 15px 4px rgba(244, 20, 118, 0.3);
+const InstagramLabel = styled(Reaction).attrs({
+  children: <InstagramIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${InstagramIcon} {
     height: 50%;
   }
@@ -468,16 +470,19 @@ export class Card extends React.Component {
                 createdAt={feedItem.created_at}
                 etherscanUrl={createEtherscanUrl(feedItem)}
                 family={feedItem.family}
-                suffix={
-                  <span>
-                    reacted to <b>Post</b>
-                  </span>
-                }
               />
             </div>
           </article>
           <Post
-            style={{ marginTop: '20px' }}
+            style={{
+              borderTop: '0',
+              borderRadius: '12px',
+              backgroundColor: '#f4f8fd',
+              marginLeft: '70px',
+              paddingLeft: '15px',
+              paddingBottom: '15px',
+              paddingRight: '15px',
+            }}
             from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
             entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
             createdAt={feedItem.target.created_at}

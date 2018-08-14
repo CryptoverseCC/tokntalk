@@ -15,13 +15,12 @@ import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
 import { validateParams } from './utils';
-import { ExclamationMark } from './Icons';
 import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
-import { socialIcons } from './Icons';
-import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
+import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
+import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
   LinkedEntityAvatar,
   IfActiveEntity,
@@ -56,10 +55,24 @@ const H2Discover = styled.h2`
 
 const H3Discover = styled.h3`
   margin-top: 30px;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 600;
   @media (max-width: 770px) {
+    margin-left: 2%;
+  }
+`;
+
+const WarningContainerColored = styled.div`
+  background: ${({ primaryColor }) => primaryColor};
+  color: ${({ secondaryColor }) => secondaryColor};
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 30px;
+  @media (max-width: 770px) {
+    width: 96%;
     margin-left: 2%;
   }
 `;
@@ -248,7 +261,7 @@ const ByToken = ({ match, token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to="/discover">
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
@@ -259,7 +272,7 @@ const ByToken = ({ match, token }) => (
           </Back>
         </Link>
         <div className="columns is-mobile">
-          <div className="column is-1">
+          <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
             <div
               style={{
                 display: 'flex',
@@ -284,16 +297,16 @@ const ByToken = ({ match, token }) => (
           <FlatContainer>
             <H4>Recently active</H4>
             <Link to={`${match.url}/recentlyActive`}>
-              <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>
+              <SeeMore style={{ marginBottom: '30px', fontWeight: '600' }}>See more</SeeMore>
             </Link>
             <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
           </FlatContainer>
-          <H3 style={{ marginTop: '60px', marginBottom: '30px' }}>
+          <H3Discover style={{ marginTop: '60px', marginBottom: '30px' }}>
             Messages in this community
             <Link to={`${match.url}/feed`}>
-              <SeeMore style={{ marginLeft: '15px' }}>See more</SeeMore>
+              <SeeMore>See more</SeeMore>
             </Link>
-          </H3>
+          </H3Discover>
           <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
             {token.is721 ? (
               <IfActiveEntityIs
@@ -323,8 +336,8 @@ const ByToken = ({ match, token }) => (
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer style={{ marginBottom: '4rem' }}>
-            <H4 style={{ marginBottom: '15px' }}>External links</H4>
-            <ul>
+            <H4 style={{ marginBottom: '30px' }}>External links</H4>
+            <ul style={{ fontWeight: '600' }}>
               <li style={{ marginBottom: '7px' }}>
                 <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
               </li>
@@ -340,7 +353,7 @@ const ByToken = ({ match, token }) => (
           <FlatContainer>
             <H4>In social</H4>
             <Link to={`${match.url}/social`}>
-              <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>
+              <SeeMore style={{ marginBottom: '30px' }}>See more</SeeMore>
             </Link>
             <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
             <Social asset={`${token.network}:${token.address}`} social="twitter" limit={2} />
@@ -359,6 +372,9 @@ const Hero = styled.div`
   padding-top: 65px;
   height: calc(15rem + 65px);
   margin-bottom: 68px;
+  @media (max-width: 770px) {
+    height: calc(20rem + 65px);
+  }
 `;
 
 const Back = Link.withComponent('div');
@@ -372,7 +388,7 @@ const BackArrow = styled.div`
 `;
 
 const SeeMore = styled.span`
-  display: inline-block;
+  display: block;
   font-size: 1rem;
   font-weight: 600;
   color: #264dd9;
@@ -413,11 +429,17 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
                 <EntityInfo>
                   <Link
                     to={`/${isFromAddress ? author : context}`}
-                    style={{ fontSize: '1rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                    style={{
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                    }}
                   >
                     {isFromAddress ? author_info.name : context_info.name}
                   </Link>
-                  <Timeago>{timeago().format(created_at)}</Timeago>
+                  <Timeago style={{ fontSize: '0.8rem' }}>{timeago().format(created_at)}</Timeago>
                 </EntityInfo>
               </EntityContainer>
             ))}
@@ -438,22 +460,30 @@ const RecentlyActivePage = ({ token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
             </div>
             <div className="column">
               <H2>
-                <TokenImage token={token} style={{ width: '23px', height: '23px', marginRight: '10px' }} />
+                <TokenImage
+                  token={token}
+                  style={{
+                    width: '23px',
+                    height: '23px',
+                    marginRight: '10px',
+                    marginBottom: '-3px',
+                  }}
+                />
                 {token.name}
               </H2>
             </div>
           </Back>
         </Link>
         <div className="columns is-mobile">
-          <div className="column is-offset-1">
-            <H1>Recently active</H1>
+          <div className="column" style={{ marginLeft: '80px' }}>
+            <H1 style={{ lineHeight: '1.1' }}>Recently active</H1>
           </div>
         </div>
       </ContentContainer>
@@ -471,8 +501,8 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
 
   return (
     <React.Fragment>
-      <SocialHeader style={{ marginBottom: '15px' }}>
-        <Icon style={{ width: '16px', height: '16px', marginRight: '10px' }} />
+      <SocialHeader style={{ marginBottom: '15px', marginTop: '15px' }}>
+        <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
         {social}
       </SocialHeader>
       <IsLoading>
@@ -498,7 +528,14 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
                     </Link>
                     <a href={target} target="_blank" rel="noopener">
                       <img alt="" src={exportIcon} style={{ marginRight: '5px' }} />
-                      <SocialUsername link={target} />
+                      <SocialUsername
+                        style={{
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          color: '#1b2437',
+                        }}
+                        link={target}
+                      />
                     </a>
                   </EntityInfo>
                 </EntityContainer>
@@ -526,21 +563,29 @@ const SocialPage = ({ token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
             </div>
             <div className="column">
               <H2>
-                <TokenImage token={token} style={{ width: '23px', height: '23px', marginRight: '10px' }} />
+                <TokenImage
+                  token={token}
+                  style={{
+                    width: '23px',
+                    height: '23px',
+                    marginRight: '10px',
+                    marginBottom: '-3px',
+                  }}
+                />
                 {token.name}
               </H2>
             </div>
           </Back>
         </Link>
         <div className="columns is-mobile">
-          <div className="column is-offset-1">
+          <div className="column" style={{ marginLeft: '80px' }}>
             <H1>In Media</H1>
           </div>
         </div>
@@ -615,14 +660,22 @@ const FeedPage = ({ token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
             </div>
             <div className="column">
               <H2>
-                <TokenImage token={token} style={{ width: '23px', height: '23px', marginRight: '10px' }} />
+                <TokenImage
+                  token={token}
+                  style={{
+                    width: '23px',
+                    height: '23px',
+                    marginRight: '10px',
+                    marginBottom: '-3px',
+                  }}
+                />
                 {token.name}
               </H2>
             </div>
@@ -729,23 +782,37 @@ const IsLoading = ({ children }) => (
 );
 
 const NoTokensWarning = ({ token }) => (
-  <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
-    <ExclamationMark style={{ marginRight: '30px' }} />
+  <WarningContainerColored
+    primaryColor={token.primaryColor}
+    secondaryColor={token.secondaryColor}
+    className="is-flex"
+    style={{ alignItems: 'center' }}
+  >
+    <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
-      <p style={{ fontSize: '1.5rem' }}>Acquire {token.name} to participate!</p>
-      <p style={{ fontSize: '1rem' }}>Then you'll be able to join the conversation.</p>
+      <p style={{ fontSize: '1.5rem', color: token.secondaryColor, lineHeight: '1.2' }}>
+        Acquire {token.name} to participate!
+      </p>
+      <p style={{ fontSize: '1rem', color: token.secondaryColor, opacity: '0.6' }}>
+        Then you'll be able to join the conversation.
+      </p>
     </div>
-  </WarningContainer>
+  </WarningContainerColored>
 );
 
 const ActiveEntityIsNotFromFamily = ({ token }) => (
-  <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
-    <ExclamationMark style={{ marginRight: '30px' }} />
+  <WarningContainerColored
+    primaryColor={token.primaryColor}
+    secondaryColor={token.secondaryColor}
+    className="is-flex"
+    style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
+  >
+    <SwitcherIcon style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
-      <p style={{ fontSize: '1.5rem' }}>You can’t participate</p>
-      <p style={{ fontSize: '14px' }}>Switch your avatar to {token.name}</p>
+      <p style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>Switch your avatar!</p>
+      <p style={{ fontSize: '14px' }}>Change your character to {token.name} in the upper right corner</p>
     </div>
-  </WarningContainer>
+  </WarningContainerColored>
 );
 
 export class FeedForToken extends Component {
@@ -898,6 +965,10 @@ const EntityInfo = styled.div`
   flex-direction: column;
   margin-left: 15px;
   overflow: hidden;
+  margin-top: 2px;
+  max-width: 250px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const Timeago = styled.p`
