@@ -5,11 +5,10 @@ import escapeHtml from 'lodash/escape';
 const COLLAPSED_TEXT_LENGTH = 200;
 const MAX_NEW_LINES = 5;
 
-const ShowMore = styled.span`
+export const ShowMore = styled.span`
   cursor: pointer;
   font-size: 0.8em;
   color: #264dd9;
-  margin-left: 1em;
 
   :hover {
     text-decoration: underline;
@@ -57,7 +56,9 @@ export class CollapsableText extends Component {
       return (
         <span>
           <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(collapsedText) + '...' }} />
-          <ShowMore onClick={this.showMore}>Show more</ShowMore>
+          <ShowMore onClick={this.showMore} style={{ marginLeft: '1em' }}>
+            Show more
+          </ShowMore>
         </span>
       );
     } else {

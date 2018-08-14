@@ -29,14 +29,17 @@ export class Thread extends Component {
         <HeaderSpacer />
         <ContentContainer>
           <Context.Consumer>
-            {({ feedStore: { feedItemLoading, feedItem } }) =>
-              !!feedItem || (!feedItemLoading && !!feedItem) ? (
+            {({ feedStore: { feedItemLoading, feedItem, temporaryReactions } }) => {
+              const getTemporaryReactions = (id) => temporaryReactions[id] || [];
+
+              return !!feedItem || (!feedItemLoading && !!feedItem) ? (
                 <Card
                   feedItem={feedItem}
                   replies={feedItem.replies}
                   reactions={feedItem.likes}
                   style={{ background: '#ffffff' }}
                   onShowLikers={this.onShowLikers}
+                  getTemporaryReactions={getTemporaryReactions}
                 />
               ) : (
                 <div
@@ -48,8 +51,8 @@ export class Thread extends Component {
                 >
                   <Loader />
                 </div>
-              )
-            }
+              );
+            }}
           </Context.Consumer>
         </ContentContainer>
         {showModal && <LikersModal onClose={() => this.setState({ showModal: false })} likes={feedItemLikes} />}

@@ -20,7 +20,7 @@ import TranslationsContext from './Translations';
 import Loader from './Loader';
 import ercs20 from './erc20';
 import { H3 } from './Components';
-import { CollapsableText } from './CollapsableText';
+import { CollapsableText, ShowMore } from './CollapsableText';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -243,18 +243,9 @@ const Reply = ({
   style = {},
 }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
-    <div className="media-left is-hidden-mobile" style={{ position: 'relative' }}>
-      <div
-        style={{
-          height: '54px',
-          width: '54px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      />
+    <div className="media-left is-hidden-mobile">
+      <div style={{ height: '54px', width: '54px' }} />
     </div>
-
     <div className="media-content columns is-mobile" style={{ overflow: 'hidden' }}>
       <div className="column is-narrow">
         <LinkedEntityAvatar size="medium" id={from} entityInfo={entityInfo} />
@@ -434,11 +425,12 @@ const CardBox = styled.div`
 `;
 
 export class Card extends React.Component {
+  replyForm = null;
+
   state = {
     wasShown: !this.props.added,
+    areRepliesCollapsed: this.props.collapseReplies && this.props.replies.length > 2,
   };
-
-  replyForm = null;
 
   focusReply = () => {
     if (this.replyForm && this.replyForm.focus) {
@@ -450,7 +442,10 @@ export class Card extends React.Component {
     this.props.onShowLikers(item, likes);
   };
 
+  showMoreReplies = () => this.setState({ areRepliesCollapsed: false });
+
   renderItem = () => {
+    const { areRepliesCollapsed } = this.state;
     const { feedItem, replies, reactions, disabledInteractions } = this.props;
     const { isFromAddress } = feedItem;
 
@@ -524,7 +519,8 @@ export class Card extends React.Component {
           onShowLikers={this.onShowLikers(feedItem, reactions)}
           style={{ fontSize: '1rem' }}
         />
-        {replies.map((reply) => {
+        {areRepliesCollapsed && <ViewMoreReplies leftCount={replies.length - 2} onClick={this.showMoreReplies} />}
+        {(areRepliesCollapsed ? replies.slice(replies.length - 2) : replies).map((reply) => {
           const reactions = uniqBy((target) => target.id)([
             ...this.props.getTemporaryReactions(reply.id),
             ...(reply.likes || []),
@@ -545,7 +541,7 @@ export class Card extends React.Component {
               disabledInteractions={disabledInteractions}
             />
           );
-        })}{' '}
+        })}
         {!disabledInteractions && (
           <IfActiveEntity>
             {() => <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)} />}
@@ -641,6 +637,18 @@ const EmptyFeedPlaceholder = styled.div`
   justify-content: center;
 `;
 
+const ViewMoreReplies = ({ leftCount, onClick }) => (
+  <div className="is-flex" style={{ margin: '15px 0' }}>
+    <div className="is-hidden-mobile" style={{ marginRight: '1rem' }}>
+      <div style={{ width: '54px' }} />
+    </div>
+    <ShowMore onClick={onClick}>
+      View {leftCount} more comment
+      {leftCount > 1 ? 's' : ''}
+    </ShowMore>
+  </div>
+);
+
 export const LikersModal = styled(({ likes, onClose, className }) => (
   <FixedModal onClose={onClose}>
     <div className={className}>
@@ -718,6 +726,7 @@ class Feed extends Component {
 
               return (
                 <Card
+                  collapseReplies
                   disabledInteractions={disabledInteractions}
                   feedItem={feedItem}
                   replies={replies}
