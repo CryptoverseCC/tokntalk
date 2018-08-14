@@ -71,49 +71,6 @@ const StyledButton = styled.button`
   }
 `;
 
-const CustomCatForm = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-`;
-
-const CustomCatFormButton = styled.button`
-  outline: none;
-  margin: 0 5px 0 0;
-  padding: 0;
-  background: linear-gradient(180deg, #9b6ff6 0%, #264dd9 100%);
-  box-shadow: 0 2px 10px 0 rgba(99, 61, 234, 0.3);
-  border: none;
-  color: white;
-  padding: 10px 12px;
-  border-radius: 8px;
-  transition: all 0.2s ease-in-out;
-
-  &:disabled {
-    background: #f3f0ff;
-    opacity: 0.7;
-    color: #9b6ff6;
-    box-shadow: none;
-  }
-`;
-
-const CustomCatFormInput = styled.div`
-  width: 100%;
-  border-radius: 8px;
-  background: #f3f0ff;
-  box-shadow: inset 0 1px 3px 0 #d8d4e7;
-  font-size: 18px;
-  font-weight: 500;
-  color: #264dd9;
-  outline: none;
-  border: none;
-  position: relative;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-`;
-
 const formatCurrency = (value) => {
   return (value * 10 ** -18).toFixed(3);
 };
