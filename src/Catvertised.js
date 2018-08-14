@@ -313,31 +313,6 @@ const CatvertisedItemButton = styled.button`
   }
 `;
 
-const FeedCatvertisedContainer = styled.div`
-  max-width: 300px;
-
-  @media (max-width: 770px) {
-    max-width: none;
-  }
-`;
-
-export const FeedCatvertised = styled(({ className, ...props }) => (
-  <div className={`${className} column is-3`}>
-    <FeedCatvertisedContainer>
-      <Context.Consumer>
-        {({ boostStore: { getBoosts } }) => <Catvertised getBoosts={getBoosts} {...props} />}
-      </Context.Consumer>
-    </FeedCatvertisedContainer>
-  </div>
-))`
-  align-self: flex-start;
-  position: sticky;
-  top: 80px;
-  @media (max-width: 770px) {
-    position: static;
-  }
-`;
-
 const createEtherscanUrl = (transactionHash, networkName) => {
   const familyPrefix = networkName === 'ethereum' ? '' : `${networkName}.`;
   return `https://${familyPrefix}etherscan.io/tx/${transactionHash}`;
@@ -458,18 +433,7 @@ export default class Catvertised extends React.Component {
       <React.Fragment>
         <CatvertisedHeader>
           <CatvertisedTitle hiddenOnMobile>Promotion box</CatvertisedTitle>
-          <Purrmoter to={`/${this.props.token}`} hiddenOnMobile>
-            <EntityAvatar size="medium" id={this.props.token} />
-            <EntityDescription>
-              <CatvertisedName>
-                <EntityNameWrapper>
-                  <EntityName id={this.props.token} />
-                </EntityNameWrapper>
-              </CatvertisedName>
-              <CatvertisedScore>Space Owner</CatvertisedScore>
-            </EntityDescription>
-          </Purrmoter>
-
+          {this.renderPurrmoter()}
           <AddAKitty onClick={() => this.setState({ step: 'pickCat' })}>Promote yourself</AddAKitty>
         </CatvertisedHeader>
         {Object.keys(boosts).length > 0 && (
@@ -498,18 +462,7 @@ export default class Catvertised extends React.Component {
   renderPickCat = () => {
     return (
       <React.Fragment>
-        <Purrmoter to={`/${this.props.token}`}>
-          <EntityAvatar size="medium" id={this.props.token} />
-          <EntityDescription>
-            <CatvertisedName>
-              <EntityNameWrapper>
-                <EntityName id={this.props.token} />
-              </EntityNameWrapper>
-            </CatvertisedName>
-            <CatvertisedScore>Space Owner</CatvertisedScore>
-          </EntityDescription>
-        </Purrmoter>
-
+        {this.renderPurrmoter()}
         <CatvertisedTitle style={{ marginTop: '30px' }}>Promote yourself</CatvertisedTitle>
         <CatvertisedBack
           onClick={() => {
@@ -548,18 +501,7 @@ export default class Catvertised extends React.Component {
   renderForm = (boosts, boost, isBoostable) => {
     return (
       <React.Fragment>
-        <Purrmoter to={`/${this.props.token}`}>
-          <EntityAvatar size="medium" id={this.props.token} />
-          <EntityDescription>
-            <CatvertisedName>
-              <EntityNameWrapper>
-                <EntityName id={this.props.token} />
-              </EntityNameWrapper>
-            </CatvertisedName>
-            <CatvertisedScore>Space Owner</CatvertisedScore>
-          </EntityDescription>
-        </Purrmoter>
-
+        {this.renderPurrmoter()}
         <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px', overflow: 'hidden' }}>
           <LinkedEntityAvatar size="medium" id={this.state.entity.id} entityInfo={this.state.entity} />
           <CatvertisedName>
@@ -650,6 +592,22 @@ export default class Catvertised extends React.Component {
           Check it on Etherscan
         </A>
       </div>
+    );
+  };
+
+  renderPurrmoter = () => {
+    return (
+      <Purrmoter to={`/${this.props.token}`}>
+        <EntityAvatar size="medium" id={this.props.token} />
+        <EntityDescription>
+          <CatvertisedName>
+            <EntityNameWrapper>
+              <EntityName id={this.props.token} />
+            </EntityNameWrapper>
+          </CatvertisedName>
+          <CatvertisedScore>Space Owner</CatvertisedScore>
+        </EntityDescription>
+      </Purrmoter>
     );
   };
 }
