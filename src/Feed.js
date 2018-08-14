@@ -470,6 +470,11 @@ export class Card extends React.Component {
                 createdAt={feedItem.created_at}
                 etherscanUrl={createEtherscanUrl(feedItem)}
                 family={feedItem.family}
+                suffix={
+                  <span>
+                    reacted to <b>Post</b>
+                  </span>
+                }
               />
             </div>
           </article>
