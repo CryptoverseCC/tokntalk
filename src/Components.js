@@ -34,6 +34,7 @@ export const H1 = styled.p`
 export const H2 = styled.p`
   font-size: 2rem;
   font-weight: 600;
+  line-height: 1.2;
   @media (max-width: 770px) {
     font-size: 1.8rem;
   }
@@ -42,6 +43,7 @@ export const H2 = styled.p`
 export const H3 = styled.p`
   font-size: 1.5rem;
   font-weight: 600;
+  line-height: 1.2;
   @media (max-width: 770px) {
     font-size: 1.25rem;
   }

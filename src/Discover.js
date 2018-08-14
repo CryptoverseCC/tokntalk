@@ -15,13 +15,12 @@ import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
 import { validateParams } from './utils';
-import { ExclamationMark } from './Icons';
 import ercs20, { TokenImage } from './erc20';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
-import { socialIcons } from './Icons';
-import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
+import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
+import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
   LinkedEntityAvatar,
   IfActiveEntity,
@@ -35,7 +34,6 @@ import {
 } from './Entity';
 
 import exportIcon from './img/export.svg';
-import placeholder from './img/anonkitty.svg';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -77,10 +75,6 @@ const WarningContainerColored = styled.div`
     width: 96%;
     margin-left: 2%;
   }
-`;
-
-const SwitchExplainer = styled.img`
-  margin-left: auto;
 `;
 
 const DiscoveryContext = React.createContext();
@@ -445,7 +439,7 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
                   >
                     {isFromAddress ? author_info.name : context_info.name}
                   </Link>
-                  <Timeago>{timeago().format(created_at)}</Timeago>
+                  <Timeago style={{ fontSize: '0.8rem' }}>{timeago().format(created_at)}</Timeago>
                 </EntityInfo>
               </EntityContainer>
             ))}
@@ -534,7 +528,14 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
                     </Link>
                     <a href={target} target="_blank" rel="noopener">
                       <img alt="" src={exportIcon} style={{ marginRight: '5px' }} />
-                      <SocialUsername style={{ color: '#1b2437' }} link={target} />
+                      <SocialUsername
+                        style={{
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          color: '#1b2437',
+                        }}
+                        link={target}
+                      />
                     </a>
                   </EntityInfo>
                 </EntityContainer>
@@ -789,7 +790,9 @@ const NoTokensWarning = ({ token }) => (
   >
     <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
-      <p style={{ fontSize: '1.5rem', color: token.secondaryColor }}>Acquire {token.name} to participate!</p>
+      <p style={{ fontSize: '1.5rem', color: token.secondaryColor, lineHeight: '1.2' }}>
+        Acquire {token.name} to participate!
+      </p>
       <p style={{ fontSize: '1rem', color: token.secondaryColor, opacity: '0.6' }}>
         Then you'll be able to join the conversation.
       </p>
@@ -804,12 +807,11 @@ const ActiveEntityIsNotFromFamily = ({ token }) => (
     className="is-flex"
     style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
   >
-    <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
+    <SwitcherIcon style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
-      <p style={{ fontSize: '1.5rem' }}>You can’t participate</p>
-      <p style={{ fontSize: '14px' }}>Switch your avatar to {token.name}</p>
+      <p style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>Switch your avatar!</p>
+      <p style={{ fontSize: '14px' }}>Change your character to {token.name} in the upper right corner</p>
     </div>
-    <SwitchExplainer src={placeholder} />
   </WarningContainerColored>
 );
 
