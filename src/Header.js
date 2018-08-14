@@ -92,7 +92,14 @@ const Header = () => {
         </Link>
         <LinkDropdown />
         <LinkContainer>
-          <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
+          <TitleLink
+            to="/"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            {process.env.REACT_APP_NAME}
+          </TitleLink>
           <CrossLink to="/discover">Token Communities</CrossLink>
         </LinkContainer>
         <Context.Consumer>
