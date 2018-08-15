@@ -122,6 +122,12 @@ h3 {
   transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
 }
 
+.landing-player:active {
+  transform: scale(0.96);
+  box-shadow: 0 2rem 3rem -1rem rgba(54, 0, 228, 0.5);
+  transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+}
+
 .landing-player:hover + .landing-video-overlay {
   opacity: 0.5;
   transition: all 0.2s ease-in;
