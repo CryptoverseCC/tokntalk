@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import escapeHtml from 'lodash/escape';
 
-const COLLAPSED_TEXT_LENGTH = 200;
-const MAX_NEW_LINES = 5;
+const LENGTH_LIMIT = 200;
+const MAX_LENGTH = 300;
+
+const LINES_LIMIT = 3;
+const MAX_LINES = 5;
 
 export const ShowMore = styled.span`
   cursor: pointer;
@@ -22,19 +25,19 @@ export class CollapsableText extends Component {
     const { text } = this.props;
     let isCollapsed = false;
     let collapsedText;
-    if (text.length > COLLAPSED_TEXT_LENGTH) {
+    if (text.length > MAX_LENGTH) {
       isCollapsed = true;
       collapsedText = text.split(' ').reduce((acc, item) => {
-        if (acc.length > COLLAPSED_TEXT_LENGTH) {
+        if (acc.length > LENGTH_LIMIT) {
           return acc;
         }
         return acc ? acc + ' ' + item : item;
       }, '');
-    } else if (text.split('\n').length > MAX_NEW_LINES) {
+    } else if (text.split('\n').length > MAX_LINES) {
       isCollapsed = true;
       collapsedText = text
         .split('\n')
-        .slice(0, MAX_NEW_LINES)
+        .slice(0, LINES_LIMIT)
         .reduce((acc, item) => (acc ? acc + '\n' + item : item), '');
     } else {
       collapsedText = text;

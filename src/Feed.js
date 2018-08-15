@@ -433,7 +433,7 @@ export class Card extends React.Component {
 
   state = {
     wasShown: !this.props.added,
-    areRepliesCollapsed: this.props.collapseReplies && this.props.replies.length > 2,
+    areRepliesCollapsed: this.props.collapseReplies && this.props.replies.length > 3,
   };
 
   focusReply = () => {
@@ -615,7 +615,11 @@ export class Card extends React.Component {
           </span>
         </React.Fragment>
       ),
-      labels: (feedItem) => <span>changed its {capitalize(feedItem.labels[0])}</span>,
+      social: (feedItem) => (
+        <span>
+          changed its <b>{capitalize(feedItem.label)}</b>
+        </span>
+      ),
     };
 
     return suffix[feedItem.type] && suffix[feedItem.type](feedItem);
