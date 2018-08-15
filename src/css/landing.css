@@ -1,9 +1,105 @@
-div.main {
-    margin: 80px auto;
-    width: 600px;
+::selection {
+  color: white;
+  background: #4000E4; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  color: white;
+  background: #4000E4; /* Gecko Browsers */
 }
 
-h1 {
-    color: red;
-    size: 30px;
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+.title,
+.subtitle {
+  color: #1E2332;
+}
+
+h2 {
+  font-size: 80px;
+  font-weight: 900;
+  max-width: 775px;
+  margin: 0 auto;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-top: 90px;
+}
+
+p {
+  font-size: 20px;
+}
+
+.wrapper-landing {
+  background-color: white;
+}
+
+.title {
+  font-size: 160px;
+  font-weight: 900;
+}
+
+.subtitle {
+  font-size: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-top: 90px;
+  margin-bottom: 90px;
+}
+
+.landing-hero {
+  margin-bottom: 0px;
+}
+
+.landing-video {
+  margin: 2rem 0;
+  display: block;
+  position: relative;
+  border-radius: 20px;
+  background-size: cover;
+  height: 640px;
+  background-image: url('../img/landing/videoBg.png');
+}
+
+.landing-link {
+  color: #4000e4;
+  cursor: pointer;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.landing-section-introduction {
+  margin-bottom: 90px;
+}
+
+.landing-feature {
+  display: block;
+  border-radius: 20px;
+  background-size: cover;
+  height: 470px;
+  background-color: red;
+}
+
+.landing-testimonial {
+  margin-top: 90px;
+  margin-bottom: 90px;
+}
+
+.landing-testimonial-profile {
+  display: block;
+  width: 64px;
+  height: 64px;
+  background-color: red;
+  margin: 0 auto;
 }
