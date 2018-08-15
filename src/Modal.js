@@ -33,7 +33,7 @@ export default class Modal extends React.Component {
   }
 }
 
-const FixedModalContent = styled(Modal)`
+const FixedModalContent = styled.div`
   min-width: 400px;
 `;
 
@@ -98,17 +98,20 @@ export class FixedModal extends Component {
     this.setState({ show: true });
   }
 
-  onClose = () => {
+  onClose = (e) => {
+    e.stopPropagation();
     this.setState({ show: false }, () => setTimeout(this.props.onClose, 300));
   };
+
+  stopPropagatio = (e) => e.stopPropagation();
 
   render() {
     const { show } = this.state;
     const { children } = this.props;
 
     return (
-      <Overlay timeout={300} in={show}>
-        <FixedModalContent onClose={this.onClose}>
+      <Overlay timeout={300} in={show} onClick={this.onClose}>
+        <FixedModalContent onClick={this.stopPropagatio}>
           <Fade timeout={300} in={show}>
             {children}
           </Fade>
