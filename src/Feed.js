@@ -60,8 +60,8 @@ const LabelCounter = styled.span`
   padding: 0.125em 0.625em;
   line-height: 1.25em;
   border-radius: 1.25em;
-  background: ${({ unActive, background }) => (!unActive ? background : '#cfd3e2')};
-  color: ${({ unActive }) => unActive && '#000000'};
+  background: ${({ unActive, background }) => (!unActive ? background : '#e8eaf3')};
+  color: ${({ unActive }) => unActive && '#928f9b'};
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   transition: transform 0.15s ease-in-out;
 
