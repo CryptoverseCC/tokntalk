@@ -7,7 +7,7 @@ const MAX_NEW_LINES = 5;
 
 export const ShowMore = styled.span`
   cursor: pointer;
-  font-size: 0.8em;
+  font-size: 1em;
   color: #264dd9;
 
   :hover {

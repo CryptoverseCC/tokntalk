@@ -31,7 +31,7 @@ const IconContainer = styled.div`
 `;
 
 const StartingMessage = styled.p`
-  margin-top: 15px;
+  margin-top: 8px;
   font-size: 1.5rem;
   font-weight: 500;
   word-break: break-word;
@@ -44,17 +44,19 @@ const StartingMessage = styled.p`
 
 const ArticleReactions = styled.article`
   display: flex;
-  margin: 15px 0;
+  margin: 8px 0 16px 0;
 `;
 
 const LabelText = styled.span`
-  margin-left: 10px;
+  margin-left: 8px;
+  margin-bottom: -2px;
   transition: all 0.15s ease-in-out;
 `;
 
 const LabelCounter = styled.span`
   margin-left: 0.3125em;
   height: 1.25em;
+  font-size: 0.8rem;
   padding: 0.125em 0.625em;
   line-height: 1.25em;
   border-radius: 1.25em;
@@ -170,7 +172,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
   <ArticleReactions style={style}>
     <div className="" style={{ width: '70px' }} />
     <div className="columns is-mobile" style={{ width: '100%' }}>
-      <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="column" style={{ display: 'flex', alignItems: 'center', marginLeft: '12px' }}>
         {disabledInteractions ? (
           <LikeLabel unActive count={reactions.length} />
         ) : (
@@ -204,7 +206,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
 const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, reaction, suffix, style = {} }) => {
   return (
     <article className="media" style={style}>
-      <div className="media-left" style={{ width: '54px' }}>
+      <div className="media-left" style={{ width: '64px' }}>
         <LinkedEntityAvatar size="medium" reaction={reaction} id={from} entityInfo={entityInfo} />
       </div>
       <div className="media-content">
@@ -240,7 +242,7 @@ const Reply = ({
 }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
     <div className="media-left is-hidden-mobile">
-      <div style={{ height: '54px', width: '54px' }} />
+      <div style={{ height: '64px', width: '64px' }} />
     </div>
     <div className="media-content columns is-mobile" style={{ overflow: 'hidden' }}>
       <div className="column is-narrow">
@@ -278,7 +280,7 @@ const Reply = ({
                 unActive={<InlineLikeLabel count={reactions.length} unActive onShowLikers={onShowLikers} />}
               />
             )}
-            <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
+            <span style={{ marginLeft: '0.325em' }}>{timeago().format(createdAt)}</span>{' '}
             <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
               {family}
             </A>
@@ -298,7 +300,7 @@ const createEtherscanUrl = (item) => {
 const ReplyFormContainer = ({ about, ...props }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left is-hidden-mobile">
-      <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+      <div style={{ height: '64px', width: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
     </div>
 
     <div className="media-content columns is-mobile">
@@ -455,7 +457,7 @@ export class Card extends React.Component {
       return (
         <React.Fragment>
           <article className="media">
-            <div className="media-left" style={{ width: '54px' }}>
+            <div className="media-left" style={{ width: '64px' }}>
               <LinkedEntityAvatar
                 size="medium"
                 reaction={<LikeReaction />}
@@ -570,7 +572,7 @@ export class Card extends React.Component {
         return (
           <React.Fragment>
             <span>wrote in</span>
-            <Link to={`/discover/byToken/${token.symbol}`} style={{ marginLeft: '10px' }}>
+            <Link to={`/discover/byToken/${token.symbol}`} style={{ marginLeft: '0.325em' }}>
               <b>{token.name} club </b>
             </Link>
           </React.Fragment>
@@ -584,11 +586,11 @@ export class Card extends React.Component {
             <span>wrote to</span>
             <LinkedEntityAvatar
               size="verySmall"
-              style={{ marginLeft: '10px', display: 'inline-block' }}
+              style={{ marginLeft: '0.325em', display: 'inline-block' }}
               id={id}
               entityInfo={about}
             />
-            <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
+            <Link to={`/${id}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
               <b>{about.name}</b>
             </Link>
           </React.Fragment>
@@ -600,7 +602,7 @@ export class Card extends React.Component {
             wrote about
             <b
               style={{
-                marginLeft: '10px',
+                marginLeft: '0.325em',
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
                 maxWidth: '300px',
@@ -650,7 +652,7 @@ const EmptyFeedPlaceholder = styled.div`
 const ViewMoreReplies = ({ leftCount, onClick }) => (
   <div className="is-flex" style={{ margin: '15px 0' }}>
     <div className="is-hidden-mobile" style={{ marginRight: '1rem' }}>
-      <div style={{ width: '54px' }} />
+      <div style={{ width: '64px' }} />
     </div>
     <ShowMore onClick={onClick}>
       View {leftCount} more comment

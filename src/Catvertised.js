@@ -43,12 +43,12 @@ const StyledInput = styled.div.attrs({
     transform: translateY(-50%);
     right: 10px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 0.8em;
   }
 `;
 
 const Position = styled.div`
-  font-size: 14px;
+  font-size: 0.8em;
   color: #928f9b;
   margin-top: 6px;
 `;
@@ -165,7 +165,7 @@ const CatvertisedName = styled.span`
 
 const CatvertisedScore = styled.div`
   margin-left: 10px;
-  font-size: 14px;
+  font-size: 0.8em;
   color: #928f9b;
   font-weight: 500;
 `;
