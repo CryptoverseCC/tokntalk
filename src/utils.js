@@ -2,6 +2,24 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import jazzicon from 'jazzicon';
 
+export function getCurrentProviderName(web3) {
+  try {
+    if (window.web3.currentProvider.isMetaMask) return 'metamask';
+
+    if (window.web3.currentProvider.isTrust) return 'trust';
+
+    if (typeof window.SOFA !== 'undefined') return 'toshi';
+
+    if (typeof window.__CIPHER__ !== 'undefined') return 'cipher';
+
+    if (window.web3.currentProvider.constructor.name === 'EthereumProvider') return 'mist';
+
+    if (window.web3.currentProvider.constructor.name === 'Web3FrameProvider') return 'parity';
+  } catch (e) {}
+
+  return 'unknown';
+}
+
 export const validateParams = (validators, redirectTo) => (Cmp) => {
   return class extends Component {
     static displayName = `validateParams(${Cmp.displayName || Cmp.name})`;

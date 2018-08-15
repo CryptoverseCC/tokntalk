@@ -17,10 +17,10 @@ import {
   label,
   writeTo,
   writeAbout,
+  boost,
   getLabels,
   getEntityTokens,
   getBoosts,
-  boost,
   getFeedItem,
   getFeedItems,
 } from './api';
@@ -32,6 +32,7 @@ import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
 import NotFound from './NotFound';
 import { getEntityInfoForAddress } from './utils';
+import WalletModal from './WalletModal';
 
 const {
   REACT_APP_NAME: APP_NAME,
@@ -85,6 +86,7 @@ export default class App extends Component {
     boosts: {},
     from: undefined,
     provider: undefined,
+    waitingForConfirm: 0,
     networkName: undefined,
     http: JSON.parse(this.storage.getItem('http') || 'true'),
   };
@@ -206,59 +208,90 @@ export default class App extends Component {
     return this.state.from && this.state.networkName === INTERFACE_BOOST_NETWORK;
   }
 
+  addWaitingConfirmation = () =>
+    this.setState(({ waitingForConfirm }) => ({
+      waitingForConfirm: waitingForConfirm + 1,
+    }));
+
+  removeConfirmation = () => this.setState(({ waitingForConfirm }) => ({ waitingForConfirm: waitingForConfirm - 1 }));
+
   sendMessage = async (message) => {
+    this.addWaitingConfirmation();
     const { http } = this.state;
-    const temporaryFeedItem = await sendMessage(this.state.activeEntity, message, { http });
-    this.setState({
-      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
-    });
+    try {
+      const temporaryFeedItem = await sendMessage(this.state.activeEntity, message, { http });
+      this.setState({
+        temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
+      });
+    } catch (e) {}
+    this.removeConfirmation();
   };
 
   reply = async (message, to) => {
+    this.addWaitingConfirmation();
     const { http, activeEntity } = this.state;
-    const temporaryReply = await reply(activeEntity, message, to, { http });
-    this.setState(
-      produce((draft) => {
-        draft.temporaryReplies[to] = [...(draft.temporaryReplies[to] || []), temporaryReply];
-      }),
-    );
+    try {
+      const temporaryReply = await reply(activeEntity, message, to, { http });
+      this.setState(
+        produce((draft) => {
+          draft.temporaryReplies[to] = [...(draft.temporaryReplies[to] || []), temporaryReply];
+        }),
+      );
+    } catch (e) {}
+    this.removeConfirmation();
   };
 
   writeTo = async (message, tokenTo) => {
+    this.addWaitingConfirmation();
     const { http, activeEntity } = this.state;
-    const temporaryFeedItem = await writeTo(activeEntity, message, tokenTo, { http });
-    this.setState({
-      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
-    });
+    try {
+      const temporaryFeedItem = await writeTo(activeEntity, message, tokenTo, { http });
+      this.setState({
+        temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
+      });
+    } catch (e) {}
+    this.removeConfirmation();
   };
 
   writeAbout = async (message, club) => {
+    this.addWaitingConfirmation();
     const { http, activeEntity } = this.state;
-    const temporaryFeedItem = await writeAbout(activeEntity, message, club, { http });
-    this.setState({
-      temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
-    });
+    try {
+      const temporaryFeedItem = await writeAbout(activeEntity, message, club, { http });
+      this.setState({
+        temporaryFeedItems: [temporaryFeedItem, ...this.state.temporaryFeedItems],
+      });
+    } catch (e) {}
+    this.removeConfirmation();
   };
 
   react = async (to) => {
+    this.addWaitingConfirmation();
     const { http, activeEntity } = this.state;
-    const temporaryReaction = await react(activeEntity, to, { http });
-    this.setState(
-      produce((draft) => {
-        draft.temporaryReactions[to] = [...(draft.temporaryReactions[to] || []), temporaryReaction];
-      }),
-    );
+    try {
+      const temporaryReaction = await react(activeEntity, to, { http });
+      this.setState(
+        produce((draft) => {
+          draft.temporaryReactions[to] = [...(draft.temporaryReactions[to] || []), temporaryReaction];
+        }),
+      );
+    } catch (e) {}
+    this.removeConfirmation();
   };
 
   label = async (message, labelType) => {
+    this.addWaitingConfirmation();
     const { http, activeEntity } = this.state;
-    const temporaryFeedItem = await label(activeEntity, message, labelType, { http });
-    this.setState(
-      produce((draft) => {
-        draft.entityLabels[activeEntity.id][labelType] = temporaryFeedItem.target;
-        draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems];
-      }),
-    );
+    try {
+      const temporaryFeedItem = await label(activeEntity, message, labelType, { http });
+      this.setState(
+        produce((draft) => {
+          draft.entityLabels[activeEntity.id][labelType] = temporaryFeedItem.target;
+          draft.temporaryFeedItems = [temporaryFeedItem, ...draft.temporaryFeedItems];
+        }),
+      );
+    } catch (e) {}
+    this.removeConfirmation();
   };
 
   getFeedItem = async (claimId) => {
@@ -369,6 +402,7 @@ export default class App extends Component {
       networkName,
       boosts,
       http,
+      waitingForConfirm,
     } = this.state;
 
     return (
@@ -414,12 +448,14 @@ export default class App extends Component {
             provider,
             from,
             networkName,
+            waitingForConfirm,
           },
         }}
       >
         <Router>
           <React.Fragment>
             <Header />
+            <WalletModal />
             <RoutesWithRouter
               getFeedItem={this.getFeedItem}
               getFeedItems={this.getFeedItems}

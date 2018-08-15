@@ -3,7 +3,7 @@ import find from 'lodash/fp/find';
 import last from 'lodash/fp/last';
 import { isAddress } from 'web3-utils';
 
-import { getEntityInfoForAddress } from './utils';
+import { getEntityInfoForAddress, getCurrentProviderName } from './utils';
 import getWeb3 from './web3';
 import {
   claimContractAddressesForNetworkId,
@@ -237,7 +237,7 @@ export const getWeb3State = async () => {
       web3.eth.getBlockNumber(),
     ]);
     const networkName = networkNameForNetworkId[networkId];
-    const provider = web3.currentProvider;
+    const provider = getCurrentProviderName();
     return {
       from,
       isListening,
