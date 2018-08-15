@@ -324,7 +324,19 @@ const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suff
       <div>
         <SenderName to={`/${from}`}>{entityInfo.name}</SenderName>
         <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
-          {timeago().format(createdAt)}
+          {id ? (
+            <Link
+              to={{
+                pathname: `/thread/${id}`,
+                state: { modal: true },
+                search: `?backUrl=${encodeURIComponent(window.location.pathname)}`,
+              }}
+            >
+              {timeago().format(createdAt)}
+            </Link>
+          ) : (
+            timeago().format(createdAt)
+          )}
           <A href={etherscanUrl} style={{ marginLeft: '15px', textTransform: 'capitalize' }}>
             {family}
           </A>
