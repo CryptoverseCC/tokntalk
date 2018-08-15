@@ -82,7 +82,7 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
               <h3>Yours</h3>
-              <p>
+              <p class="landing-paragraph">
                 Act as any Non Fungible Token{' '}
                 <span style={{ fontSize: '16px', color: '#848DA5', fontWeight: '700' }}>ERC721</span> or an address.
                 Switch between personalities and grow your characters.
@@ -93,7 +93,7 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
               <h3>Transparent</h3>
-              <p>
+              <p class="landing-paragraph">
                 Look at news from many perspectives. <br />
                 Get valuable insight and know motivations behind opinions.
               </p>
@@ -103,7 +103,9 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
               <h3>Safe</h3>
-              <p>Use your holdings as filters. Display only messages coming from your networks or wander around.</p>
+              <p class="landing-paragraph">
+                Use your holdings as filters. Display only messages coming from your networks or wander around.
+              </p>
             </div>
           </div>
           <div class="landing-testimonial">
@@ -112,7 +114,9 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
             </a>
-            <p>“I finally see all the trades of the guy recommending me trades.“</p>
+            <p class="landing-testimonial-paragraph">
+              “I finally see all the trades of the guy recommending me trades.“
+            </p>
             <p class="author">
               <a href="https://tokntalk.club/0x9093428aa6266d589b866ac2956e328ab9039bee">0x90934...39bee</a>, Address
             </p>
@@ -138,28 +142,34 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
               <h3>Instant</h3>
-              <p>Discovery for your project from the moment of a token release. Click. Social Network.</p>
+              <p class="landing-paragraph">
+                Discovery for your project from the moment of a token release. Click. Social Network.
+              </p>
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature">
                 <img src="" />
               </figure>
               <h3>Trusted</h3>
-              <p>Secure social feeds with access controlled by tokens. No spam, no trolls, no impersonations.</p>
+              <p class="landing-paragraph">
+                Secure social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
+              </p>
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature">
                 <img src="" />
               </figure>
               <h3>For you</h3>
-              <p>Discuss next features, coordinate your efforts. Talk about future of your project.</p>
+              <p class="landing-paragraph">
+                Discuss next features, coordinate your efforts. Talk about future of your project.
+              </p>
             </div>
           </div>
           <div class="landing-testimonial">
             <a href="https://tokntalk.club/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">
               <figure class="landing-testimonial-profile" id="falafel" />
             </a>
-            <p>
+            <p class="landing-testimonial-paragraph">
               “Crypto is tough. Everyone thinks I’m cheating, deleting tweets and playing double game. Now everyone sees
               my transactions.“
             </p>
@@ -186,14 +196,14 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
               <h3>Any token</h3>
-              <p>Accept tokens for an advertisement on your profile out of the box.</p>
+              <p class="landing-paragraph">Accept tokens for an advertisement on your profile out of the box.</p>
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature">
                 <img src="" />
               </figure>
               <h3>Influential</h3>
-              <p>
+              <p class="landing-paragraph">
                 How much would you pay for a celebrity Cryptokitty that ends up on the front page of your favorite
                 magazine?
               </p>
@@ -203,7 +213,7 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
               <h3>Your token</h3>
-              <p>Create your own token and grow your own economy. </p>
+              <p class="landing-paragraph">Create your own token and grow your own economy. </p>
             </div>
           </div>
         </div>
@@ -211,7 +221,7 @@ const Landing = styled((props) => (
           <figure class="landing-testimonial-profile">
             <img src="" />
           </figure>
-          <p>Something awesome</p>
+          <p class="landing-testimonial-paragraph">Something awesome</p>
           <p class="author">Kitty</p>
         </div>
       </section>
@@ -231,21 +241,25 @@ const Landing = styled((props) => (
                 <img src="" />
               </figure>
               <h3>Token</h3>
-              <p>Implement token - specific functionality and grow value of your community. </p>
+              <p class="landing-paragraph">
+                Implement token - specific functionality and grow value of your community.{' '}
+              </p>
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature">
                 <img src="" />
               </figure>
               <h3>Platform</h3>
-              <p>Create a platform - specific functionality and easily monetize your work.</p>
+              <p class="landing-paragraph">Create a platform - specific functionality and easily monetize your work.</p>
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature">
                 <img src="" />
               </figure>
               <h3>Multi-chain</h3>
-              <p>Live on Ethereum Mainnet, Kovan, Ropsten. Multiple storage systems available.</p>
+              <p class="landing-paragraph">
+                Live on Ethereum Mainnet, Kovan, Ropsten. Multiple storage systems available.
+              </p>
             </div>
           </div>
         </div>
@@ -253,7 +267,7 @@ const Landing = styled((props) => (
           <figure class="landing-testimonial-profile">
             <img src="" />
           </figure>
-          <p>LMAO DANCING KITTY</p>
+          <p class="landing-testimonial-paragraph">LMAO DANCING KITTY</p>
           <p class="author">Kitty</p>
         </div>
       </section>
@@ -262,7 +276,9 @@ const Landing = styled((props) => (
           <div class="columns" style={{ marginBottom: '90px' }}>
             <div class="column has-text-centered">
               <h3>Stay in touch</h3>
-              <p>We are also using the channels you're used to. Dont be a stranger and join the conversation.</p>
+              <p class="landing-paragraph">
+                We are also using the channels you're used to. Dont be a stranger and join the conversation.
+              </p>
               <a href="" class="landing-footer-intouch">
                 <img src={twitterColor} />
                 <span>Twitter</span>
@@ -278,7 +294,9 @@ const Landing = styled((props) => (
             </div>
             <div class="column has-text-centered">
               <h3>Behind the scenes</h3>
-              <p>Find out more about our bigger vision and read what we think about attention economy.</p>
+              <p class="landing-paragraph">
+                Find out more about our bigger vision and read what we think about attention economy.
+              </p>
               <a href="" class="landing-footer-intouch">
                 <img src={medium} style={{ marginBottom: '-4px' }} />
                 <span>Medium</span>

@@ -45,7 +45,7 @@ h3 {
   margin-top: 90px;
 }
 
-p {
+.landing-paragraph {
   font-size: 20px;
   max-width: 90%;
   margin: 0 auto;
@@ -199,10 +199,13 @@ p {
   margin-bottom: 90px;
 }
 
-.landing-testimonial p {
+.landing-testimonial-paragraph {
   font-style: italic;
+  margin: 0 auto;
   max-width: 620px;
+  font-size: 20px;
 }
+
 .landing-testimonial p.author {
   font-style: normal;
   color: #848da5;
