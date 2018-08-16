@@ -1,15 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import metamask from './img/metamask.png';
 import { FixedModal } from './Modal';
 import AppContext from './Context';
 import { H3 } from './Components';
 
-const ProviderLogo = ({ name, ...restProps }) => {
-  const src = metamask;
-  return <img src={src} {...restProps} />;
+import toshi from './img/wallets/toshi.svg';
+import trust from './img/wallets/trust.svg';
+import cipher from './img/wallets/cipher.svg';
+import metamask from './img/wallets/metamask.svg';
+
+const walletsLogoMapping = {
+  toshi,
+  trust,
+  cipher,
+  metamask,
 };
+
+const ProviderLogo = ({ name, ...restProps }) => <img src={walletsLogoMapping[name] || metamask} {...restProps} />;
 
 const Container = styled.div`
   background: #ffffff;
