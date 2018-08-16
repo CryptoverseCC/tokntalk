@@ -57,6 +57,19 @@ const PAGE = {
   CATVERTISING: 2,
 };
 
+const PromotionTab = (props) => {
+  return (
+    <Tab tabIndex={props.tabIndex}>
+      <p>
+        <p>{props.count}</p>
+        {props.children}
+      </p>
+    </Tab>
+  );
+};
+
+PromotionTab.tabsRole = 'Tab';
+
 export class PromotionBox extends Component {
   state = {
     currentPage: PAGE.SUPPORTERS,
@@ -107,7 +120,7 @@ export class PromotionBox extends Component {
     return (
       <React.Fragment>
         {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
-        {!this.props.showPurrmoter && this.renderTabs(Object.keys(boosts).length, -1)}
+        {!this.props.showPurrmoter && this.renderTabs(Object.keys(boosts).length, 0)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
           <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}>Promote yourself</AddAKitty>
         )}
@@ -136,23 +149,14 @@ export class PromotionBox extends Component {
 
   renderTabs = (supportersCount, supportingCount) => {
     return (
-      <Tabs
-        selectedIndex={this.state.currentPage}
-        onSelect={(index, previous, event) => this.setState({ currentPage: index })}
-      >
+      <Tabs selectedIndex={this.state.currentPage} onSelect={(index) => this.setState({ currentPage: index })}>
         <TabList>
-          <Tab tabIndex={PAGE.SUPPORTERS}>
-            <p>
-              <p>{supportersCount}</p>
-              Supporters
-            </p>
-          </Tab>
-          <Tab tabIndex={PAGE.SUPPORTING}>
-            <p>
-              <p>{supportingCount}</p>
-              Supporting
-            </p>
-          </Tab>
+          <PromotionTab tabIndex={PAGE.SUPPORTERS} count={supportersCount}>
+            Supporters
+          </PromotionTab>
+          <PromotionTab tabIndex={PAGE.SUPPORTING} count={supportingCount}>
+            Supporting
+          </PromotionTab>
         </TabList>
       </Tabs>
     );
