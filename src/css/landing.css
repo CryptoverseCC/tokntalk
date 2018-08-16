@@ -257,7 +257,7 @@ a.landing-footer-intouch {
   background-color: white;
   display: inline-block;
   position: relative;
-  box-shadow: 0 1rem 2.5rem -0.6rem rgba(75, 90, 103, 0.2);
+  box-shadow: 0 1rem 2.5rem -0.6rem rgba(75, 90, 103, 0.15);
   transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
   padding: 0.75em 1.2em;
   border-radius: 6px;
@@ -279,7 +279,7 @@ a.landing-footer-intouch:hover {
   background-color: white;
   transform: translateY(-2px);
   cursor: pointer;
-  box-shadow: 0 1rem 2.8rem -0.6rem rgba(75, 90, 103, 0.35);
+  box-shadow: 0 1rem 2.8rem -0.6rem rgba(75, 90, 103, 0.3);
   transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
 }
 
