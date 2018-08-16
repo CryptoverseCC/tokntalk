@@ -391,3 +391,18 @@ a.landing-footer-intouch:hover {
 .landing-footer-navigation a:last-child {
   color: #4000e4;
 }
+.landing-goup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#arrowup {
+  margin-bottom: 10px;
+  transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+}
+
+.landing-goup:hover #arrowup {
+  transform: translateY(-5px);
+  transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+}

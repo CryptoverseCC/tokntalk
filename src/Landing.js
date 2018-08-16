@@ -12,6 +12,7 @@ import medium from './img/landing/medium.svg';
 import telegramColor from './img/landing/telegram-color.svg';
 import twitterColor from './img/landing/twitter-color.svg';
 import tokntalkColor from './img/landing/tokntalk-color.svg';
+import arrowUp from './img/landing/round-up.svg';
 
 import realityFirst from './img/landing/reality-1.png';
 import realitySecond from './img/landing/reality-2.png';
@@ -351,7 +352,8 @@ const Landing = styled((props) => (
           </div>
           <div class="columns has-text-centered">
             <div class="column">
-              <a href="#first-section">
+              <a href="#first-section" class="landing-goup">
+                <img src={arrowUp} id="arrowup" />
                 <img src={tokntalkGrey} />
               </a>
               <div class="landing-footer-navigation">
