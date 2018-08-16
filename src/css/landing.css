@@ -370,7 +370,15 @@ a.landing-footer-intouch:hover {
 
 .landing-footer-social a {
   margin-left: 20px;
+  opacity: 0.5;
+  transition: all 0.2s ease-out;
 }
+
+.landing-footer-social a:hover {
+  opacity: 1;
+  transition: all 0.2s ease-in;
+}
+
 
 .landing-footer-social a:first-child {
   margin-left: 0px;

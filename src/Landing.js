@@ -81,6 +81,7 @@ const Landing = styled((props) => (
             </a>
             <div class="landing-video-overlay" />
           </figure>
+          <p style={{ fontSize: '20px', color: '#848DA5' }}>35s Introduction</p>
         </div>
       </section>
 
