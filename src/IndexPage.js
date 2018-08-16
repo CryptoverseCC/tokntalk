@@ -11,7 +11,7 @@ import Advertised from './Catvertised';
 import { HeaderSpacer } from './Header';
 import { IfActiveEntity, Entity } from './Entity';
 import { FlatContainer, ContentContainer, H4 } from './Components';
-import ercs20, { TokenImage } from './erc20';
+import clubs, { TokenImage } from './clubs';
 import { DiscoverIcon } from './Icons';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
@@ -142,7 +142,7 @@ const DiscoverMore = styled((props) => (
 
 const Token = ({ asset }) => {
   const [network, address] = asset.split(':');
-  const token = find({ network, address })(ercs20);
+  const token = find({ network, address })(clubs);
 
   return (
     <YourCommunitiesLink to={`/discover/byToken/${token.symbol}`}>

@@ -18,7 +18,7 @@ import InfiniteScroll from './InfiniteScroll';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon, empty } from './Icons';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
-import ercs20 from './erc20';
+import clubs from './clubs';
 import { H3 } from './Components';
 import { CollapsableText, ShowMore } from './CollapsableText';
 
@@ -579,7 +579,7 @@ export class Card extends React.Component {
     const suffix = {
       post_club: () => {
         const [network, address] = feedItem.about.split(':');
-        const token = find({ network, address })(ercs20);
+        const token = find({ network, address })(clubs);
 
         return (
           <React.Fragment>

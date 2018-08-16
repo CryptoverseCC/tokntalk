@@ -15,7 +15,7 @@ import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
 import { validateParams } from './utils';
-import ercs20, { TokenImage } from './erc20';
+import clubs, { TokenImage } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
@@ -128,7 +128,7 @@ class Index extends Component {
       {this.renderTiles(
         entity.tokens.map((asset) => {
           const [network, address] = asset.split(':');
-          return find({ network, address })(ercs20);
+          return find({ network, address })(clubs);
         }),
       )}
     </div>
@@ -142,7 +142,7 @@ class Index extends Component {
   );
 
   sortByScore = () => {
-    const tokensMap = ercs20.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
+    const tokensMap = clubs.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
     return this.state.score.filter((item) => tokensMap[item.id]).map((item) => tokensMap[item.id]);
   };
 
@@ -726,10 +726,10 @@ const isTokenValid = (token) => {
 
   if (token.indexOf(':') !== -1) {
     const [network, address] = token.split(':');
-    return !!find({ network, address })(ercs20);
+    return !!find({ network, address })(clubs);
   }
 
-  return !!find({ symbol: token })(ercs20);
+  return !!find({ symbol: token })(clubs);
 };
 
 const validateTokenParam = validateParams(
@@ -744,10 +744,10 @@ const mapTokenUrlParam = (Cmp) => (props) => {
 
   let erc20Token;
   if (token.indexOf(':') === -1) {
-    erc20Token = find({ symbol: token })(ercs20);
+    erc20Token = find({ symbol: token })(clubs);
   } else {
     const [network, address] = token.split(':');
-    erc20Token = find({ network, address })(ercs20);
+    erc20Token = find({ network, address })(clubs);
   }
 
   return <Cmp token={erc20Token} {...props} />;

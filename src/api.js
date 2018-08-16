@@ -13,7 +13,7 @@ import {
   claimWithValueTransferContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
-import erc20 from './erc20';
+import clubs from './clubs';
 import ercs721 from './erc721';
 
 const {
@@ -37,7 +37,7 @@ export const isValidFeedItem = (feedItem) => {
   }
   if (feedItem.type === 'post_club') {
     const [network, address] = feedItem.about.split(':');
-    const token = find({ network, address })(erc20);
+    const token = find({ network, address })(clubs);
     if (!token) {
       return false;
     }
@@ -186,7 +186,7 @@ export const getEntityTokens = async (entityId) => {
       params: {
         context: entityId,
         identity: entityId,
-        asset: erc20.map(({ network, address }) => `${network}:${address}`),
+        asset: clubs.map(({ network, address }) => `${network}:${address}`),
       },
     },
   ]);

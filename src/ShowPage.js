@@ -18,7 +18,7 @@ import { socialIcons } from './Icons';
 import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
 import Advertised from './Catvertised';
-import ercs20 from './erc20';
+import clubs from './clubs';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
@@ -146,7 +146,7 @@ export default class ShowPage extends Component {
                     <CommunitiesList className="columns is-mobile">
                       {entity.tokens.map((asset) => {
                         const [network, address] = asset.split(':');
-                        const token = find({ network, address })(ercs20);
+                        const token = find({ network, address })(clubs);
 
                         return (
                           <StyledTokenTile

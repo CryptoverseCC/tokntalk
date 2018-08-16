@@ -110,9 +110,10 @@ import blockchaincutiesCover from './img/tokens/blockchaincuties.png';
 
 import * as mapping from 'contract-mapping/mapping.json';
 
-const ercs20 = [
+const clubs = [
   {
     ...mapping.CRYPTOKITTIES,
+    entityPrefix: 'CryptoKitty #',
     logo: cryptokitties,
     coverImage: cryptokittiesCover,
     primaryColor: '#FFD9FF',
@@ -124,10 +125,16 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptokitties' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoKitties/' },
     ],
-    is721: true,
+    avatarSizes: {
+      verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%', imgLeftOffset: '55%' },
+      small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%', imgLeftOffset: '55%' },
+      medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%', imgLeftOffset: '55%' },
+      large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%', imgLeftOffset: '55%' },
+    },
   },
   {
     ...mapping.AXIES,
+    entityPrefix: 'Axie #',
     logo: axie,
     coverImage: axieCover,
     primaryColor: '#2b6a93',
@@ -139,10 +146,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/axie' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/AxieInfinity/' },
     ],
-    is721: true,
   },
   {
     ...mapping.CRYPTOBOTS,
+    entityPrefix: 'CryptoBot #',
     logo: cryptobots,
     coverImage: cryptobotsCover,
     primaryColor: '#EFF7B6',
@@ -154,10 +161,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptobots' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/cryptobots_game/' },
     ],
-    is721: true,
   },
   {
     ...mapping.ETH_MOJI,
+    entityPrefix: 'Ethmoji #',
     logo: ethmoji,
     coverImage: ethmojiCover,
     primaryColor: '#E051BA',
@@ -169,10 +176,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethmoji' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/ethmoji/' },
     ],
-    is721: true,
   },
   {
     ...mapping.DIGITAL_ART_CHAIN,
+    entityPrefix: 'Digital Art ',
     logo: dac,
     coverImage: dacCover,
     primaryColor: '#ffffff',
@@ -183,10 +190,10 @@ const ercs20 = [
       { name: 'Marketplace', url: 'http://digitalartchain.com/publish.html' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/digitalartchain' },
     ],
-    is721: true,
   },
   {
     ...mapping.KNOWN_ORIGIN,
+    entityPrefix: 'KO Art #',
     logo: knownorigin,
     coverImage: knownoriginCover,
     primaryColor: '#1019cb',
@@ -196,10 +203,10 @@ const ercs20 = [
       { name: 'Project page', url: 'https://knownorigin.io' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/knownorigin' },
     ],
-    is721: true,
   },
   {
     ...mapping.CRYPTO_STRIKERS,
+    entityPrefix: 'CryptoStriker #',
     logo: cryptostrikers,
     coverImage: cryptostrikersCover,
     primaryColor: '#BEC4CB',
@@ -210,10 +217,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptostrikers' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/cryptostrikers/' },
     ],
-    is721: true,
   },
   {
     ...mapping.ETH_TOWN,
+    entityPrefix: 'Hero #',
     logo: ethtown,
     coverImage: ethtownCover,
     primaryColor: '#E8EDFB',
@@ -224,10 +231,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethtown' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/EtherTown/' },
     ],
-    is721: true,
   },
   {
     ...mapping.CHIBI_FIGHTERS,
+    entityPrefix: 'Fighter #',
     logo: chibi,
     coverImage: chibiCover,
     primaryColor: '#4881ae',
@@ -238,10 +245,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/chibifighters' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/ChibiFighters/' },
     ],
-    is721: true,
   },
   {
     ...mapping.CRYPTO_FIGHTERS,
+    entityPrefix: 'Fighter #',
     logo: cryptofighters,
     coverImage: cryptofightersCover,
     primaryColor: '#BAD2ED',
@@ -252,10 +259,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptofighters' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoFighters/' },
     ],
-    is721: true,
   },
   {
     ...mapping.CRYPTO_SAGA,
+    entityPrefix: 'Hero #',
     logo: cryptosaga,
     coverImage: cryptosagaCover,
     primaryColor: '#D8CECB',
@@ -265,10 +272,10 @@ const ercs20 = [
       { name: 'Project page', url: 'https://cryptosaga.io/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptosaga' },
     ],
-    is721: true,
   },
   {
     ...mapping.ETHEREMON,
+    entityPrefix: 'Etheremon #',
     logo: etheremon,
     coverImage: etheremonCover,
     primaryColor: '#010206',
@@ -279,10 +286,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/etheremon' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/etheremon/' },
     ],
-    is721: true,
   },
   {
     ...mapping.MYTHEREUM,
+    entityPrefix: 'Card #',
     logo: mythereum,
     coverImage: mythereumCover,
     primaryColor: '#4B1E06',
@@ -293,10 +300,10 @@ const ercs20 = [
       { name: 'OpenSea', url: 'https://opensea.io/assets/mythereum' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/mythereum/' },
     ],
-    is721: true,
   },
   {
     ...mapping.PANDA_EARTH,
+    entityPrefix: 'Panda #',
     logo: pandaearth,
     coverImage: pandaearthCover,
     primaryColor: '#EEEEEE',
@@ -306,20 +313,20 @@ const ercs20 = [
       { name: 'Project page', url: 'https://panda.earth' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/pandaearth' },
     ],
-    is721: true,
   },
   {
     ...mapping.CRYPTO_COWS,
+    entityPrefix: 'Cow #',
     logo: cows,
     coverImage: cowsCover,
     primaryColor: '#f5cd4a',
     secondaryColor: '#221f20',
     shadowColor: 'rgba(245,205,74,0.4)',
     externalLinks: [{ name: 'Project page', url: 'https://www.cryptotoons.io/toons/cryptocows' }],
-    is721: true,
   },
   {
     ...mapping.CRYPTO_VOXELS,
+    entityPrefix: 'Voxel #',
     logo: cryptovoxel,
     coverImage: cryptovoxelCover,
     primaryColor: '#D8D8D8',
@@ -329,7 +336,6 @@ const ercs20 = [
       { name: 'Project page', url: 'https://www.cryptovoxels.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptovoxels' },
     ],
-    is721: true,
   },
   {
     ...mapping.AVOCADO,
@@ -478,6 +484,7 @@ const ercs20 = [
   },
   {
     ...mapping.CRYPTO_CRYSTALS,
+    entityPrefix: 'Crystal #',
     logo: cryptocrystal,
     coverImage: cryptocrystalCover,
     primaryColor: '#F0EAF6',
@@ -522,6 +529,7 @@ const ercs20 = [
   },
   {
     ...mapping.BLOCKCHAIN_CUTIES,
+    entityPrefix: 'Cuties #',
     logo: blockchaincuties,
     coverImage: blockchaincutiesCover,
     primaryColor: '#525079',
@@ -557,4 +565,4 @@ export const TokenImage = ({ token, size = 'small', ...restProps }) => {
   return <img src={token.logo} alt={token.name} {...sizes[size]} {...restProps} />;
 };
 
-export default ercs20;
+export default clubs;

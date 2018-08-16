@@ -186,7 +186,6 @@ export default class App extends Component {
     const boostValue = boost.score;
 
     return {
-      image_url: undefined,
       color: undefined,
       id: entityId,
       name: undefined,
