@@ -59,16 +59,12 @@ const PAGE = {
 
 const PromotionTab = (props) => {
   return (
-    <Tab tabIndex={props.tabIndex}>
-      <p>
-        <p>{props.count}</p>
-        {props.children}
-      </p>
-    </Tab>
+    <p>
+      <p>{props.count}</p>
+      {props.children}
+    </p>
   );
 };
-
-PromotionTab.tabsRole = 'Tab';
 
 export class PromotionBox extends Component {
   state = {
@@ -151,12 +147,12 @@ export class PromotionBox extends Component {
     return (
       <Tabs selectedIndex={this.state.currentPage} onSelect={(index) => this.setState({ currentPage: index })}>
         <TabList>
-          <PromotionTab tabIndex={PAGE.SUPPORTERS} count={supportersCount}>
-            Supporters
-          </PromotionTab>
-          <PromotionTab tabIndex={PAGE.SUPPORTING} count={supportingCount}>
-            Supporting
-          </PromotionTab>
+          <Tab tabIndex={PAGE.SUPPORTERS}>
+            <PromotionTab count={supportersCount}>Supporters</PromotionTab>
+          </Tab>
+          <Tab tabIndex={PAGE.SUPPORTING}>
+            <PromotionTab count={supportingCount}>Supporting</PromotionTab>
+          </Tab>
         </TabList>
       </Tabs>
     );
