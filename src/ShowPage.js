@@ -331,6 +331,15 @@ export class SocialList extends React.Component {
     return href ? href : undefined;
   };
 
+  domainRegex = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/;
+  getDomain = (url) => {
+    const result = this.domainRegex.exec(url);
+    if (result) {
+      return result[1];
+    }
+    return url;
+  };
+
   static Container = styled.div`
     width: 100%;
     position: relative;
@@ -339,16 +348,16 @@ export class SocialList extends React.Component {
   `;
 
   render() {
-    const { normalizeHref } = this;
+    const { normalizeHref, getDomain } = this;
     const { facebook, twitter, instagram, github, id, editable } = this.props;
 
     return (
       <SocialList.Container>
         <Entity id={id}>
-          {({ url, color, name, image_preview_url }) => (
+          {({ url, color, image_preview_url }) => (
             <SocialBadge href={url}>
               <IdentityAvatar entity={id} backgroundColor={color} size="verySmall" src={image_preview_url} />
-              <span style={{ marginLeft: '15px' }}>{name}</span>
+              <span style={{ marginLeft: '15px' }}>{getDomain(url)}</span>
             </SocialBadge>
           )}
         </Entity>
