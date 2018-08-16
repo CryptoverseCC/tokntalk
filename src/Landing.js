@@ -51,7 +51,7 @@ const Landing = styled((props) => (
         </nav>
       </div>
 
-      <section class="section has-text-centered landing-hero" style={{ borderBottom: 'none' }}>
+      <section class="section has-text-centered landing-hero" style={{ borderBottom: 'none' }} id="first-section">
         <div class="container">
           <p class="subtitle" style={{ color: '#848DA5' }}>
             Social platform for
@@ -325,15 +325,15 @@ const Landing = styled((props) => (
               <p class="landing-paragraph">
                 We are also using the channels you're used to. Dont be a stranger and join the conversation.
               </p>
-              <a href="" class="landing-footer-intouch">
+              <a href="https://twitter.com/tokntalkclub" target="_blank" class="landing-footer-intouch">
                 <img src={twitterColor} />
                 <span>Twitter</span>
               </a>
-              <a href="" class="landing-footer-intouch">
+              <a href="http://tokntalk.club/" class="landing-footer-intouch">
                 <img src={tokntalkColor} />
                 <span>Tok n talk</span>
               </a>
-              <a href="" class="landing-footer-intouch">
+              <a href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA" class="landing-footer-intouch">
                 <img src={telegramColor} />
                 <span>Telegram</span>
               </a>
@@ -351,7 +351,7 @@ const Landing = styled((props) => (
           </div>
           <div class="columns has-text-centered">
             <div class="column">
-              <a href="">
+              <a href="#first-section">
                 <img src={tokntalkGrey} />
               </a>
               <div class="landing-footer-navigation">
