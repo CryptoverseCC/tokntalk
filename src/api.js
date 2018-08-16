@@ -439,7 +439,7 @@ export const boost = async (entity, aboutEntity, value) => {
   if (isAddress(aboutEntity)) {
     ownerAddress = aboutEntity;
   } else {
-    ownerAddress = (await getEntityData(aboutEntity)).ownerAddress;
+    ownerAddress = (await getEntityData(aboutEntity)).owner;
   }
 
   const data = {
