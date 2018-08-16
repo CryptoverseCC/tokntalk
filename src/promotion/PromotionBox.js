@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'react-tabs/style/react-tabs.css';
 import { Purrmoter } from './Purrmoter';
 import Context from '../Context';
 import styled from 'styled-components';
@@ -13,6 +14,7 @@ import {
   CatvertisedItem,
   EntityDescription,
 } from './Styles';
+import { Tab, Tabs, TabList } from 'react-tabs';
 
 const formatCurrency = (value) => {
   return (value * 10 ** -18).toFixed(3);
@@ -58,9 +60,9 @@ const AddAKitty = styled.button`
 `;
 
 const PAGE = {
-  SUPPORTERS: 'supporters',
-  SUPPORTING: 'supporting',
-  CATVERTISING: 'catvertising',
+  SUPPORTERS: 0,
+  SUPPORTING: 1,
+  CATVERTISING: 2,
 };
 
 export class PromotionBox extends Component {
@@ -112,11 +114,20 @@ export class PromotionBox extends Component {
   renderSupporters = (boosts) => {
     return (
       <React.Fragment>
-        <Purrmoter token={this.props.token} />
-        <div>
-          <InlineButton onClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}>Supporters</InlineButton>
-          <InlineButton onClick={() => this.setState({ currentPage: PAGE.SUPPORTING })}>Supporting</InlineButton>
-        </div>
+        {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
+        {!this.props.showPurrmoter && (
+          <Tabs
+            selectedIndex={this.state.currentPage}
+            onSelect={(index, l, e) => {
+              this.setState({ currentPage: index });
+            }}
+          >
+            <TabList>
+              <Tab tabIndex={PAGE.SUPPORTERS}>Supporters</Tab>
+              <Tab tabIndex={PAGE.SUPPORTING}>Supporting</Tab>
+            </TabList>
+          </Tabs>
+        )}
         {this.state.currentPage === PAGE.SUPPORTERS && (
           <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}>Promote yourself</AddAKitty>
         )}

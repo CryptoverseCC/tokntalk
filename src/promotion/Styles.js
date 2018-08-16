@@ -15,7 +15,7 @@ export const CatvertisedName = styled.span`
 
 export const CatvertisedScore = styled.div`
   margin-left: 10px;
-  font-size: 14px;
+  font-size: 0.8em;
   color: #928f9b;
   font-weight: 500;
 `;

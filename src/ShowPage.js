@@ -18,7 +18,7 @@ import { socialIcons } from './Icons';
 import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
 import clubs from './clubs';
-import Advertised from './promotion/Catvertised';
+import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
@@ -133,7 +133,9 @@ export default class ShowPage extends Component {
                 </FlatContainer>
                 <FlatContainer style={{ marginTop: '30px' }}>
                   <AppContext.Consumer>
-                    {({ boostStore: { getBoosts } }) => <Advertised getBoosts={getBoosts} token={entityId} />}
+                    {({ boostStore: { getBoosts } }) => (
+                      <PromotionBox getBoosts={getBoosts} token={entityId} showPurrmoter={false} />
+                    )}
                   </AppContext.Consumer>
                 </FlatContainer>
               </div>

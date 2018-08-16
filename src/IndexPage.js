@@ -66,7 +66,9 @@ export default class IndexPage extends Component {
             <ActiveEntityTokens />
             <FlatContainer>
               <AppContext.Consumer>
-                {({ boostStore: { getBoosts } }) => <PromotionBox getBoosts={getBoosts} token={DEFAULT_TOKEN_ID} />}
+                {({ boostStore: { getBoosts } }) => (
+                  <PromotionBox getBoosts={getBoosts} token={DEFAULT_TOKEN_ID} showPurrmoter={true} />
+                )}
               </AppContext.Consumer>
             </FlatContainer>
           </div>
