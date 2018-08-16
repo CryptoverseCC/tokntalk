@@ -4,6 +4,7 @@ import { A } from '../Link';
 import Context from '../Context';
 import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from '../Entity';
 import checkmarkIcon from '../img/checkmark.svg';
+import { EntityNameWrapper, CatvertisedName, CatvertisedList, CatvertisedItem } from './Styles';
 
 const StyledInput = styled.div.attrs({
   children: (props) => (
@@ -70,6 +71,7 @@ const StyledButton = styled.button`
   }
 `;
 
+<<<<<<< HEAD
 const CatvertisedName = styled.span`
   margin-left: 10px;
 
@@ -146,6 +148,8 @@ const CatvertisedItem = styled.li`
   }
 `;
 
+=======
+>>>>>>> Extract duplicated styles to separate file
 const CatvertisedPickCatList = styled(CatvertisedList)`
   padding: 7px 0 0 7px;
   margin-left: -7px;
@@ -218,10 +222,6 @@ const CatvertisedClose = styled.button`
   font-size: 20px;
   padding: 0;
   cursor: pointer;
-`;
-
-const EntityNameWrapper = styled.b`
-  white-space: nowrap;
 `;
 
 const CatvertisedBack = styled.button`

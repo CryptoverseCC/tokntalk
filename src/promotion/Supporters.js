@@ -5,21 +5,18 @@ import styled from 'styled-components';
 import Link from '../Link';
 import { EntityAvatar } from '../Entity';
 import Catvertised from './Catvertised';
+import {
+  EntityNameWrapper,
+  CatvertisedName,
+  CatvertisedScore,
+  CatvertisedList,
+  CatvertisedItem,
+  EntityDescription,
+} from './Styles';
 
 const formatCurrency = (value) => {
   return (value * 10 ** -18).toFixed(3);
 };
-
-const EntityDescription = styled.div`
-  @media (max-width: 770px) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`;
-
-const EntityNameWrapper = styled.b`
-  white-space: nowrap;
-`;
 
 const InlineButton = styled.button`
   outline: none;
@@ -27,82 +24,6 @@ const InlineButton = styled.button`
   border: none;
   cursor: pointer;
   color: #264dd9;
-`;
-
-const CatvertisedName = styled.span`
-  margin-left: 10px;
-
-  @media (max-width: 770px) {
-    margin-left: 10px;
-    white-space: nowrap;
-  }
-`;
-
-const CatvertisedScore = styled.div`
-  margin-left: 10px;
-  font-size: 14px;
-  color: #928f9b;
-  font-weight: 500;
-`;
-
-const CatvertisedList = styled.ul`
-  max-height: 340px;
-  overflow-y: scroll;
-  position: relative;
-
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #dde0eb;
-  }
-
-  @media (max-width: 770px) {
-    display: flex;
-    align-items: flex-start;
-    overflow-y: unset;
-    overflow-x: scroll;
-
-    ${CatvertisedName} {
-      margin-left: 0;
-    }
-
-    ${CatvertisedScore} {
-      margin-left: 0;
-    }
-  }
-`;
-
-const CatvertisedItem = styled.li`
-  height: 54px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  flex-shrink: 0;
-  & + & {
-    margin-top: 20px;
-  }
-
-  :last-child {
-    margin-bottom: 30px;
-  }
-
-  @media (max-width: 770px) {
-    overflow: hidden;
-    height: auto;
-    width: 54px;
-
-    & + & {
-      margin-top: 0;
-      margin-left: 10px;
-    }
-  }
 `;
 
 const CatvertisedItemLink = styled(Link)`

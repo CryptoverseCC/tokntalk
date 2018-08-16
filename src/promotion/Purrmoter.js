@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { EntityName, EntityAvatar } from '../Entity';
 import Link from '../Link';
+import { EntityDescription, EntityNameWrapper, CatvertisedScore, CatvertisedName } from './Styles';
 
 const CatvertisedTitle = styled.div`
   font-family: 'AvenirNext';
@@ -29,33 +30,6 @@ const CatvertisedHeader = styled.div`
     flex-direction: row;
     align-items: baseline;
   }
-`;
-
-const EntityDescription = styled.div`
-  @media (max-width: 770px) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`;
-
-const CatvertisedName = styled.span`
-  margin-left: 10px;
-
-  @media (max-width: 770px) {
-    margin-left: 10px;
-    white-space: nowrap;
-  }
-`;
-
-const EntityNameWrapper = styled.b`
-  white-space: nowrap;
-`;
-
-const CatvertisedScore = styled.div`
-  margin-left: 10px;
-  font-size: 14px;
-  color: #928f9b;
-  font-weight: 500;
 `;
 
 const PurrmoterDiv = styled(({ hiddenOnMobile, ...restProps }) => <Link {...restProps} />)`
