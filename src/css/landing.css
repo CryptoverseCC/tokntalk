@@ -17,7 +17,9 @@ p,
 .subtitle {
   color: #1e2332;
 }
-
+.title {
+  line-height: 0.95;
+}
 .subtitle {
   line-height: 1.2;
 }
