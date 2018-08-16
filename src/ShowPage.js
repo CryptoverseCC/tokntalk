@@ -133,8 +133,13 @@ export default class ShowPage extends Component {
                 </FlatContainer>
                 <FlatContainer style={{ marginTop: '30px' }}>
                   <AppContext.Consumer>
-                    {({ boostStore: { getBoosts } }) => (
-                      <PromotionBox getBoosts={getBoosts} token={entityId} showPurrmoter={false} />
+                    {({ boostStore: { getBoosts, getSupportings } }) => (
+                      <PromotionBox
+                        getBoosts={getBoosts}
+                        getSupportings={getSupportings}
+                        token={entityId}
+                        showPurrmoter={false}
+                      />
                     )}
                   </AppContext.Consumer>
                 </FlatContainer>

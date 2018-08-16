@@ -80,21 +80,25 @@ export class PromotionBox extends Component {
 
   componentDidMount() {
     this.props.getBoosts(this.props.token);
+    this.props.getSupportings(this.props.token);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.token !== this.props.token) {
       this.props.getBoosts(nextProps.token);
+      this.props.getSupportings(nextProps.token);
     }
   }
 
   render = () => {
     return (
       <Context.Consumer>
-        {({ boostStore: { boosts } }) => (
+        {({ boostStore: { boosts, supportings } }) => (
           <PromotionBox.Container className={this.props.className}>
-            {this.state.currentPage === PAGE.SUPPORTERS && this.renderSupporters(boosts)}
-            {this.state.currentPage === PAGE.SUPPORTING && this.renderSupporters(boosts)}
+            {this.state.currentPage === PAGE.SUPPORTERS &&
+              this.renderTabContent(boosts, Object.keys(boosts).length, Object.keys(supportings).length)}
+            {this.state.currentPage === PAGE.SUPPORTING &&
+              this.renderTabContent(supportings, Object.keys(boosts).length, Object.keys(supportings).length)}
             {this.state.currentPage === PAGE.CATVERTISING && this.renderCatvertising(boosts)}
           </PromotionBox.Container>
         )}
@@ -102,44 +106,38 @@ export class PromotionBox extends Component {
     );
   };
 
-  renderCatvertising = (boosts) => {
-    return (
-      <Catvertised
-        getBoosts={() => boosts}
-        token={this.props.token}
-        onBackClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}
-      />
-    );
-  };
-
-  renderSupporters = (boosts) => {
+  renderTabContent = (items, supportersCount, supportingCount) => {
     return (
       <React.Fragment>
         {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
-        {!this.props.showPurrmoter && this.renderTabs(Object.keys(boosts).length, 0)}
+        {!this.props.showPurrmoter && this.renderTabs(supportersCount, supportingCount)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
           <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}>Promote yourself</AddAKitty>
         )}
-        {Object.keys(boosts).length > 0 && (
-          <CatvertisedList>
-            {Object.entries(boosts)
-              .sort(([, { score: a }], [, { score: b }]) => b - a)
-              .map(([id, { score, context_info: contextInfo }]) => (
-                <CatvertisedItem key={id}>
-                  <CatvertisedItemLink to={`/${id}`}>
-                    <EntityAvatar size="medium" id={id} entityInfo={contextInfo} />
-                    <EntityDescription>
-                      <CatvertisedName>
-                        <EntityNameWrapper>{contextInfo.name}</EntityNameWrapper>
-                      </CatvertisedName>
-                      <CatvertisedScore>{formatCurrency(score)} ETH</CatvertisedScore>
-                    </EntityDescription>
-                  </CatvertisedItemLink>
-                </CatvertisedItem>
-              ))}
-          </CatvertisedList>
-        )}
+        {Object.keys(items).length > 0 && this.renderList(items)}
       </React.Fragment>
+    );
+  };
+
+  renderList = (items) => {
+    return (
+      <CatvertisedList>
+        {Object.entries(items)
+          .sort(([, { score: a }], [, { score: b }]) => b - a)
+          .map(([id, { score, context_info: contextInfo }]) => (
+            <CatvertisedItem key={id}>
+              <CatvertisedItemLink to={`/${id}`}>
+                <EntityAvatar size="medium" id={id} entityInfo={contextInfo} />
+                <EntityDescription>
+                  <CatvertisedName>
+                    <EntityNameWrapper>{contextInfo.name}</EntityNameWrapper>
+                  </CatvertisedName>
+                  <CatvertisedScore>{formatCurrency(score)} ETH</CatvertisedScore>
+                </EntityDescription>
+              </CatvertisedItemLink>
+            </CatvertisedItem>
+          ))}
+      </CatvertisedList>
     );
   };
 
@@ -155,6 +153,16 @@ export class PromotionBox extends Component {
           </Tab>
         </TabList>
       </Tabs>
+    );
+  };
+
+  renderCatvertising = (boosts) => {
+    return (
+      <Catvertised
+        getBoosts={() => boosts}
+        token={this.props.token}
+        onBackClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}
+      />
     );
   };
 }

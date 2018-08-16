@@ -227,6 +227,42 @@ export const getBoosts = async (token) => {
   }
 };
 
+export const getSupportings = async (token) => {
+  try {
+    const res = await getRanking(
+      [
+        {
+          algorithm: 'cryptoverse_supporting',
+          params: {
+            asset: INTERFACE_BOOST_NETWORK,
+            entity: token,
+            fee_address: INTERFACE_BOOST_ADDRESS,
+          },
+        },
+      ],
+      'api/decorate-with-opensea',
+    );
+
+    const { items: supporting } = res;
+    const supportersMap = supporting.reduce((acc, superstinger) => {
+      if (isAddress(superstinger.id)) {
+        return {
+          ...acc,
+          [superstinger.id]: { ...superstinger, context_info: getEntityInfoForAddress(superstinger.id) },
+        };
+      }
+      const [, address] = superstinger.id.split(':');
+      if (!find({ address })(ercs721)) {
+        return acc;
+      }
+      return { ...acc, [superstinger.id]: superstinger };
+    }, {});
+    return supportersMap;
+  } catch (e) {
+    return {};
+  }
+};
+
 export const getWeb3State = async () => {
   try {
     const web3 = await getWeb3();
