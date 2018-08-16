@@ -13,6 +13,7 @@ import { IfActiveEntity, Entity } from './Entity';
 import { FlatContainer, ContentContainer, H4 } from './Components';
 import clubs, { TokenImage } from './clubs';
 import { DiscoverIcon } from './Icons';
+import { UnreadedCount } from './UnreadedMessages';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -148,6 +149,7 @@ const Token = ({ asset }) => {
     <YourCommunitiesLink to={`/discover/byToken/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
+      <UnreadedCount token={token} />
     </YourCommunitiesLink>
   );
 };

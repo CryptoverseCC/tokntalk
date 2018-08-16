@@ -31,23 +31,14 @@ import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
 import NotFound from './NotFound';
-import { getEntityInfoForAddress } from './utils';
+import { Storage, getEntityInfoForAddress } from './utils';
 import WalletModal from './WalletModal';
+import { UnreadedMessagesProvider } from './UnreadedMessages';
 
 const {
-  REACT_APP_NAME: APP_NAME,
   REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
   REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID,
 } = process.env;
-
-const Storage = (storage = localStorage) => ({
-  getItem(key) {
-    return storage.getItem(`${APP_NAME}_${key}`);
-  },
-  setItem(key, value) {
-    return storage.setItem(`${APP_NAME}_${key}`, value);
-  },
-});
 
 export const produceEntities = (myEntities, previousActiveEntity) => {
   const firstEntity = myEntities[0];
@@ -455,12 +446,14 @@ export default class App extends Component {
           <React.Fragment>
             <Header />
             <WalletModal />
-            <RoutesWithRouter
-              getFeedItem={this.getFeedItem}
-              getFeedItems={this.getFeedItems}
-              getNewFeedItems={this.getNewFeedItems}
-              getEntityInfo={this.getEntityInfo}
-            />
+            <UnreadedMessagesProvider>
+              <RoutesWithRouter
+                getFeedItem={this.getFeedItem}
+                getFeedItems={this.getFeedItems}
+                getNewFeedItems={this.getNewFeedItems}
+                getEntityInfo={this.getEntityInfo}
+              />
+            </UnreadedMessagesProvider>
             <PositionedFooter />
           </React.Fragment>
         </Router>

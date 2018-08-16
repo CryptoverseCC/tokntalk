@@ -14,7 +14,7 @@ import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
-import { validateParams } from './utils';
+import { Storage, validateParams } from './utils';
 import clubs, { TokenImage } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
@@ -34,6 +34,7 @@ import {
 } from './Entity';
 
 import exportIcon from './img/export.svg';
+import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -766,7 +767,10 @@ export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
         shadowColor={token.shadowColor}
       >
         <TokenTileWrapper>
-          <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
+          <div className="is-flex">
+            <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
+            {!small && <UnreadedCount showUndiscovered token={token} />}
+          </div>
           <div>
             <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
             {!small && <H3>{token.name}</H3>}
@@ -816,6 +820,7 @@ const ActiveEntityIsNotFromFamily = ({ token }) => (
 );
 
 export class FeedForToken extends Component {
+  storage = Storage();
   state = {
     loading: false,
     feedLoadingMore: false,
@@ -827,10 +832,24 @@ export class FeedForToken extends Component {
     this.fetchFeed();
   }
 
+  setFeedVersion = async (version) => {
+    const { token } = this.props;
+    const latestVersions = JSON.parse(this.storage.getItem(FEED_VERSION_KEY));
+
+    this.storage.setItem(
+      FEED_VERSION_KEY,
+      JSON.stringify({
+        ...latestVersions,
+        [`${token.network}:${token.address}`]: version,
+      }),
+    );
+  };
+
   fetchFeed = async () => {
     this.setState({ loading: true });
     const { token } = this.props;
     const asset = `${token.network}:${token.address}`;
+    const version = Date.now();
 
     try {
       const { items } = await getRanking(
@@ -848,6 +867,7 @@ export class FeedForToken extends Component {
       );
       const feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
+      this.setFeedVersion(version);
     } catch (e) {
       console.warn(e);
       this.setState({ loading: false });

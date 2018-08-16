@@ -2,7 +2,18 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import jazzicon from 'jazzicon';
 
-export function getCurrentProviderName(web3) {
+const { REACT_APP_NAME: APP_NAME } = process.env;
+
+export const Storage = (storage = localStorage) => ({
+  getItem(key) {
+    return storage.getItem(`${APP_NAME}_${key}`);
+  },
+  setItem(key, value) {
+    return storage.setItem(`${APP_NAME}_${key}`, value);
+  },
+});
+
+export function getCurrentProviderName() {
   try {
     if (window.web3.currentProvider.isMetaMask) return 'metamask';
 
