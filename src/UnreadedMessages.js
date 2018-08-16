@@ -25,14 +25,20 @@ export class UnreadedMessagesProvider extends Component {
 
   getUnreadedMessages = async () => {
     const latestVersions = JSON.parse(this.storage.getItem(FEED_VERSION_KEY) || '{}');
+    const versions = clubs.reduce((acc, club) => {
+      const asset = `${club.network}:${club.address}`;
+      return {
+        ...acc,
+        [asset]: latestVersions[asset] || 0,
+      };
+    }, {});
+
     let unreaded;
     try {
       const { items } = await getRanking([
         {
           algorithm: 'cryptoverse_club_feed_new_count',
-          params: {
-            versions: latestVersions,
-          },
+          params: { versions },
         },
       ]);
       unreaded = items.reduce((acc, item) => ({ ...acc, [item.club_id]: item.count }), {});
@@ -44,7 +50,7 @@ export class UnreadedMessagesProvider extends Component {
       const asset = `${club.network}:${club.address}`;
       return {
         ...acc,
-        [club.address]: latestVersions[asset] ? unreaded[asset] || 0 : null,
+        [club.address]: unreaded[asset],
       };
     }, {});
 
@@ -56,12 +62,12 @@ export class UnreadedMessagesProvider extends Component {
   }
 }
 
-export const UnreadedCount = ({ token, showUndiscovered, className, style }) => (
+export const UnreadedCount = ({ token, className, style }) => (
   <Context.Consumer>
     {(undreadedMessages) => {
       const count = undreadedMessages[token.address];
 
-      if (count === undefined || count === 0 || (count === null && !showUndiscovered)) {
+      if (typeof count !== 'number' || count === 0) {
         return null;
       }
 

@@ -769,7 +769,7 @@ export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
         <TokenTileWrapper>
           <div className="is-flex">
             <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
-            {!small && <UnreadedCount showUndiscovered token={token} />}
+            {!small && <UnreadedCount token={token} />}
           </div>
           <div>
             <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
@@ -865,7 +865,11 @@ export class FeedForToken extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      const feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
+      const feedItems = items
+        .filter(isValidFeedItem)
+        .map(enhanceFeedItem)
+        .sort((a, b) => b.created_at - a.created_at);
+
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
       this.setFeedVersion(version);
     } catch (e) {
