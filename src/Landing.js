@@ -13,6 +13,22 @@ import telegramColor from './img/landing/telegram-color.svg';
 import twitterColor from './img/landing/twitter-color.svg';
 import tokntalkColor from './img/landing/tokntalk-color.svg';
 
+import realityFirst from './img/landing/reality-1.png';
+import realitySecond from './img/landing/reality-2.png';
+import realityThird from './img/landing/reality-3.png';
+
+import communityFirst from './img/landing/community-1.png';
+import communitySecond from './img/landing/community-2.png';
+import communityThird from './img/landing/community-3.png';
+
+import influenceFirst from './img/landing/influence-1.png';
+import influenceSecond from './img/landing/influence-2.png';
+import influenceThird from './img/landing/influence-3.png';
+
+import buildFirst from './img/landing/build-1.png';
+import buildSecond from './img/landing/build-2.png';
+import buildThird from './img/landing/build-3.png';
+
 const Landing = styled((props) => (
   <React.Fragment>
     <div class="wrapper-landing">
@@ -35,8 +51,8 @@ const Landing = styled((props) => (
         </nav>
       </div>
 
-      <div class="container">
-        <section class="section has-text-centered landing-hero">
+      <section class="section has-text-centered landing-hero" style={{ borderBottom: 'none' }}>
+        <div class="container">
           <p class="subtitle" style={{ color: '#848DA5' }}>
             Social platform for
           </p>
@@ -47,14 +63,15 @@ const Landing = styled((props) => (
           <a class="landing-link" href="#">
             <span class="landing-link-inside">Explore</span>
           </a>
-        </section>
-      </div>
+        </div>
+      </section>
 
       <section
         class="section has-text-centered"
         style={{
           background: 'radial-gradient(at center center, rgb(198, 191, 224) 0%, rgb(255, 255, 255) 70%)',
           marginTop: '0',
+          borderBottom: 'none',
         }}
       >
         <div class="container">
@@ -78,8 +95,8 @@ const Landing = styled((props) => (
           </div>
           <div class="columns">
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature pink">
+                <img src={realityFirst} style={{ width: '585px', height: 'auto' }} />
               </figure>
               <h3>Yours</h3>
               <p class="landing-paragraph">
@@ -89,8 +106,8 @@ const Landing = styled((props) => (
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature pink">
+                <img src={realitySecond} style={{ width: '402px', height: 'auto' }} />
               </figure>
               <h3>Transparent</h3>
               <p class="landing-paragraph">
@@ -99,8 +116,8 @@ const Landing = styled((props) => (
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature pink">
+                <img src={realityThird} style={{ width: '411px', height: 'auto', marginTop: '100px' }} />
               </figure>
               <h3>Safe</h3>
               <p class="landing-paragraph">
@@ -138,8 +155,8 @@ const Landing = styled((props) => (
           </div>
           <div class="columns">
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature blue">
+                <img src={communityFirst} style={{ width: '402px', height: 'auto' }} />
               </figure>
               <h3>Instant</h3>
               <p class="landing-paragraph">
@@ -147,8 +164,8 @@ const Landing = styled((props) => (
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature blue">
+                <img src={communitySecond} style={{ width: '403px', height: 'auto' }} />
               </figure>
               <h3>Trusted</h3>
               <p class="landing-paragraph">
@@ -156,8 +173,8 @@ const Landing = styled((props) => (
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature blue">
+                <img src={communityThird} style={{ width: '402px', height: 'auto' }} />
               </figure>
               <h3>For you</h3>
               <p class="landing-paragraph">
@@ -192,15 +209,15 @@ const Landing = styled((props) => (
           </div>
           <div class="columns">
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature pink">
+                <img src={influenceFirst} style={{ width: '399px', height: 'auto' }} />
               </figure>
               <h3>Any token</h3>
               <p class="landing-paragraph">Accept tokens for an advertisement on your profile out of the box.</p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature pink">
+                <img src={influenceSecond} style={{ width: '402px', height: 'auto' }} />
               </figure>
               <h3>Influential</h3>
               <p class="landing-paragraph">
@@ -209,8 +226,11 @@ const Landing = styled((props) => (
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature pink">
+                <img
+                  src={influenceThird}
+                  style={{ width: '347px', height: 'auto', marginLeft: '60px', marginTop: '130px' }}
+                />
               </figure>
               <h3>Your token</h3>
               <p class="landing-paragraph">Create your own token and grow your own economy. </p>
@@ -237,8 +257,8 @@ const Landing = styled((props) => (
           </div>
           <div class="columns">
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature yellow">
+                <img src={buildFirst} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
               </figure>
               <h3>Token</h3>
               <p class="landing-paragraph">
@@ -246,15 +266,15 @@ const Landing = styled((props) => (
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature yellow">
+                <img src={buildSecond} style={{ width: '338px', height: 'auto', marginTop: '30px' }} />
               </figure>
               <h3>Platform</h3>
               <p class="landing-paragraph">Create a platform - specific functionality and easily monetize your work.</p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature">
-                <img src="" />
+              <figure class="landing-feature yellow">
+                <img src={buildThird} style={{ width: '209px', height: 'auto', marginTop: '30px' }} />
               </figure>
               <h3>Multi-chain</h3>
               <p class="landing-paragraph">
@@ -271,6 +291,31 @@ const Landing = styled((props) => (
           <p class="author">Kitty</p>
         </div>
       </section>
+
+      <section class="section has-text-centered" style={{ borderBottom: 'none' }}>
+        <div class="container">
+          <div class="landing-section-introduction">
+            <h2>Your economic friends are here.</h2>
+            <p class="subtitle">
+              More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every Ethereum
+              provider.
+            </p>
+            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+              <span class="landing-link-inside">Say hello</span>
+            </a>
+          </div>
+          <div class="columns">
+            <div class="column is-twelve">
+              <figure class="landing-feature landing-hopinside">
+                <a href="app.html" class="landing-button">
+                  Hop inside
+                </a>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer class="landing-footer">
         <div class="container">
           <div class="columns" style={{ marginBottom: '90px' }}>
