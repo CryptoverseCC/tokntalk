@@ -63,7 +63,7 @@ const PAGE = {
   CATVERTISING: 'catvertising',
 };
 
-export class Supporters extends Component {
+export class PromotionBox extends Component {
   state = {
     currentPage: PAGE.SUPPORTERS,
   };
@@ -89,11 +89,11 @@ export class Supporters extends Component {
     return (
       <Context.Consumer>
         {({ boostStore: { boosts } }) => (
-          <Supporters.Container className={this.props.className}>
+          <PromotionBox.Container className={this.props.className}>
             {this.state.currentPage === PAGE.SUPPORTERS && this.renderSupporters(boosts)}
             {this.state.currentPage === PAGE.SUPPORTING && this.renderSupporters(boosts)}
             {this.state.currentPage === PAGE.CATVERTISING && this.renderCatvertising(boosts)}
-          </Supporters.Container>
+          </PromotionBox.Container>
         )}
       </Context.Consumer>
     );
