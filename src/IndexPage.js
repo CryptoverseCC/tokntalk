@@ -7,7 +7,7 @@ import AppContext from './Context';
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
 import Hero from './Hero';
-import { Supporters } from './Supporters';
+import { Supporters } from './promotion/Supporters';
 import { HeaderSpacer } from './Header';
 import { IfActiveEntity, Entity } from './Entity';
 import { FlatContainer, ContentContainer, H4 } from './Components';

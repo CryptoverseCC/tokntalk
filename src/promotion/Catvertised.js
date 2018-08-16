@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { A } from './Link';
-import Context from './Context';
-import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from './Entity';
-import checkmarkIcon from './img/checkmark.svg';
+import { A } from '../Link';
+import Context from '../Context';
+import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from '../Entity';
+import checkmarkIcon from '../img/checkmark.svg';
 
 const StyledInput = styled.div.attrs({
   children: (props) => (

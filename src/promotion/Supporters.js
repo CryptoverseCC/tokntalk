@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Purrmoter } from './Purrmoter';
-import Context from './Context';
+import Context from '../Context';
 import styled from 'styled-components';
-import Link from './Link';
-import { EntityAvatar } from './Entity';
+import Link from '../Link';
+import { EntityAvatar } from '../Entity';
 import Catvertised from './Catvertised';
 
 const formatCurrency = (value) => {
@@ -181,7 +181,7 @@ export class Supporters extends Component {
   renderCatvertising = (boosts) => {
     return (
       <Catvertised
-        getBoosts={boosts}
+        getBoosts={() => boosts}
         token={this.props.token}
         onBackClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}
       />

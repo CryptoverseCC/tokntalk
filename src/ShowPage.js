@@ -17,8 +17,8 @@ import IdentityAvatar from './Avatar';
 import { socialIcons } from './Icons';
 import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
-import Advertised from './Catvertised';
 import clubs from './clubs';
+import Advertised from './promotion/Catvertised';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery

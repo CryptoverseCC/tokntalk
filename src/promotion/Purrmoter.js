@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { EntityName, EntityAvatar } from './Entity';
-import Link from './Link';
+import { EntityName, EntityAvatar } from '../Entity';
+import Link from '../Link';
 
 const CatvertisedTitle = styled.div`
   font-family: 'AvenirNext';
