@@ -171,27 +171,27 @@ export class Supporters extends Component {
           <Supporters.Container className={this.props.className}>
             {this.state.currentPage === PAGE.SUPPORTERS && this.renderSupporters(boosts)}
             {this.state.currentPage === PAGE.SUPPORTING && this.renderSupporters(boosts)}
-            {this.state.currentPage === PAGE.CATVERTISING && (
-              <Context.Consumer>
-                {({ boostStore: { getBoosts } }) => (
-                  <Catvertised
-                    getBoosts={getBoosts}
-                    token={this.props.token}
-                    onBackClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}
-                  />
-                )}
-              </Context.Consumer>
-            )}
+            {this.state.currentPage === PAGE.CATVERTISING && this.renderCatvertising(boosts)}
           </Supporters.Container>
         )}
       </Context.Consumer>
     );
   };
 
+  renderCatvertising = (boosts) => {
+    return (
+      <Catvertised
+        getBoosts={boosts}
+        token={this.props.token}
+        onBackClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}
+      />
+    );
+  };
+
   renderSupporters = (boosts) => {
     return (
       <React.Fragment>
-        <Purrmoter token={this.props.token} onAddKittyClick={() => this.setState({ currentPage: PAGE.CATVERTISING })} />
+        <Purrmoter token={this.props.token} />
         <div>
           <InlineButton onClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}>Supporters</InlineButton>
           <InlineButton onClick={() => this.setState({ currentPage: PAGE.SUPPORTING })}>Supporting</InlineButton>
