@@ -478,56 +478,9 @@ export class Card extends React.Component {
   renderItem = () => {
     const { areRepliesCollapsed } = this.state;
     const { feedItem, replies, reactions, disabledInteractions } = this.props;
-    const { isFromAddress } = feedItem;
 
     if (feedItem.type === 'like') {
-      return (
-        <React.Fragment>
-          <article className="media">
-            <div className="media-left" style={{ width: '64px' }}>
-              <LinkedEntityAvatar
-                size="medium"
-                reaction={<LikeReaction />}
-                id={isFromAddress ? feedItem.author : feedItem.context}
-                entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
-              />
-            </div>
-            <div className="media-content">
-              <CardTitle
-                from={isFromAddress ? feedItem.author : feedItem.context}
-                entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
-                createdAt={feedItem.created_at}
-                family={feedItem.family}
-                suffix={
-                  <span>
-                    reacted to <b>Post</b>
-                  </span>
-                }
-                onVerify={() => this.onVerify(feedItem)}
-              />
-            </div>
-          </article>
-          <Post
-            style={{
-              borderTop: '0',
-              borderRadius: '12px',
-              backgroundColor: '#f4f8fd',
-              marginLeft: '70px',
-              paddingLeft: '15px',
-              paddingBottom: '15px',
-              paddingRight: '15px',
-            }}
-            from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
-            entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
-            createdAt={feedItem.target.created_at}
-            message={feedItem.target.target}
-            family={feedItem.target.family}
-            suffix={this.getSuffix(feedItem.target)}
-            disabledInteractions={disabledInteractions}
-            onVerify={() => this.onVerify(feedItem)}
-          />
-        </React.Fragment>
-      );
+      return this.renderLikeItem(feedItem, disabledInteractions);
     }
 
     return (
@@ -587,6 +540,57 @@ export class Card extends React.Component {
             {() => <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)} />}
           </IfActiveEntity>
         )}
+      </React.Fragment>
+    );
+  };
+
+  renderLikeItem = (feedItem, disabledInteractions) => {
+    const { isFromAddress } = feedItem;
+    return (
+      <React.Fragment>
+        <article className="media">
+          <div className="media-left" style={{ width: '64px' }}>
+            <LinkedEntityAvatar
+              size="medium"
+              reaction={<LikeReaction />}
+              id={isFromAddress ? feedItem.author : feedItem.context}
+              entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
+            />
+          </div>
+          <div className="media-content">
+            <CardTitle
+              from={isFromAddress ? feedItem.author : feedItem.context}
+              entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
+              createdAt={feedItem.created_at}
+              family={feedItem.family}
+              suffix={
+                <span>
+                  reacted to <b>Post</b>
+                </span>
+              }
+              onVerify={() => this.onVerify(feedItem)}
+            />
+          </div>
+        </article>
+        <Post
+          style={{
+            borderTop: '0',
+            borderRadius: '12px',
+            backgroundColor: '#f4f8fd',
+            marginLeft: '70px',
+            paddingLeft: '15px',
+            paddingBottom: '15px',
+            paddingRight: '15px',
+          }}
+          from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
+          entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
+          createdAt={feedItem.target.created_at}
+          message={feedItem.target.target}
+          family={feedItem.target.family}
+          suffix={this.getSuffix(feedItem.target)}
+          disabledInteractions={disabledInteractions}
+          onVerify={() => this.onVerify(feedItem.target)}
+        />
       </React.Fragment>
     );
   };
