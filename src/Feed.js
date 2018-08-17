@@ -283,9 +283,9 @@ const Reply = ({
               />
             )}
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
-            <span onClick={onVerify} style={{ marginLeft: '15px' }}>
+            <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
               {family}
-            </span>
+            </Family>
           </small>
         </div>
       </div>
@@ -314,6 +314,16 @@ const SenderName = styled(Link)`
   font-size: 1rem;
 `;
 
+const Family = styled.span`
+  color: #264dd9;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: #2f2670;
+  }
+`;
+
 const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onVerify }) => {
   return (
     <React.Fragment>
@@ -333,9 +343,9 @@ const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onV
           ) : (
             timeago().format(createdAt)
           )}
-          <span onClick={onVerify} style={{ marginLeft: '15px' }}>
+          <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
             {family}
-          </span>
+          </Family>
         </span>
       </div>
       {suffix}
