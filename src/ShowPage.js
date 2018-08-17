@@ -22,6 +22,7 @@ import clubs from './clubs';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
+import closeIcon from './img/small-remove.svg';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -290,39 +291,49 @@ class EditableLabel extends Component {
     const { editing, isValid, editedValue } = this.state;
 
     return (
-      <EditableLabelContainer
-        onClick={(e) => editing && e.preventDefault()}
-        editing={editing}
-        style={{ marginLeft: '15px' }}
-      >
-        {editing ? (
-          <LabelInput
-            placeholder={`${type} profile link`}
-            value={editedValue}
-            onChange={this.onChange}
-            isValid={isValid}
+      <div>
+        <EditableLabelContainer
+          onClick={(e) => editing && e.preventDefault()}
+          editing={editing}
+          style={{ marginLeft: '15px', float: 'left' }}
+        >
+          {editing ? (
+            <LabelInput
+              placeholder={`${type} profile link`}
+              value={editedValue}
+              onChange={this.onChange}
+              isValid={isValid}
+            />
+          ) : (
+            <SocialUsername link={value} />
+          )}
+          {!editing ? (
+            <InlineButton onClick={this.edit} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
+              {editable && 'Edit'}
+            </InlineButton>
+          ) : (
+            <AppContext.Consumer>
+              {({ feedStore: { label } }) => (
+                <InlineButton
+                  onClick={this.submitLabel(label)}
+                  style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                  disabled={!isValid}
+                >
+                  Confirm
+                </InlineButton>
+              )}
+            </AppContext.Consumer>
+          )}
+        </EditableLabelContainer>
+        {editing && (
+          <img
+            alt=""
+            src={closeIcon}
+            style={{ float: 'left', padding: '13px' }}
+            onClick={() => this.setState({ editing: false })}
           />
-        ) : (
-          <SocialUsername link={value} />
         )}
-        {!editing ? (
-          <InlineButton onClick={this.edit} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
-            {editable && 'Edit'}
-          </InlineButton>
-        ) : (
-          <AppContext.Consumer>
-            {({ feedStore: { label } }) => (
-              <InlineButton
-                onClick={this.submitLabel(label)}
-                style={{ fontSize: '1rem', marginLeft: 'auto' }}
-                disabled={!isValid}
-              >
-                Confirm
-              </InlineButton>
-            )}
-          </AppContext.Consumer>
-        )}
-      </EditableLabelContainer>
+      </div>
     );
   }
 }
