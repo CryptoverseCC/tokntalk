@@ -14,6 +14,8 @@ import twitterColor from './img/landing/twitter-color.svg';
 import tokntalkColor from './img/landing/tokntalk-color.svg';
 import arrowUp from './img/landing/round-up.svg';
 
+import stairsHero from './img/landing/stairs.png';
+
 import realityFirst from './img/landing/reality-1.png';
 import realitySecond from './img/landing/reality-2.png';
 import realityThird from './img/landing/reality-3.png';
@@ -52,16 +54,19 @@ const Landing = styled((props) => (
         </nav>
       </div>
 
-      <section class="section has-text-centered landing-hero" style={{ borderBottom: 'none' }} id="first-section">
+      <section
+        class="section has-text-centered landing-hero-communities"
+        style={{ borderBottom: 'none' }}
+        id="first-section"
+      >
         <div class="container">
-          <p class="subtitle" style={{ color: '#848DA5' }}>
-            Your tokens
-          </p>
+          <p class="subtitle">Your tokens</p>
           <h1 class="title">Boosted</h1>
           <p class="subtitle">
             Additional economy for an existing token. Know more about your community and start accepting payments in
             your native currency.
           </p>
+          <img src={stairsHero} style={{ width: '850px', height: 'auto' }} />
         </div>
       </section>
 
