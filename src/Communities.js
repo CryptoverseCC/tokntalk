@@ -32,6 +32,8 @@ import buildFirst from './img/landing/build-1.png';
 import buildSecond from './img/landing/build-2.png';
 import buildThird from './img/landing/build-3.png';
 
+const { NODE_ENV, REACT_APP_INTERCOM_APP_ID } = process.env;
+
 const Landing = styled((props) => (
   <React.Fragment>
     <div class="wrapper-landing">
@@ -72,7 +74,11 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Better economy.</h2>
             <p class="subtitle">Let your project be discovered by other communities. Receive more tokens.</p>
-            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+            <a
+              class="landing-link"
+              id="userfeeds-crypto-intercom"
+              href={`mailto:${REACT_APP_INTERCOM_APP_ID}@intercom-mail.com`}
+            >
               <span class="landing-link-inside">Add a token</span>
             </a>
           </div>
