@@ -62,7 +62,7 @@ export const EntityAvatar = ({ id, entityInfo, ...props }) => {
           <IdentityAvatar
             entity={id}
             {...props}
-            backgroundColor={getEntity(id).background_color}
+            backgroundColor={`#${getEntity(id).background_color}`}
             src={getEntity(id).image_preview_url}
           />
         ) : (
@@ -91,7 +91,7 @@ export const LinkedEntityAvatar = ({ id, entityInfo, ...props }) => {
           <IdentityAvatar
             entity={id}
             {...props}
-            backgroundColor={getEntity(id).background_color}
+            backgroundColor={`#${getEntity(id).background_color}`}
             src={getEntity(id).image_preview_url}
           />
         </StyledLink>

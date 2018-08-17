@@ -93,7 +93,7 @@ export default class ShowPage extends Component {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     overflow: hidden;
-    background-color: ${({ backgroundColor }) => `#${backgroundColor}` || '#f8f9fd'};
+    background-color: ${({ backgroundColor }) => backgroundColor || '#f8f9fd'};
   `;
 
   static ProfileImage = styled.img`
@@ -117,7 +117,7 @@ export default class ShowPage extends Component {
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
               <div className="column is-3">
-                <ShowPage.ProfileImageContainer backgroundColor={entity.background_color}>
+                <ShowPage.ProfileImageContainer backgroundColor={`#${entity.background_color}`}>
                   <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
                 </ShowPage.ProfileImageContainer>
                 <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
@@ -363,7 +363,12 @@ export class SocialList extends React.Component {
         <Entity id={id}>
           {({ external_link, background_color, image_preview_url }) => (
             <SocialBadge href={external_link}>
-              <IdentityAvatar entity={id} backgroundColor={background_color} size="verySmall" src={image_preview_url} />
+              <IdentityAvatar
+                entity={id}
+                backgroundColor={`#${background_color}`}
+                size="verySmall"
+                src={image_preview_url}
+              />
               <span style={{ marginLeft: '15px' }}>{getDomain(external_link)}</span>
             </SocialBadge>
           )}
