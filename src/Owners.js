@@ -54,7 +54,7 @@ const Landing = styled((props) => (
         <div class="container">
           <h1 class="title">Earn</h1>
           <p class="subtitle" style={{ maxWidth: '650px' }}>
-            Be a mentor of your community. Share relevant posts and grow your influence. Receive Ethereum in return.
+            Be a mentor of your community. Share relevant posts and receive Ethereum in return.
           </p>
           <div class="landing-owners-introduction">
             <div class="columns">
