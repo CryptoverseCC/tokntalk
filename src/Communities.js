@@ -62,19 +62,19 @@ const Landing = styled((props) => (
         <div class="container">
           <p class="subtitle">Your tokens</p>
           <h1 class="title">Boosted</h1>
-          <p class="subtitle">
-            Additional economy for an existing token. Know more about your community and start accepting payments in
-            your native currency.
-          </p>
+          <p class="subtitle">Know more about your community and start accepting payments in your native currency.</p>
           <img src={stairsHero} style={{ width: '850px', height: 'auto' }} />
         </div>
       </section>
 
-      <section class="section has-text-centered">
+      <section class="section has-text-centered" style={{ marginTop: '0' }}>
         <div class="container">
           <div class="landing-section-introduction">
             <h2>Better economy.</h2>
             <p class="subtitle">Let your project be discovered by other communities. Receive more tokens.</p>
+            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+              <span class="landing-link-inside">Add a token</span>
+            </a>
           </div>
           <div class="columns">
             <div class="column is-one-third">
@@ -125,13 +125,10 @@ const Landing = styled((props) => (
       <section class="section has-text-centered">
         <div class="container">
           <div class="landing-section-introduction">
-            <h2>Grow community around your token.</h2>
-            <p class="subtitle">Use existing or create a new one and talk in the trusted environment.</p>
-            <a class="landing-link" href="https://tokntalk.club/discover">
-              <span class="landing-link-inside">Your clubs</span>
-            </a>
-            <a class="landing-link" href="#" style={{ marginLeft: '30px' }}>
-              <span class="landing-link-inside">Add your token</span>
+            <h2>Get to know your community.</h2>
+            <p class="subtitle">Messages coming only from your token holders. No spam, no trolls, no impersonations.</p>
+            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+              <span class="landing-link-inside">Add a token</span>
             </a>
           </div>
           <div class="columns">
@@ -139,27 +136,28 @@ const Landing = styled((props) => (
               <figure class="landing-feature blue">
                 <img src={communityFirst} style={{ width: '402px', height: 'auto' }} />
               </figure>
-              <h3>Instant</h3>
+              <h3>Know</h3>
               <p class="landing-paragraph">
-                Discovery for your project from the moment of a token release. Click. Social Network.
+                See holdings and your users’ activity. Find out about your competition and related tokens.
               </p>
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature blue">
                 <img src={communitySecond} style={{ width: '403px', height: 'auto' }} />
               </figure>
-              <h3>Trusted</h3>
+              <h3>Learn</h3>
               <p class="landing-paragraph">
-                Secure social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
+                Learn from their discussions and improve your product. You can be sure that this people have ‘skin in
+                the game’.
               </p>
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature blue">
                 <img src={communityThird} style={{ width: '402px', height: 'auto' }} />
               </figure>
-              <h3>For you</h3>
+              <h3>Improve</h3>
               <p class="landing-paragraph">
-                Discuss next features, coordinate your efforts. Talk about future of your project.
+                Be amazed with your community. Your project’s alive. It’s true digital ownership, after all.
               </p>
             </div>
           </div>
@@ -179,117 +177,20 @@ const Landing = styled((props) => (
         </div>
       </section>
 
-      <section class="section has-text-centered">
-        <div class="container">
-          <div class="landing-section-introduction">
-            <h2>Get paid for your influence.</h2>
-            <p class="subtitle">Grow influence of your avatar. Let people support you.</p>
-            <a class="landing-link" href="#">
-              <span class="landing-link-inside">Learn how to earn</span>
-            </a>
-          </div>
-          <div class="columns">
-            <div class="column is-one-third">
-              <figure class="landing-feature pink">
-                <img src={influenceFirst} style={{ width: '399px', height: 'auto' }} />
-              </figure>
-              <h3>Any token</h3>
-              <p class="landing-paragraph">Accept tokens for an advertisement on your profile out of the box.</p>
-            </div>
-            <div class="column is-one-third">
-              <figure class="landing-feature pink">
-                <img src={influenceSecond} style={{ width: '402px', height: 'auto' }} />
-              </figure>
-              <h3>Influential</h3>
-              <p class="landing-paragraph">
-                How much would you pay for a celebrity Cryptokitty that ends up on the front page of your favorite
-                magazine?
-              </p>
-            </div>
-            <div class="column is-one-third">
-              <figure class="landing-feature pink">
-                <img
-                  src={influenceThird}
-                  style={{ width: '347px', height: 'auto', marginLeft: '60px', marginTop: '130px' }}
-                />
-              </figure>
-              <h3>Your token</h3>
-              <p class="landing-paragraph">Create your own token and grow your own economy. </p>
-            </div>
-          </div>
-        </div>
-        <div class="landing-testimonial">
-          <figure class="landing-testimonial-profile">
-            <img src="" />
-          </figure>
-          <p class="landing-testimonial-paragraph">Something awesome</p>
-          <p class="author">Kitty</p>
-        </div>
-      </section>
-
-      <section class="section has-text-centered">
-        <div class="container">
-          <div class="landing-section-introduction">
-            <h2>Unbundle your creativity.</h2>
-            <p class="subtitle">Create a custom functionality for your token or the platform.</p>
-            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
-              <span class="landing-link-inside">See on Github</span>
-            </a>
-          </div>
-          <div class="columns">
-            <div class="column is-one-third">
-              <figure class="landing-feature yellow">
-                <img src={buildFirst} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
-              </figure>
-              <h3>Token</h3>
-              <p class="landing-paragraph">
-                Implement token - specific functionality and grow value of your community.{' '}
-              </p>
-            </div>
-            <div class="column is-one-third">
-              <figure class="landing-feature yellow">
-                <img src={buildSecond} style={{ width: '338px', height: 'auto', marginTop: '30px' }} />
-              </figure>
-              <h3>Platform</h3>
-              <p class="landing-paragraph">Create a platform - specific functionality and easily monetize your work.</p>
-            </div>
-            <div class="column is-one-third">
-              <figure class="landing-feature yellow">
-                <img src={buildThird} style={{ width: '209px', height: 'auto', marginTop: '30px' }} />
-              </figure>
-              <h3>Multi-chain</h3>
-              <p class="landing-paragraph">
-                Live on Ethereum Mainnet, Kovan, Ropsten. Multiple storage systems available.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="landing-testimonial">
-          <figure class="landing-testimonial-profile">
-            <img src="" />
-          </figure>
-          <p class="landing-testimonial-paragraph">LMAO DANCING KITTY</p>
-          <p class="author">Kitty</p>
-        </div>
-      </section>
-
       <section class="section has-text-centered" style={{ borderBottom: 'none' }}>
         <div class="container">
           <div class="landing-section-introduction">
-            <h2>Your economic friends are here.</h2>
+            <h2>It's for your community.</h2>
             <p class="subtitle">
               More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every Ethereum
               provider.
             </p>
-            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
-              <span class="landing-link-inside">Say hello</span>
-            </a>
           </div>
           <div class="columns">
             <div class="column is-twelve">
               <figure class="landing-feature landing-hopinside">
                 <a href="app.html" class="landing-button">
-                  Hop inside
+                  Add a token
                 </a>
               </figure>
             </div>
