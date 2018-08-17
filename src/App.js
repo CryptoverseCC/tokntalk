@@ -21,6 +21,7 @@ import {
   getLabels,
   getEntityTokens,
   getBoosts,
+  getSupportings,
   getFeedItem,
   getFeedItems,
 } from './api';
@@ -75,6 +76,7 @@ export default class App extends Component {
     temporaryReplies: {},
     temporaryReactions: {},
     boosts: {},
+    supportings: {},
     from: undefined,
     provider: undefined,
     waitingForConfirm: 0,
@@ -191,6 +193,13 @@ export default class App extends Component {
     const boosts = await getBoosts(tokenId);
     if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
       this.setState({ boosts });
+    }
+  };
+
+  getSupportings = async (tokenId) => {
+    const supportings = await getSupportings(tokenId);
+    if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
+      this.setState({ supportings });
     }
   };
 
@@ -372,6 +381,7 @@ export default class App extends Component {
       getMoreFeedItems,
       isBoostable,
       getBoosts,
+      getSupportings,
       toggleHttpClaims,
     } = this;
     const {
@@ -391,6 +401,7 @@ export default class App extends Component {
       from,
       networkName,
       boosts,
+      supportings,
       http,
       waitingForConfirm,
     } = this.state;
@@ -433,6 +444,8 @@ export default class App extends Component {
             boosts,
             isBoostable,
             getBoosts,
+            supportings,
+            getSupportings,
           },
           web3Store: {
             provider,

@@ -1,5 +1,5 @@
 import React from 'react';
-import TextArea from 'react-autosize-textarea';
+import TextArea from 'react-autosize-textarea/lib';
 
 import styled, { css } from 'styled-components';
 import Context from './Context';

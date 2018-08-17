@@ -7,7 +7,7 @@ import AppContext from './Context';
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
 import Hero from './Hero';
-import Advertised from './Catvertised';
+import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { IfActiveEntity, Entity } from './Entity';
 import { FlatContainer, ContentContainer, H4 } from './Components';
@@ -67,7 +67,14 @@ export default class IndexPage extends Component {
             <ActiveEntityTokens />
             <FlatContainer>
               <AppContext.Consumer>
-                {({ boostStore: { getBoosts } }) => <Advertised getBoosts={getBoosts} token={DEFAULT_TOKEN_ID} />}
+                {({ boostStore: { getBoosts, getSupportings } }) => (
+                  <PromotionBox
+                    getBoosts={getBoosts}
+                    getSupportings={getSupportings}
+                    token={DEFAULT_TOKEN_ID}
+                    showPurrmoter={true}
+                  />
+                )}
               </AppContext.Consumer>
             </FlatContainer>
           </div>
