@@ -78,7 +78,7 @@ export const UnreadedCount = ({ token, className, style }) => (
           primaryColor={token.primaryColor}
           secondaryColor={token.secondaryColor}
         >
-          {count === null ? 'Undiscovered' : count > 100 ? '99+' : `${count} New`}
+          {count === null ? 'Undiscovered' : count > 100 ? '99+' : `+${count}`}
         </UnreadedCountContainer>
       );
     }}
@@ -86,12 +86,17 @@ export const UnreadedCount = ({ token, className, style }) => (
 );
 
 export const UnreadedCountContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-left: auto;
   align-self: center;
-  border-radius: 6px;
-  padding: 2px 5px;
-  font-size: 13px;
+  border-radius: 20px;
+  min-width: 40px;
+  height: 25px;
+  font-size: 12px;
+  text-align: center;
   font-weight: 600;
-  color: ${({ primaryColor }) => primaryColor}
-  background: ${({ secondaryColor }) => secondaryColor}
+  color: #1b2437;
+  background: white;
 `;
