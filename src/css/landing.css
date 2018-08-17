@@ -223,6 +223,12 @@ h3 {
   margin-bottom: 90px;
 }
 
+.landing-owners-introduction {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  background: radial-gradient(ellipse at center, rgba(230,251,251,1) 0%,rgba(255,255,255,1) 80%);
+}
+
 .landing-feature {
   border-radius: 20px;
   height: 470px;
@@ -355,6 +361,10 @@ a.landing-button:hover {
 
 #furlin {
   background-image: url('../img/landing/furlin.png');
+}
+
+#bot {
+  background-image: url('../img/landing/bot.png');
 }
 
 .landing-footer {

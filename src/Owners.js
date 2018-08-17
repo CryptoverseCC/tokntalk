@@ -14,7 +14,11 @@ import twitterColor from './img/landing/twitter-color.svg';
 import tokntalkColor from './img/landing/tokntalk-color.svg';
 import arrowUp from './img/landing/round-up.svg';
 
-import stairsHero from './img/landing/stairs.png';
+import tokenJap from './img/landing/token-jap.png';
+import tokenPineapple from './img/landing/token-pineapple.png';
+import tokenEth from './img/landing/token-eth.png';
+import tokenSpline from './img/landing/token-spline.png';
+import tokenSmile from './img/landing/token-smile.png';
 
 import reputationFirst from './img/landing/reputation-1.png';
 import reputationSecond from './img/landing/reputation-2.png';
@@ -52,21 +56,23 @@ const Landing = styled((props) => (
           <p class="subtitle" style={{ maxWidth: '650px' }}>
             Be a mentor of your community. Share relevant posts and grow your influence. Receive Ethereum in return.
           </p>
-          <div class="columns">
-            <div class="column">
-              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
-            </div>
-            <div class="column">
-              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
-            </div>
-            <div class="column">
-              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
-            </div>
-            <div class="column">
-              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
-            </div>
-            <div class="column">
-              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
+          <div class="landing-owners-introduction">
+            <div class="columns">
+              <div class="column">
+                <img src={tokenJap} style={{ width: '148px', height: 'auto' }} />
+              </div>
+              <div class="column">
+                <img src={tokenPineapple} style={{ width: '187px', height: 'auto' }} />
+              </div>
+              <div class="column">
+                <img src={tokenEth} style={{ width: '265px', height: 'auto' }} />
+              </div>
+              <div class="column">
+                <img src={tokenSpline} style={{ width: '184px', height: 'auto' }} />
+              </div>
+              <div class="column">
+                <img src={tokenSmile} style={{ width: '168px', height: 'auto' }} />
+              </div>
             </div>
           </div>
         </div>
@@ -167,7 +173,7 @@ const Landing = styled((props) => (
           </div>
           <div class="landing-testimonial">
             <a href="https://tokntalk.club/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">
-              <figure class="landing-testimonial-profile" id="furlin" />
+              <figure class="landing-testimonial-profile" id="bot" />
             </a>
             <p class="landing-testimonial-paragraph">
               ““For me, you’re the hero that this community needs. I am happy to support you.“
