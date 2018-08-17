@@ -27,13 +27,8 @@ import {
 import { getEntityData } from './entityApi';
 import Header from './Header';
 import { PositionedFooter } from './Footer';
-import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
-import Landing from './Landing';
-import Communities from './Communities';
-import Owners from './Owners';
-import NotFound from './NotFound';
 import { getEntityInfoForAddress } from './utils';
 
 const {
@@ -420,18 +415,14 @@ export default class App extends Component {
           },
         }}
       >
-        <Router>
-          <React.Fragment>
-            <Header />
-            <RoutesWithRouter
-              getFeedItem={this.getFeedItem}
-              getFeedItems={this.getFeedItems}
-              getNewFeedItems={this.getNewFeedItems}
-              getEntityInfo={this.getEntityInfo}
-            />
-            <PositionedFooter />
-          </React.Fragment>
-        </Router>
+        <Header />
+        <RoutesWithRouter
+          getFeedItem={this.getFeedItem}
+          getFeedItems={this.getFeedItems}
+          getNewFeedItems={this.getNewFeedItems}
+          getEntityInfo={this.getEntityInfo}
+        />
+        <PositionedFooter />
       </Context.Provider>
     );
   }
@@ -451,8 +442,6 @@ class Routes extends Component {
     <IndexPage {...props} getFeedItems={this.props.getFeedItems} getNewFeedItems={this.props.getNewFeedItems} />
   );
 
-  renderFaqPage = (props) => <FAQPage />;
-
   renderShowPage = (props) => (
     <ShowPage
       {...props}
@@ -468,24 +457,8 @@ class Routes extends Component {
 
   renderDiscover = (props) => <Discover {...props} />;
 
-  renderLanding = (props) => <Landing {...props} />;
-
-  renderCommunities = (props) => <Communities {...props} />;
-
-  renderOwners = (props) => <Owners {...props} />;
-
   render() {
-    const {
-      renderModalThread,
-      renderShowPage,
-      renderFaqPage,
-      renderIndexPage,
-      renderThread,
-      renderDiscover,
-      renderOwners,
-      renderLanding,
-      renderCommunities,
-    } = this;
+    const { renderModalThread, renderShowPage, renderFaqPage, renderIndexPage, renderThread, renderDiscover } = this;
     const { location } = this.props;
     const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
 
@@ -493,12 +466,7 @@ class Routes extends Component {
       <React.Fragment>
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path="/" component={renderIndexPage} />
-          <Route exact path="/faq" component={renderFaqPage} />
           <Route path="/discover" component={renderDiscover} />
-          <Route path="/landing" component={renderLanding} />
-          <Route path="/owners" component={renderOwners} />
-          <Route path="/communities" component={renderCommunities} />
-          <Route path="/404" component={NotFound} />
           <Route exact path="/:entityId" component={renderShowPage} />
           {!isModal ? <Route exact path="/thread/:claimId" component={renderThread} /> : null}
         </Switch>
