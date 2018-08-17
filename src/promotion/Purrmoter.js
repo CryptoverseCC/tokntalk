@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { EntityName, EntityAvatar } from '../Entity';
 import Link from '../Link';
 import { EntityDescription, EntityNameWrapper, CatvertisedScore, CatvertisedName } from './Styles';
@@ -13,13 +13,17 @@ const CatvertisedTitle = styled.div`
 
   ${({ hiddenOnMobile }) =>
     hiddenOnMobile
-      ? `
-    @media (max-width: 770px) {
-      margin-top: 0
-    }`
-      : `@media (max-width: 770px) {
-        margin-top: 10px;
-      }`};
+      ? css`
+          @media (max-width: 770px) {
+            margin-top: 0;
+            margin-bottom: 15px;
+          }
+        `
+      : css`
+          @media (max-width: 770px) {
+            margin-top: 10px;
+          }
+        `};
 `;
 
 const CatvertisedHeader = styled.div`
@@ -48,7 +52,7 @@ export const Purrmoter = ({ token }) => {
   return (
     <CatvertisedHeader>
       <CatvertisedTitle hiddenOnMobile>Promotion box</CatvertisedTitle>
-      <PurrmoterDiv to={`/${token}`}>
+      <PurrmoterDiv hiddenOnMobile to={`/${token}`}>
         <EntityAvatar size="medium" id={token} />
         <EntityDescription>
           <CatvertisedName>

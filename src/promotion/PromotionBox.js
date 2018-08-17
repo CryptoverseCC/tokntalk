@@ -46,7 +46,6 @@ const AddAKitty = styled.button`
 
   @media (max-width: 770px) {
     margin-top: -3px;
-    margin-left: 10px;
   }
 `;
 
