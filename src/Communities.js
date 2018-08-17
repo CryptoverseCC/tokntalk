@@ -64,7 +64,9 @@ const Landing = styled((props) => (
         <div class="container">
           <p class="subtitle">Your tokens</p>
           <h1 class="title">Boosted</h1>
-          <p class="subtitle">Know more about your community and start accepting payments in your native currency.</p>
+          <p class="subtitle" style={{ maxWidth: '650px' }}>
+            Know more about your community and start accepting payments in your native currency.
+          </p>
           <img src={stairsHero} style={{ width: '850px', height: 'auto' }} />
         </div>
       </section>
