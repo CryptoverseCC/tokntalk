@@ -22,6 +22,7 @@ import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
+import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 
 const CommunitiesListContainer = styled.div`
@@ -234,6 +235,7 @@ const InlineButton = styled.button`
 
   :disabled {
     color: gray;
+    cursor: not-allowed;
   }
 `;
 
@@ -244,6 +246,7 @@ const SocialIcon = styled(({ type, ...restProps }) => React.createElement(social
 `;
 
 const LabelInput = styled.input`
+  flex: 1;
   padding: 10px 0;
   outline: none;
   border: none;
@@ -261,6 +264,27 @@ const EditableLabelContainer = styled.div`
       background-color: #f3f6ff;
       box-shadow: inset 0 1px 3px 0 #e0dbf4;
     `};
+`;
+
+const SendIcon = styled.img.attrs({ src: checkMark })`
+  transition: transform 0.3s;
+
+  ${InlineButton}:not(:disabled):hover & {
+    transform: translateY(-3px);
+  }
+`;
+
+const ExitIcon = styled.img.attrs({ src: closeIcon })`
+  position: absolute;
+  width: 10px;
+  right: -12px;
+  transform: translateY(-50%);
+  top: 50%;
+  transition: transform 0.3s;
+
+  :hover {
+    transform: translateY(-70%);
+  }
 `;
 
 class EditableLabel extends Component {
@@ -298,49 +322,40 @@ class EditableLabel extends Component {
     const { editing, isValid, editedValue } = this.state;
 
     return (
-      <div>
-        <EditableLabelContainer
-          onClick={(e) => editing && e.preventDefault()}
-          editing={editing}
-          style={{ marginLeft: '15px', float: 'left' }}
-        >
-          {editing ? (
-            <LabelInput
-              placeholder={`${type} profile link`}
-              value={editedValue}
-              onChange={this.onChange}
-              isValid={isValid}
-            />
-          ) : (
-            <SocialUsername link={value} />
-          )}
-          {!editing ? (
-            <InlineButton onClick={this.edit} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
-              {editable && 'Edit'}
-            </InlineButton>
-          ) : (
-            <AppContext.Consumer>
-              {({ feedStore: { label } }) => (
-                <InlineButton
-                  onClick={this.submitLabel(label)}
-                  style={{ fontSize: '1rem', marginLeft: 'auto' }}
-                  disabled={!isValid}
-                >
-                  Confirm
-                </InlineButton>
-              )}
-            </AppContext.Consumer>
-          )}
-        </EditableLabelContainer>
-        {editing && (
-          <img
-            alt=""
-            src={closeIcon}
-            style={{ float: 'left', padding: '13px' }}
-            onClick={() => this.setState({ editing: false })}
+      <EditableLabelContainer
+        onClick={(e) => editing && e.preventDefault()}
+        editing={editing}
+        style={{ marginLeft: '15px' }}
+      >
+        {editing ? (
+          <LabelInput
+            placeholder={`${type} profile link`}
+            value={editedValue}
+            onChange={this.onChange}
+            isValid={isValid}
           />
+        ) : (
+          <SocialUsername link={value} />
         )}
-      </div>
+        {!editing ? (
+          <InlineButton onClick={this.edit} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
+            {editable && 'Edit'}
+          </InlineButton>
+        ) : (
+          <AppContext.Consumer>
+            {({ feedStore: { label } }) => (
+              <InlineButton
+                onClick={this.submitLabel(label)}
+                style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                disabled={!isValid}
+              >
+                <SendIcon />
+              </InlineButton>
+            )}
+          </AppContext.Consumer>
+        )}
+        {editing && <ExitIcon onClick={() => this.setState({ editing: false })} />}
+      </EditableLabelContainer>
     );
   }
 }
