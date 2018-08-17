@@ -34,8 +34,7 @@ const CatvertisedItemLink = styled(Link)`
 `;
 
 const AddAKitty = styled.button`
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 15px;
   align-self: flex-start;
   border: none;
   outline: none;
@@ -57,14 +56,29 @@ const PAGE = {
   CATVERTISING: 2,
 };
 
-const PromotionTab = (props) => {
-  return (
-    <p>
-      <p>{props.count}</p>
-      {props.children}
-    </p>
-  );
-};
+const PromotionTab = styled(({ count, children, ...props }) => (
+  <Tab {...props}>
+    <span>{count}</span>
+    <span style={{ fontSize: '0.8em' }}>{children}</span>
+  </Tab>
+))`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px gray solid;
+  font-size: 0.9em;
+  cursor: pointer;
+
+  &.react-tabs__tab--selected {
+    cursor: unset;
+    font-size: 1em;
+    font-weight: 600;
+    border: 3px transparent solid;
+    border-bottom: 3px blue solid;
+  }
+`;
+
+PromotionTab.tabsRole = 'Tab';
 
 export class PromotionBox extends Component {
   state = {
@@ -121,7 +135,7 @@ export class PromotionBox extends Component {
 
   renderList = (items) => {
     return (
-      <CatvertisedList>
+      <CatvertisedList style={{ marginTop: '15px' }}>
         {Object.entries(items)
           .sort(([, { score: a }], [, { score: b }]) => b - a)
           .map(([id, { score, context_info: contextInfo }]) => (
@@ -144,13 +158,13 @@ export class PromotionBox extends Component {
   renderTabs = (supportersCount, supportingCount) => {
     return (
       <Tabs selectedIndex={this.state.currentPage} onSelect={(index) => this.setState({ currentPage: index })}>
-        <TabList>
-          <Tab tabIndex={PAGE.SUPPORTERS}>
-            <PromotionTab count={supportersCount}>Supporters</PromotionTab>
-          </Tab>
-          <Tab tabIndex={PAGE.SUPPORTING}>
-            <PromotionTab count={supportingCount}>Supporting</PromotionTab>
-          </Tab>
+        <TabList className="columns is-mobile is-marginless">
+          <PromotionTab className="column is-half" tabIndex={PAGE.SUPPORTERS} count={supportersCount}>
+            Supporters
+          </PromotionTab>
+          <PromotionTab className="column is-half" tabIndex={PAGE.SUPPORTING} count={supportingCount}>
+            Supporting
+          </PromotionTab>
         </TabList>
       </Tabs>
     );
