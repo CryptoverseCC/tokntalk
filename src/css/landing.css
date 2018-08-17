@@ -82,6 +82,10 @@ h3 {
   background-position: center bottom;
 }
 
+.landing-hero-owner {
+  background-image: none;
+}
+
 .landing-hero-communities {
   padding-top: 90px;
   padding-bottom: 0;
@@ -334,6 +338,23 @@ a.landing-button:hover {
 
 #falafel {
   background-image: url('../img/landing/falafel.svg');
+}
+
+#cryptocow {
+  background-image: url('../img/landing/cryptocow-testimonials.png');
+}
+
+#addressICO {
+  background-image: url('../img/landing/addressICO.svg');
+}
+
+#cryptovoxel {
+  background-image: url('../img/landing/cryptovoxel.png');
+  border: 1px solid #e6e6e6;
+}
+
+#furlin {
+  background-image: url('../img/landing/furlin.png');
 }
 
 .landing-footer {

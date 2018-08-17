@@ -16,15 +16,13 @@ import arrowUp from './img/landing/round-up.svg';
 
 import stairsHero from './img/landing/stairs.png';
 
-import economyFirst from './img/landing/economy-1.png';
-import economySecond from './img/landing/economy-2.png';
-import economyThird from './img/landing/economy-3.png';
+import reputationFirst from './img/landing/reputation-1.png';
+import reputationSecond from './img/landing/reputation-2.png';
+import reputationThird from './img/landing/reputation-3.png';
 
-import knowFirst from './img/landing/know-1.png';
-import knowSecond from './img/landing/know-2.png';
-import knowThird from './img/landing/know-3.png';
-
-const { NODE_ENV, REACT_APP_INTERCOM_APP_ID } = process.env;
+import supportersFirst from './img/landing/supporters-1.png';
+import supportersSecond from './img/landing/supporters-2.png';
+import supportersThird from './img/landing/supporters-3.png';
 
 const Landing = styled((props) => (
   <React.Fragment>
@@ -48,61 +46,67 @@ const Landing = styled((props) => (
         </nav>
       </div>
 
-      <section
-        class="section has-text-centered landing-hero-communities"
-        style={{ borderBottom: 'none' }}
-        id="first-section"
-      >
+      <section class="section has-text-centered landing-hero-owner" style={{ borderBottom: 'none' }} id="first-section">
         <div class="container">
-          <p class="subtitle">Your tokens</p>
-          <h1 class="title">Boosted</h1>
+          <h1 class="title">Earn</h1>
           <p class="subtitle" style={{ maxWidth: '650px' }}>
-            Know more about your community and start accepting payments in your native currency.
+            Be a mentor of your community. Share relevant posts and grow your influence. Receive Ethereum in return.
           </p>
-          <img src={stairsHero} style={{ width: '850px', height: 'auto' }} />
+          <div class="columns">
+            <div class="column">
+              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
+            </div>
+            <div class="column">
+              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
+            </div>
+            <div class="column">
+              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
+            </div>
+            <div class="column">
+              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
+            </div>
+            <div class="column">
+              <img src={reputationFirst} style={{ width: '100%', height: 'auto' }} />
+            </div>
+          </div>
         </div>
       </section>
 
       <section class="section has-text-centered" style={{ marginTop: '0' }}>
         <div class="container">
           <div class="landing-section-introduction">
-            <h2>Better economy.</h2>
-            <p class="subtitle">Let your project be discovered by other communities. Receive more tokens.</p>
-            <a
-              class="landing-link"
-              id="userfeeds-crypto-intercom"
-              href={`mailto:${REACT_APP_INTERCOM_APP_ID}@intercom-mail.com`}
-            >
-              <span class="landing-link-inside">Add a token</span>
+            <h2>Build your reputation.</h2>
+            <p class="subtitle">Every action is permanent. Grow your influence by social activities.</p>
+            <a class="landing-link" href="app">
+              <span class="landing-link-inside">Start posting</span>
             </a>
           </div>
           <div class="columns">
             <div class="column is-one-third">
-              <figure class="landing-feature pink">
-                <img src={economyFirst} style={{ width: '432px', height: 'auto' }} />
+              <figure class="landing-feature blue">
+                <img src={reputationFirst} style={{ width: '465px', height: 'auto' }} />
               </figure>
-              <h3>Discoverability</h3>
+              <h3>Share</h3>
               <p class="landing-paragraph">
-                Distribute your tokens more easily. Take care of your community and your community will take care of
-                you.
+                Share helpful information and easily prove your good motivations. Highlight what’s important.
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature pink">
-                <img src={economySecond} style={{ width: '399px', height: 'auto' }} />
+              <figure class="landing-feature blue">
+                <img src={reputationSecond} style={{ width: '452px', height: 'auto' }} />
               </figure>
-              <h3>Extra income</h3>
+              <h3>Represent</h3>
               <p class="landing-paragraph">
-                Accept Ethereum or your own ERC20 token for a special place in your community.
+                Speak for your community anywhere you want. Connect your social media accounts.
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature pink">
-                <img src={economyThird} style={{ width: '402px', height: 'auto', marginTop: '100px' }} />
+              <figure class="landing-feature blue">
+                <img src={reputationThird} style={{ width: '465px', height: 'auto', marginTop: '100px' }} />
               </figure>
-              <h3>For your users</h3>
+              <h3>Help</h3>
               <p class="landing-paragraph">
-                Communicate with your token holders in a secure, verified way from the moment of the token release.
+                Be helpful to community members. Guide them and help them make informed decisions.
               </p>
             </div>
           </div>
@@ -111,7 +115,7 @@ const Landing = styled((props) => (
               <figure class="landing-testimonial-profile" id="addressICO" />
             </a>
             <p class="landing-testimonial-paragraph">
-              “I have a little ICO in plans and it seems like a good channel to communicate with my users.“
+              “I like to share things that might be helpful for others. People like me and want to support it.”
             </p>
             <p class="author">
               <a href="https://tokntalk.club/0x9cd16ab977d72bae1385d0fb98114245004c106e">0x9cd16...c106e</a>, Address
@@ -123,50 +127,54 @@ const Landing = styled((props) => (
       <section class="section has-text-centered">
         <div class="container">
           <div class="landing-section-introduction">
-            <h2>Get to know your community.</h2>
-            <p class="subtitle">Messages coming only from your token holders. No spam, no trolls, no impersonations.</p>
+            <h2>Gather supporters.</h2>
+            <p class="subtitle">Accept Ethereum or any token as a reward for your hard work.</p>
             <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
-              <span class="landing-link-inside">Add a token</span>
+              <span class="landing-link-inside">Start posting</span>
             </a>
           </div>
           <div class="columns">
             <div class="column is-one-third">
-              <figure class="landing-feature blue">
-                <img src={knowFirst} style={{ width: '402px', height: 'auto' }} />
+              <figure class="landing-feature pink">
+                <img src={supportersFirst} style={{ width: '399px', height: 'auto' }} />
               </figure>
-              <h3>Know</h3>
+              <h3>
+                <span style={{ fontSize: '30px', letterSpacing: '0.02em', fontWeight: '700' }}>ETH</span> accepted
+              </h3>
               <p class="landing-paragraph">
-                See holdings and your users’ activity. Find out about your competition and related tokens.
+                People can support you through the “Supporters box” visible on your profile. We cut 10% for future
+                development.
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature blue">
-                <img src={knowSecond} style={{ width: '402px', height: 'auto' }} />
+              <figure class="landing-feature pink">
+                <img src={supportersSecond} style={{ width: '402px', height: 'auto' }} />
               </figure>
-              <h3>Learn</h3>
+              <h3>Influence</h3>
               <p class="landing-paragraph">
-                Learn from their discussions and improve your product. You can be sure that this people have ‘skin in
-                the game’.
+                Grow value of your token by making it more popular. You can trade it with existing crowd.
               </p>
             </div>
             <div class="column is-one-third">
-              <figure class="landing-feature blue">
-                <img src={knowThird} style={{ width: '402px', height: 'auto' }} />
+              <figure class="landing-feature pink">
+                <img src={supportersThird} style={{ width: '382px', height: 'auto' }} />
               </figure>
-              <h3>Improve</h3>
+              <h3>Together</h3>
               <p class="landing-paragraph">
-                Receive instant feedback from valuable, verified members of your community.
+                Everyone knows about your supporters. Your success is a success of the whole community.
               </p>
             </div>
           </div>
           <div class="landing-testimonial">
-            <a href="https://tokntalk.club/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:128">
+            <a href="https://tokntalk.club/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">
               <figure class="landing-testimonial-profile" id="furlin" />
             </a>
-            <p class="landing-testimonial-paragraph">“now i understand“</p>
+            <p class="landing-testimonial-paragraph">
+              ““For me, you’re the hero that this community needs. I am happy to support you.“
+            </p>
             <p class="author">
-              <a href="https://tokntalk.club/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">Furlin</a>,
-              Cryptokitty
+              <a href="https://tokntalk.club/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">#5630</a>,
+              Cryptobot
             </p>
           </div>
         </div>
@@ -175,17 +183,14 @@ const Landing = styled((props) => (
       <section class="section has-text-centered" style={{ borderBottom: 'none' }}>
         <div class="container">
           <div class="landing-section-introduction">
-            <h2>Your users are already here.</h2>
-            <p class="subtitle">
-              More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every Ethereum
-              provider.
-            </p>
+            <h2>Start earning Ethereum!</h2>
+            <p class="subtitle">Be the hero this community deserves.</p>
           </div>
           <div class="columns">
             <div class="column is-twelve">
               <figure class="landing-feature landing-ending" id="usershere">
                 <a href="app.html" class="landing-button">
-                  Add a token
+                  Start posting
                 </a>
               </figure>
             </div>

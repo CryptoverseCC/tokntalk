@@ -32,6 +32,7 @@ import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
 import Landing from './Landing';
 import Communities from './Communities';
+import Owners from './Owners';
 import NotFound from './NotFound';
 import { getEntityInfoForAddress } from './utils';
 
@@ -471,6 +472,8 @@ class Routes extends Component {
 
   renderCommunities = (props) => <Communities {...props} />;
 
+  renderOwners = (props) => <Owners {...props} />;
+
   render() {
     const {
       renderModalThread,
@@ -479,6 +482,7 @@ class Routes extends Component {
       renderIndexPage,
       renderThread,
       renderDiscover,
+      renderOwners,
       renderLanding,
       renderCommunities,
     } = this;
@@ -492,6 +496,7 @@ class Routes extends Component {
           <Route exact path="/faq" component={renderFaqPage} />
           <Route path="/discover" component={renderDiscover} />
           <Route path="/landing" component={renderLanding} />
+          <Route path="/owners" component={renderOwners} />
           <Route path="/communities" component={renderCommunities} />
           <Route path="/404" component={NotFound} />
           <Route exact path="/:entityId" component={renderShowPage} />

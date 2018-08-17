@@ -240,11 +240,14 @@ const Landing = styled((props) => (
           </div>
         </div>
         <div class="landing-testimonial">
-          <figure class="landing-testimonial-profile">
-            <img src="" />
-          </figure>
-          <p class="landing-testimonial-paragraph">Something awesome</p>
-          <p class="author">Kitty</p>
+          <a href="https://tokntalk.club/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">
+            <figure class="landing-testimonial-profile" id="cryptocow" />
+          </a>
+          <p class="landing-testimonial-paragraph">“seems like an easy way to get more ethereum :}“</p>
+          <p class="author">
+            <a href="https://tokntalk.club/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">CryptoCow #78</a>,
+            Cryptocow
+          </p>
         </div>
       </section>
 
@@ -286,11 +289,18 @@ const Landing = styled((props) => (
           </div>
         </div>
         <div class="landing-testimonial">
-          <figure class="landing-testimonial-profile">
-            <img src="" />
-          </figure>
-          <p class="landing-testimonial-paragraph">LMAO DANCING KITTY</p>
-          <p class="author">Kitty</p>
+          <a href="https://tokntalk.club/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">
+            <figure class="landing-testimonial-profile" id="cryptovoxel" />
+          </a>
+          <p class="landing-testimonial-paragraph">
+            “Imagine watching this feed in VR and sending messages to nearby players!“
+          </p>
+          <p class="author">
+            <a href="https://tokntalk.club/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">
+              36 Math Throughway
+            </a>
+            , Cryptovoxel
+          </p>
         </div>
       </section>
 
