@@ -16,21 +16,13 @@ import arrowUp from './img/landing/round-up.svg';
 
 import stairsHero from './img/landing/stairs.png';
 
-import realityFirst from './img/landing/reality-1.png';
-import realitySecond from './img/landing/reality-2.png';
-import realityThird from './img/landing/reality-3.png';
+import economyFirst from './img/landing/economy-1.png';
+import economySecond from './img/landing/economy-2.png';
+import economyThird from './img/landing/economy-3.png';
 
-import communityFirst from './img/landing/community-1.png';
-import communitySecond from './img/landing/community-2.png';
-import communityThird from './img/landing/community-3.png';
-
-import influenceFirst from './img/landing/influence-1.png';
-import influenceSecond from './img/landing/influence-2.png';
-import influenceThird from './img/landing/influence-3.png';
-
-import buildFirst from './img/landing/build-1.png';
-import buildSecond from './img/landing/build-2.png';
-import buildThird from './img/landing/build-3.png';
+import knowFirst from './img/landing/know-1.png';
+import knowSecond from './img/landing/know-2.png';
+import knowThird from './img/landing/know-3.png';
 
 const { NODE_ENV, REACT_APP_INTERCOM_APP_ID } = process.env;
 
@@ -87,7 +79,7 @@ const Landing = styled((props) => (
           <div class="columns">
             <div class="column is-one-third">
               <figure class="landing-feature pink">
-                <img src={realityFirst} style={{ width: '585px', height: 'auto' }} />
+                <img src={economyFirst} style={{ width: '432px', height: 'auto' }} />
               </figure>
               <h3>Discoverability</h3>
               <p class="landing-paragraph">
@@ -97,7 +89,7 @@ const Landing = styled((props) => (
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature pink">
-                <img src={realitySecond} style={{ width: '402px', height: 'auto' }} />
+                <img src={economySecond} style={{ width: '399px', height: 'auto' }} />
               </figure>
               <h3>Extra income</h3>
               <p class="landing-paragraph">
@@ -106,11 +98,11 @@ const Landing = styled((props) => (
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature pink">
-                <img src={realityThird} style={{ width: '411px', height: 'auto', marginTop: '100px' }} />
+                <img src={economyThird} style={{ width: '402px', height: 'auto', marginTop: '100px' }} />
               </figure>
               <h3>For your users</h3>
               <p class="landing-paragraph">
-                Another use-case for your project. Safe space for your token holders. Your tokens outside your website.
+                Communicate with your token holders in a secure, verified way from the moment of the token release.
               </p>
             </div>
           </div>
@@ -142,7 +134,7 @@ const Landing = styled((props) => (
           <div class="columns">
             <div class="column is-one-third">
               <figure class="landing-feature blue">
-                <img src={communityFirst} style={{ width: '402px', height: 'auto' }} />
+                <img src={knowFirst} style={{ width: '402px', height: 'auto' }} />
               </figure>
               <h3>Know</h3>
               <p class="landing-paragraph">
@@ -151,7 +143,7 @@ const Landing = styled((props) => (
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature blue">
-                <img src={communitySecond} style={{ width: '403px', height: 'auto' }} />
+                <img src={knowSecond} style={{ width: '402px', height: 'auto' }} />
               </figure>
               <h3>Learn</h3>
               <p class="landing-paragraph">
@@ -161,11 +153,11 @@ const Landing = styled((props) => (
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature blue">
-                <img src={communityThird} style={{ width: '402px', height: 'auto' }} />
+                <img src={knowThird} style={{ width: '402px', height: 'auto' }} />
               </figure>
               <h3>Improve</h3>
               <p class="landing-paragraph">
-                Be amazed with your community. Your project’s alive. It’s true digital ownership, after all.
+                Receive instant feedback from valuable, verified members of your community.
               </p>
             </div>
           </div>
@@ -188,7 +180,7 @@ const Landing = styled((props) => (
       <section class="section has-text-centered" style={{ borderBottom: 'none' }}>
         <div class="container">
           <div class="landing-section-introduction">
-            <h2>It's for your community.</h2>
+            <h2>Your users are already here.</h2>
             <p class="subtitle">
               More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every Ethereum
               provider.
@@ -196,7 +188,7 @@ const Landing = styled((props) => (
           </div>
           <div class="columns">
             <div class="column is-twelve">
-              <figure class="landing-feature landing-hopinside">
+              <figure class="landing-feature landing-ending" id="usershere">
                 <a href="app.html" class="landing-button">
                   Add a token
                 </a>

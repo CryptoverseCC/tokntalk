@@ -230,14 +230,22 @@ h3 {
   justify-content: center;
 }
 
-.landing-hopinside {
-  background-image: url('../img/landing/hopinside-bg.png');
+.landing-ending {
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+#hopinside {
+  background-image: url('../img/landing/hopinside-bg.png');
+}
+
+#usershere {
+  background-image: url('../img/landing/usershere-bg.png');
+}
+
 
 .landing-button {
   padding: 0.6em 1.6em 0.5em 1.6em;

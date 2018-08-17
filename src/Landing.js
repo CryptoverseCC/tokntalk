@@ -308,7 +308,7 @@ const Landing = styled((props) => (
           </div>
           <div class="columns">
             <div class="column is-twelve">
-              <figure class="landing-feature landing-hopinside">
+              <figure class="landing-feature landing-ending" id="hopinside">
                 <a href="app.html" class="landing-button">
                   Hop inside
                 </a>
