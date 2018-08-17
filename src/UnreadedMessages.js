@@ -86,12 +86,17 @@ export const UnreadedCount = ({ token, className, style }) => (
 );
 
 export const UnreadedCountContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-left: auto;
   align-self: center;
-  border-radius: 6px;
-  padding: 2px 5px;
-  font-size: 13px;
+  border-radius: 20px;
+  height: 25px;
+  font-size: 12px;
+  text-align: center;
   font-weight: 600;
+  padding: 0 10px;
   color: ${({ primaryColor }) => primaryColor}
   background: ${({ secondaryColor }) => secondaryColor}
 `;

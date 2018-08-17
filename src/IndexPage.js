@@ -141,6 +141,11 @@ const DiscoverMore = styled((props) => (
   // styles
 `;
 
+const StyledUnreadedMessages = styled(UnreadedCount)`
+  color: #1b2437;
+  background: white;
+`;
+
 const Token = ({ asset }) => {
   const [network, address] = asset.split(':');
   const token = find({ network, address })(clubs);
@@ -149,7 +154,7 @@ const Token = ({ asset }) => {
     <YourCommunitiesLink to={`/discover/byToken/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
-      <UnreadedCount token={token} />
+      <StyledUnreadedMessages token={token} />
     </YourCommunitiesLink>
   );
 };
