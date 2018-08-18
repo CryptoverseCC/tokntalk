@@ -38,9 +38,7 @@ const Landing = styled((props) => (
             <div class="level-item">
               <a href="/landing" style={{ display: 'flex' }}>
                 <Logo />
-                <p style={{ display: 'inline-block', marginTop: '10px' }} class="landing-logo-typo">
-                  Tok'n'talk
-                </p>
+                <p class="landing-logo-typo">Tok'n'talk</p>
               </a>
             </div>
           </div>
@@ -72,19 +70,19 @@ const Landing = styled((props) => (
           <div class="landing-owners-introduction">
             <div class="columns">
               <div class="column">
-                <img src={tokenJap} style={{ width: '148px', height: 'auto' }} />
+                <img src={tokenJap} class="landing-owners-tokens" style={{ width: '148px', height: 'auto' }} />
               </div>
               <div class="column">
-                <img src={tokenPineapple} style={{ width: '187px', height: 'auto' }} />
+                <img src={tokenPineapple} class="landing-owners-tokens" style={{ width: '187px', height: 'auto' }} />
               </div>
               <div class="column">
                 <img src={tokenEth} style={{ width: '265px', height: 'auto' }} />
               </div>
               <div class="column">
-                <img src={tokenSpline} style={{ width: '184px', height: 'auto' }} />
+                <img src={tokenSpline} class="landing-owners-tokens" style={{ width: '184px', height: 'auto' }} />
               </div>
               <div class="column">
-                <img src={tokenSmile} style={{ width: '168px', height: 'auto' }} />
+                <img src={tokenSmile} class="landing-owners-tokens" style={{ width: '168px', height: 'auto' }} />
               </div>
             </div>
           </div>

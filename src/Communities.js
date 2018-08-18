@@ -36,9 +36,7 @@ const Landing = styled((props) => (
             <div class="level-item">
               <a href="/landing" style={{ display: 'flex' }}>
                 <Logo />
-                <p style={{ display: 'inline-block', marginTop: '10px' }} class="landing-logo-typo">
-                  Tok'n'talk
-                </p>
+                <p class="landing-logo-typo">Tok'n'talk</p>
               </a>
             </div>
           </div>
@@ -63,12 +61,11 @@ const Landing = styled((props) => (
         id="first-section"
       >
         <div class="container">
-          <p class="subtitle">Your tokens</p>
-          <h1 class="title">Boosted</h1>
+          <h1 class="title">Boost</h1>
           <p class="subtitle" style={{ maxWidth: '650px' }}>
             Know more about your community and start accepting payments in your native currency.
           </p>
-          <img src={stairsHero} style={{ width: '850px', height: 'auto' }} />
+          <img src={stairsHero} style={{ width: '850px', height: 'auto' }} id="landing-stairs" />
         </div>
       </section>
 

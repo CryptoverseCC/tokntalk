@@ -40,9 +40,7 @@ const Landing = styled((props) => (
             <div class="level-item">
               <a href="/landing" style={{ display: 'flex' }}>
                 <Logo />
-                <p style={{ display: 'inline-block', marginTop: '10px' }} class="landing-logo-typo">
-                  Tok'n'talk
-                </p>
+                <p class="landing-logo-typo">Tok'n'talk</p>
               </a>
             </div>
           </div>
@@ -242,10 +240,7 @@ const Landing = styled((props) => (
             </div>
             <div class="column is-one-third">
               <figure class="landing-feature pink">
-                <img
-                  src={influenceThird}
-                  style={{ width: '347px', height: 'auto', marginLeft: '60px', marginTop: '130px' }}
-                />
+                <img src={influenceThird} id="landing-yourtoken" />
               </figure>
               <h3>Your token</h3>
               <p class="landing-paragraph">Create your own token and grow your own economy. </p>

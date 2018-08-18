@@ -53,22 +53,23 @@ h3 {
 }
 
 .landing-logo-typo {
+  display: inline-block;
+  margin-top: 10px;
   margin-left: 10px;
-  margin-top: 1px;
   font-weight: 600;
 }
 
 .landing-header-link {
   font-weight: 600;
   cursor: pointer;
+
 }
 
 .landing-header-link-button {
-  padding: 8px 15px 7px 15px;
-  background-color: #65f3ff;
-  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+  padding-left:10px;
+  border-left:2px solid #65f3ff;
 }
 
 #landing-header-arrow {
@@ -544,4 +545,112 @@ a.landing-footer-intouch:hover {
 .landing-goup:hover #arrowup {
   transform: translateY(-5px);
   transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+}
+
+#landing-yourtoken {
+  width: 347px;
+  height: auto;
+  margin-left: 60px;
+  margin-top: 130px;
+}
+
+
+@media (max-width: 770px) {
+
+  .landing-header-link {
+    display: inline-block;
+    width: 33%;
+    border-left: 1px solid #e3e1ec;
+    text-align: center;
+  }
+
+  .landing-hero {
+    padding-top: 210px;
+    margin-top: -140px;
+  }
+
+  .landing-header-link-button {
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0px;
+  }
+
+  .landing-logo-typo  {
+    margin-left: 4px;
+  }
+
+  #landing-header-arrow {
+    margin-top: 3px;
+  }
+
+  .title {
+    font-size: 80px;
+    margin-bottom: 2rem;
+  }
+
+  .subtitle {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 42px;
+  }
+
+  h3 {
+    font-size: 36px;
+    margin-top: 30px;
+  }
+
+  .landing-paragraph {
+    font-size: 18px;
+  }
+
+  .landing-paragraph {
+    font-size: 18px;
+    margin-bottom: 60px;
+  }
+
+  .landing-testimonial {
+    margin-top: 30px;
+    margin-bottom: 60px;
+  }
+
+  .landing-owners-tokens {
+    display: none;
+  }
+
+  .landing-link-inside {
+    font-size: 16px;
+  }
+
+  #landing-stairs {
+    transform: scale(2);
+    transform-origin: top;
+  }
+
+  .landing-footer-navigation a {
+    font-size: 18px;
+  }
+
+  #usershere {
+    background-position: 9% 0%;
+  }
+
+  #startearning {
+    background-position: 7% 0%;
+  }
+
+  #landing-yourtoken {
+    margin-left: 26px;
+    margin-top: 80px;
+  }
+
+  #hopinside {
+    background-position: 50%;
+  }
+
+  .landing-hero-owner {
+    margin-bottom: 0;
+  }
+
 }

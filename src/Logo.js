@@ -22,7 +22,6 @@ const white = keyframes`
 
 const Eye = styled.div`
   box-sizing: content-box;
-
   display: inline-block;
   background-color: white;
   border: 2px solid #264dd9;
@@ -31,6 +30,9 @@ const Eye = styled.div`
   position: relative;
   border-radius: 30px;
   cursor: pointer;
+  @media (max-width: 770px) {
+    transform: scale(0.75);
+  }
 `;
 
 const Inside = styled.div`
