@@ -14,6 +14,7 @@ import twitterColor from './img/landing/twitter-color.svg';
 import tokntalkColor from './img/landing/tokntalk-color.svg';
 import arrowUp from './img/landing/round-up.svg';
 import arrowRight from './img/landing/tail-right.svg';
+import exitBig from './img/landing/exit-big.svg';
 
 import realityFirst from './img/landing/reality-1.png';
 import realitySecond from './img/landing/reality-2.png';
@@ -34,6 +35,25 @@ import buildThird from './img/landing/build-3.png';
 const Landing = styled((props) => (
   <React.Fragment>
     <div class="wrapper-landing">
+      <div class="modal is-active">
+        <div class="landing-modal-bg" />
+        <div class="landing-modal-content">
+          <div class="landing-modal-content-video">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/MELu5ELaJrg?showinfo=0&autoplay=1"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            />
+          </div>
+        </div>
+        <button class="landing-modal-content-close">
+          <img src={exitBig} />
+        </button>
+      </div>
+
       <div class="container">
         <nav class="level landing-header">
           <div class="level-left">
@@ -52,7 +72,7 @@ const Landing = styled((props) => (
               Token Owners
             </a>
             <a href="/" class="level-item landing-header-link landing-header-link-button">
-              <span>Go to app</span>
+              <span>Hop inside</span>
               <img src={arrowRight} id="landing-header-arrow" />
             </a>
           </div>

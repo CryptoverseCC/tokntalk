@@ -554,6 +554,49 @@ a.landing-footer-intouch:hover {
   margin-top: 130px;
 }
 
+.landing-modal-bg {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: black;
+}
+
+.landing-modal-content {
+  background: none;
+  position: absolute;
+  width: 100%;
+  max-width: 1920px;
+  height: auto;
+  max-height: calc(100vh - 100px);
+  overflow: hidden;
+}
+
+.landing-modal-content-video {
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+}
+
+.landing-modal-content-close {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  border-radius: 32px;
+  border: none;
+  outline: none;
+}
+
+.landing-modal-content-video iframe {
+  position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
 
 @media (max-width: 770px) {
 

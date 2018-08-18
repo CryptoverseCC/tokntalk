@@ -50,7 +50,7 @@ const Landing = styled((props) => (
               Token Owners
             </a>
             <a href="/" class="level-item landing-header-link landing-header-link-button">
-              <span>Go to app</span>
+              <span>Hop inside</span>
               <img src={arrowRight} id="landing-header-arrow" />
             </a>
           </div>
