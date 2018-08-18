@@ -47,6 +47,59 @@ h3 {
   margin-top: 90px;
 }
 
+.landing-header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.landing-logo-typo {
+  margin-left: 10px;
+  margin-top: 1px;
+  font-weight: 600;
+}
+
+.landing-header-link {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.landing-header-link-button {
+  padding: 8px 15px 7px 15px;
+  background-color: #65f3ff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+}
+
+#landing-header-arrow {
+  margin-left: 5px;
+  width: 12px;
+  height: auto;
+  transition: all 0.15s ease-out;
+}
+
+.landing-header-link-button:hover {
+  color: #264dd9;
+}
+
+.landing-header-link-button span {
+  transition: all 0.15s ease-in;
+}
+
+.landing-header-link-button:hover span {
+  transform: translateX(-2px);
+  transition: all 0.15s ease-in;
+}
+
+.landing-header-link-button:hover #landing-header-arrow {
+  transform: translateX(2px);
+  transition: all 0.15s ease-in;
+}
+
+.landing-header-link-button:active {
+  transform: scale(0.96);
+}
+
 .landing-paragraph {
   font-size: 20px;
   max-width: 90%;
@@ -75,19 +128,25 @@ h3 {
 }
 
 .landing-hero {
-  margin-bottom: 0px;
+  padding-top: 150px;
+  margin-top: -80px;
+}
+
+.landing-hero-main {
   background-image: url('../img/landing/grid.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center bottom;
+  margin-bottom: 0px;
 }
 
 .landing-hero-owner {
   background-image: none;
+  padding-top: 150px;
 }
 
 .landing-hero-communities {
-  padding-top: 90px;
+  padding-top: 150px;
   padding-bottom: 0;
   background: linear-gradient(180deg, rgba(241,238,255,1) 0%, rgba(255,255,255,0) 100%);
 }
@@ -256,6 +315,11 @@ h3 {
   background-image: url('../img/landing/usershere-bg.png');
 }
 
+#startearning {
+  background-image: url('../img/landing/startearning-bg.png');
+}
+
+
 
 .landing-button {
   padding: 0.6em 1.6em 0.5em 1.6em;
@@ -352,6 +416,21 @@ a.landing-button:hover {
 
 #addressICO {
   background-image: url('../img/landing/addressICO.svg');
+}
+
+#ethmoji {
+  background-image: url('../img/landing/ethmoji.png');
+}
+
+#barbossa {
+  background-image: url('../img/landing/barbossa.png');
+}
+
+#landing-messageTo:before {
+  content: '→';
+  position: absolute;
+  margin-left: 76px;
+  margin-top: 24px;
 }
 
 #cryptovoxel {

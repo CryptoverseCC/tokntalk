@@ -13,6 +13,7 @@ import telegramColor from './img/landing/telegram-color.svg';
 import twitterColor from './img/landing/twitter-color.svg';
 import tokntalkColor from './img/landing/tokntalk-color.svg';
 import arrowUp from './img/landing/round-up.svg';
+import arrowRight from './img/landing/tail-right.svg';
 
 import realityFirst from './img/landing/reality-1.png';
 import realitySecond from './img/landing/reality-2.png';
@@ -34,25 +35,37 @@ const Landing = styled((props) => (
   <React.Fragment>
     <div class="wrapper-landing">
       <div class="container">
-        <nav class="level">
+        <nav class="level landing-header">
           <div class="level-left">
             <div class="level-item">
-              <Logo />
-              <p>Tok talk</p>
+              <a href="/landing" style={{ display: 'flex' }}>
+                <Logo />
+                <p style={{ display: 'inline-block', marginTop: '10px' }} class="landing-logo-typo">
+                  Tok'n'talk
+                </p>
+              </a>
             </div>
           </div>
           <div class="level-right">
-            <p class="level-item">
-              <strong>All</strong>
-            </p>
-            <p class="level-item">
-              <a>Published</a>
-            </p>
+            <a href="/communities" class="level-item landing-header-link">
+              Communities
+            </a>
+            <a href="/owners" class="level-item landing-header-link">
+              Token Owners
+            </a>
+            <a href="/" class="level-item landing-header-link landing-header-link-button">
+              <span>Go to app</span>
+              <img src={arrowRight} id="landing-header-arrow" />
+            </a>
           </div>
         </nav>
       </div>
 
-      <section class="section has-text-centered landing-hero" style={{ borderBottom: 'none' }} id="first-section">
+      <section
+        class="section has-text-centered landing-hero landing-hero-main"
+        style={{ borderBottom: 'none' }}
+        id="first-section"
+      >
         <div class="container">
           <p class="subtitle" style={{ color: '#848DA5' }}>
             Social platform for
@@ -61,8 +74,8 @@ const Landing = styled((props) => (
           <p class="subtitle">
             Explore token - oriented communities. Grow your influence and earn tokens in the trusted environment.
           </p>
-          <a class="landing-link" href="#">
-            <span class="landing-link-inside">Explore</span>
+          <a class="landing-link" href="/">
+            <span class="landing-link-inside">Start exploring</span>
           </a>
         </div>
       </section>
@@ -91,7 +104,7 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Explore the reality from many angles.</h2>
             <p class="subtitle">Discover messages from token holders for token holders.</p>
-            <a class="landing-link" href="#">
+            <a class="landing-link" href="/">
               <span class="landing-link-inside">Start exploring</span>
             </a>
           </div>
@@ -121,7 +134,7 @@ const Landing = styled((props) => (
               <figure class="landing-feature pink">
                 <img src={realityThird} style={{ width: '411px', height: 'auto', marginTop: '100px' }} />
               </figure>
-              <h3>Safe</h3>
+              <h3>Controllable</h3>
               <p class="landing-paragraph">
                 Use your holdings as filters. Display only messages coming from your networks or wander around.
               </p>
@@ -148,10 +161,10 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Grow community around your token.</h2>
             <p class="subtitle">Use existing or create a new one and talk in the trusted environment.</p>
-            <a class="landing-link" href="https://tokntalk.club/discover">
+            <a class="landing-link" href="/discover">
               <span class="landing-link-inside">Your clubs</span>
             </a>
-            <a class="landing-link" href="#" style={{ marginLeft: '30px' }}>
+            <a class="landing-link" href="/communities" style={{ marginLeft: '30px' }}>
               <span class="landing-link-inside">Add your token</span>
             </a>
           </div>
@@ -205,7 +218,7 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Get paid for your influence.</h2>
             <p class="subtitle">Grow influence of your avatar. Let people support you.</p>
-            <a class="landing-link" href="#">
+            <a class="landing-link" href="/owners">
               <span class="landing-link-inside">Learn how to earn</span>
             </a>
           </div>
@@ -312,14 +325,14 @@ const Landing = styled((props) => (
               More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every Ethereum
               provider.
             </p>
-            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+            <a class="landing-link" href="/">
               <span class="landing-link-inside">Say hello</span>
             </a>
           </div>
           <div class="columns">
             <div class="column is-twelve">
               <figure class="landing-feature landing-ending" id="hopinside">
-                <a href="app.html" class="landing-button">
+                <a href="/" class="landing-button">
                   Hop inside
                 </a>
               </figure>
@@ -367,10 +380,9 @@ const Landing = styled((props) => (
                 <img src={tokntalkGrey} />
               </a>
               <div class="landing-footer-navigation">
-                <a href="communities.html">Communities</a>
-                <a href="holders.html">Holders</a>
-                <a href="press.html">Press</a>
-                <a href="app.html">Hop Inside</a>
+                <a href="/communities">Communities</a>
+                <a href="/owners">Owners</a>
+                <a href="/">Hop Inside</a>
               </div>
               <div class="landing-footer-social">
                 <a href="https://github.com/CryptoVerseCC/tokntalk">

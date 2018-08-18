@@ -13,6 +13,7 @@ import telegramColor from './img/landing/telegram-color.svg';
 import twitterColor from './img/landing/twitter-color.svg';
 import tokntalkColor from './img/landing/tokntalk-color.svg';
 import arrowUp from './img/landing/round-up.svg';
+import arrowRight from './img/landing/tail-right.svg';
 
 import tokenJap from './img/landing/token-jap.png';
 import tokenPineapple from './img/landing/token-pineapple.png';
@@ -32,25 +33,37 @@ const Landing = styled((props) => (
   <React.Fragment>
     <div class="wrapper-landing">
       <div class="container">
-        <nav class="level">
+        <nav class="level landing-header">
           <div class="level-left">
             <div class="level-item">
-              <Logo />
-              <p>Tok talk</p>
+              <a href="/landing" style={{ display: 'flex' }}>
+                <Logo />
+                <p style={{ display: 'inline-block', marginTop: '10px' }} class="landing-logo-typo">
+                  Tok'n'talk
+                </p>
+              </a>
             </div>
           </div>
           <div class="level-right">
-            <p class="level-item">
-              <strong>All</strong>
-            </p>
-            <p class="level-item">
-              <a>Published</a>
-            </p>
+            <a href="/communities" class="level-item landing-header-link">
+              Communities
+            </a>
+            <a href="/owners" class="level-item landing-header-link">
+              Token Owners
+            </a>
+            <a href="/" class="level-item landing-header-link landing-header-link-button">
+              <span>Go to app</span>
+              <img src={arrowRight} id="landing-header-arrow" />
+            </a>
           </div>
         </nav>
       </div>
 
-      <section class="section has-text-centered landing-hero-owner" style={{ borderBottom: 'none' }} id="first-section">
+      <section
+        class="section has-text-centered landing-hero landing-hero-owner"
+        style={{ borderBottom: 'none' }}
+        id="first-section"
+      >
         <div class="container">
           <h1 class="title">Earn</h1>
           <p class="subtitle" style={{ maxWidth: '650px' }}>
@@ -83,7 +96,7 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Build your reputation.</h2>
             <p class="subtitle">Every action is permanent. Grow your influence by social activities.</p>
-            <a class="landing-link" href="app">
+            <a class="landing-link" href="/">
               <span class="landing-link-inside">Start posting</span>
             </a>
           </div>
@@ -117,14 +130,14 @@ const Landing = styled((props) => (
             </div>
           </div>
           <div class="landing-testimonial">
-            <a href="https://tokntalk.club/0x9cd16ab977d72bae1385d0fb98114245004c106e">
-              <figure class="landing-testimonial-profile" id="addressICO" />
+            <a href="https://tokntalk.club/ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:480">
+              <figure class="landing-testimonial-profile" id="ethmoji" />
             </a>
             <p class="landing-testimonial-paragraph">
-              “I like to share things that might be helpful for others. People like me and want to support it.”
+              “I like to share things that might be helpful to others. People like and support my efforts.”
             </p>
             <p class="author">
-              <a href="https://tokntalk.club/0x9cd16ab977d72bae1385d0fb98114245004c106e">0x9cd16...c106e</a>, Address
+              <a href="https://tokntalk.club/ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:480">#480</a>, Ethmoji
             </p>
           </div>
         </div>
@@ -135,7 +148,7 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Gather supporters.</h2>
             <p class="subtitle">Accept Ethereum or any token as a reward for your hard work.</p>
-            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+            <a class="landing-link" href="/">
               <span class="landing-link-inside">Start posting</span>
             </a>
           </div>
@@ -172,9 +185,17 @@ const Landing = styled((props) => (
             </div>
           </div>
           <div class="landing-testimonial">
-            <a href="https://tokntalk.club/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">
-              <figure class="landing-testimonial-profile" id="bot" />
-            </a>
+            <div id="landing-messageTo">
+              <a href="https://tokntalk.club/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">
+                <figure class="landing-testimonial-profile" id="bot" style={{ display: 'inline-block' }} />
+              </a>
+              <a
+                href="https://tokntalk.club/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330"
+                style={{ display: 'inline-block', marginLeft: '40px' }}
+              >
+                <figure class="landing-testimonial-profile" id="barbossa" />
+              </a>
+            </div>
             <p class="landing-testimonial-paragraph">
               ““For me, you’re the hero that this community needs. I am happy to support you.“
             </p>
@@ -191,12 +212,15 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Start earning Ethereum!</h2>
             <p class="subtitle">Be the hero this community deserves.</p>
+            <a class="landing-link" href="/">
+              <span class="landing-link-inside">Start posting</span>
+            </a>
           </div>
           <div class="columns">
             <div class="column is-twelve">
-              <figure class="landing-feature landing-ending" id="usershere">
-                <a href="app.html" class="landing-button">
-                  Start posting
+              <figure class="landing-feature landing-ending" id="startearning">
+                <a href="/" class="landing-button">
+                  Say Hello
                 </a>
               </figure>
             </div>
@@ -243,10 +267,9 @@ const Landing = styled((props) => (
                 <img src={tokntalkGrey} />
               </a>
               <div class="landing-footer-navigation">
-                <a href="communities.html">Communities</a>
-                <a href="holders.html">Holders</a>
-                <a href="press.html">Press</a>
-                <a href="app.html">Hop Inside</a>
+                <a href="/communities">Communities</a>
+                <a href="/owners">Owners</a>
+                <a href="/">Hop Inside</a>
               </div>
               <div class="landing-footer-social">
                 <a href="https://github.com/CryptoVerseCC/tokntalk">
