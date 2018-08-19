@@ -6,7 +6,7 @@ import cryptokittiesCover from './img/tokens/cryptokitties.png';
 import axie from './img/tokens/axie-icon.png';
 import axieCover from './img/tokens/axie.png';
 
-import bbsc from './img/tokens/bbsc-icon.svg';
+import bbsc from './img/tokens/bbsc-icon.png';
 import bbscCover from './img/tokens/bbsc.png';
 
 import dasabi from './img/tokens/dasabi-icon.svg';
@@ -182,7 +182,7 @@ const clubs = [
     entityPrefix: 'Digital Art ',
     logo: dac,
     coverImage: dacCover,
-    primaryColor: '#ffffff',
+    primaryColor: '#ffded7',
     secondaryColor: '#F05E40',
     shadowColor: 'rgba(247,165,148,0.3)',
     externalLinks: [
@@ -456,7 +456,7 @@ const clubs = [
     ...mapping.KIYOSALO,
     logo: kiyosalo,
     coverImage: kiyosaloCover,
-    primaryColor: '#ffffff',
+    primaryColor: '#bcdbff',
     secondaryColor: '#3267a5',
     shadowColor: 'rgba(50,103,165,0.2)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
