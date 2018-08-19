@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const HeroContainer = styled.div``;
 
 const AddStory = styled.div`
-  box-shadow: rgba(118, 103, 170, 0.12) 0px 2rem 5rem -2rem;
+  box-shadow: rgba(118, 103, 170, 0.12) 0px 2rem 3rem -1.5rem;
   border-radius: 12px;
   display: block;
   padding: 1.25rem;

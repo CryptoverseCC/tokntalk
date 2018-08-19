@@ -972,10 +972,15 @@ const TokenTileWrapper = styled.div`
 `;
 
 const FormContainer = styled.div`
+  box-shadow: rgba(118, 103, 170, 0.12) 0px 2rem 3rem -1.5rem;
   border-radius: 12px;
-  padding: 15px;
-  background-color: #ffffff;
-  border: solid 1px #f0eef6;
+  display: block;
+  padding: 1.25rem;
+  background-color: white;
+  @media (max-width: 770px) {
+    width: 96%;
+    margin-left: 2%;
+  }
 `;
 
 const EntityContainer = styled.div`

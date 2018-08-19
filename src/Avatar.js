@@ -32,8 +32,8 @@ const Avatar = styled.img`
 const ReactionContainer = styled.div`
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 50%);
+  left: 38%;
+  transform: translate(-38%, 50%);
 `;
 
 const IdentityAvatar = ({ entity, size, reaction, style = {}, backgroundColor, src, lazy = true }) => {
