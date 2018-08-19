@@ -8,19 +8,36 @@ import { getHttpClaimDetails } from './api';
 import Loader from './Loader';
 import { H2 } from './Components';
 import checkmarkIcon from './img/checkmark.svg';
+import httpStorage from './img/httpstorage.svg';
+import onChain from './img/onchain.svg';
 import { A } from './Link';
 
 const CheckIcon = styled.img.attrs({ src: checkmarkIcon })`
   width: 44px;
+  margin-bottom: 10px;
 `;
 
 const ModalContainer = styled.div`
   background: #ffffff;
   overflow-y: scroll;
   overflow-x: hidden;
-  border-radius: 30px;
+  border-radius: 12px;
   padding: 30px;
   max-width: 600px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2rem 4rem -2rem;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #dde0eb;
+  }
 `;
 
 const Header = styled.div`
@@ -32,27 +49,56 @@ const Header = styled.div`
 
 const Verified = styled(H2)`
   color: #44e192;
+  font-weight: 900;
 `;
 
 const Hash = styled.p`
   word-break: break-all;
-  max-height: 250px;
+  max-height: 200px;
   overflow-y: scroll;
-  background-color: #f5f5f5;
-  color: #4a4a4a;
-  font-size: 0.875em;
-  letter-spacing: 0.1em
-  padding: 1.25rem 1.5rem;
+  background-color: #f3f6ff;
+  border-radius: 16px;
+  color: #1b2437;
+  font-size: 1rem;
+  letter-spacing: 0.05em
+  padding: 1.25rem 1.5rem 1rem 1.5rem;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #dde0eb;
+  }
+
+`;
+
+const VerifyContainer = styled.div`
+  margin-top: 30px;
+`;
+
+const VerifyContainerLabel = styled.p`
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
 `;
 
 const Copy = styled.div`
   position: absolute;
   right: 0;
-  top: 0;
+  top: 10px;
+  color: white;
+  font-size: 0.8rem;
   cursor: pointer;
-  padding: 3px;
-  border-bottom-left-radius: 3px;
-  background: ${({ copied }) => (copied ? 'rgba(55, 247, 114, 0.6)' : 'rgba(191, 188, 188, 0.6)')};
+  padding: 8px 10px;
+  font-weight: 600;
+  border-radius: 12px 0px 0px 12px;
+  background: ${({ copied }) => (copied ? '#1AC631' : '#264dd9')};
   transition: background 0.3s;
 `;
 
@@ -127,10 +173,10 @@ export class VerifyModal extends Component {
   renderLoaded() {
     return (
       <React.Fragment>
-        <Header style={{ marginBottom: '15px' }}>
+        <Header>
           <CheckIcon />
           <Verified>Verified!</Verified>
-          <p>This message is signed cryptographically</p>
+          <p style={{ fontWeight: '500' }}>This message is signed cryptographically</p>
         </Header>
         {this.renderByType()}
       </React.Fragment>
@@ -153,19 +199,39 @@ export class VerifyModal extends Component {
     return (
       <Container>
         {this.renderHttpDescBySignatureValue()}
-        <p>Stored on: HTTP Server</p>
-        <p>
-          Author:
-          <CopyableHash>{this.props.feedItem.author}</CopyableHash>
-        </p>
-        <p>
-          Message signature hash:
-          <CopyableHash>{httpClaimDetails.signatureValue}</CopyableHash>
-        </p>
-        <p>
-          Message:
-          <CopyableHash>{this.renderHttpClaimDetails()}</CopyableHash>
-        </p>
+        <div className="columns">
+          <div className="column is-one-quarter">
+            <VerifyContainerLabel>Stored on</VerifyContainerLabel>
+          </div>
+          <div className="column is-three-quarters">
+            <img style={{ marginRight: '10px', display: 'inline-block' }} src={httpStorage} />
+            <p style={{ fontWeight: '600', display: 'inline-block' }}>HTTP Server</p>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column is-one-quarter">
+            <VerifyContainerLabel>Author</VerifyContainerLabel>
+          </div>
+          <div className="column is-three-quarters">
+            <CopyableHash>{this.props.feedItem.author}</CopyableHash>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column is-one-quarter">
+            <VerifyContainerLabel>Message signature hash</VerifyContainerLabel>
+          </div>
+          <div className="column is-three-quarters">
+            <CopyableHash>{httpClaimDetails.signatureValue}</CopyableHash>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column is-one-quarter">
+            <VerifyContainerLabel>Message</VerifyContainerLabel>
+          </div>
+          <div className="column is-three-quarters">
+            <CopyableHash>{this.renderHttpClaimDetails()}</CopyableHash>
+          </div>
+        </div>
       </Container>
     );
   };
@@ -174,7 +240,7 @@ export class VerifyModal extends Component {
     const { httpClaimDetails } = this.state;
     if (httpClaimDetails.signatureType === 'ethereum:personal:sign') {
       return (
-        <p style={{ alignSelf: 'center' }}>
+        <p style={{ alignSelf: 'center', marginBottom: '60px' }}>
           Copy values to{' '}
           <A href="http://etherscan.io/verifySig" target="_blank" rel="noopener">
             Etherscan
@@ -199,19 +265,35 @@ export class VerifyModal extends Component {
           href={createEtherscanUrl(this.props.feedItem)}
           target="_blank"
           rel="noopener"
-          style={{ alignSelf: 'center' }}
+          style={{ alignSelf: 'center', marginBottom: '60px' }}
         >
           Check on Etherscan
         </A>
-        <p>Stored on: {feedItem.family}</p>
-        <p>
-          Author:
-          <Hash>{feedItem.author}</Hash>
-        </p>
-        <p>
-          Transaction hash:
-          <Hash>{this.props.feedItem.id.split(':')[1]}</Hash>
-        </p>
+        <div className="columns">
+          <div className="column is-one-quarter">
+            <VerifyContainerLabel>Stored on</VerifyContainerLabel>
+          </div>
+          <div className="column is-three-quarters">
+            <img style={{ marginRight: '10px', display: 'inline-block' }} src={onChain} />
+            <p style={{ fontWeight: '600', display: 'inline-block' }}>{feedItem.family}</p>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column is-one-quarter">
+            <VerifyContainerLabel>Author</VerifyContainerLabel>
+          </div>
+          <div className="column is-three-quarters">
+            <Hash>{feedItem.author}</Hash>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column is-one-quarter">
+            <VerifyContainerLabel>Transaction hash</VerifyContainerLabel>
+          </div>
+          <div className="column is-three-quarters">
+            <Hash>{this.props.feedItem.id.split(':')[1]}</Hash>
+          </div>
+        </div>
       </Container>
     );
   };

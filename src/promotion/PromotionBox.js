@@ -35,17 +35,21 @@ const CatvertisedItemLink = styled(Link)`
 
 const AddAKitty = styled.button`
   margin-top: 15px;
+  font-family: 'AvenirNext';
+  font-weight: 600;
   align-self: flex-start;
+  width: 100%;
   border: none;
   outline: none;
-  background: none;
+  background-color: #ebefff;
   color: #264dd9;
   font-size: 1rem;
-  padding: 0;
+  padding: 1em 0 0.75em 0;
+  border-radius: 12px;
   cursor: pointer;
 
   @media (max-width: 770px) {
-    margin-top: -3px;
+    margin-top: 10px;
   }
 `;
 
@@ -57,23 +61,24 @@ const PAGE = {
 
 const PromotionTab = styled(({ count, children, ...props }) => (
   <Tab {...props}>
-    <span>{count}</span>
-    <span style={{ fontSize: '0.8em' }}>{children}</span>
+    <span style={{ fontSize: '2rem' }}>{count}</span>
+    <span style={{ fontSize: '1rem' }}>{children}</span>
   </Tab>
 ))`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px gray solid;
-  font-size: 0.9em;
+  border-bottom: 2px #f0f1f6 solid;
+  font-size: 1rem;
   cursor: pointer;
+  outline: none;
+  font-weight: 600;
+  padding-left: 0;
 
   &.react-tabs__tab--selected {
     cursor: unset;
-    font-size: 1em;
-    font-weight: 600;
-    border: 3px transparent solid;
-    border-bottom: 3px blue solid;
+    color: #264dd9;
+    border-bottom: 2px #264dd9 solid;
   }
 `;
 
@@ -125,7 +130,7 @@ export class PromotionBox extends Component {
         {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
         {!this.props.showPurrmoter && this.renderTabs(supportersCount, supportingCount)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
-          <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}>Promote yourself</AddAKitty>
+          <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}>Start supporting</AddAKitty>
         )}
         {Object.keys(items).length > 0 && this.renderList(items)}
       </React.Fragment>
