@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import css from './css/landing.css';
 import styled from 'styled-components';
@@ -74,23 +75,23 @@ class Landing extends Component {
             <nav className="level landing-header">
               <div className="level-left">
                 <div className="level-item">
-                  <a href="/about" style={{ display: 'flex' }}>
+                  <Link to="/about" style={{ display: 'flex' }}>
                     <Logo />
                     <p className="landing-logo-typo">Tok'n'talk</p>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="level-right">
-                <a href="/communities" className="level-item landing-header-link">
+                <Link to="/communities" className="level-item landing-header-link">
                   Communities
-                </a>
-                <a href="/owners" className="level-item landing-header-link">
+                </Link>
+                <Link to="/owners" className="level-item landing-header-link">
                   Token Owners
-                </a>
-                <a href="/" className="level-item landing-header-link landing-header-link-button">
+                </Link>
+                <Link to="/" className="level-item landing-header-link landing-header-link-button">
                   <span>Hop inside</span>
                   <img src={arrowRight} id="landing-header-arrow" />
-                </a>
+                </Link>
               </div>
             </nav>
           </div>
@@ -368,9 +369,9 @@ class Landing extends Component {
               <div className="columns">
                 <div className="column is-twelve">
                   <figure className="landing-feature landing-ending" id="hopinside">
-                    <a href="/" className="landing-button">
+                    <Link to="/" className="landing-button">
                       Hop inside
-                    </a>
+                    </Link>
                   </figure>
                 </div>
               </div>
@@ -416,9 +417,9 @@ class Landing extends Component {
                     <img src={tokntalkGrey} />
                   </a>
                   <div className="landing-footer-navigation">
-                    <a href="/communities">Communities</a>
-                    <a href="/owners">Owners</a>
-                    <a href="/">Hop Inside</a>
+                    <Link to="/communities">Communities</Link>
+                    <Link to="/owners">Owners</Link>
+                    <Link to="/">Hop Inside</Link>
                   </div>
                   <div className="landing-footer-social">
                     <a href="https://github.com/CryptoVerseCC/tokntalk">
