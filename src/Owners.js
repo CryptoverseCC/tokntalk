@@ -36,7 +36,7 @@ const Landing = styled((props) => (
         <nav class="level landing-header">
           <div class="level-left">
             <div class="level-item">
-              <a href="/landing" style={{ display: 'flex' }}>
+              <a href="/about" style={{ display: 'flex' }}>
                 <Logo />
                 <p class="landing-logo-typo">Tok'n'talk</p>
               </a>

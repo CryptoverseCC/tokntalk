@@ -74,7 +74,7 @@ class Landing extends Component {
             <nav className="level landing-header">
               <div className="level-left">
                 <div className="level-item">
-                  <a href="/landing" style={{ display: 'flex' }}>
+                  <a href="/about" style={{ display: 'flex' }}>
                     <Logo />
                     <p className="landing-logo-typo">Tok'n'talk</p>
                   </a>
