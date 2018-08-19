@@ -108,6 +108,9 @@ import cryptocrystalCover from './img/tokens/cryptocrystals.png';
 import blockchaincuties from './img/tokens/blockchaincuties-icon.svg';
 import blockchaincutiesCover from './img/tokens/blockchaincuties.png';
 
+import snookarma from './img/tokens/snookarma-icon.svg';
+import snookarmaCover from './img/tokens/snookarma.png';
+
 import * as mapping from 'contract-mapping/mapping.json';
 
 const clubs = [
@@ -540,6 +543,15 @@ const clubs = [
       { name: 'OpenSea', url: 'https://opensea.io/category/blockchaincuties' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/blockchaincuties/' },
     ],
+  },
+  {
+    ...mapping.SNOOKARMA,
+    logo: snookarma,
+    coverImage: snookarmaCover,
+    primaryColor: '#3F51B5',
+    secondaryColor: '#FFA002',
+    shadowColor: 'rgba(61,81,181,0.4)',
+    externalLinks: [{ name: 'Project page', url: 'https://www.snookarma.com/' }],
   },
   {
     ...mapping.PERCENT,
