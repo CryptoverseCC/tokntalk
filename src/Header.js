@@ -26,6 +26,7 @@ const StyledHeader = styled.div`
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0 2rem;
+  box-shadow: 0 0.6rem 1rem -0.3rem rgba(27, 36, 55, 0.04);
 `;
 
 const HeaderContainer = styled.div`
@@ -164,14 +165,18 @@ const CatDropdownToggle = ({ openDropdown }) => {
         <span
           style={{
             display: 'inline-flex',
-            fontSize: '1.6rem',
+            fontSize: '0.8rem',
             position: 'relative',
-            top: '-2px',
+            fontWeight: '600',
+            padding: '1.2em 0.6em 1em 0.6em',
+            color: '#264dd9',
+            backgroundColor: '#ebefff',
+            borderRadius: '20px',
             lineHeight: '1px',
             marginLeft: '7px',
           }}
         >
-          ⌄
+          Switch 🔽
         </span>
       </DropdownEntityName>
     </ToggleButton>
@@ -183,16 +188,16 @@ const PickEntity = styled.button`
   background: none;
   outline: none;
   margin: 0;
-  padding: 0.375rem 1rem;
+  padding: 0.375rem 0.75rem;
   width: 100%;
-  border-radius: 33px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
 
   &:hover {
-    background-color: #f4f1ff;
-    color: #264dd9;
+    background-color: #ebefff;
+    color: #2850d9;
   }
 `;
 
@@ -297,7 +302,6 @@ const Error = styled.span`
 
 const Loading = styled.span`
   color: blue;
-  text-shadow: 0 0 10px rgba(252, 0, 53, 0.3);
   @media (max-width: 770px) {
     display: none;
   }
