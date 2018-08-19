@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import timeago from 'timeago.js';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
-import sortBy from 'lodash/fp/sortBy';
-import reverse from 'lodash/fp/reverse';
 import find from 'lodash/fp/find';
 
 import { pageView } from './Analytics';
@@ -32,9 +30,9 @@ import {
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
 } from './Entity';
-
 import exportIcon from './img/export.svg';
 import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
+import FeedTypeSwitcher from './FeedTypeSwitcher';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -327,7 +325,6 @@ const ByToken = ({ match, token }) => (
                   <FeedForToken
                     disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
                     className="feed-for-token"
-                    style={{ marginTop: '60px' }}
                     token={token}
                   />
                 )}
@@ -421,7 +418,11 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
             .map(enhanceFeedItem)
             .slice(0, limit)
             .map(({ context, context_info, isFromAddress, author, author_info, created_at }) => (
-              <EntityContainer key={context} to={`/${context}`} className="column is-one-third">
+              <EntityContainer
+                key={isFromAddress ? author : context}
+                to={`/${isFromAddress ? author : context}`}
+                className="column is-one-third"
+              >
                 <LinkedEntityAvatar
                   id={isFromAddress ? author : context}
                   entityInfo={isFromAddress ? author_info : context_info}
@@ -517,7 +518,7 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
               .map(enhanceFeedItem)
               .slice(0, limit)
               .map(({ context, context_info, target, isFromAddress, author, author_info }) => (
-                <EntityContainer key={context} className="column is-12">
+                <EntityContainer key={isFromAddress ? author : context} className="column is-12">
                   <LinkedEntityAvatar
                     id={isFromAddress ? author : context}
                     entityInfo={isFromAddress ? author_info : context_info}
@@ -709,7 +710,6 @@ const FeedPage = ({ token }) => (
               <FeedForToken
                 disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
                 className="feed-for-token"
-                style={{ marginTop: '60px' }}
                 token={token}
               />
             )}
@@ -822,6 +822,7 @@ const ActiveEntityIsNotFromFamily = ({ token }) => (
 export class FeedForToken extends Component {
   storage = Storage();
   state = {
+    feedType: 'new',
     loading: false,
     feedLoadingMore: false,
     feedItems: [],
@@ -848,6 +849,7 @@ export class FeedForToken extends Component {
   fetchFeed = async () => {
     this.setState({ loading: true });
     const { token } = this.props;
+    const { feedType } = this.state;
     const asset = `${token.network}:${token.address}`;
     const version = Date.now();
 
@@ -855,7 +857,7 @@ export class FeedForToken extends Component {
       const { items } = await getRanking(
         [
           {
-            algorithm: 'cryptoverse_club_feed',
+            algorithm: feedType === 'popular' ? 'cryptoverse_club_last_week_popular_feed' : 'cryptoverse_club_feed',
             params: { id: asset },
           },
           {
@@ -865,10 +867,10 @@ export class FeedForToken extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      const feedItems = items
-        .filter(isValidFeedItem)
-        .map(enhanceFeedItem)
-        .sort((a, b) => b.created_at - a.created_at);
+      let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
+      if (feedType === 'new') {
+        feedItems = feedItems.sort((a, b) => b.created_at - a.created_at);
+      }
 
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
       this.setFeedVersion(version);
@@ -884,39 +886,46 @@ export class FeedForToken extends Component {
     }));
   };
 
+  changeFeedType = (feedType) => {
+    this.setState({ feedType }, this.fetchFeed);
+  };
+
   render() {
     const { className, style, token, disabledInteractions } = this.props;
-    const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
+    const { loading, feedLoadingMore, feedItems, visibleItemsCount, feedType } = this.state;
     const asset = `${token.network}:${token.address}`;
 
     return (
-      <AppContext.Consumer>
-        {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
-          const filteredTemporaryFeedItems = temporaryFeedItems
-            .filter(({ type, about }) => type === 'post_club' && about === asset)
-            .map((item) => ({ ...item, type: 'regular' }));
+      <React.Fragment>
+        <FeedTypeSwitcher type={feedType} onChange={this.changeFeedType} style={{ margin: '2em 0' }} />
+        <AppContext.Consumer>
+          {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
+            const filteredTemporaryFeedItems = temporaryFeedItems
+              .filter(({ type, about }) => type === 'post_club' && about === asset)
+              .map((item) => ({ ...item, type: 'regular' }));
 
-          const allFeedItems = pipe(
-            uniqBy('id'),
-            sortBy('created_at'),
-            reverse,
-          )([...feedItems.slice(0, visibleItemsCount), ...filteredTemporaryFeedItems]);
+            // ToDo insert temporary between feedItems if needed
+            const allFeedItems = pipe(uniqBy('id'))([
+              ...(feedType === 'popular' ? [] : filteredTemporaryFeedItems),
+              ...feedItems.slice(0, visibleItemsCount),
+            ]);
 
-          return (
-            <Feed
-              disabledInteractions={disabledInteractions}
-              className={className}
-              style={style}
-              feedItems={allFeedItems}
-              feedLoading={loading}
-              temporaryReplies={temporaryReplies}
-              temporaryReactions={temporaryReactions}
-              getMoreFeedItems={this.getMoreItems}
-              feedLoadingMore={feedLoadingMore}
-            />
-          );
-        }}
-      </AppContext.Consumer>
+            return (
+              <Feed
+                disabledInteractions={disabledInteractions}
+                className={className}
+                style={style}
+                feedItems={allFeedItems}
+                feedLoading={loading}
+                temporaryReplies={temporaryReplies}
+                temporaryReactions={temporaryReactions}
+                getMoreFeedItems={this.getMoreItems}
+                feedLoadingMore={feedLoadingMore}
+              />
+            );
+          }}
+        </AppContext.Consumer>
+      </React.Fragment>
     );
   }
 }

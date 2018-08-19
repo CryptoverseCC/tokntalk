@@ -14,6 +14,8 @@ import { FlatContainer, ContentContainer, H4 } from './Components';
 import clubs, { TokenImage } from './clubs';
 import { DiscoverIcon } from './Icons';
 import { UnreadedCount } from './UnreadedMessages';
+import FeedTypeSwitcher from './FeedTypeSwitcher';
+import PopularFeed from './SimpleFeed';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -47,6 +49,8 @@ const YourCommunitiesLink = styled(Link)`
 `;
 
 export default class IndexPage extends Component {
+  state = { feedType: 'new' };
+
   componentDidMount() {
     pageView();
     window.scrollTo(0, 0);
@@ -58,7 +62,15 @@ export default class IndexPage extends Component {
     clearInterval(this.refreshInterval);
   }
 
+  changeFeedType = (feedType) => {
+    this.setState({ feedType });
+    if (feedType === 'new') {
+      this.props.getFeedItems();
+    }
+  };
+
   render() {
+    const { feedType } = this.state;
     return (
       <ContentContainer>
         <HeaderSpacer style={{ marginBottom: '60px' }} />
@@ -80,7 +92,8 @@ export default class IndexPage extends Component {
           </div>
           <div className="column is-8 is-offset-1">
             <Hero style={{ marginBottom: '30px' }} />
-            <ConnectedFeed className="todo" />
+            <FeedTypeSwitcher type={feedType} onChange={this.changeFeedType} style={{ marginBottom: '2em' }} />
+            {feedType === 'new' ? <ConnectedFeed className="todo" /> : <PopularFeed />}
           </div>
         </div>
       </ContentContainer>
