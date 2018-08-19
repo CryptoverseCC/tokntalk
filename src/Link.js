@@ -6,6 +6,7 @@ const StyledLink = styled(Link)`
     href || to
       ? `
     color: #264dd9;
+    font-weight: 600;
     cursor: default;
   `
       : `

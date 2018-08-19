@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import timeago from 'timeago.js';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
-import sortBy from 'lodash/fp/sortBy';
-import reverse from 'lodash/fp/reverse';
 import find from 'lodash/fp/find';
 
 import { pageView } from './Analytics';
@@ -14,25 +12,27 @@ import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
-import { validateParams } from './utils';
-import { ExclamationMark } from './Icons';
-import ercs20, { TokenImage } from './erc20';
+import { Storage, validateParams } from './utils';
+import clubs, { TokenImage } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
-import { socialIcons } from './Icons';
-import { FlatContainer, WarningContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
+import AddToken from './AddToken';
+import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
+import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
-  EntityName,
   LinkedEntityAvatar,
   IfActiveEntity,
   IfActiveEntityIs,
   IsActiveEntityFromFamily,
+  LinkedActiveEntityAvatar,
+  ActiveEntityName,
   Entity,
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
 } from './Entity';
-
 import exportIcon from './img/export.svg';
+import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
+import FeedTypeSwitcher from './FeedTypeSwitcher';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -54,10 +54,24 @@ const H2Discover = styled.h2`
 
 const H3Discover = styled.h3`
   margin-top: 30px;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 600;
   @media (max-width: 770px) {
+    margin-left: 2%;
+  }
+`;
+
+const WarningContainerColored = styled.div`
+  background: ${({ primaryColor }) => primaryColor};
+  color: ${({ secondaryColor }) => secondaryColor};
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 30px;
+  @media (max-width: 770px) {
+    width: 96%;
     margin-left: 2%;
   }
 `;
@@ -108,25 +122,33 @@ class Index extends Component {
     }
   }
 
-  renderEntityTokens = (entity) =>
-    this.renderTiles(
-      entity.tokens.map((asset) => {
-        const [network, address] = asset.split(':');
-        return find({ network, address })(ercs20);
-      }),
-    );
+  renderEntityTokens = (entity) => (
+    <div className="columns is-multiline">
+      {this.renderTiles(
+        entity.tokens.map((asset) => {
+          const [network, address] = asset.split(':');
+          return find({ network, address })(clubs);
+        }),
+      )}
+    </div>
+  );
 
-  renderOthersTokens = () => this.renderTiles(this.state.loading ? [] : this.sortByScore());
+  renderOthersTokens = () => (
+    <div className="columns is-multiline">
+      <AddToken className="column is-one-quarter" />
+      {this.renderTiles(this.state.loading ? [] : this.sortByScore())}
+    </div>
+  );
 
   sortByScore = () => {
-    const tokensMap = ercs20.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
+    const tokensMap = clubs.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
     return this.state.score.filter((item) => tokensMap[item.id]).map((item) => tokensMap[item.id]);
   };
 
   renderTiles = (tokens) => {
     const { match } = this.props;
     return (
-      <div className="columns is-multiline">
+      <React.Fragment>
         {tokens.map((token) => (
           <TokenTile
             linkTo={`${match.url}/byToken/${token.symbol}`}
@@ -135,7 +157,7 @@ class Index extends Component {
             className="column is-one-quarter"
           />
         ))}
-      </div>
+      </React.Fragment>
     );
   };
 
@@ -238,7 +260,7 @@ const ByToken = ({ match, token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to="/discover">
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
@@ -249,7 +271,7 @@ const ByToken = ({ match, token }) => (
           </Back>
         </Link>
         <div className="columns is-mobile">
-          <div className="column is-1">
+          <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
             <div
               style={{
                 display: 'flex',
@@ -274,30 +296,26 @@ const ByToken = ({ match, token }) => (
           <FlatContainer>
             <H4>Recently active</H4>
             <Link to={`${match.url}/recentlyActive`}>
-              <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>
+              <SeeMore style={{ marginBottom: '30px', fontWeight: '600' }}>See more</SeeMore>
             </Link>
             <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
           </FlatContainer>
-          <H3 style={{ marginTop: '60px', marginBottom: '30px' }}>
+          <H3Discover style={{ marginTop: '60px', marginBottom: '30px' }}>
             Messages in this community
             <Link to={`${match.url}/feed`}>
-              <SeeMore style={{ marginLeft: '15px' }}>See more</SeeMore>
+              <SeeMore>See more</SeeMore>
             </Link>
-          </H3>
+          </H3Discover>
           <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
             {token.is721 ? (
               <IfActiveEntityIs
                 asset={`${token.network}:${token.address}`}
                 other={<ActiveEntityIsNotFromFamily token={token} />}
               >
-                <FormContainer>
-                  <ConnectedClubForm token={token} Form={CommentForm} />
-                </FormContainer>
+                <ClubForm token={token} />
               </IfActiveEntityIs>
             ) : (
-              <FormContainer>
-                <ConnectedClubForm token={token} Form={CommentForm} />
-              </FormContainer>
+              <ClubForm token={token} />
             )}
           </IfActiveEntityHasToken>
           <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
@@ -307,7 +325,6 @@ const ByToken = ({ match, token }) => (
                   <FeedForToken
                     disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
                     className="feed-for-token"
-                    style={{ marginTop: '60px' }}
                     token={token}
                   />
                 )}
@@ -317,8 +334,8 @@ const ByToken = ({ match, token }) => (
         </div>
         <div className="column is-3 is-offset-1">
           <FlatContainer style={{ marginBottom: '4rem' }}>
-            <H4 style={{ marginBottom: '15px' }}>External links</H4>
-            <ul>
+            <H4 style={{ marginBottom: '30px' }}>External links</H4>
+            <ul style={{ fontWeight: '600' }}>
               <li style={{ marginBottom: '7px' }}>
                 <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
               </li>
@@ -334,7 +351,7 @@ const ByToken = ({ match, token }) => (
           <FlatContainer>
             <H4>In social</H4>
             <Link to={`${match.url}/social`}>
-              <SeeMore style={{ marginBottom: '15px' }}>See more</SeeMore>
+              <SeeMore style={{ marginBottom: '30px' }}>See more</SeeMore>
             </Link>
             <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
             <Social asset={`${token.network}:${token.address}`} social="twitter" limit={2} />
@@ -353,6 +370,9 @@ const Hero = styled.div`
   padding-top: 65px;
   height: calc(15rem + 65px);
   margin-bottom: 68px;
+  @media (max-width: 770px) {
+    height: calc(20rem + 65px);
+  }
 `;
 
 const Back = Link.withComponent('div');
@@ -366,7 +386,7 @@ const BackArrow = styled.div`
 `;
 
 const SeeMore = styled.span`
-  display: inline-block;
+  display: block;
   font-size: 1rem;
   font-weight: 600;
   color: #264dd9;
@@ -398,7 +418,11 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
             .map(enhanceFeedItem)
             .slice(0, limit)
             .map(({ context, context_info, isFromAddress, author, author_info, created_at }) => (
-              <EntityContainer key={context} to={`/${context}`} className="column is-one-third">
+              <EntityContainer
+                key={isFromAddress ? author : context}
+                to={`/${isFromAddress ? author : context}`}
+                className="column is-one-third"
+              >
                 <LinkedEntityAvatar
                   id={isFromAddress ? author : context}
                   entityInfo={isFromAddress ? author_info : context_info}
@@ -407,11 +431,17 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
                 <EntityInfo>
                   <Link
                     to={`/${isFromAddress ? author : context}`}
-                    style={{ fontSize: '1rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                    style={{
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                    }}
                   >
                     {isFromAddress ? author_info.name : context_info.name}
                   </Link>
-                  <Timeago>{timeago().format(created_at)}</Timeago>
+                  <Timeago style={{ fontSize: '0.8rem' }}>{timeago().format(created_at)}</Timeago>
                 </EntityInfo>
               </EntityContainer>
             ))}
@@ -432,22 +462,30 @@ const RecentlyActivePage = ({ token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
             </div>
             <div className="column">
               <H2>
-                <TokenImage token={token} style={{ width: '23px', height: '23px', marginRight: '10px' }} />
+                <TokenImage
+                  token={token}
+                  style={{
+                    width: '23px',
+                    height: '23px',
+                    marginRight: '10px',
+                    marginBottom: '-3px',
+                  }}
+                />
                 {token.name}
               </H2>
             </div>
           </Back>
         </Link>
         <div className="columns is-mobile">
-          <div className="column is-offset-1">
-            <H1>Recently active</H1>
+          <div className="column" style={{ marginLeft: '80px' }}>
+            <H1 style={{ lineHeight: '1.1' }}>Recently active</H1>
           </div>
         </div>
       </ContentContainer>
@@ -465,8 +503,8 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
 
   return (
     <React.Fragment>
-      <SocialHeader style={{ marginBottom: '15px' }}>
-        <Icon style={{ width: '16px', height: '16px', marginRight: '10px' }} />
+      <SocialHeader style={{ marginBottom: '15px', marginTop: '15px' }}>
+        <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
         {social}
       </SocialHeader>
       <IsLoading>
@@ -480,7 +518,7 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
               .map(enhanceFeedItem)
               .slice(0, limit)
               .map(({ context, context_info, target, isFromAddress, author, author_info }) => (
-                <EntityContainer key={context} className="column is-12">
+                <EntityContainer key={isFromAddress ? author : context} className="column is-12">
                   <LinkedEntityAvatar
                     id={isFromAddress ? author : context}
                     entityInfo={isFromAddress ? author_info : context_info}
@@ -492,7 +530,14 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
                     </Link>
                     <a href={target} target="_blank" rel="noopener">
                       <img alt="" src={exportIcon} style={{ marginRight: '5px' }} />
-                      <SocialUsername link={target} />
+                      <SocialUsername
+                        style={{
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          color: '#1b2437',
+                        }}
+                        link={target}
+                      />
                     </a>
                   </EntityInfo>
                 </EntityContainer>
@@ -520,21 +565,29 @@ const SocialPage = ({ token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
             </div>
             <div className="column">
               <H2>
-                <TokenImage token={token} style={{ width: '23px', height: '23px', marginRight: '10px' }} />
+                <TokenImage
+                  token={token}
+                  style={{
+                    width: '23px',
+                    height: '23px',
+                    marginRight: '10px',
+                    marginBottom: '-3px',
+                  }}
+                />
                 {token.name}
               </H2>
             </div>
           </Back>
         </Link>
         <div className="columns is-mobile">
-          <div className="column is-offset-1">
+          <div className="column" style={{ marginLeft: '80px' }}>
             <H1>In Media</H1>
           </div>
         </div>
@@ -567,6 +620,37 @@ const SocialPage = ({ token }) => (
   </React.Fragment>
 );
 
+const ClubForm = ({ token }) => (
+  <IfActiveEntity>
+    {({ entityId }) => (
+      <FormContainer>
+        <article className="media">
+          <div className="media-left">
+            <LinkedActiveEntityAvatar size="large" />
+          </div>
+          <div className="media-content">
+            <div className="content">
+              <Link
+                to={`/${entityId}`}
+                style={{
+                  fontFamily: 'AvenirNext',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  marginBottom: '20px',
+                  marginTop: '10px',
+                }}
+              >
+                <ActiveEntityName />
+              </Link>
+              <ConnectedClubForm token={token} Form={CommentForm} />
+            </div>
+          </div>
+        </article>
+      </FormContainer>
+    )}
+  </IfActiveEntity>
+);
+
 const FeedPage = ({ token }) => (
   <React.Fragment>
     <Hero
@@ -578,14 +662,22 @@ const FeedPage = ({ token }) => (
       <ContentContainer style={{ flex: 1 }}>
         <Link to={`/discover/byToken/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1">
+            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
                 <H2 className="is-pulled-right">←</H2>
               </BackArrow>
             </div>
             <div className="column">
               <H2>
-                <TokenImage token={token} style={{ width: '23px', height: '23px', marginRight: '10px' }} />
+                <TokenImage
+                  token={token}
+                  style={{
+                    width: '23px',
+                    height: '23px',
+                    marginRight: '10px',
+                    marginBottom: '-3px',
+                  }}
+                />
                 {token.name}
               </H2>
             </div>
@@ -605,14 +697,10 @@ const FeedPage = ({ token }) => (
             asset={`${token.network}:${token.address}`}
             other={<ActiveEntityIsNotFromFamily token={token} />}
           >
-            <FormContainer>
-              <ConnectedClubForm token={token} Form={CommentForm} />
-            </FormContainer>
+            <ClubForm token={token} />
           </IfActiveEntityIs>
         ) : (
-          <FormContainer>
-            <ConnectedClubForm token={token} Form={CommentForm} />
-          </FormContainer>
+          <ClubForm token={token} />
         )}
       </IfActiveEntityHasToken>
       <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
@@ -622,7 +710,6 @@ const FeedPage = ({ token }) => (
               <FeedForToken
                 disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
                 className="feed-for-token"
-                style={{ marginTop: '60px' }}
                 token={token}
               />
             )}
@@ -640,10 +727,10 @@ const isTokenValid = (token) => {
 
   if (token.indexOf(':') !== -1) {
     const [network, address] = token.split(':');
-    return !!find({ network, address })(ercs20);
+    return !!find({ network, address })(clubs);
   }
 
-  return !!find({ symbol: token })(ercs20);
+  return !!find({ symbol: token })(clubs);
 };
 
 const validateTokenParam = validateParams(
@@ -658,10 +745,10 @@ const mapTokenUrlParam = (Cmp) => (props) => {
 
   let erc20Token;
   if (token.indexOf(':') === -1) {
-    erc20Token = find({ symbol: token })(ercs20);
+    erc20Token = find({ symbol: token })(clubs);
   } else {
     const [network, address] = token.split(':');
-    erc20Token = find({ network, address })(ercs20);
+    erc20Token = find({ network, address })(clubs);
   }
 
   return <Cmp token={erc20Token} {...props} />;
@@ -680,7 +767,10 @@ export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
         shadowColor={token.shadowColor}
       >
         <TokenTileWrapper>
-          <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
+          <div className="is-flex">
+            <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
+            {!small && <UnreadedCount token={token} />}
+          </div>
           <div>
             <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
             {!small && <H3>{token.name}</H3>}
@@ -696,27 +786,43 @@ const IsLoading = ({ children }) => (
 );
 
 const NoTokensWarning = ({ token }) => (
-  <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
-    <ExclamationMark style={{ marginRight: '30px' }} />
+  <WarningContainerColored
+    primaryColor={token.primaryColor}
+    secondaryColor={token.secondaryColor}
+    className="is-flex"
+    style={{ alignItems: 'center' }}
+  >
+    <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
-      <p style={{ fontSize: '1.5rem' }}>Acquire {token.name} to participate!</p>
-      <p style={{ fontSize: '1rem' }}>Then you'll be able to join the conversation.</p>
+      <p style={{ fontSize: '1.5rem', color: token.secondaryColor, lineHeight: '1.2' }}>
+        Acquire {token.name} to participate!
+      </p>
+      <p style={{ fontSize: '1rem', color: token.secondaryColor, opacity: '0.6' }}>
+        Then you'll be able to join the conversation.
+      </p>
     </div>
-  </WarningContainer>
+  </WarningContainerColored>
 );
 
 const ActiveEntityIsNotFromFamily = ({ token }) => (
-  <WarningContainer style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}>
-    <ExclamationMark style={{ marginRight: '30px' }} />
+  <WarningContainerColored
+    primaryColor={token.primaryColor}
+    secondaryColor={token.secondaryColor}
+    className="is-flex"
+    style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
+  >
+    <SwitcherIcon style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
-      <p style={{ fontSize: '1.5rem' }}>You can’t participate</p>
-      <p style={{ fontSize: '14px' }}>Switch your avatar to {token.name}</p>
+      <p style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>Switch your avatar!</p>
+      <p style={{ fontSize: '14px' }}>Change your character to {token.name} in the upper right corner</p>
     </div>
-  </WarningContainer>
+  </WarningContainerColored>
 );
 
 export class FeedForToken extends Component {
+  storage = Storage();
   state = {
+    feedType: 'new',
     loading: false,
     feedLoadingMore: false,
     feedItems: [],
@@ -727,16 +833,31 @@ export class FeedForToken extends Component {
     this.fetchFeed();
   }
 
+  setFeedVersion = async (version) => {
+    const { token } = this.props;
+    const latestVersions = JSON.parse(this.storage.getItem(FEED_VERSION_KEY));
+
+    this.storage.setItem(
+      FEED_VERSION_KEY,
+      JSON.stringify({
+        ...latestVersions,
+        [`${token.network}:${token.address}`]: version,
+      }),
+    );
+  };
+
   fetchFeed = async () => {
     this.setState({ loading: true });
     const { token } = this.props;
+    const { feedType } = this.state;
     const asset = `${token.network}:${token.address}`;
+    const version = Date.now();
 
     try {
       const { items } = await getRanking(
         [
           {
-            algorithm: 'cryptoverse_club_feed',
+            algorithm: feedType === 'popular' ? 'cryptoverse_club_last_week_popular_feed' : 'cryptoverse_club_feed',
             params: { id: asset },
           },
           {
@@ -746,8 +867,13 @@ export class FeedForToken extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      const feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
+      let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
+      if (feedType === 'new') {
+        feedItems = feedItems.sort((a, b) => b.created_at - a.created_at);
+      }
+
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
+      this.setFeedVersion(version);
     } catch (e) {
       console.warn(e);
       this.setState({ loading: false });
@@ -760,39 +886,46 @@ export class FeedForToken extends Component {
     }));
   };
 
+  changeFeedType = (feedType) => {
+    this.setState({ feedType }, this.fetchFeed);
+  };
+
   render() {
     const { className, style, token, disabledInteractions } = this.props;
-    const { loading, feedLoadingMore, feedItems, visibleItemsCount } = this.state;
+    const { loading, feedLoadingMore, feedItems, visibleItemsCount, feedType } = this.state;
     const asset = `${token.network}:${token.address}`;
 
     return (
-      <AppContext.Consumer>
-        {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
-          const filteredTemporaryFeedItems = temporaryFeedItems
-            .filter(({ type, about }) => type === 'post_club' && about === asset)
-            .map((item) => ({ ...item, type: 'regular' }));
+      <React.Fragment>
+        <FeedTypeSwitcher type={feedType} onChange={this.changeFeedType} style={{ margin: '2em 0' }} />
+        <AppContext.Consumer>
+          {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
+            const filteredTemporaryFeedItems = temporaryFeedItems
+              .filter(({ type, about }) => type === 'post_club' && about === asset)
+              .map((item) => ({ ...item, type: 'regular' }));
 
-          const allFeedItems = pipe(
-            uniqBy('id'),
-            sortBy('created_at'),
-            reverse,
-          )([...feedItems.slice(0, visibleItemsCount), ...filteredTemporaryFeedItems]);
+            // ToDo insert temporary between feedItems if needed
+            const allFeedItems = pipe(uniqBy('id'))([
+              ...(feedType === 'popular' ? [] : filteredTemporaryFeedItems),
+              ...feedItems.slice(0, visibleItemsCount),
+            ]);
 
-          return (
-            <Feed
-              disabledInteractions={disabledInteractions}
-              className={className}
-              style={style}
-              feedItems={allFeedItems}
-              feedLoading={loading}
-              temporaryReplies={temporaryReplies}
-              temporaryReactions={temporaryReactions}
-              getMoreFeedItems={this.getMoreItems}
-              feedLoadingMore={feedLoadingMore}
-            />
-          );
-        }}
-      </AppContext.Consumer>
+            return (
+              <Feed
+                disabledInteractions={disabledInteractions}
+                className={className}
+                style={style}
+                feedItems={allFeedItems}
+                feedLoading={loading}
+                temporaryReplies={temporaryReplies}
+                temporaryReactions={temporaryReactions}
+                getMoreFeedItems={this.getMoreItems}
+                feedLoadingMore={feedLoadingMore}
+              />
+            );
+          }}
+        </AppContext.Consumer>
+      </React.Fragment>
     );
   }
 }
@@ -865,6 +998,10 @@ const EntityInfo = styled.div`
   flex-direction: column;
   margin-left: 15px;
   overflow: hidden;
+  margin-top: 2px;
+  max-width: 250px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const Timeago = styled.p`

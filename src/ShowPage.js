@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import find from 'lodash/fp/find';
 
 import { pageView } from './Analytics';
@@ -14,15 +14,16 @@ import {
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
-import Modal from './Modal';
 import { socialIcons } from './Icons';
-import { ConnectedLabelForm, ReplyForm, CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
+import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
-import Advertised from './Catvertised';
-import ercs20 from './erc20';
+import clubs from './clubs';
+import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
+import checkMark from './img/checkmark.svg';
+import closeIcon from './img/small-remove.svg';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -118,7 +119,7 @@ export default class ShowPage extends Component {
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
               <div className="column is-3">
-                <ShowPage.ProfileImageContainer backgroundColor={entity.color}>
+                <ShowPage.ProfileImageContainer backgroundColor={`#${entity.background_color}`}>
                   <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
                 </ShowPage.ProfileImageContainer>
                 <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
@@ -134,7 +135,14 @@ export default class ShowPage extends Component {
                 </FlatContainer>
                 <FlatContainer style={{ marginTop: '30px' }}>
                   <AppContext.Consumer>
-                    {({ boostStore: { getBoosts } }) => <Advertised getBoosts={getBoosts} token={entityId} />}
+                    {({ boostStore: { getBoosts, getSupportings } }) => (
+                      <PromotionBox
+                        getBoosts={getBoosts}
+                        getSupportings={getSupportings}
+                        token={entityId}
+                        showPurrmoter={false}
+                      />
+                    )}
                   </AppContext.Consumer>
                 </FlatContainer>
               </div>
@@ -147,7 +155,7 @@ export default class ShowPage extends Component {
                     <CommunitiesList className="columns is-mobile">
                       {entity.tokens.map((asset) => {
                         const [network, address] = asset.split(':');
-                        const token = find({ network, address })(ercs20);
+                        const token = find({ network, address })(clubs);
 
                         return (
                           <StyledTokenTile
@@ -224,25 +232,62 @@ const InlineButton = styled.button`
   border: none;
   cursor: pointer;
   color: #264dd9;
+
+  :disabled {
+    color: gray;
+    cursor: not-allowed;
+  }
 `;
 
 const SocialIcon = styled(({ type, ...restProps }) => React.createElement(socialIcons[type], restProps))`
+  flex-shrink: 0;
   width: 24px;
   height: 24px;
 `;
 
-const LabelModal = styled(Modal)`
-  position: absolute;
-  top: 100%;
-  z-index: 100;
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0 20px 40px 0 rgba(6, 3, 16, 0.09);
-  padding: 25px;
-  border-radius: 4px;
+const LabelInput = styled.input`
+  flex: 1;
+  padding: 10px 0;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: ${({ isValid }) => !isValid && 'red'};
 `;
 
-export class SocialList extends React.Component {
+const EditableLabelContainer = styled.div`
+  flex: 1;
+  display: flex;
+  ${({ editing }) =>
+    editing &&
+    css`
+      border-radius: 6px;
+      background-color: #f3f6ff;
+      box-shadow: inset 0 1px 3px 0 #e0dbf4;
+    `};
+`;
+
+const SendIcon = styled.img.attrs({ src: checkMark })`
+  transition: transform 0.3s;
+
+  ${InlineButton}:not(:disabled):hover & {
+    transform: translateY(-3px);
+  }
+`;
+
+const ExitIcon = styled.img.attrs({ src: closeIcon })`
+  position: absolute;
+  width: 10px;
+  right: -12px;
+  transform: translateY(-50%);
+  top: 50%;
+  transition: transform 0.3s;
+
+  :hover {
+    transform: translateY(-70%);
+  }
+`;
+
+class EditableLabel extends Component {
   static VALID_LABEL_EXPRESSIONS = {
     facebook: /http(s)?:\/\/(www\.)?(facebook|fb)\.com\/(A-z 0-9 _ - \.)\/?/,
     twitter: /http(s)?:\/\/(.*\.)?twitter\.com\/[A-z 0-9 _]+\/?/,
@@ -250,37 +295,82 @@ export class SocialList extends React.Component {
     instagram: /https?:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/,
   };
 
-  static PLACEHOLDERS = {
-    facebook: 'https://facebook.com/profileName',
-    twitter: 'https://twitter.com/profileName',
-    github: 'https://github.com/profileName',
-    instagram: 'https://instagram.com/profileName',
-  };
+  state = { editing: false, isValid: true, editedValue: this.props.value };
 
-  state = {
-    editing: undefined,
+  edit = (e) => {
+    e.preventDefault();
+    this.setState({ editing: true });
   };
-
-  editLabel = (labelType) => (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({ editing: labelType });
-  };
-
-  EditButton = ({ labelType }) => (
-    <InlineButton onClick={this.editLabel(labelType)} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
-      {this.props.editable && 'Edit'}
-    </InlineButton>
-  );
 
   validate = (label) => {
-    const { editing: labelType } = this.state;
-    return label === '' || SocialList.VALID_LABEL_EXPRESSIONS[labelType].test(label);
+    const { type } = this.props;
+    return label === '' || EditableLabel.VALID_LABEL_EXPRESSIONS[type].test(label);
   };
 
+  submitLabel = (label) => () => {
+    label(this.state.editedValue, this.props.type);
+    this.setState({ editing: false });
+  };
+
+  onChange = (e) => {
+    const value = e.target.value;
+    this.setState({ editedValue: value, isValid: this.validate(value) });
+  };
+
+  render() {
+    const { value, editable, type } = this.props;
+    const { editing, isValid, editedValue } = this.state;
+
+    return (
+      <EditableLabelContainer
+        onClick={(e) => editing && e.preventDefault()}
+        editing={editing}
+        style={{ marginLeft: '15px' }}
+      >
+        {editing ? (
+          <LabelInput
+            placeholder={`${type} profile link`}
+            value={editedValue}
+            onChange={this.onChange}
+            isValid={isValid}
+          />
+        ) : (
+          <SocialUsername link={value} />
+        )}
+        {!editing ? (
+          <InlineButton onClick={this.edit} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
+            {editable && 'Edit'}
+          </InlineButton>
+        ) : (
+          <AppContext.Consumer>
+            {({ feedStore: { label } }) => (
+              <InlineButton
+                onClick={this.submitLabel(label)}
+                style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                disabled={!isValid}
+              >
+                <SendIcon />
+              </InlineButton>
+            )}
+          </AppContext.Consumer>
+        )}
+        {editing && <ExitIcon onClick={() => this.setState({ editing: false })} />}
+      </EditableLabelContainer>
+    );
+  }
+}
+export class SocialList extends React.Component {
   normalizeHref = (href) => {
     return href ? href : undefined;
+  };
+
+  domainRegex = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/;
+  getDomain = (url) => {
+    const result = this.domainRegex.exec(url);
+    if (result) {
+      return result[1];
+    }
+    return url;
   };
 
   static Container = styled.div`
@@ -291,59 +381,47 @@ export class SocialList extends React.Component {
   `;
 
   render() {
-    const {
-      EditButton,
-      normalizeHref,
-      props: { facebook, twitter, instagram, github, id, editable },
-    } = this;
+    const { normalizeHref, getDomain } = this;
+    const { facebook, twitter, instagram, github, id, editable } = this.props;
+
     return (
       <SocialList.Container>
         <Entity id={id}>
-          {({ url, color, name, image_preview_url }) => (
-            <SocialBadge href={url}>
-              <IdentityAvatar entity={id} backgroundColor={color} size="verySmall" src={image_preview_url} />
-              <span style={{ marginLeft: '15px' }}>{name}</span>
+          {({ external_link, background_color, image_preview_url }) => (
+            <SocialBadge href={external_link}>
+              <IdentityAvatar
+                entity={id}
+                backgroundColor={`#${background_color}`}
+                size="verySmall"
+                src={image_preview_url}
+              />
+              <span style={{ marginLeft: '15px' }}>{getDomain(external_link)}</span>
             </SocialBadge>
           )}
         </Entity>
         {(facebook || editable) && (
           <SocialBadge href={normalizeHref(facebook)}>
             <SocialIcon type="facebook" />
-            <SocialUsername link={facebook} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="facebook" />
+            <EditableLabel value={facebook} type="facebook" editable={editable} />
           </SocialBadge>
         )}
         {(twitter || editable) && (
           <SocialBadge href={normalizeHref(twitter)}>
             <SocialIcon type="twitter" />
-            <SocialUsername link={twitter} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="twitter" />
+            <EditableLabel value={twitter} type="twitter" editable={editable} />
           </SocialBadge>
         )}
         {(instagram || editable) && (
           <SocialBadge href={normalizeHref(instagram)}>
             <SocialIcon type="instagram" />
-            <SocialUsername link={instagram} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="instagram" />
+            <EditableLabel value={instagram} type="instagram" editable={editable} />
           </SocialBadge>
         )}
         {(github || editable) && (
           <SocialBadge href={normalizeHref(github)}>
             <SocialIcon type="github" />
-            <SocialUsername link={github} style={{ marginLeft: '15px' }} />
-            <EditButton labelType="github" />
+            <EditableLabel value={github} type="github" editable={editable} />
           </SocialBadge>
-        )}
-        {this.state.editing && (
-          <LabelModal onClose={this.editLabel(undefined)}>
-            <ConnectedLabelForm
-              Form={ReplyForm}
-              validate={this.validate}
-              placeholder={SocialList.PLACEHOLDERS[this.state.editing]}
-              labelType={this.state.editing}
-              onSubmit={this.editLabel(undefined)}
-            />
-          </LabelModal>
         )}
       </SocialList.Container>
     );

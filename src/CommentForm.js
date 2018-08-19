@@ -1,5 +1,5 @@
 import React from 'react';
-import TextArea from 'react-autosize-textarea';
+import TextArea from 'react-autosize-textarea/lib';
 
 import styled, { css } from 'styled-components';
 import Context from './Context';
@@ -36,10 +36,6 @@ export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea inner
     color: #1b2437;
   }
 
-  &:focus::placeholder {
-    color: #928f9b;
-  }
-
   &:hover:-ms-input-placeholder,
   &:focus:-ms-input-placeholder {
     color: #928f9b;
@@ -62,7 +58,6 @@ export const ReplyForm = styled(CommentForm)`
   ${StyledTextArea} {
     font-size: 1rem;
     font-weight: normal;
-
     &::placeholder {
       font-weight: 500;
       color: #264dd9;

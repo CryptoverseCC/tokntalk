@@ -3,7 +3,7 @@ import find from 'lodash/fp/find';
 import last from 'lodash/fp/last';
 import { isAddress } from 'web3-utils';
 
-import { getEntityInfoForAddress } from './utils';
+import { getEntityInfoForAddress, getCurrentProviderName } from './utils';
 import getWeb3 from './web3';
 import {
   claimContractAddressesForNetworkId,
@@ -13,7 +13,7 @@ import {
   claimWithValueTransferContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
-import erc20 from './erc20';
+import clubs from './clubs';
 import ercs721 from './erc721';
 
 const {
@@ -34,6 +34,13 @@ export const hasValidContext = ({ context }) => {
 export const isValidFeedItem = (feedItem) => {
   if (!['regular', 'like', 'post_to', 'post_about', 'post_club', 'social', 'post_to_simple'].includes(feedItem.type)) {
     return false;
+  }
+  if (feedItem.type === 'post_club') {
+    const [network, address] = feedItem.about.split(':');
+    const token = find({ network, address })(clubs);
+    if (!token) {
+      return false;
+    }
   }
   if (!feedItem.context) {
     return true;
@@ -164,7 +171,7 @@ export const getMyEntities = async () => {
 
 export const getLabels = async (entityId) => {
   try {
-    const res = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptopurr_profile;context=${entityId}`);
+    const res = await fetch(`${USERFEEDS_API_ADDRESS}/ranking/cryptoverse_profile;id=${entityId}`);
     const labels = await res.json();
     return labels;
   } catch (e) {
@@ -179,7 +186,7 @@ export const getEntityTokens = async (entityId) => {
       params: {
         context: entityId,
         identity: entityId,
-        asset: erc20.map(({ network, address }) => `${network}:${address}`),
+        asset: clubs.map(({ network, address }) => `${network}:${address}`),
       },
     },
   ]);
@@ -220,6 +227,42 @@ export const getBoosts = async (token) => {
   }
 };
 
+export const getSupportings = async (token) => {
+  try {
+    const res = await getRanking(
+      [
+        {
+          algorithm: 'cryptoverse_supporting',
+          params: {
+            asset: INTERFACE_BOOST_NETWORK,
+            entity: token,
+            fee_address: INTERFACE_BOOST_ADDRESS,
+          },
+        },
+      ],
+      'api/decorate-with-opensea',
+    );
+
+    const { items: supporting } = res;
+    const supportersMap = supporting.reduce((acc, superstinger) => {
+      if (isAddress(superstinger.id)) {
+        return {
+          ...acc,
+          [superstinger.id]: { ...superstinger, context_info: getEntityInfoForAddress(superstinger.id) },
+        };
+      }
+      const [, address] = superstinger.id.split(':');
+      if (!find({ address })(ercs721)) {
+        return acc;
+      }
+      return { ...acc, [superstinger.id]: superstinger };
+    }, {});
+    return supportersMap;
+  } catch (e) {
+    return {};
+  }
+};
+
 export const getWeb3State = async () => {
   try {
     const web3 = await getWeb3();
@@ -230,7 +273,7 @@ export const getWeb3State = async () => {
       web3.eth.getBlockNumber(),
     ]);
     const networkName = networkNameForNetworkId[networkId];
-    const provider = web3.currentProvider;
+    const provider = getCurrentProviderName();
     return {
       from,
       isListening,
@@ -248,7 +291,7 @@ export const getWeb3State = async () => {
       blockNumber: undefined,
       web3: undefined,
       networkName: undefined,
-      provider: undefined,
+      provider: false,
     };
   }
 };
@@ -432,7 +475,7 @@ export const boost = async (entity, aboutEntity, value) => {
   if (isAddress(aboutEntity)) {
     ownerAddress = aboutEntity;
   } else {
-    ownerAddress = (await getEntityData(aboutEntity)).ownerAddress;
+    ownerAddress = (await getEntityData(aboutEntity)).owner;
   }
 
   const data = {
@@ -443,4 +486,10 @@ export const boost = async (entity, aboutEntity, value) => {
 
   const transactionHash = await claimWithValueTransfer(data, value, ownerAddress);
   return { transactionHash, networkName };
+};
+
+export const getHttpClaimDetails = async ({ id }) => {
+  return fetch(`${USERFEEDS_API_ADDRESS}/api/verify-claim?signatureValue=${id.split(':')[1]}`).then((res) =>
+    res.json(),
+  );
 };

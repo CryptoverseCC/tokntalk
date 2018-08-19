@@ -7,12 +7,15 @@ import AppContext from './Context';
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
 import Hero from './Hero';
-import Advertised from './Catvertised';
+import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { IfActiveEntity, Entity } from './Entity';
 import { FlatContainer, ContentContainer, H4 } from './Components';
-import ercs20, { TokenImage } from './erc20';
+import clubs, { TokenImage } from './clubs';
 import { DiscoverIcon } from './Icons';
+import { UnreadedCount } from './UnreadedMessages';
+import FeedTypeSwitcher from './FeedTypeSwitcher';
+import PopularFeed from './SimpleFeed';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -46,6 +49,8 @@ const YourCommunitiesLink = styled(Link)`
 `;
 
 export default class IndexPage extends Component {
+  state = { feedType: 'new' };
+
   componentDidMount() {
     pageView();
     window.scrollTo(0, 0);
@@ -57,7 +62,15 @@ export default class IndexPage extends Component {
     clearInterval(this.refreshInterval);
   }
 
+  changeFeedType = (feedType) => {
+    this.setState({ feedType });
+    if (feedType === 'new') {
+      this.props.getFeedItems();
+    }
+  };
+
   render() {
+    const { feedType } = this.state;
     return (
       <ContentContainer>
         <HeaderSpacer style={{ marginBottom: '60px' }} />
@@ -66,13 +79,21 @@ export default class IndexPage extends Component {
             <ActiveEntityTokens />
             <FlatContainer>
               <AppContext.Consumer>
-                {({ boostStore: { getBoosts } }) => <Advertised getBoosts={getBoosts} token={DEFAULT_TOKEN_ID} />}
+                {({ boostStore: { getBoosts, getSupportings } }) => (
+                  <PromotionBox
+                    getBoosts={getBoosts}
+                    getSupportings={getSupportings}
+                    token={DEFAULT_TOKEN_ID}
+                    showPurrmoter={true}
+                  />
+                )}
               </AppContext.Consumer>
             </FlatContainer>
           </div>
           <div className="column is-8 is-offset-1">
             <Hero style={{ marginBottom: '30px' }} />
-            <ConnectedFeed className="todo" />
+            <FeedTypeSwitcher type={feedType} onChange={this.changeFeedType} style={{ marginBottom: '2em' }} />
+            {feedType === 'new' ? <ConnectedFeed className="todo" /> : <PopularFeed />}
           </div>
         </div>
       </ContentContainer>
@@ -140,14 +161,20 @@ const DiscoverMore = styled((props) => (
   // styles
 `;
 
+const StyledUnreadedMessages = styled(UnreadedCount)`
+  color: #1b2437;
+  background: white;
+`;
+
 const Token = ({ asset }) => {
   const [network, address] = asset.split(':');
-  const token = find({ network, address })(ercs20);
+  const token = find({ network, address })(clubs);
 
   return (
     <YourCommunitiesLink to={`/discover/byToken/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
+      <StyledUnreadedMessages token={token} />
     </YourCommunitiesLink>
   );
 };

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="75px" height="75px" viewBox="0 0 75 75" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#33E563" offset="0%"></stop>
+            <stop stop-color="#23CB60" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Metamask" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-173.000000, -515.000000)">
+        <g id="Group-2-Copy-3" transform="translate(60.000000, 420.000000)">
+            <g id="Group" transform="translate(113.000000, 95.000000)">
+                <g id="Group-3">
+                    <circle id="Oval-2" fill="url(#linearGradient-1)" cx="37.5" cy="37.5" r="37.5"></circle>
+                    <rect id="Rectangle-3" fill="#FFFFFF" x="25" y="25" width="25" height="25" rx="5"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

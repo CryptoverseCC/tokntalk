@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import escapeHtml from 'lodash/escape';
 import pipe from 'lodash/fp/pipe';
 import find from 'lodash/fp/find';
 import uniqBy from 'lodash/fp/uniqBy';
@@ -8,6 +7,7 @@ import reverse from 'lodash/fp/reverse';
 import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
+import styled, { keyframes } from 'styled-components';
 
 import { FixedModal } from './Modal';
 import Link, { A } from './Link';
@@ -16,11 +16,13 @@ import { ConnectedReplyForm, ReplyForm } from './CommentForm';
 import { IfActiveEntity, LinkedActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon, empty } from './Icons';
-import styled, { keyframes } from 'styled-components';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
-import ercs20 from './erc20';
+import clubs from './clubs';
 import { H3 } from './Components';
+import { CollapsableText, ShowMore } from './CollapsableText';
+import { VerifyModal } from './VerifyModal';
+import { createEtherscanUrl } from './utils';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -31,7 +33,7 @@ const IconContainer = styled.div`
 `;
 
 const StartingMessage = styled.p`
-  margin-top: 20px;
+  margin-top: 8px;
   font-size: 1.5rem;
   font-weight: 500;
   word-break: break-word;
@@ -44,26 +46,24 @@ const StartingMessage = styled.p`
 
 const ArticleReactions = styled.article`
   display: flex;
-  margin: 20px 0;
-  @media (max-width: 770px) {
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
+  margin: 8px 0 16px 0;
 `;
 
 const LabelText = styled.span`
-  margin-left: 10px;
+  margin-left: 8px;
+  margin-bottom: -2px;
   transition: all 0.15s ease-in-out;
 `;
 
 const LabelCounter = styled.span`
-  margin-left: 5px;
-  height: 20px;
-  padding: 2px 10px;
-  line-height: 20px;
-  border-radius: 15px;
-  background: ${({ unActive, background }) => (!unActive ? background : '#cfd3e2')};
-  color: ${({ unActive }) => unActive && '#000000'};
+  margin-left: 0.3125em;
+  height: 1.25em;
+  font-size: 0.8rem;
+  padding: 0.125em 0.625em;
+  line-height: 1.25em;
+  border-radius: 1.25em;
+  background: ${({ unActive, background }) => (!unActive ? background : '#e8eaf3')};
+  color: ${({ unActive }) => unActive && '#928f9b'};
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   transition: transform 0.15s ease-in-out;
 
@@ -96,12 +96,12 @@ const LabelContainer = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  font-size: 1rem !important;
   font-weight: 600;
   padding: 4px;
 `;
 
 const LabelIconContainer = styled(IconContainer)`
+  height: 1em;
   transition: all 0.15s ease-in-out;
   background: ${({ liked, background }) => (liked ? background : 'none')};
   box-shadow: ${({ liked, shadow }) => (liked ? shadow : '')};
@@ -117,9 +117,9 @@ const LabelIconContainer = styled(IconContainer)`
   }
 `;
 
-const LikeLabel = ({ onLike, onShowLikers, liked, unActive, count }) => {
+const LikeLabel = ({ style, className, onLike, onShowLikers, liked, unActive, count }) => {
   return (
-    <LabelContainer color="#ff8482" unActive={unActive}>
+    <LabelContainer className={className} style={style} color="#ff8482" unActive={unActive}>
       <LabelButton onClick={onLike} liked={liked} unActive={unActive}>
         <LabelIconContainer
           liked={liked}
@@ -127,19 +127,28 @@ const LikeLabel = ({ onLike, onShowLikers, liked, unActive, count }) => {
           shadow="0 0 20px 9px rgba(255, 117, 117, 0.2)"
           background="rgba(255, 117, 117, 0.2)"
         >
-          <LikeIcon inactive={unActive} />
+          <LikeIcon inactive={unActive} style={{ height: '100%' }} />
         </LabelIconContainer>
         <LabelText>
           Like
           {liked && 'd'}
         </LabelText>
       </LabelButton>
-      <LabelCounter unActive={unActive} background="#ffebeb" onClick={onShowLikers} disabled={count === 0}>
+      <LabelCounter
+        unActive={unActive}
+        background="#ffebeb"
+        onClick={() => count > 0 && onShowLikers()}
+        disabled={count === 0}
+      >
         {count}
       </LabelCounter>
     </LabelContainer>
   );
 };
+
+const InlineLikeLabel = styled(LikeLabel)`
+  display: inline-flex;
+`;
 
 const ReplyLabel = ({ onClick, unActive, count }) => {
   return (
@@ -150,7 +159,7 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
           shadow="0 0 20px 9px rgba(89, 123, 246, 0.11)"
           background="rgba(89, 123, 246, 0.11)"
         >
-          <ReplyIcon inactive={unActive} />
+          <ReplyIcon inactive={unActive} style={{ height: '100%' }} />
         </LabelIconContainer>
         <LabelText>Reply</LabelText>
       </LabelButton>
@@ -161,11 +170,11 @@ const ReplyLabel = ({ onClick, unActive, count }) => {
   );
 };
 
-const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, onShowLikers }) => (
-  <ArticleReactions>
+const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, onShowLikers, style }) => (
+  <ArticleReactions style={style}>
     <div className="" style={{ width: '70px' }} />
     <div className="columns is-mobile" style={{ width: '100%' }}>
-      <div className="column" style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="column" style={{ display: 'flex', alignItems: 'center', marginLeft: '12px' }}>
         {disabledInteractions ? (
           <LikeLabel unActive count={reactions.length} />
         ) : (
@@ -196,21 +205,10 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
   </ArticleReactions>
 );
 
-export const sanitizeMessage = (message) => {
-  const expression = /(\bhttps?:\/\/[^.,?!:;\s<>"]+(?:[.,?!:;]+[^.,?!:;\s<>"]+)+)/g;
-  const replaceMatchWithLink = (match) => {
-    return `<a href="${match}">${escapeHtml(match)}</a>`;
-  };
-  return message
-    .split(expression)
-    .map((messagePart, index) => (index % 2 === 0 ? escapeHtml(messagePart) : replaceMatchWithLink(messagePart)))
-    .join('');
-};
-
-const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, reaction, suffix, style = {} }) => {
+const Post = ({ id, from, entityInfo, createdAt, family, message, reaction, suffix, style = {}, onVerify }) => {
   return (
     <article className="media" style={style}>
-      <div className="media-left" style={{ width: '54px' }}>
+      <div className="media-left" style={{ width: '64px' }}>
         <LinkedEntityAvatar size="medium" reaction={reaction} id={from} entityInfo={entityInfo} />
       </div>
       <div className="media-content">
@@ -219,11 +217,13 @@ const Post = ({ id, from, entityInfo, createdAt, etherscanUrl, family, message, 
           from={from}
           entityInfo={entityInfo}
           createdAt={createdAt}
-          etherscanUrl={etherscanUrl}
           family={family}
           suffix={suffix}
+          onVerify={onVerify}
         />
-        <StartingMessage dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
+        <StartingMessage>
+          <CollapsableText text={message} />
+        </StartingMessage>
       </div>
     </article>
   );
@@ -234,26 +234,18 @@ const Reply = ({
   from,
   entityInfo,
   createdAt,
-  etherscanUrl,
+  onVerify,
   family,
   message,
   reactions,
+  onShowLikers,
   disabledInteractions,
   style = {},
 }) => (
   <article className="media" style={{ borderTop: 'none', ...style }}>
-    <div className="media-left is-hidden-mobile" style={{ position: 'relative' }}>
-      <div
-        style={{
-          height: '54px',
-          width: '54px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      />
+    <div className="media-left is-hidden-mobile">
+      <div style={{ height: '64px', width: '64px' }} />
     </div>
-
     <div className="media-content columns is-mobile" style={{ overflow: 'hidden' }}>
       <div className="column is-narrow">
         <LinkedEntityAvatar size="medium" id={from} entityInfo={entityInfo} />
@@ -270,47 +262,30 @@ const Reply = ({
           <Link to={`/${from}`} style={{ display: 'block' }}>
             <b>{entityInfo.name} </b>
           </Link>
-          <span dangerouslySetInnerHTML={{ __html: sanitizeMessage(message) }} />
+          <CollapsableText text={message} />
         </div>
         <div>
-          <small style={{ color: '#928F9B' }}>
+          <small style={{ color: '#928F9B', display: 'flex', alignItems: 'center' }}>
             {disabledInteractions ? (
-              <span style={{ color: '#FF7777' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
+              <InlineLikeLabel count={reactions.length} unActive onShowLikers={onShowLikers} />
             ) : (
               <IfActiveEntityLiked
                 reactions={reactions}
                 notLiked={
                   <Context.Consumer>
                     {({ feedStore: { react } }) => (
-                      <button
-                        onClick={() => react(id)}
-                        style={{
-                          border: 'none',
-                          background: 'none',
-                          display: 'inline-block',
-                          padding: 0,
-                          margin: 0,
-                          color: '#FF7777',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Like {reactions.length ? `(${reactions.length})` : ''}
-                      </button>
+                      <InlineLikeLabel count={reactions.length} onLike={() => react(id)} onShowLikers={onShowLikers} />
                     )}
                   </Context.Consumer>
                 }
-                liked={
-                  <span style={{ color: '#FF7777' }}>Liked {reactions.length ? `(${reactions.length})` : ''}</span>
-                }
-                unActive={
-                  <span style={{ color: '#FF7777' }}>Like {reactions.length ? `(${reactions.length})` : ''}</span>
-                }
+                liked={<InlineLikeLabel count={reactions.length} liked onShowLikers={onShowLikers} />}
+                unActive={<InlineLikeLabel count={reactions.length} unActive onShowLikers={onShowLikers} />}
               />
             )}
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
-            <A href={etherscanUrl} style={{ marginLeft: '5px', textTransform: 'capitalize' }}>
+            <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
               {family}
-            </A>
+            </Family>
           </small>
         </div>
       </div>
@@ -318,16 +293,10 @@ const Reply = ({
   </article>
 );
 
-const createEtherscanUrl = (item) => {
-  if (item.family.toLowerCase() === 'http') return undefined;
-  const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
-  return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
-};
-
 const ReplyFormContainer = ({ about, ...props }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left is-hidden-mobile">
-      <div style={{ height: '54px', width: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+      <div style={{ height: '64px', width: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
     </div>
 
     <div className="media-content columns is-mobile">
@@ -345,16 +314,38 @@ const SenderName = styled(Link)`
   font-size: 1rem;
 `;
 
-const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suffix, share }) => {
+const Family = styled.span`
+  color: #264dd9;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: #2f2670;
+  }
+`;
+
+const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onVerify }) => {
   return (
     <React.Fragment>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div>
         <SenderName to={`/${from}`}>{entityInfo.name}</SenderName>
-        <span style={{ color: '#928F9B', marginLeft: '15px', fontSize: '14px' }}>
-          {timeago().format(createdAt)}
-          <A href={etherscanUrl} style={{ marginLeft: '15px', textTransform: 'capitalize' }}>
+        <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
+          {id ? (
+            <Link
+              to={{
+                pathname: `/thread/${id}`,
+                state: { modal: true },
+                search: `?backUrl=${encodeURIComponent(window.location.pathname)}`,
+              }}
+            >
+              {timeago().format(createdAt)}
+            </Link>
+          ) : (
+            timeago().format(createdAt)
+          )}
+          <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
             {family}
-          </A>
+          </Family>
         </span>
       </div>
       {suffix}
@@ -363,47 +354,53 @@ const CardTitle = ({ id, from, entityInfo, createdAt, etherscanUrl, family, suff
 };
 
 const Reaction = styled(IconContainer)`
-  height: 15px;
-  width: 15px;
+  height: 33px;
+  width: 33px;
 `;
 
-const LikeReaction = styled(Reaction).attrs({ children: <LikeIcon style={{ width: '15px' }} /> })`
-  background-color: rgba(255, 117, 117, 0.4);
-  box-shadow: 0 0 20px 9px rgba(255, 117, 117, 0.4);
+const LikeReaction = styled(Reaction).attrs({
+  children: <LikeIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
 `;
 
-const ReplyReaction = styled(Reaction).attrs({ children: <ReplyIcon style={{ width: '12px' }} /> })`
-  background-color: #264dd9;
-  box-shadow: 0 4px 15px 4px rgba(98, 60, 234, 0.3);
+const ReplyReaction = styled(Reaction).attrs({
+  children: <ReplyIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
 `;
 
-const FacebookLabel = styled(Reaction).attrs({ children: <FacebookIcon /> })`
-  background-color: #4167b2;
-  box-shadow: 0 4px 15px 4px rgba(65, 103, 178, 0.3);
+const FacebookLabel = styled(Reaction).attrs({
+  children: <FacebookIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${FacebookIcon} {
     height: 60%;
   }
 `;
 
-const GithubLabel = styled(Reaction).attrs({ children: <GithubIcon /> })`
-  background-color: #24292e;
-  box-shadow: 0 4px 15px 4px rgba(36, 41, 46, 0.3);
+const GithubLabel = styled(Reaction).attrs({
+  children: <GithubIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${GithubIcon} {
     height: 60%;
   }
 `;
 
-const TwitterLabel = styled(Reaction).attrs({ children: <TwitterIcon /> })`
-  background-color: #1ca1f2;
-  box-shadow: 0 4px 15px 4px rgba(28, 161, 242, 0.3);
+const TwitterLabel = styled(Reaction).attrs({
+  children: <TwitterIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${TwitterIcon} {
     height: 50%;
   }
 `;
 
-const InstagramLabel = styled(Reaction).attrs({ children: <InstagramIcon /> })`
-  background-color: #f41476;
-  box-shadow: 0 4px 15px 4px rgba(244, 20, 118, 0.3);
+const InstagramLabel = styled(Reaction).attrs({
+  children: <InstagramIcon style={{ width: '21px', marginLeft: '-1px', marginTop: '1px' }} />,
+})`
+  background-color: white;
   ${InstagramIcon} {
     height: 50%;
   }
@@ -450,11 +447,14 @@ const CardBox = styled.div`
 `;
 
 export class Card extends React.Component {
+  replyForm = null;
+
   state = {
     wasShown: !this.props.added,
+    areRepliesCollapsed: this.props.collapseReplies && this.props.replies.length > 3,
+    showVerify: false,
+    verifiableItem: undefined,
   };
-
-  replyForm = null;
 
   focusReply = () => {
     if (this.replyForm && this.replyForm.focus) {
@@ -462,54 +462,25 @@ export class Card extends React.Component {
     }
   };
 
-  onShowLikers = () => {
-    this.props.onShowLikers(this.props.feedItem, this.props.reactions);
+  onShowLikers = (item, likes) => () => {
+    this.props.onShowLikers(item, likes);
+  };
+
+  showMoreReplies = () => this.setState({ areRepliesCollapsed: false });
+  onVerify = () => {
+    this.setState({ showVerify: true });
+  };
+
+  onVerify = (feedItem) => {
+    this.setState({ showVerify: true, verifiableItem: feedItem });
   };
 
   renderItem = () => {
+    const { areRepliesCollapsed } = this.state;
     const { feedItem, replies, reactions, disabledInteractions } = this.props;
-    const { isFromAddress } = feedItem;
 
     if (feedItem.type === 'like') {
-      return (
-        <React.Fragment>
-          <article className="media">
-            <div className="media-left" style={{ width: '54px' }}>
-              <LinkedEntityAvatar
-                size="medium"
-                reaction={<LikeReaction />}
-                id={isFromAddress ? feedItem.author : feedItem.context}
-                entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
-              />
-            </div>
-            <div className="media-content">
-              <CardTitle
-                from={isFromAddress ? feedItem.author : feedItem.context}
-                entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
-                createdAt={feedItem.created_at}
-                etherscanUrl={createEtherscanUrl(feedItem)}
-                family={feedItem.family}
-                suffix={
-                  <span>
-                    reacted to <b>Post</b>
-                  </span>
-                }
-              />
-            </div>
-          </article>
-          <Post
-            style={{ marginTop: '20px' }}
-            from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
-            entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
-            createdAt={feedItem.target.created_at}
-            message={feedItem.target.target}
-            family={feedItem.target.family}
-            etherscanUrl={createEtherscanUrl(feedItem.target)}
-            suffix={this.getSuffix(feedItem.target)}
-            disabledInteractions={disabledInteractions}
-          />
-        </React.Fragment>
-      );
+      return this.renderLikeItem(feedItem, disabledInteractions);
     }
 
     return (
@@ -522,7 +493,6 @@ export class Card extends React.Component {
           createdAt={feedItem.created_at}
           message={feedItem.target}
           family={feedItem.family}
-          etherscanUrl={createEtherscanUrl(feedItem)}
           suffix={this.getSuffix(feedItem)}
           reaction={
             (feedItem.type === 'response' && <ReplyReaction />) ||
@@ -530,6 +500,7 @@ export class Card extends React.Component {
               Object.keys(LabelItems).includes(feedItem.label) &&
               React.createElement(LabelItems[feedItem.label]))
           }
+          onVerify={() => this.onVerify(feedItem)}
         />
         <PostReactions
           id={feedItem.id}
@@ -537,22 +508,33 @@ export class Card extends React.Component {
           replies={replies}
           disabledInteractions={disabledInteractions}
           onReply={this.focusReply}
-          onShowLikers={this.onShowLikers}
+          onShowLikers={this.onShowLikers(feedItem, reactions)}
+          style={{ fontSize: '1rem' }}
         />
-        {replies.map((reply) => (
-          <Reply
-            id={reply.id}
-            key={reply.id}
-            from={reply.isFromAddress ? reply.author : reply.context}
-            entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
-            createdAt={reply.created_at}
-            message={reply.target}
-            family={reply.family}
-            reactions={reply.likes}
-            etherscanUrl={createEtherscanUrl(reply)}
-            disabledInteractions={disabledInteractions}
-          />
-        ))}{' '}
+        {areRepliesCollapsed && <ViewMoreReplies leftCount={replies.length - 2} onClick={this.showMoreReplies} />}
+        {(areRepliesCollapsed ? replies.slice(replies.length - 2) : replies).map((reply) => {
+          const reactions = uniqBy((target) => target.id)([
+            ...this.props.getTemporaryReactions(reply.id),
+            ...(reply.likes || []),
+          ]);
+
+          return (
+            <Reply
+              id={reply.id}
+              key={reply.id}
+              from={reply.isFromAddress ? reply.author : reply.context}
+              entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
+              createdAt={reply.created_at}
+              message={reply.target}
+              family={reply.family}
+              reactions={reactions}
+              etherscanUrl={createEtherscanUrl(reply)}
+              onShowLikers={this.onShowLikers(reply, reactions)}
+              onVerify={() => this.onVerify(reply)}
+              disabledInteractions={disabledInteractions}
+            />
+          );
+        })}
         {!disabledInteractions && (
           <IfActiveEntity>
             {() => <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)} />}
@@ -562,16 +544,67 @@ export class Card extends React.Component {
     );
   };
 
+  renderLikeItem = (feedItem, disabledInteractions) => {
+    const { isFromAddress } = feedItem;
+    return (
+      <React.Fragment>
+        <article className="media">
+          <div className="media-left" style={{ width: '64px' }}>
+            <LinkedEntityAvatar
+              size="medium"
+              reaction={<LikeReaction />}
+              id={isFromAddress ? feedItem.author : feedItem.context}
+              entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
+            />
+          </div>
+          <div className="media-content">
+            <CardTitle
+              from={isFromAddress ? feedItem.author : feedItem.context}
+              entityInfo={isFromAddress ? feedItem.author_info : feedItem.context_info}
+              createdAt={feedItem.created_at}
+              family={feedItem.family}
+              suffix={
+                <span>
+                  reacted to <b>Post</b>
+                </span>
+              }
+              onVerify={() => this.onVerify(feedItem)}
+            />
+          </div>
+        </article>
+        <Post
+          style={{
+            borderTop: '0',
+            borderRadius: '12px',
+            backgroundColor: '#f4f8fd',
+            marginLeft: '70px',
+            paddingLeft: '15px',
+            paddingBottom: '15px',
+            paddingRight: '15px',
+          }}
+          from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
+          entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
+          createdAt={feedItem.target.created_at}
+          message={feedItem.target.target}
+          family={feedItem.target.family}
+          suffix={this.getSuffix(feedItem.target)}
+          disabledInteractions={disabledInteractions}
+          onVerify={() => this.onVerify(feedItem.target)}
+        />
+      </React.Fragment>
+    );
+  };
+
   getSuffix = (feedItem) => {
     const suffix = {
       post_club: () => {
         const [network, address] = feedItem.about.split(':');
-        const token = find({ network, address })(ercs20);
+        const token = find({ network, address })(clubs);
 
         return (
           <React.Fragment>
             <span>wrote in</span>
-            <Link to={`/discover/byToken/${token.symbol}/feed`} style={{ marginLeft: '10px' }}>
+            <Link to={`/discover/byToken/${token.symbol}`} style={{ marginLeft: '0.325em' }}>
               <b>{token.name} club </b>
             </Link>
           </React.Fragment>
@@ -585,11 +618,11 @@ export class Card extends React.Component {
             <span>wrote to</span>
             <LinkedEntityAvatar
               size="verySmall"
-              style={{ marginLeft: '10px', display: 'inline-block' }}
+              style={{ marginLeft: '0.325em', display: 'inline-block' }}
               id={id}
               entityInfo={about}
             />
-            <Link to={`/${id}`} style={{ marginLeft: '10px' }} className="is-hidden-mobile">
+            <Link to={`/${id}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
               <b>{about.name}</b>
             </Link>
           </React.Fragment>
@@ -601,19 +634,24 @@ export class Card extends React.Component {
             wrote about
             <b
               style={{
-                marginLeft: '10px',
+                marginLeft: '0.325em',
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
                 maxWidth: '300px',
                 display: 'inline-block',
                 whiteSpace: 'nowrap',
               }}
-              dangerouslySetInnerHTML={{ __html: sanitizeMessage(feedItem.about) }}
-            />
+            >
+              <CollapsableText text={feedItem.about} />
+            </b>
           </span>
         </React.Fragment>
       ),
-      labels: (feedItem) => <span>changed its {capitalize(feedItem.labels[0])}</span>,
+      social: (feedItem) => (
+        <span>
+          changed its <b>{capitalize(feedItem.label)}</b>
+        </span>
+      ),
     };
 
     return suffix[feedItem.type] && suffix[feedItem.type](feedItem);
@@ -625,10 +663,15 @@ export class Card extends React.Component {
     }
   };
 
+  onCloseVerify = () => {
+    this.setState({ showVerify: false, verifiableItem: undefined });
+  };
+
   render() {
     return (
       <CardBox added={this.props.added && this.state.wasShown} style={this.props.style}>
         {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
+        {this.state.showVerify && <VerifyModal onClose={this.onCloseVerify} feedItem={this.state.verifiableItem} />}
         {this.renderItem()}
       </CardBox>
     );
@@ -646,6 +689,18 @@ const EmptyFeedPlaceholder = styled.div`
   color: #1b2437;
   justify-content: center;
 `;
+
+const ViewMoreReplies = ({ leftCount, onClick }) => (
+  <div className="is-flex" style={{ margin: '15px 0' }}>
+    <div className="is-hidden-mobile" style={{ marginRight: '1rem' }}>
+      <div style={{ width: '64px' }} />
+    </div>
+    <ShowMore onClick={onClick}>
+      View {leftCount} more comment
+      {leftCount > 1 ? 's' : ''}
+    </ShowMore>
+  </div>
+);
 
 export const LikersModal = styled(({ likes, onClose, className }) => (
   <FixedModal onClose={onClose}>
@@ -681,12 +736,13 @@ class Feed extends Component {
     this.setState({ showModal: true, feedItemLikes: reactions });
   };
 
+  getTemporaryReactions = (id) => this.props.temporaryReactions[id] || [];
+
   render() {
     const {
       feedItems,
       feedLoading,
       temporaryReplies,
-      temporaryReactions,
       getMoreFeedItems,
       feedLoadingMore,
       className,
@@ -717,11 +773,13 @@ class Feed extends Component {
               )([...(temporaryReplies[feedItem.id] || []), ...(feedItem.replies || [])]);
 
               const reactions = uniqBy((target) => target.id)([
-                ...(temporaryReactions[feedItem.id] || []),
+                ...this.getTemporaryReactions(feedItem.id),
                 ...(feedItem.likes || []),
               ]);
+
               return (
                 <Card
+                  collapseReplies
                   disabledInteractions={disabledInteractions}
                   feedItem={feedItem}
                   replies={replies}
@@ -729,6 +787,7 @@ class Feed extends Component {
                   key={feedItem.id}
                   added={feedItem.added}
                   onShowLikers={this.onShowLikers}
+                  getTemporaryReactions={this.getTemporaryReactions}
                 />
               );
             })}
