@@ -31,7 +31,15 @@ const Hero = (props) => (
                 {activeEntity ? (
                   <LinkedEntityAvatar id={activeEntity.id} entityInfo={activeEntity} size="medium" {...props} />
                 ) : (
-                  <span>Empty State (Avatar</span>
+                  <div
+                    style={{
+                      display: 'block',
+                      width: '54px',
+                      height: '54px',
+                      backgroundColor: '#dde0eb',
+                      borderRadius: '16%',
+                    }}
+                  />
                 )}
               </div>
               <div className="media-content">
@@ -54,10 +62,20 @@ const Hero = (props) => (
                     </div>
                   ) : (
                     <div>
-                      <span>Empty State</span>
-                      <TranslationsContext.Consumer>
+                      <div
+                        style={{
+                          display: 'block',
+                          width: '100%',
+                          maxWidth: '160px',
+                          height: '12px',
+                          borderRadius: '4px',
+                          backgroundColor: '#dde0eb',
+                          marginBottom: '8px',
+                        }}
+                      />
+                      <TranslationsContext.Consumer style={{ opacity: '0.2' }}>
                         {({ commentPlaceholder }) => (
-                          <TextAreaForm Form={CommentForm} placeholder={commentPlaceholder} disabled={true} />
+                          <TextAreaForm Form={CommentForm} placeholder="Unlock your wallet to write" disabled={true} />
                         )}
                       </TranslationsContext.Consumer>
                     </div>
