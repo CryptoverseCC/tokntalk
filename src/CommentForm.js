@@ -25,25 +25,25 @@ export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea inner
 
   &::placeholder {
     transition: color 0.15s ease-in-out;
-    color: #1b2437;
+    color: #264dd9;
   }
 
   &:-ms-input-placeholder {
-    color: #1b2437;
+    color: #264dd9;
   }
 
   &::-ms-input-placeholder {
-    color: #1b2437;
+    color: #264dd9;
   }
 
   &:hover:-ms-input-placeholder,
   &:focus:-ms-input-placeholder {
-    color: #928f9b;
+    color: #1b2437;
   }
 
   &:hover::-ms-input-placeholder,
   &:focus::-ms-input-placeholder {
-    color: #928f9b;
+    color: #1b2437;
   }
 `;
 
