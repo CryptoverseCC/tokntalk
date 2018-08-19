@@ -21,13 +21,14 @@ const ProviderLogo = ({ name, ...restProps }) => <img src={walletsLogoMapping[na
 
 const Container = styled.div`
   background: #ffffff;
-  border-radius: 30px;
+  border-radius: 12px;
   padding: 30px;
   min-height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2rem 4rem -2rem;
 `;
 
 const StyledProviderLogo = styled(ProviderLogo)`
@@ -40,7 +41,7 @@ const WalletModal = ({ provider }) => (
     <Container>
       <StyledProviderLogo name={provider} />
       <H3>Working</H3>
-      <small>Check your wallet to sign the transaction.</small>
+      <p>Check your wallet to sign the transaction.</p>
     </Container>
   </FixedModal>
 );
