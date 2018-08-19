@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+import { Intercom } from './Intercom';
 import css from './css/landing.css';
 import styled from 'styled-components';
 import Logo from './Logo';
@@ -24,8 +26,6 @@ import economyThird from './img/landing/economy-3.png';
 import knowFirst from './img/landing/know-1.png';
 import knowSecond from './img/landing/know-2.png';
 import knowThird from './img/landing/know-3.png';
-
-const { NODE_ENV, REACT_APP_INTERCOM_APP_ID } = process.env;
 
 const Landing = styled((props) => (
   <React.Fragment>
@@ -74,13 +74,9 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Better economy.</h2>
             <p class="subtitle">Let your project be discovered by other communities. Receive more tokens.</p>
-            <a
-              class="landing-link"
-              id="userfeeds-crypto-intercom"
-              href={`mailto:${REACT_APP_INTERCOM_APP_ID}@intercom-mail.com`}
-            >
+            <Intercom className="landing-link">
               <span class="landing-link-inside">Add a token</span>
-            </a>
+            </Intercom>
           </div>
           <div class="columns">
             <div class="column is-one-third">
@@ -131,9 +127,9 @@ const Landing = styled((props) => (
           <div class="landing-section-introduction">
             <h2>Get to know your community.</h2>
             <p class="subtitle">Messages coming only from your token holders. No spam, no trolls, no impersonations.</p>
-            <a class="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+            <Intercom className="landing-link">
               <span class="landing-link-inside">Add a token</span>
-            </a>
+            </Intercom>
           </div>
           <div class="columns">
             <div class="column is-one-third">
