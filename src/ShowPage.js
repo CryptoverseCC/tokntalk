@@ -241,8 +241,8 @@ const InlineButton = styled.button`
 
 const SocialIcon = styled(({ type, ...restProps }) => React.createElement(socialIcons[type], restProps))`
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: auto;
+  height: 16px;
 `;
 
 const LabelInput = styled.input`
@@ -251,7 +251,12 @@ const LabelInput = styled.input`
   outline: none;
   border: none;
   background: transparent;
-  color: ${({ isValid }) => !isValid && 'red'};
+  font-size: 0.8rem;
+  color: ${({ isValid }) => !isValid && '#1b2437'};
+  &::placeholder {
+    transition: color 0.15s ease-in-out;
+    color: #97abe2;
+  }
 `;
 
 const EditableLabelContainer = styled.div`
@@ -267,23 +272,21 @@ const EditableLabelContainer = styled.div`
 `;
 
 const SendIcon = styled.img.attrs({ src: checkMark })`
-  transition: transform 0.3s;
+  transition: transform 0.2s;
 
   ${InlineButton}:not(:disabled):hover & {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
   }
 `;
 
 const ExitIcon = styled.img.attrs({ src: closeIcon })`
-  position: absolute;
+  position: relative;
   width: 10px;
   right: -12px;
-  transform: translateY(-50%);
-  top: 50%;
-  transition: transform 0.3s;
+  transition: transform 0.2s ease-in;
 
   :hover {
-    transform: translateY(-70%);
+    transform: translateY(-2px);
   }
 `;
 
@@ -329,16 +332,17 @@ class EditableLabel extends Component {
       >
         {editing ? (
           <LabelInput
-            placeholder={`${type} profile link`}
+            placeholder={`https://${type}.com/username`}
             value={editedValue}
             onChange={this.onChange}
             isValid={isValid}
+            style={{ paddingLeft: '10px' }}
           />
         ) : (
           <SocialUsername link={value} />
         )}
         {!editing ? (
-          <InlineButton onClick={this.edit} style={{ fontSize: '1rem', marginLeft: 'auto' }}>
+          <InlineButton onClick={this.edit} style={{ fontSize: '0.8rem', marginLeft: 'auto', fontWeight: '600' }}>
             {editable && 'Edit'}
           </InlineButton>
         ) : (
@@ -346,7 +350,7 @@ class EditableLabel extends Component {
             {({ feedStore: { label } }) => (
               <InlineButton
                 onClick={this.submitLabel(label)}
-                style={{ fontSize: '1rem', marginLeft: 'auto' }}
+                style={{ fontSize: '1rem', marginLeft: 'auto', marginRight: '-3px' }}
                 disabled={!isValid}
               >
                 <SendIcon />
@@ -401,7 +405,7 @@ export class SocialList extends React.Component {
         </Entity>
         {(facebook || editable) && (
           <SocialBadge href={normalizeHref(facebook)}>
-            <SocialIcon type="facebook" />
+            <SocialIcon style={{ marginLeft: '3px' }} type="facebook" />
             <EditableLabel value={facebook} type="facebook" editable={editable} />
           </SocialBadge>
         )}
