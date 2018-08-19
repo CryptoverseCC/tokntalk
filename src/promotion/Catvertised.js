@@ -56,14 +56,14 @@ const Position = styled.div`
 const StyledButton = styled.button`
   height: 60px;
   width: calc(100% + 44px);
-  background: linear-gradient(180deg, #9b6ff6 0%, #264dd9 100%);
+  background-color: #264dd9;
   margin: 18px -22px -22px;
   color: white;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
   outline: none;
   border: none;
-  border-radius: 12px 12px 12px 12px;
+  border-radius: 12px;
   transition: all 0.2s ease;
   &:disabled {
     background: #e4dcfb;
@@ -223,6 +223,7 @@ export default class Catvertised extends React.Component {
     return (
       <div>
         <CatvertisedBack onClick={() => this.props.onBackClick()}>←</CatvertisedBack>
+        <p style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '15px', marginTop: '15px' }}>Choose patron</p>
         <Entities>
           {({ entities }) =>
             entities.length > 0 && (
@@ -264,12 +265,12 @@ export default class Catvertised extends React.Component {
         </div>
         <div
           style={{
-            fontSize: '18px',
-            fontWeight: '500',
-            marginTop: '20px',
+            fontSize: '1rem',
+            fontWeight: '600',
+            marginTop: '15px',
           }}
         >
-          Promote with
+          Support with
         </div>
         <form
           style={{ marginBottom: '-5px' }}
@@ -298,7 +299,7 @@ export default class Catvertised extends React.Component {
           <Position>Position: {this.renderPosition(this.calculatePosition(boosts))}</Position>
 
           <StyledButton disabled={!isBoostable || this.state.value <= 0}>
-            {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Promote!'}
+            {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Support!'}
           </StyledButton>
         </form>
       </React.Fragment>
@@ -333,7 +334,7 @@ export default class Catvertised extends React.Component {
           Success!
         </div>
         <div style={{ fontSize: '1rem' }}>
-          You've promoted <EntityName id={this.state.entity.id} />
+          You've supported <EntityName id={this.state.entity.id} />
         </div>
         <A href={this.state.etherscanUrl} style={{ marginTop: '10px' }}>
           Check it on Etherscan

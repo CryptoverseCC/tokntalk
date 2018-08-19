@@ -186,9 +186,9 @@ export default class ShowPage extends Component {
                               <Link
                                 to={`/${token}`}
                                 style={{
-                                  fontFamily: 'Rubik',
-                                  fontSize: '1.1rem',
-                                  fontWeight: '500',
+                                  fontFamily: 'AvenirNext',
+                                  fontSize: '1rem',
+                                  fontWeight: '700',
                                 }}
                               >
                                 <ActiveEntityName />
