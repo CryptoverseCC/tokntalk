@@ -3,7 +3,14 @@ import styled from 'styled-components';
 
 import Link from './Link';
 import NetworkWarning from './NetworkWarning';
-import { ActiveEntityAvatar, ActiveEntityName, IfActiveEntity, Entities, EntityName, EntityAvatar } from './Entity';
+import {
+  IfActiveEntity,
+  Entities,
+  EntityName,
+  EntityAvatar,
+  LinkedActiveEntityAvatar,
+  LinkedActiveEntityName,
+} from './Entity';
 import TranslationsContext from './Translations';
 import Locked from './img/locked.svg';
 import NoMetamask from './img/no.svg';
@@ -159,9 +166,9 @@ const ToggleButton = styled.button`
 const CatDropdownToggle = ({ openDropdown }) => {
   return (
     <ToggleButton className="level" onClick={openDropdown}>
-      <ActiveEntityAvatar size="small" />
+      <LinkedActiveEntityAvatar size="small" />
       <DropdownEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }}>
-        <ActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }} />
+        <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }} />
         <span
           style={{
             display: 'inline-flex',
