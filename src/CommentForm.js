@@ -45,6 +45,10 @@ export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea inner
   &:focus::-ms-input-placeholder {
     color: #1b2437;
   }
+
+  &:focus::-webkit-input-placeholder {
+    color: #928f9b;
+  }
 `;
 
 export const ReplyForm = styled(CommentForm)`
@@ -54,10 +58,17 @@ export const ReplyForm = styled(CommentForm)`
   border-radius: 6px 6px 40px 6px;
   align-items: center;
   border: 1px solid ${({ valid }) => (valid ? 'transparent' : 'red')};
+  transition: all 0.15s ease-in;
+
+  &:focus-within {
+    box-shadow: 0px 2px 6px -3px rgb(40, 80, 217, 0.6);
+    transition: all 0.15s ease-in;
+  }
 
   ${StyledTextArea} {
     font-size: 1rem;
     font-weight: normal;
+
     &::placeholder {
       font-weight: 500;
       color: #264dd9;
@@ -71,6 +82,10 @@ export const ReplyForm = styled(CommentForm)`
     &::-ms-input-placeholder {
       font-weight: 500;
       color: #264dd9;
+    }
+
+    &:focus::-webkit-input-placeholder {
+      color: #6c8dff;
     }
   }
 `;

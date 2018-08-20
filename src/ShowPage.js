@@ -93,7 +93,7 @@ export default class ShowPage extends Component {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     overflow: hidden;
-    background-color: ${({ backgroundColor }) => backgroundColor || '#f8f9fd'};
+    background-color: ${({ backgroundColor }) => (backgroundColor ? `#${backgroundColor}` : 'white')};
   `;
 
   static ProfileImage = styled.img`
@@ -116,8 +116,8 @@ export default class ShowPage extends Component {
           <ContentContainer>
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
-              <div className="column is-3">
-                <ShowPage.ProfileImageContainer backgroundColor={`#${entity.background_color}`}>
+              <div className="column is-3-widescreen is-4">
+                <ShowPage.ProfileImageContainer backgroundColor={entity.background_color}>
                   <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
                 </ShowPage.ProfileImageContainer>
                 <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
@@ -144,7 +144,7 @@ export default class ShowPage extends Component {
                   </AppContext.Consumer>
                 </FlatContainer>
               </div>
-              <div className="column is-8 is-offset-1">
+              <div className="column is-8 is-offset-1-widescreen">
                 <FlatContainer style={{ marginBottom: '2rem' }}>
                   <H4 style={{ marginBottom: '15px' }}>
                     <EntityName id={entityId} /> Communities
@@ -244,7 +244,6 @@ const SocialIcon = styled(({ type, ...restProps }) => React.createElement(social
 `;
 
 const LabelInput = styled.input`
-  flex: 1;
   padding: 10px 0;
   outline: none;
   border: none;
@@ -260,6 +259,7 @@ const LabelInput = styled.input`
 const EditableLabelContainer = styled.div`
   flex: 1;
   display: flex;
+  position: relative;
   ${({ editing }) =>
     editing &&
     css`
@@ -278,9 +278,11 @@ const SendIcon = styled.img.attrs({ src: checkMark })`
 `;
 
 const ExitIcon = styled.img.attrs({ src: closeIcon })`
-  position: relative;
+  position: absolute;
   width: 10px;
+  height: 10px;
   right: -12px;
+  top: calc(50% - 5px);
   transition: transform 0.2s ease-in;
 
   :hover {
@@ -348,7 +350,7 @@ class EditableLabel extends Component {
             {({ feedStore: { label } }) => (
               <InlineButton
                 onClick={this.submitLabel(label)}
-                style={{ fontSize: '1rem', marginLeft: 'auto', marginRight: '-3px' }}
+                style={{ fontSize: '1rem', marginLeft: 'auto', flexShrink: 0 }}
                 disabled={!isValid}
               >
                 <SendIcon />

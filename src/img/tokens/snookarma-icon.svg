@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>447cd227b3fd25ab203b754088fbd7cc</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="20" cy="20" r="20"></circle>
+        <linearGradient x1="32.9050296%" y1="0.00366211397%" x2="100%" y2="70.0023429%" id="linearGradient-3">
+            <stop stop-color="#000000" stop-opacity="0.27411169" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="supported" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1198.000000, -3143.000000)">
+        <g id="447cd227b3fd25ab203b754088fbd7cc" transform="translate(1198.000000, 3143.000000)">
+            <circle id="path823" fill="#F7931A" fill-rule="nonzero" cx="20" cy="20" r="20"></circle>
+            <g id="g4725-Clipped">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="circle1504"></g>
+                <g id="g4725" mask="url(#mask-2)" fill-rule="nonzero">
+                    <g transform="translate(8.000000, 8.000000)">
+                        <path d="M27.091752,23.673748 L27.091752,33.666748" id="path4703" fill-opacity="0.45238097" fill="#000000"></path>
+                        <path d="M18.758422,33.666748 L7.826416,22" id="path4705" fill-opacity="0.45238097" fill="#000000"></path>
+                        <polyline id="path4717" fill-opacity="0.45238096" fill="#000000" points="11.894288 0.333252 22.826294 12 22.826416 12 11.89441 0.333252 11.894288 0.333252"></polyline>
+                        <polyline id="path4719" fill-opacity="0.45238096" fill="#000000" points="11.89441 0.333252 22.826416 12 33.75842 23.666748 22.826416 12 11.89441 0.333252"></polyline>
+                        <polygon id="path4707" fill-opacity="0.45238097" fill="url(#linearGradient-3)" points="11.8945312 0.3320312 1.171875 11.984375 7.828125 19.085938 7.828125 22 18.757812 33.667968 33.757812 23.667968"></polygon>
+                    </g>
+                </g>
+            </g>
+            <path d="M24.166748,20 C24.164148,20.0026 24.162548,20.0042 24.159748,20.007 L24.159748,30 L15.826416,30 L15.826416,20.003418 C15.825072,20.002076 15.82434,20.001342 15.822998,20 L9.180298,20 C9.175658,19.989624 9.1781,19.99524 9.173584,19.984864 L19.894288,8.333252 L19.89441,8.333252 L30.826416,20 L24.166748,20 Z" id="path2" fill="#FFFFFF" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

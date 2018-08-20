@@ -59,7 +59,7 @@ const LabelCounter = styled.span`
   margin-left: 0.3125em;
   height: 1.25em;
   font-size: 0.8rem;
-  padding: 0.125em 0.625em;
+  padding: 0.125em 0.625em 0.1em 0.625em;
   line-height: 1.25em;
   border-radius: 1.25em;
   background: ${({ unActive, background }) => (!unActive ? background : '#e8eaf3')};
@@ -97,11 +97,10 @@ const LabelContainer = styled.div`
   align-items: center;
   flex-shrink: 0;
   font-weight: 600;
-  padding: 4px;
+  padding: 4px 0 3px 0;
 `;
 
 const LabelIconContainer = styled(IconContainer)`
-  height: 1em;
   transition: all 0.15s ease-in-out;
   background: ${({ liked, background }) => (liked ? background : 'none')};
   box-shadow: ${({ liked, shadow }) => (liked ? shadow : '')};
@@ -124,8 +123,8 @@ const LikeLabel = ({ style, className, onLike, onShowLikers, liked, unActive, co
         <LabelIconContainer
           liked={liked}
           unActive={unActive}
-          shadow="0 0 20px 9px rgba(255, 117, 117, 0.2)"
-          background="rgba(255, 117, 117, 0.2)"
+          shadow="0 0 20px 9px rgba(255, 117, 117, 0.15)"
+          background="rgba(255, 117, 117, 0.15)"
         >
           <LikeIcon inactive={unActive} style={{ height: '100%' }} />
         </LabelIconContainer>
@@ -176,7 +175,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
     <div className="columns is-mobile" style={{ width: '100%' }}>
       <div className="column" style={{ display: 'flex', alignItems: 'center', marginLeft: '12px' }}>
         {disabledInteractions ? (
-          <LikeLabel unActive count={reactions.length} />
+          <LikeLabel unActive count={reactions.length} onShowLikers={onShowLikers} />
         ) : (
           <IfActiveEntityLiked
             reactions={reactions}
@@ -315,12 +314,12 @@ const SenderName = styled(Link)`
 `;
 
 const Family = styled.span`
-  color: #264dd9;
+  color: #1b2437;
   font-weight: 600;
   cursor: pointer;
 
   &:hover {
-    color: #2f2670;
+    color: #264dd9;
   }
 `;
 
@@ -332,6 +331,7 @@ const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onV
         <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
           {id ? (
             <Link
+              style={{ color: '#1b2437' }}
               to={{
                 pathname: `/thread/${id}`,
                 state: { modal: true },
@@ -415,7 +415,7 @@ const LabelItems = {
 
 const blink = keyframes`
   0% {
-    background-color: #264dd9;
+    background-color: #2850d9;
   }
 
   100% {
@@ -424,13 +424,11 @@ const blink = keyframes`
 `;
 
 const CardBox = styled.div`
-  box-shadow: 0 2rem 5rem -2rem rgba(118, 103, 170, 0.12);
+  box-shadow: 0 2rem 4rem -1.5rem rgba(118, 103, 170, 0.09);
   overflow: hidden;
   border-radius: 12px;
-  border: solid 1px #efedf6;
   padding: 1.25rem;
   background-color: white;
-  border: 1px solid #f0eef6;
   :not(:first-child) {
     margin-top: 2rem;
   }
@@ -577,9 +575,9 @@ export class Card extends React.Component {
             borderTop: '0',
             borderRadius: '12px',
             backgroundColor: '#f4f8fd',
-            marginLeft: '70px',
+            marginLeft: '80px',
             paddingLeft: '15px',
-            paddingBottom: '15px',
+            paddingBottom: '5px',
             paddingRight: '15px',
           }}
           from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
@@ -603,7 +601,7 @@ export class Card extends React.Component {
 
         return (
           <React.Fragment>
-            <span>wrote in</span>
+            <span style={{ color: '#8c91a2', fontSize: '0.8rem' }}>wrote in</span>
             <Link to={`/discover/byToken/${token.symbol}`} style={{ marginLeft: '0.325em' }}>
               <b>{token.name} club </b>
             </Link>

@@ -74,7 +74,7 @@ export default class IndexPage extends Component {
       <ContentContainer>
         <HeaderSpacer style={{ marginBottom: '60px' }} />
         <div className="columns">
-          <div className="column is-3">
+          <div className="column is-3-widescreen is-4">
             <ActiveEntityTokens />
             <FlatContainer>
               <AppContext.Consumer>
@@ -89,7 +89,7 @@ export default class IndexPage extends Component {
               </AppContext.Consumer>
             </FlatContainer>
           </div>
-          <div className="column is-8 is-offset-1">
+          <div className="column is-8 is-offset-1-widescreen">
             <Hero style={{ marginBottom: '30px' }} />
             <FeedTypeSwitcher type={feedType} onChange={this.changeFeedType} style={{ marginBottom: '2em' }} />
             {feedType === 'new' ? <ConnectedFeed className="todo" /> : <PopularFeed />}
