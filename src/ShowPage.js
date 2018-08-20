@@ -18,6 +18,7 @@ import { socialIcons } from './Icons';
 import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
 import clubs from './clubs';
+import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
@@ -307,16 +308,13 @@ class EditableLabel extends Component {
   };
 
   static extractUsername = (text, type) => {
-    if (text != undefined) {
+    if (text !== undefined) {
       const username = EditableLabel.DOMAIN_REGEX[type].exec(text);
-      if (username != null) {
+      if (username !== null) {
         return username[1];
-      } else {
-        return '';
       }
-    } else {
-      return '';
     }
+    return '';
   };
 
   state = {
@@ -412,6 +410,15 @@ export class SocialList extends React.Component {
     return url;
   };
 
+  getCommunityToken = (id) => {
+    const [network, address] = id.split(':');
+    return find({ network, address })(clubs);
+  };
+
+  isAddress = (id) => {
+    return !id.includes(':');
+  };
+
   static Container = styled.div`
     width: 100%;
     position: relative;
@@ -428,12 +435,15 @@ export class SocialList extends React.Component {
         <Entity id={id}>
           {({ external_link, background_color, image_preview_url }) => (
             <SocialBadge href={external_link}>
-              <IdentityAvatar
-                entity={id}
-                backgroundColor={`#${background_color}`}
-                size="verySmall"
-                src={image_preview_url}
-              />
+              {this.isAddress(id) && (
+                <IdentityAvatar
+                  entity={id}
+                  backgroundColor={`#${background_color}`}
+                  size="verySmall"
+                  src={image_preview_url}
+                />
+              )}
+              {!this.isAddress(id) && <TokenImage token={this.getCommunityToken(id)} size="verySmall" />}
               <span style={{ marginLeft: '15px' }}>{getDomain(external_link)}</span>
             </SocialBadge>
           )}

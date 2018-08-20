@@ -565,6 +565,7 @@ const clubs = [
 ].map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }));
 
 const sizes = {
+  verySmall: { width: '24px', height: '24px' },
   small: { width: '44px', height: '44px' },
   medium: { width: '54px', height: '54px' },
 };
