@@ -147,29 +147,31 @@ export default class ShowPage extends Component {
                 </FlatContainer>
               </div>
               <div className="column is-8 is-offset-1-widescreen">
-                <FlatContainer style={{ marginBottom: '2rem' }}>
-                  <H4 style={{ marginBottom: '15px' }}>
-                    <EntityName id={entityId} /> Communities
-                  </H4>
-                  <CommunitiesListContainer>
-                    <CommunitiesList className="columns is-mobile">
-                      {entity.tokens.map((asset) => {
-                        const [network, address] = asset.split(':');
-                        const token = find({ network, address })(clubs);
+                {entity.tokens.length ? (
+                  <FlatContainer style={{ marginBottom: '2rem' }}>
+                    <H4 style={{ marginBottom: '15px' }}>
+                      <EntityName id={entityId} /> Communities
+                    </H4>
+                    <CommunitiesListContainer>
+                      <CommunitiesList className="columns is-mobile">
+                        {entity.tokens.map((asset) => {
+                          const [network, address] = asset.split(':');
+                          const token = find({ network, address })(clubs);
 
-                        return (
-                          <StyledTokenTile
-                            key={asset}
-                            small
-                            linkTo={`/discover/byToken/${token.symbol}`}
-                            token={token}
-                            className="column is-one-fifth-desktop is-one-third-mobile"
-                          />
-                        );
-                      })}
-                    </CommunitiesList>
-                  </CommunitiesListContainer>
-                </FlatContainer>
+                          return (
+                            <StyledTokenTile
+                              key={asset}
+                              small
+                              linkTo={`/discover/byToken/${token.symbol}`}
+                              token={token}
+                              className="column is-one-fifth-desktop is-one-third-mobile"
+                            />
+                          );
+                        })}
+                      </CommunitiesList>
+                    </CommunitiesListContainer>
+                  </FlatContainer>
+                ) : null}
                 <ShowPage.FeedContainer>
                   <IfActiveEntity>
                     {(token) => (
