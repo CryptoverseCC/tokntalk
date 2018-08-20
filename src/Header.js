@@ -162,13 +162,17 @@ const ToggleButton = styled.button`
     }
   }
 `;
+const stopPropagation = (e) => e.stopPropagation();
 
 const CatDropdownToggle = ({ openDropdown }) => {
   return (
     <ToggleButton className="level" onClick={openDropdown}>
-      <LinkedActiveEntityAvatar size="small" />
+      <LinkedActiveEntityAvatar size="small" onClick={stopPropagation} />
       <DropdownEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }}>
-        <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }} />
+        <LinkedActiveEntityName
+          style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }}
+          onClick={stopPropagation}
+        />
         <span
           style={{
             display: 'inline-flex',
