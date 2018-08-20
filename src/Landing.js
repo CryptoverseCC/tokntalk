@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import css from './css/landing.css';
-import styled from 'styled-components';
+import './css/landing.css';
 import Logo from './Logo';
 import buttonPlay from './img/landing/button-play.svg';
 import twitter from './img/landing/twitter.svg';
-import tokntalk from './img/landing/tokntalk.svg';
 import tokntalkGrey from './img/landing/tokntalk-grey.svg';
-import telegram from './img/landing/telegram.svg';
 import github from './img/landing/github.svg';
 import medium from './img/landing/medium.svg';
 import telegramColor from './img/landing/telegram-color.svg';
@@ -33,9 +30,14 @@ import influenceThird from './img/landing/influence-3.png';
 import buildFirst from './img/landing/build-1.png';
 import buildSecond from './img/landing/build-2.png';
 import buildThird from './img/landing/build-3.png';
+import { pageView } from './Analytics';
 
 class Landing extends Component {
   state = { showVideo: false };
+
+  componentDidMount() {
+    pageView();
+  }
 
   exitVideo = () => {
     this.setState({ showVideo: false });
