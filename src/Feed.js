@@ -697,41 +697,47 @@ const ViewMoreReplies = ({ leftCount, onClick }) => (
   </div>
 );
 
-export const LikersModal = styled(({ likes, onClose, className }) => (
-  <FixedModal onClose={onClose}>
-    <div className={className}>
-      <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
-      {likes.map(({ context, context_info, isFromAddress, author, author_info, created_at, family }, index) => (
-        <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
-          <LinkedEntityAvatar
-            id={isFromAddress ? author : context}
-            entityInfo={isFromAddress ? author_info : context_info}
-            size="medium"
-          />
-          <div className="column">
-            <div>
-              <Link to={`/${isFromAddress ? author : context}`} style={{ marginLeft: '15px' }}>
-                <b>{(isFromAddress ? author_info : context_info).name}</b>
-              </Link>
+export class LikersModal extends React.Component {
+  state = {
+    showVerify: false,
+  };
+
+  render() {
+    const { likes, onClose, className } = this.props;
+    return (
+      <FixedModal onClose={onClose}>
+        <div className={className}>
+          <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
+          {likes.map(({ context, context_info, isFromAddress, author, author_info, created_at, family }, index) => (
+            <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
+              <LinkedEntityAvatar
+                id={isFromAddress ? author : context}
+                entityInfo={isFromAddress ? author_info : context_info}
+                size="medium"
+              />
+              <div className="column">
+                <div>
+                  <Link to={`/${isFromAddress ? author : context}`} style={{ marginLeft: '15px' }}>
+                    <b>{(isFromAddress ? author_info : context_info).name}</b>
+                  </Link>
+                </div>
+                <div>
+                  <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
+                    {timeago().format(created_at)}
+                    <Family onClick={onClose} style={{ marginLeft: '15px' }}>
+                      {family}
+                    </Family>
+                  </span>
+                </div>
+              </div>
             </div>
-            <div>
-              <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
-                {timeago().format(created_at)}
-                <Family onClick={onClose} style={{ marginLeft: '15px' }}>
-                  {family}
-                </Family>
-              </span>
-            </div>
-          </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </FixedModal>
-))`
-  border-radius: 30px;
-  padding: 30px;
-  background: #ffffff;
-`;
+        {this.state.showVerify && <VerifyModal onClose={this.onCloseVerify} feedItem={this.state.verifiableItem} />}
+      </FixedModal>
+    );
+  }
+}
 
 class Feed extends Component {
   state = {
