@@ -301,8 +301,8 @@ class EditableLabel extends Component {
     instagram: /^(?:(?:https?:\/\/)?(?:www\.)?instagram\.com\/)?([\w.-]+)$/,
   };
   static DOMAINS = {
-    facebook: 'https://facebook/',
-    twitter: 'https://twitter/',
+    facebook: 'https://facebook.com/',
+    twitter: 'https://twitter.com/',
     github: 'https://github.com/',
     instagram: 'https://instagram.com/',
   };
