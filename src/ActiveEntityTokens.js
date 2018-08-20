@@ -160,7 +160,7 @@ const NoActiveEntity = () => (
   >
     <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Unlock your wallet</p>
     <span>To connect with token owners alike</span>
-    <img src={mouse} />
+    <img style={{ width: '135px', height: 'auto' }} src={mouse} />
   </YourCommunitiesContainer>
 );
 
