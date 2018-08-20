@@ -51,8 +51,7 @@ const PurrmoterDiv = styled(({ hiddenOnMobile, ...restProps }) => <Link {...rest
 export const Purrmoter = ({ token }) => {
   return (
     <CatvertisedHeader>
-      <CatvertisedTitle hiddenOnMobile>Page owner:</CatvertisedTitle>
-      <PurrmoterDiv hiddenOnMobile to={`/${token}`}>
+      <PurrmoterDiv to={`/${token}`}>
         <EntityAvatar size="medium" id={token} />
         <EntityDescription>
           <CatvertisedName>

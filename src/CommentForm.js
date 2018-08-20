@@ -17,9 +17,10 @@ export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea inner
   font-size: 2rem;
   font-weight: 600;
   color: #1b2437;
+  margin-top: 5px;
   border: none;
   resize: none;
-  width: calc(100% - 60px);
+  width: 100%;
   outline: none;
   overflow: auto;
 
