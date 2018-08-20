@@ -67,7 +67,7 @@ const Landing = styled((props) => (
         <div className="container">
           <h1 className="title">Earn</h1>
           <p className="subtitle" style={{ maxWidth: '650px' }}>
-            Be a mentor of your community. Share relevant posts and receive Ethereum in return.
+            Be a mentor of your community. Share relevant information and receive Ether in return.
           </p>
           <div className="landing-owners-introduction">
             <div className="columns">
@@ -99,7 +99,7 @@ const Landing = styled((props) => (
         <div className="container">
           <div className="landing-section-introduction">
             <h2>Build your reputation.</h2>
-            <p className="subtitle">Every action is permanent. Grow your influence by social activities.</p>
+            <p className="subtitle">Every action is permanent. Grow your character, be a leader.</p>
             <a className="landing-link" href="/">
               <span className="landing-link-inside">Start posting</span>
             </a>
@@ -151,7 +151,7 @@ const Landing = styled((props) => (
         <div className="container">
           <div className="landing-section-introduction">
             <h2>Gather supporters.</h2>
-            <p className="subtitle">Accept Ethereum or any token as a reward for your hard work.</p>
+            <p className="subtitle">Accept Ether or any token as a reward for your hard work.</p>
             <a className="landing-link" href="/">
               <span className="landing-link-inside">Start posting</span>
             </a>
@@ -173,9 +173,9 @@ const Landing = styled((props) => (
               <figure className="landing-feature pink">
                 <img src={supportersSecond} style={{ width: '402px', height: 'auto' }} />
               </figure>
-              <h3>Influence</h3>
+              <h3>Transferable</h3>
               <p className="landing-paragraph">
-                Grow value of your token by making it more popular. You can trade it with existing crowd.
+                Grow value of your character. You can trade it with existing crowd when it's time for it.
               </p>
             </div>
             <div className="column is-one-third">
@@ -214,8 +214,8 @@ const Landing = styled((props) => (
       <section className="section has-text-centered" style={{ borderBottom: 'none' }}>
         <div className="container">
           <div className="landing-section-introduction">
-            <h2>Start earning Ethereum!</h2>
-            <p className="subtitle">Be the hero this community deserves.</p>
+            <h2>Start earning tokens!</h2>
+            <p className="subtitle">Be the hero your community deserves.</p>
             <a className="landing-link" href="/">
               <span className="landing-link-inside">Start posting</span>
             </a>

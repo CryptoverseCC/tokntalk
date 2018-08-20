@@ -74,7 +74,7 @@ const Landing = styled((props) => (
         <div className="container">
           <div className="landing-section-introduction">
             <h2>Better economy.</h2>
-            <p className="subtitle">Let your project be discovered by other communities. Receive more tokens.</p>
+            <p className="subtitle">Let your project be discovered by other communities. Grow your economy.</p>
             <Intercom className="landing-link">
               <span className="landing-link-inside">Add a token</span>
             </Intercom>
@@ -95,9 +95,7 @@ const Landing = styled((props) => (
                 <img src={economySecond} style={{ width: '399px', height: 'auto' }} />
               </figure>
               <h3>Extra income</h3>
-              <p className="landing-paragraph">
-                Accept Ethereum or your own ERC20 token for a special place in your community.
-              </p>
+              <p className="landing-paragraph">Accept Ether or your own ERC20 token from your supporters.</p>
             </div>
             <div className="column is-one-third">
               <figure className="landing-feature pink">
@@ -105,7 +103,8 @@ const Landing = styled((props) => (
               </figure>
               <h3>For your users</h3>
               <p className="landing-paragraph">
-                Communicate with your token holders in a secure, verified way from the moment of the token release.
+                Let your crowd track latest news in your project in a verifiable way from the moment you release your
+                token.
               </p>
             </div>
           </div>
@@ -114,7 +113,7 @@ const Landing = styled((props) => (
               <figure className="landing-testimonial-profile" id="addressICO" />
             </a>
             <p className="landing-testimonial-paragraph">
-              “I have a little ICO in plans and it seems like a good channel to communicate with my users.“
+              “I have a little ICO in plans and it seems like a good channel to get in touch with my users.“
             </p>
             <p className="author">
               <a href="https://tokntalk.club/0x9cd16ab977d72bae1385d0fb98114245004c106e">0x9cd16...c106e</a>, Address
@@ -150,7 +149,7 @@ const Landing = styled((props) => (
               </figure>
               <h3>Learn</h3>
               <p className="landing-paragraph">
-                Learn from their discussions and improve your product. You can be sure that your users have ‘skin in the
+                Learn from their discussions or ask them questions. You can be sure that your users have ‘skin in the
                 game’.
               </p>
             </div>

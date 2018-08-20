@@ -107,7 +107,7 @@ class Landing extends Component {
               </p>
               <h1 className="title">Tokens</h1>
               <p className="subtitle">
-                Explore token - oriented communities. Grow your influence and earn tokens in the trusted environment.
+                Explore token oriented communities. Grow your characters and earn rewards from your supporters.
               </p>
               <a className="landing-link" href="/">
                 <span className="landing-link-inside">Start exploring</span>
@@ -151,8 +151,8 @@ class Landing extends Component {
                   <h3>Yours</h3>
                   <p className="landing-paragraph">
                     Act as any Non Fungible Token{' '}
-                    <span style={{ fontSize: '16px', color: '#848DA5', fontWeight: '700' }}>ERC721</span> or an address.
-                    Switch between personalities and grow your characters.
+                    <span style={{ fontSize: '16px', color: '#848DA5', fontWeight: '700' }}>ERC721</span> or an
+                    (0x)Address. Switch between personalities and grow your characters.
                   </p>
                 </div>
                 <div className="column is-one-third">
@@ -196,7 +196,7 @@ class Landing extends Component {
             <div className="container">
               <div className="landing-section-introduction">
                 <h2>Grow community around your token.</h2>
-                <p className="subtitle">Use existing or create a new one and talk in the trusted environment.</p>
+                <p className="subtitle">Use existing tokens or create a new one and talk in the trusted environment.</p>
                 <a className="landing-link" href="/discover">
                   <span className="landing-link-inside">Your clubs</span>
                 </a>
@@ -211,7 +211,10 @@ class Landing extends Component {
                   </figure>
                   <h3>Instant</h3>
                   <p className="landing-paragraph">
-                    Discovery for your project from the moment of a token release. Click. Social Network.
+                    Discovery platform for your project from the moment you release your token. <br />
+                    Click.
+                    <br />
+                    You have Social Network.
                   </p>
                 </div>
                 <div className="column is-one-third">
@@ -220,7 +223,7 @@ class Landing extends Component {
                   </figure>
                   <h3>Trusted</h3>
                   <p className="landing-paragraph">
-                    Secure social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
+                    Social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
                   </p>
                 </div>
                 <div className="column is-one-third">
@@ -229,7 +232,8 @@ class Landing extends Component {
                   </figure>
                   <h3>For you</h3>
                   <p className="landing-paragraph">
-                    Discuss next features, coordinate your efforts. Talk about future of your project.
+                    Get to know people, discuss next features, coordinate your efforts. Talk about future of your
+                    project.
                   </p>
                 </div>
               </div>
@@ -252,10 +256,10 @@ class Landing extends Component {
           <section className="section has-text-centered">
             <div className="container">
               <div className="landing-section-introduction">
-                <h2>Get paid for your influence.</h2>
-                <p className="subtitle">Grow influence of your avatar. Let people support you.</p>
+                <h2>Get rewards from your supporters.</h2>
+                <p className="subtitle">Act according to your beliefs. Grow your community. Be a leader!</p>
                 <a className="landing-link" href="/owners">
-                  <span className="landing-link-inside">Learn how to earn</span>
+                  <span className="landing-link-inside">Learn how to start</span>
                 </a>
               </div>
               <div className="columns">
@@ -264,18 +268,16 @@ class Landing extends Component {
                     <img src={influenceFirst} style={{ width: '399px', height: 'auto' }} />
                   </figure>
                   <h3>Any token</h3>
-                  <p className="landing-paragraph">
-                    Accept tokens for an advertisement on your profile out of the box.
-                  </p>
+                  <p className="landing-paragraph">Accept any token from your supporters instantly.</p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
                     <img src={influenceSecond} style={{ width: '402px', height: 'auto' }} />
                   </figure>
-                  <h3>Influential</h3>
+                  <h3>Transferable </h3>
                   <p className="landing-paragraph">
-                    How much would you pay for a celebrity Cryptokitty that ends up on the front page of your favorite
-                    magazine?
+                    Pass on your characters when you want to go do something else (and get paid in the process). Don't
+                    let your efforts go to waste.
                   </p>
                 </div>
                 <div className="column is-one-third">
@@ -303,7 +305,7 @@ class Landing extends Component {
             <div className="container">
               <div className="landing-section-introduction">
                 <h2>Unbundle your creativity.</h2>
-                <p className="subtitle">Create a custom functionality for your token or the platform.</p>
+                <p className="subtitle">Create a custom functionality for your tokens.</p>
                 <a className="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
                   <span className="landing-link-inside">See on Github</span>
                 </a>
@@ -315,7 +317,7 @@ class Landing extends Component {
                   </figure>
                   <h3>Token</h3>
                   <p className="landing-paragraph">
-                    Implement token - specific functionality and grow value of your community.{' '}
+                    Implement token-specific functionality and grow value of your community.{' '}
                   </p>
                 </div>
                 <div className="column is-one-third">
@@ -324,7 +326,7 @@ class Landing extends Component {
                   </figure>
                   <h3>Platform</h3>
                   <p className="landing-paragraph">
-                    Create a platform - specific functionality and easily monetize your work.
+                    Create a platform-specific functionality and easily monetize your work.
                   </p>
                 </div>
                 <div className="column is-one-third">
@@ -392,7 +394,7 @@ class Landing extends Component {
                   </a>
                   <a href="http://tokntalk.club/" className="landing-footer-intouch">
                     <img src={tokntalkColor} />
-                    <span>Tok n talk</span>
+                    <span>Tok'n'talk</span>
                   </a>
                   <a href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA" className="landing-footer-intouch">
                     <img src={telegramColor} />
