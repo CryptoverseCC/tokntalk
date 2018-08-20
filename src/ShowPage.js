@@ -118,7 +118,7 @@ export default class ShowPage extends Component {
           <ContentContainer>
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
-              <div className="column is-3">
+              <div className="column is-3-widescreen is-4">
                 <ShowPage.ProfileImageContainer backgroundColor={`#${entity.background_color}`}>
                   <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
                 </ShowPage.ProfileImageContainer>
@@ -146,7 +146,7 @@ export default class ShowPage extends Component {
                   </AppContext.Consumer>
                 </FlatContainer>
               </div>
-              <div className="column is-8 is-offset-1">
+              <div className="column is-8 is-offset-1-widescreen">
                 <FlatContainer style={{ marginBottom: '2rem' }}>
                   <H4 style={{ marginBottom: '15px' }}>
                     <EntityName id={entityId} /> Communities
@@ -246,7 +246,6 @@ const SocialIcon = styled(({ type, ...restProps }) => React.createElement(social
 `;
 
 const LabelInput = styled.input`
-  flex: 1;
   padding: 10px 0;
   outline: none;
   border: none;
