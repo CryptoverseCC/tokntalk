@@ -17,6 +17,11 @@ import { UnreadedCount } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import PopularFeed from './SimpleFeed';
 
+import toshi from './img/wallets/toshi.svg';
+import trust from './img/wallets/trust.svg';
+import cipher from './img/wallets/cipher.svg';
+import metamask from './img/wallets/metamask.svg';
+
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
 const YourCommunitiesContainer = styled.div`
@@ -101,22 +106,100 @@ export default class IndexPage extends Component {
   }
 }
 
+const WalletContainer = styled.a`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #000000;
+`;
+
+const WalletIcon = styled.img`
+  width: 80%;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 0.6rem 1rem -0.3rem rgba(27, 36, 55, 0.04);
+  padding: 10px;
+`;
+
+const WalletType = styled.span`
+  color: #acb7c8;
+`;
+
+const NoMetamask = () => (
+  <YourCommunitiesContainer style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <p
+      style={{
+        fontSize: '1.5rem',
+        color: '#1B2538',
+        fontWeight: 600,
+      }}
+    >
+      Get a wallet
+    </p>
+    <p style={{ marginBottom: '30px' }}>To connect with token owners</p>
+    <div className="columns is-multiline is-mobile">
+      <div className="column is-half">
+        <WalletContainer href="https://metamask.io/">
+          <WalletIcon src={metamask} />
+          <p>Metamask</p>
+          <WalletType>Desktop</WalletType>
+        </WalletContainer>
+      </div>
+      <div className="column is-half">
+        <WalletContainer href="https://trustwalletapp.com/">
+          <WalletIcon src={trust} />
+          <p>Trust</p>
+          <WalletType>Mobile</WalletType>
+        </WalletContainer>
+      </div>
+      <div className="column is-half">
+        <WalletContainer href="https://www.toshi.org/">
+          <WalletIcon src={toshi} />
+          <p>Toshi</p>
+          <WalletType>Mobile</WalletType>
+        </WalletContainer>
+      </div>
+      <div className="column is-half">
+        <WalletContainer href="https://www.cipherbrowser.com/">
+          <WalletIcon src={cipher} />
+          <p>Cipher</p>
+          <WalletType>Mobile</WalletType>
+        </WalletContainer>
+      </div>
+    </div>
+  </YourCommunitiesContainer>
+);
+
 const ActiveEntityTokens = () => (
-  <IfActiveEntity other={<NoActiveEntity />}>
-    {(activeEntityId) => (
-      <Entity id={activeEntityId}>
-        {(entity) => (
-          <YourCommunitiesContainer>
-            <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
-            {entity.tokens.map((asset) => (
-              <Token key={asset} asset={asset} />
-            ))}
-            <DiscoverMore>{!entity.tokens.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
-          </YourCommunitiesContainer>
-        )}
-      </Entity>
-    )}
-  </IfActiveEntity>
+  <AppContext.Consumer>
+    {({ web3Store: { provider } }) => {
+      if (typeof provider === 'undefined') {
+        return null;
+      }
+      if (typeof provider === 'boolean' && !provider) {
+        return <NoMetamask />;
+      }
+
+      return (
+        <IfActiveEntity other={<NoActiveEntity />}>
+          {(activeEntityId) => (
+            <Entity id={activeEntityId}>
+              {(entity) => (
+                <YourCommunitiesContainer>
+                  <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
+                  {entity.tokens.map((asset) => (
+                    <Token key={asset} asset={asset} />
+                  ))}
+                  <DiscoverMore>{!entity.tokens.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
+                </YourCommunitiesContainer>
+              )}
+            </Entity>
+          )}
+        </IfActiveEntity>
+      );
+    }}
+  </AppContext.Consumer>
 );
 
 const NoActiveEntity = () => (
