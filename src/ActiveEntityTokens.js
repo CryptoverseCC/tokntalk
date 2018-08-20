@@ -153,7 +153,8 @@ const NoActiveEntity = () => (
     style={{
       backgroundImage: `url(${unlockBackground})`,
       backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
+      backgroundSize: '100%',
+      backgroundPosition: 'bottom center',
       minHeight: '300px',
       display: 'flex',
       flexDirection: 'column',
