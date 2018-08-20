@@ -235,6 +235,12 @@ class Communities extends Component {
                   <div className="landing-footer-navigation">
                     <Link to="/communities">Communities</Link>
                     <Link to="/owners">Owners</Link>
+                    <a
+                      href="https://drive.google.com/drive/u/1/folders/1hGOq4bEI2lIf5qZr90XQQdG-N0wLZIGK"
+                      target="_blank"
+                    >
+                      Press
+                    </a>
                     <Link to="/">Hop Inside</Link>
                   </div>
                   <div className="landing-footer-social">

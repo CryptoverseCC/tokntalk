@@ -61,7 +61,7 @@ class Landing extends Component {
                   <iframe
                     width="560"
                     height="315"
-                    src="https://www.youtube.com/embed/MELu5ELaJrg?showinfo=0&autoplay=1"
+                    src="https://www.youtube.com/embed/AYj7MFGF53w?showinfo=0&autoplay=1"
                     allow="autoplay; encrypted-media"
                     allowFullScreen
                   />
@@ -418,6 +418,12 @@ class Landing extends Component {
                   <div className="landing-footer-navigation">
                     <Link to="/communities">Communities</Link>
                     <Link to="/owners">Owners</Link>
+                    <a
+                      href="https://drive.google.com/drive/u/1/folders/1hGOq4bEI2lIf5qZr90XQQdG-N0wLZIGK"
+                      target="_blank"
+                    >
+                      Press
+                    </a>
                     <Link to="/">Hop Inside</Link>
                   </div>
                   <div className="landing-footer-social">
