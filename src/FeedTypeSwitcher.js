@@ -19,6 +19,12 @@ const FeedTypeButton = styled.div`
   :not(:first-child) {
     margin-left: 30px;
   }
+
+  @media (max-width: 770px) {
+    :first-child {
+      margin-left: 2%;
+    }
+  }
 `;
 
 const FeedTypeSwitcher = ({ type, onChange, style, className }) => (
