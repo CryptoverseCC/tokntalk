@@ -100,9 +100,9 @@ const Landing = styled((props) => (
           <div className="landing-section-introduction">
             <h2>Build your reputation.</h2>
             <p className="subtitle">Every action is permanent. Grow your character, be a leader.</p>
-            <a className="landing-link" href="/">
+            <Link className="landing-link" to="/">
               <span className="landing-link-inside">Start posting</span>
-            </a>
+            </Link>
           </div>
           <div className="columns">
             <div className="column is-one-third">
@@ -134,14 +134,14 @@ const Landing = styled((props) => (
             </div>
           </div>
           <div className="landing-testimonial">
-            <a href="https://tokntalk.club/ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:480">
+            <Link to="/ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:480">
               <figure className="landing-testimonial-profile" id="ethmoji" />
-            </a>
+            </Link>
             <p className="landing-testimonial-paragraph">
               “I like to share things that might be helpful to others. People like and support my efforts.”
             </p>
             <p className="author">
-              <a href="https://tokntalk.club/ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:480">#480</a>, Ethmoji
+              <Link to="/ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:480">#480</Link>, Ethmoji
             </p>
           </div>
         </div>
@@ -152,9 +152,9 @@ const Landing = styled((props) => (
           <div className="landing-section-introduction">
             <h2>Gather supporters.</h2>
             <p className="subtitle">Accept Ether or any token as a reward for your hard work.</p>
-            <a className="landing-link" href="/">
+            <Link className="landing-link" to="/">
               <span className="landing-link-inside">Start posting</span>
-            </a>
+            </Link>
           </div>
           <div className="columns">
             <div className="column is-one-third">
@@ -190,22 +190,21 @@ const Landing = styled((props) => (
           </div>
           <div className="landing-testimonial">
             <div id="landing-messageTo">
-              <a href="https://tokntalk.club/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">
+              <Link to="/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">
                 <figure className="landing-testimonial-profile" id="bot" style={{ display: 'inline-block' }} />
-              </a>
-              <a
-                href="https://tokntalk.club/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330"
+              </Link>
+              <Link
+                to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330"
                 style={{ display: 'inline-block', marginLeft: '40px' }}
               >
                 <figure className="landing-testimonial-profile" id="barbossa" />
-              </a>
+              </Link>
             </div>
             <p className="landing-testimonial-paragraph">
               ““For me, you’re the hero that this community needs. I am happy to support you.“
             </p>
             <p className="author">
-              <a href="https://tokntalk.club/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">#5630</a>,
-              Cryptobot
+              <Link href="/ethereum:0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643:5630">#5630</Link>, Cryptobot
             </p>
           </div>
         </div>
@@ -216,9 +215,9 @@ const Landing = styled((props) => (
           <div className="landing-section-introduction">
             <h2>Start earning tokens!</h2>
             <p className="subtitle">Be the hero your community deserves.</p>
-            <a className="landing-link" href="/">
+            <Link className="landing-link" to="/">
               <span className="landing-link-inside">Start posting</span>
-            </a>
+            </Link>
           </div>
           <div className="columns">
             <div className="column is-twelve">
@@ -244,10 +243,10 @@ const Landing = styled((props) => (
                 <img src={twitterColor} />
                 <span>Twitter</span>
               </a>
-              <a href="http://tokntalk.club/" className="landing-footer-intouch">
+              <Link to="/" className="landing-footer-intouch">
                 <img src={tokntalkColor} />
                 <span>Tok n talk</span>
-              </a>
+              </Link>
               <a href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA" className="landing-footer-intouch">
                 <img src={telegramColor} />
                 <span>Telegram</span>

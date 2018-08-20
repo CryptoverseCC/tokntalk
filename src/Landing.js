@@ -109,9 +109,9 @@ class Landing extends Component {
               <p className="subtitle">
                 Explore token oriented communities. Grow your characters and earn rewards from your supporters.
               </p>
-              <a className="landing-link" href="/">
+              <Link className="landing-link" to="/">
                 <span className="landing-link-inside">Start exploring</span>
-              </a>
+              </Link>
             </div>
           </section>
 
@@ -139,9 +139,9 @@ class Landing extends Component {
               <div className="landing-section-introduction">
                 <h2>Explore the reality from many angles.</h2>
                 <p className="subtitle">Discover messages from token holders for token holders.</p>
-                <a className="landing-link" href="/">
+                <Link className="landing-link" to="/">
                   <span className="landing-link-inside">Start exploring</span>
-                </a>
+                </Link>
               </div>
               <div className="columns">
                 <div className="column is-one-third">
@@ -176,17 +176,16 @@ class Landing extends Component {
                 </div>
               </div>
               <div className="landing-testimonial">
-                <a href="https://tokntalk.club/0x9093428aa6266d589b866ac2956e328ab9039bee">
+                <Link to="/0x9093428aa6266d589b866ac2956e328ab9039bee">
                   <figure className="landing-testimonial-profile">
                     <img src="" />
                   </figure>
-                </a>
+                </Link>
                 <p className="landing-testimonial-paragraph">
                   “I finally see all the trades of the guy recommending me trades.“
                 </p>
                 <p className="author">
-                  <a href="https://tokntalk.club/0x9093428aa6266d589b866ac2956e328ab9039bee">0x90934...39bee</a>,
-                  Address
+                  <Link to="/0x9093428aa6266d589b866ac2956e328ab9039bee">0x90934...39bee</Link>, Address
                 </p>
               </div>
             </div>
@@ -197,12 +196,12 @@ class Landing extends Component {
               <div className="landing-section-introduction">
                 <h2>Grow community around your token.</h2>
                 <p className="subtitle">Use existing tokens or create a new one and talk in the trusted environment.</p>
-                <a className="landing-link" href="/discover">
+                <Link className="landing-link" to="/discover">
                   <span className="landing-link-inside">Your clubs</span>
-                </a>
-                <a className="landing-link" href="/communities" style={{ marginLeft: '30px' }}>
+                </Link>
+                <Link className="landing-link" to="/communities" style={{ marginLeft: '30px' }}>
                   <span className="landing-link-inside">Add your token</span>
-                </a>
+                </Link>
               </div>
               <div className="columns">
                 <div className="column is-one-third">
@@ -238,16 +237,15 @@ class Landing extends Component {
                 </div>
               </div>
               <div className="landing-testimonial">
-                <a href="https://tokntalk.club/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">
+                <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">
                   <figure className="landing-testimonial-profile" id="falafel" />
-                </a>
+                </Link>
                 <p className="landing-testimonial-paragraph">
                   “Crypto is tough. Everyone thinks I’m cheating, deleting tweets and playing double game. Now everyone
                   sees my transactions.“
                 </p>
                 <p className="author">
-                  <a href="https://tokntalk.club/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">Falafel</a>
-                  , Cryptokitty
+                  <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">Falafel</Link>, Cryptokitty
                 </p>
               </div>
             </div>
@@ -258,9 +256,9 @@ class Landing extends Component {
               <div className="landing-section-introduction">
                 <h2>Get rewards from your supporters.</h2>
                 <p className="subtitle">Act according to your beliefs. Grow your community. Be a leader!</p>
-                <a className="landing-link" href="/owners">
+                <Link className="landing-link" to="/owners">
                   <span className="landing-link-inside">Learn how to start</span>
-                </a>
+                </Link>
               </div>
               <div className="columns">
                 <div className="column is-one-third">
@@ -290,13 +288,12 @@ class Landing extends Component {
               </div>
             </div>
             <div className="landing-testimonial">
-              <a href="https://tokntalk.club/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">
+              <Link to="/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">
                 <figure className="landing-testimonial-profile" id="cryptocow" />
-              </a>
+              </Link>
               <p className="landing-testimonial-paragraph">“seems like an easy way to get more ethereum :}“</p>
               <p className="author">
-                <a href="https://tokntalk.club/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">CryptoCow #78</a>
-                , Cryptocow
+                <Link to="/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">CryptoCow #78</Link>, Cryptocow
               </p>
             </div>
           </section>
@@ -341,17 +338,15 @@ class Landing extends Component {
               </div>
             </div>
             <div className="landing-testimonial">
-              <a href="https://tokntalk.club/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">
+              <Link to="/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">
                 <figure className="landing-testimonial-profile" id="cryptovoxel" />
-              </a>
+              </Link>
               <p className="landing-testimonial-paragraph">
                 “Imagine watching this feed in VR and sending messages to nearby players!“
               </p>
               <p className="author">
-                <a href="https://tokntalk.club/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">
-                  36 Math Throughway
-                </a>
-                , Cryptovoxel
+                <Link to="/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">36 Math Throughway</Link>,
+                Cryptovoxel
               </p>
             </div>
           </section>
@@ -364,9 +359,9 @@ class Landing extends Component {
                   More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every
                   Ethereum provider.
                 </p>
-                <a className="landing-link" href="/">
+                <Link className="landing-link" to="/">
                   <span className="landing-link-inside">Say hello</span>
-                </a>
+                </Link>
               </div>
               <div className="columns">
                 <div className="column is-twelve">
@@ -392,10 +387,10 @@ class Landing extends Component {
                     <img src={twitterColor} />
                     <span>Twitter</span>
                   </a>
-                  <a href="http://tokntalk.club/" className="landing-footer-intouch">
+                  <Link to="/" className="landing-footer-intouch">
                     <img src={tokntalkColor} />
                     <span>Tok'n'talk</span>
-                  </a>
+                  </Link>
                   <a href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA" className="landing-footer-intouch">
                     <img src={telegramColor} />
                     <span>Telegram</span>

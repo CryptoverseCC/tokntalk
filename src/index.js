@@ -18,6 +18,7 @@ const storage = Storage();
 const TokNTalk = withRouter(({ location }) => {
   const redirect = !storage.getItem('visited') && location.pathname === '/';
   storage.setItem('visited', Date.now());
+  window.scroll(0, 0);
 
   return (
     <Switch>

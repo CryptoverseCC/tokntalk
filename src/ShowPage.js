@@ -70,7 +70,6 @@ export default class ShowPage extends Component {
 
   componentDidMount() {
     pageView();
-    window.scrollTo(0, 0);
     this.props.getFeedItems(this.props.match.params.entityId);
     this.props.getEntityInfo(this.props.match.params.entityId);
     // this.refreshInterval = setInterval(() => this.props.getNewFeedItems(this.props.match.params.entityId), 3000);
@@ -81,7 +80,6 @@ export default class ShowPage extends Component {
       pageView();
       this.props.getFeedItems(nextProps.match.params.entityId);
       this.props.getEntityInfo(nextProps.match.params.entityId);
-      window.scrollTo(0, 0);
     }
   }
 
