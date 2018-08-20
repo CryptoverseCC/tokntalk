@@ -44,7 +44,6 @@ class Landing extends Component {
   };
 
   playVideo = () => {
-    // window.
     this.setState({ showVideo: true });
   };
 
@@ -66,10 +65,10 @@ class Landing extends Component {
                     allowFullScreen
                   />
                 </div>
+                <button className="landing-modal-content-close" style={{ cursor: 'pointer' }} onClick={this.exitVideo}>
+                  <img src={exitBig} />
+                </button>
               </div>
-              <button className="landing-modal-content-close">
-                <img src={exitBig} onClick={this.exitVideo} style={{ cursor: 'pointer' }} />
-              </button>
             </div>
           )}
 
