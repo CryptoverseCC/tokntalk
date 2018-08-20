@@ -88,15 +88,19 @@ const WalletContainer = styled.a`
 `;
 
 const WalletIcon = styled.img`
-  width: 80%;
+  width: 44px;
+  height: 44px;
   background-color: white;
   border-radius: 6px;
-  box-shadow: 0 0.6rem 1rem -0.3rem rgba(27, 36, 55, 0.04);
+  box-shadow: 0 0.5rem 1rem -0.2rem rgba(27, 36, 55, 0.12);
+  margin-bottom: 6px;
   padding: 10px;
 `;
 
 const WalletType = styled.span`
   color: #acb7c8;
+  font-size: 0.8rem;
+  margin-top: -5px;
 `;
 
 const NoMetamask = () => (
@@ -105,35 +109,35 @@ const NoMetamask = () => (
       style={{
         fontSize: '1.5rem',
         color: '#1B2538',
-        fontWeight: 600,
+        fontWeight: 'bold',
       }}
     >
       Get a wallet
     </p>
     <p style={{ marginBottom: '30px' }}>To connect with token owners</p>
     <div className="columns is-multiline is-mobile">
-      <div className="column is-half">
+      <div className="column is-one-quarter">
         <WalletContainer href="https://metamask.io/">
           <WalletIcon src={metamask} />
           <p>Metamask</p>
           <WalletType>Desktop</WalletType>
         </WalletContainer>
       </div>
-      <div className="column is-half">
+      <div className="column is-one-quarter">
         <WalletContainer href="https://trustwalletapp.com/">
           <WalletIcon src={trust} />
           <p>Trust</p>
           <WalletType>Mobile</WalletType>
         </WalletContainer>
       </div>
-      <div className="column is-half">
+      <div className="column is-one-quarter">
         <WalletContainer href="https://www.toshi.org/">
           <WalletIcon src={toshi} />
           <p>Toshi</p>
           <WalletType>Mobile</WalletType>
         </WalletContainer>
       </div>
-      <div className="column is-half">
+      <div className="column is-one-quarter">
         <WalletContainer href="https://www.cipherbrowser.com/">
           <WalletIcon src={cipher} />
           <p>Cipher</p>
