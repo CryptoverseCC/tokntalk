@@ -701,16 +701,28 @@ export const LikersModal = styled(({ likes, onClose, className }) => (
   <FixedModal onClose={onClose}>
     <div className={className}>
       <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
-      {likes.map(({ context, context_info, isFromAddress, author, author_info }, index) => (
+      {likes.map(({ context, context_info, isFromAddress, author, author_info, created_at, family }, index) => (
         <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
           <LinkedEntityAvatar
             id={isFromAddress ? author : context}
             entityInfo={isFromAddress ? author_info : context_info}
             size="medium"
           />
-          <Link to={`/${isFromAddress ? author : context}`} style={{ display: 'block', marginLeft: '15px' }}>
-            <b>{(isFromAddress ? author_info : context_info).name}</b>
-          </Link>
+          <div className="column">
+            <div>
+              <Link to={`/${isFromAddress ? author : context}`} style={{ marginLeft: '15px' }}>
+                <b>{(isFromAddress ? author_info : context_info).name}</b>
+              </Link>
+            </div>
+            <div>
+              <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
+                {timeago().format(created_at)}
+                <Family onClick={onClose} style={{ marginLeft: '15px' }}>
+                  {family}
+                </Family>
+              </span>
+            </div>
+          </div>
         </div>
       ))}
     </div>
