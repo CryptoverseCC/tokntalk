@@ -108,6 +108,7 @@ const Header = () => {
           >
             {process.env.REACT_APP_NAME}
           </TitleLink>
+          <CrossLink to="/about">About</CrossLink>
           <CrossLink to="/discover">Token Communities</CrossLink>
         </LinkContainer>
         <Context.Consumer>
@@ -298,6 +299,7 @@ const LinkDropdownContainer = styled.div`
 const LinkDropdown = () => (
   <LinkDropdownContainer>
     <React.Fragment>
+      <DropdownLink to="/about">About</DropdownLink>
       <DropdownLink to="/discover">Discover</DropdownLink>
     </React.Fragment>
   </LinkDropdownContainer>
