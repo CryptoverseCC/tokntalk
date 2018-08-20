@@ -110,7 +110,7 @@ const ActiveEntityTokens = () => (
             {entity.tokens.map((asset) => (
               <Token key={asset} asset={asset} />
             ))}
-            <DiscoverMore />
+            <DiscoverMore>{!entity.tokens.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
           </YourCommunitiesContainer>
         )}
       </Entity>
@@ -130,11 +130,10 @@ const NoActiveEntity = () => (
     >
       Unlock your wallet to see where you belong
     </span>
-    <DiscoverMore />
   </YourCommunitiesContainer>
 );
 
-const DiscoverMore = styled((props) => (
+const DiscoverMore = ({ children, props }) => (
   <div {...props}>
     <Link
       style={{
@@ -153,12 +152,10 @@ const DiscoverMore = styled((props) => (
           marginRight: '15px',
         }}
       />
-      Discover more
+      {children}
     </Link>
   </div>
-))`
-  // styles
-`;
+);
 
 const StyledUnreadedMessages = styled(UnreadedCount)`
   color: #1b2437;

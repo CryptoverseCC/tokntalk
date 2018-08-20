@@ -36,10 +36,10 @@ const ReactionContainer = styled.div`
   transform: translate(-38%, 50%);
 `;
 
-const IdentityAvatar = ({ entity, size, reaction, style = {}, backgroundColor, src, lazy = true }) => {
+const IdentityAvatar = ({ entity, size, reaction, style = {}, backgroundColor, src, lazy = true, ...restProps }) => {
   const { containerSize, imgSize, imgTopOffset, imgLeftOffset } = getAvatarSizes(entity)[size];
   return (
-    <div style={{ position: 'relative', ...style }}>
+    <div style={{ position: 'relative', ...style }} {...restProps}>
       <AvatarContainer backgroundColor={backgroundColor} containerSize={containerSize}>
         <Avatar src={src} imgSize={imgSize} imgTopOffset={imgTopOffset} imgLeftOffset={imgLeftOffset} />
       </AvatarContainer>

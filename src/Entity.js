@@ -109,8 +109,20 @@ export const Entities = ({ children }) => (
   </Context.Consumer>
 );
 
-export const ActiveEntityName = () => (
-  <Context.Consumer>{({ entityStore: { activeEntity } }) => activeEntity.name}</Context.Consumer>
+export const ActiveEntityName = (props) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) => <span {...props}>{activeEntity.name}</span>}
+  </Context.Consumer>
+);
+
+export const LinkedActiveEntityName = (props) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity } }) => (
+      <StyledLink to={`/${activeEntity.id}`}>
+        <ActiveEntityName {...props} />
+      </StyledLink>
+    )}
+  </Context.Consumer>
 );
 
 export const LinkedActiveEntityAvatar = (props) => (

@@ -1,72 +1,148 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-const Block = styled.div`
+const time = '1s';
+
+const mediumShaky = keyframes`
+  0% {
+    transform: scaleX(1) scaleY(1) translateX(0px) translateY(0px);
+  }
+
+  12% {
+    transform: scaleX(1) scaleY(1) translateX(3px) translateY(3px);
+  }
+
+  25% {
+    transform: scaleX(1) scaleY(1) translateX(6px) translateY(3px);
+  }
+
+  37% {
+    transform: scaleX(1) scaleY(1) translateX(9px) translateY(0px);
+  }
+
+  50% {
+    transform: scaleX(1) scaleY(1) translateX(9px) translateY(-3px);
+  }
+
+  62% {
+    transform: scaleX(1) scaleY(1) translateX(6px) translateY(-6px);
+  }
+
+  75% {
+    transform: scaleX(1) scaleY(1) translateX(3px) translateY(-6px);
+  }
+
+  87% {
+    transform: scaleX(1) scaleY(1) translateX(0px) translateY(-3px);
+  }
+
+  100% {
+    transform: scaleX(1) scaleY(1) translateX(0px) translateY(0px);
+  }
+ `;
+
+const smallShaky = keyframes`
+  0% {
+    transform: scale(0.8) translateX(0px) translateY(0px);
+  }
+    
+  33% {
+    transform: scale(1) translateX(-2px) translateY(1px);
+  }
+
+  100% {
+    transform: scale(0.8) translateX(0px) translateY(0px);
+  }
+`;
+
+const mouth = keyframes`
+  0% {
+    transform: scaleY(1) scaleX(1);
+  }
+  
+  75% {
+    transform: scaleY(1.15) scaleX(1.05);
+  }
+
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+`;
+
+const Container = styled.div`
   position: relative;
-  width: 100px;
-  height: 100px;
-  background: #264dd9;
-  animation: blockAnimation 1s linear infinite;
-  border-radius: 6px;
-  will-change: transform;
-
-  @keyframes blockAnimation {
-    25% {
-      transform: translateY(9px) rotate(22.5deg);
-    }
-    50% {
-      transform: translateY(18px) scale(1, 0.9) rotate(45deg);
-    }
-    75% {
-      transform: translateY(9px) rotate(67.5deg);
-    }
-    100% {
-      transform: translateY(0) rotate(90deg);
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #f8f9fd;
+  border-radius: 20px;
+  width: 200px;
+  height: 150px;
 `;
 
-const Shadow = styled.div`
-  width: 100px;
-  height: 10px;
-  background: #e9ebff;
-  opacity: 1;
-  position: absolute;
-  bottom: -30px;
-  left: 0px;
-  border-radius: 50%;
-  animation: shadowAnimation 1s linear infinite;
-  will-change: transform;
-  z-index: 2;
-
-  @keyframes shadowAnimation {
-    50% {
-      transform: scale(1.2, 1);
-    }
-  }
+const Eyes = styled.div`
+  align-self: center;
+  height: 35px;
+  display: flex;
+  width: 100%;
+  max-width: 150px;
 `;
 
-const Bottom = styled.div`
-  height: 10px;
-  background-color: inherit;
-  width: 100px;
+const Eye = styled.div`
+  background-color: black;
+  width: 35px;
+  height: 35px;
+  position: relative;
+  border-radius: 30px;
+`;
+
+const SmallDot = styled.div`
   display: block;
   position: absolute;
-  z-index: 1;
-  bottom: -40px;
+  background-color: white;
+  border-radius: 20px;
+  right: 6px;
+  bottom: 6px;
+  width: 10px;
+  height: 10px;
+  animation: ${smallShaky} ${time} ease infinite;
 `;
 
-const LonelyBlock = styled.div`
-  position: relative;
-  background-color: inherit;
+const MediumDot = styled.div`
+  display: block;
+  position: absolute;
+  background-color: white;
+  border-radius: 20px;
+  left: 2px;
+  top: 8px;
+  width: 20px;
+  height: 20px;
+  animation: ${mediumShaky} ${time} ease infinite;
 `;
 
-const Loader = ({ className, style }) => (
-  <LonelyBlock className={className} style={style}>
-    <Block />
-    <Shadow />
-    <Bottom />
-  </LonelyBlock>
+const Mouth = styled.div`
+  align-self: center;
+  background-color: black;
+  width: 30px;
+  height: 20px;
+  border-radius: 5px 5px 20px 20px;
+  animation: ${mouth} ${time} infinite;
+`;
+
+const LoaderCmp = (props) => (
+  <Container {...props}>
+    <Eyes>
+      <Eye>
+        <SmallDot />
+        <MediumDot />
+      </Eye>
+      <Eye style={{ marginLeft: 'auto' }}>
+        <SmallDot />
+        <MediumDot />
+      </Eye>
+    </Eyes>
+    <Mouth />
+  </Container>
 );
 
-export default Loader;
+export default LoaderCmp;
