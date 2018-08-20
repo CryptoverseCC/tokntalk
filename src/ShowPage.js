@@ -310,16 +310,13 @@ class EditableLabel extends Component {
   };
 
   static extractUsername = (text, type) => {
-    if (text != undefined) {
+    if (text !== undefined) {
       const username = EditableLabel.DOMAIN_REGEX[type].exec(text);
-      if (username != null) {
+      if (username !== null) {
         return username[1];
-      } else {
-        return '';
       }
-    } else {
-      return '';
     }
+    return '';
   };
 
   state = {
