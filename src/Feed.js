@@ -700,6 +700,15 @@ const ViewMoreReplies = ({ leftCount, onClick }) => (
 export class LikersModal extends React.Component {
   state = {
     showVerify: false,
+    verifiableItem: undefined,
+  };
+
+  onVerify = (feedItem) => {
+    this.setState({ showVerify: true, verifiableItem: feedItem });
+  };
+
+  onCloseVerify = () => {
+    this.setState({ showVerify: false, verifiableItem: undefined });
   };
 
   render() {
@@ -724,7 +733,12 @@ export class LikersModal extends React.Component {
                 <div>
                   <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
                     {timeago().format(created_at)}
-                    <Family onClick={onClose} style={{ marginLeft: '15px' }}>
+                    <Family
+                      onClick={() => {
+                        this.onVerify(likes[index]);
+                      }}
+                      style={{ marginLeft: '15px' }}
+                    >
                       {family}
                     </Family>
                   </span>
