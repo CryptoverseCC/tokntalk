@@ -175,7 +175,7 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
     <div className="columns is-mobile" style={{ width: '100%' }}>
       <div className="column" style={{ display: 'flex', alignItems: 'center', marginLeft: '12px' }}>
         {disabledInteractions ? (
-          <LikeLabel unActive count={reactions.length} />
+          <LikeLabel unActive count={reactions.length} onShowLikers={onShowLikers} />
         ) : (
           <IfActiveEntityLiked
             reactions={reactions}
