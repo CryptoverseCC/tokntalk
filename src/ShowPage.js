@@ -293,14 +293,37 @@ const ExitIcon = styled.img.attrs({ src: closeIcon })`
 `;
 
 class EditableLabel extends Component {
-  static VALID_LABEL_EXPRESSIONS = {
-    facebook: /http(s)?:\/\/(www\.)?(facebook|fb)\.com\/(A-z 0-9 _ - \.)\/?/,
-    twitter: /http(s)?:\/\/(.*\.)?twitter\.com\/[A-z 0-9 _]+\/?/,
-    github: /http(s)?:\/\/(www\.)?github\.com\/[A-z 0-9 _ -]+\/?/,
-    instagram: /https?:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/,
+  static DOMAIN_REGEX = {
+    facebook: /^(?:(?:https?:\/\/)?(?:www\.)?facebook\.com\/)?([\w.-]+)$/,
+    twitter: /^(?:(?:https?:\/\/)?(?:www\.)?twitter\.com\/)?([\w]+)$/,
+    github: /^(?:(?:https?:\/\/)?(?:www\.)?github\.com\/)?([\w-+@]+)$/,
+    instagram: /^(?:(?:https?:\/\/)?(?:www\.)?instagram\.com\/)?([\w.-]+)$/,
+  };
+  static DOMAINS = {
+    facebook: 'https://facebook/',
+    twitter: 'https://twitter/',
+    github: 'https://github.com/',
+    instagram: 'https://instagram.com/',
   };
 
-  state = { editing: false, isValid: true, editedValue: this.props.value };
+  static extractUsername = (text, type) => {
+    if (text != undefined) {
+      const username = EditableLabel.DOMAIN_REGEX[type].exec(text);
+      if (username != null) {
+        return username[1];
+      } else {
+        return '';
+      }
+    } else {
+      return '';
+    }
+  };
+
+  state = {
+    editing: false,
+    isValid: true,
+    editedValue: EditableLabel.extractUsername(this.props.value, this.props.type),
+  };
 
   edit = (e) => {
     e.preventDefault();
@@ -309,11 +332,21 @@ class EditableLabel extends Component {
 
   validate = (label) => {
     const { type } = this.props;
-    return label === '' || EditableLabel.VALID_LABEL_EXPRESSIONS[type].test(label);
+    return label === '' || EditableLabel.DOMAIN_REGEX[type].test(label);
   };
 
-  submitLabel = (label) => () => {
-    label(this.state.editedValue, this.props.type);
+  createFullSocialUrl = () => {
+    const { editedValue } = this.state;
+    const { type } = this.props;
+    if (EditableLabel.DOMAIN_REGEX[type].test(editedValue)) {
+      return EditableLabel.DOMAINS[type] + EditableLabel.extractUsername(editedValue, type);
+    } else {
+      return '';
+    }
+  };
+
+  submitLabel = (label) => {
+    label(this.createFullSocialUrl(), this.props.type);
     this.setState({ editing: false });
   };
 
@@ -323,7 +356,7 @@ class EditableLabel extends Component {
   };
 
   render() {
-    const { value, editable, type } = this.props;
+    const { value, editable } = this.props;
     const { editing, isValid, editedValue } = this.state;
 
     return (
@@ -334,7 +367,7 @@ class EditableLabel extends Component {
       >
         {editing ? (
           <LabelInput
-            placeholder={`https://${type}.com/username`}
+            placeholder="username"
             value={editedValue}
             onChange={this.onChange}
             isValid={isValid}
@@ -351,7 +384,7 @@ class EditableLabel extends Component {
           <AppContext.Consumer>
             {({ feedStore: { label } }) => (
               <InlineButton
-                onClick={this.submitLabel(label)}
+                onClick={() => this.submitLabel(label)}
                 style={{ fontSize: '1rem', marginLeft: 'auto', flexShrink: 0 }}
                 disabled={!isValid}
               >
