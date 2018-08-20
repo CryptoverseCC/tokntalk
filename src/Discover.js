@@ -293,46 +293,57 @@ const ByToken = ({ match, token }) => (
     </Hero>
     <ContentContainer>
       <div className="columns">
-        <div className="column is-8">
-          <FlatContainer>
-            <H4>Recently active</H4>
-            <Link to={`${match.url}/recentlyActive`}>
-              <SeeMore style={{ marginBottom: '30px', fontWeight: '600' }}>See more</SeeMore>
-            </Link>
-            <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
-          </FlatContainer>
-          <H3Discover style={{ marginTop: '60px', marginBottom: '30px' }}>
-            Messages in this community
-            <Link to={`${match.url}/feed`}>
-              <SeeMore>See more</SeeMore>
-            </Link>
-          </H3Discover>
-          <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
-            {token.is721 ? (
-              <IfActiveEntityIs
-                asset={`${token.network}:${token.address}`}
-                other={<ActiveEntityIsNotFromFamily token={token} />}
-              >
-                <ClubForm token={token} />
-              </IfActiveEntityIs>
-            ) : (
-              <ClubForm token={token} />
-            )}
-          </IfActiveEntityHasToken>
-          <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
-            {(isActiveEntityFromFamily) => (
-              <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
-                {(hasToken) => (
-                  <FeedForToken
-                    disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
-                    className="feed-for-token"
-                    token={token}
-                  />
+        <DiscoveryContext.Consumer>
+          {({ latest }) => (
+            <div className="column is-8">
+              {latest > 0 && (
+                <FlatContainer>
+                  <H4>Recently active</H4>
+                  <Link to={`${match.url}/recentlyActive`}>
+                    <SeeMore style={{ marginBottom: '30px', fontWeight: '600' }}>See more</SeeMore>
+                  </Link>
+                  <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
+                </FlatContainer>
+              )}
+              <H3Discover style={{ marginTop: '60px', marginBottom: '30px' }}>
+                Messages in this community
+                {latest > 0 && (
+                  <Link to={`${match.url}/feed`}>
+                    <SeeMore>See more</SeeMore>
+                  </Link>
                 )}
-              </DoesActiveEntityHasToken>
-            )}
-          </IsActiveEntityFromFamily>
-        </div>
+              </H3Discover>
+              <IfActiveEntityHasToken
+                asset={`${token.network}:${token.address}`}
+                other={<NoTokensWarning token={token} />}
+              >
+                {token.is721 ? (
+                  <IfActiveEntityIs
+                    asset={`${token.network}:${token.address}`}
+                    other={<ActiveEntityIsNotFromFamily token={token} />}
+                  >
+                    <ClubForm token={token} />
+                  </IfActiveEntityIs>
+                ) : (
+                  <ClubForm token={token} />
+                )}
+              </IfActiveEntityHasToken>
+              <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
+                {(isActiveEntityFromFamily) => (
+                  <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+                    {(hasToken) => (
+                      <FeedForToken
+                        disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
+                        className="feed-for-token"
+                        token={token}
+                      />
+                    )}
+                  </DoesActiveEntityHasToken>
+                )}
+              </IsActiveEntityFromFamily>
+            </div>
+          )}
+        </DiscoveryContext.Consumer>
         <div className="column is-3 is-offset-1">
           <FlatContainer style={{ marginBottom: '4rem' }}>
             <H4 style={{ marginBottom: '30px' }}>External links</H4>
