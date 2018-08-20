@@ -69,6 +69,8 @@ const CrossLink = styled(Link)`
   border-left: 1px solid #dce0eb;
 `;
 
+const CrossLinkA = CrossLink.withComponent('a');
+
 const LinkContainer = styled.ul`
   display: flex;
   align-items: center;
@@ -108,7 +110,7 @@ const Header = () => {
           >
             {process.env.REACT_APP_NAME}
           </TitleLink>
-          <CrossLink to="/about">About</CrossLink>
+          <CrossLinkA href="/about">About</CrossLinkA>
           <CrossLink to="/discover">Token Communities</CrossLink>
         </LinkContainer>
         <Context.Consumer>
@@ -277,6 +279,8 @@ const DropdownLink = styled(CrossLink)`
   font-weight: 600;
 `;
 
+const DropdownLinkA = DropdownLink.withComponent('a');
+
 const LinkDropdownContent = styled.ul`
   display: flex;
   flex-direction: column;
@@ -299,7 +303,7 @@ const LinkDropdownContainer = styled.div`
 const LinkDropdown = () => (
   <LinkDropdownContainer>
     <React.Fragment>
-      <DropdownLink to="/about">About</DropdownLink>
+      <DropdownLinkA href="/about">About</DropdownLinkA>
       <DropdownLink to="/discover">Discover</DropdownLink>
     </React.Fragment>
   </LinkDropdownContainer>
