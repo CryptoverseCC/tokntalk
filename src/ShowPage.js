@@ -295,7 +295,7 @@ const ExitIcon = styled.img.attrs({ src: closeIcon })`
 
 class EditableLabel extends Component {
   static DOMAIN_REGEX = {
-    facebook: /^(?:(?:https?:\/\/)?(?:www\.)?facebook\.com\/)?([\w.-]+)$/,
+    facebook: /^(?:(?:https?:\/\/)?(?:www\.)?(?:facebook|fb).com\/)?([\w.-]+)$/,
     twitter: /^(?:(?:https?:\/\/)?(?:www\.)?twitter\.com\/)?([\w]+)$/,
     github: /^(?:(?:https?:\/\/)?(?:www\.)?github\.com\/)?([\w-+@]+)$/,
     instagram: /^(?:(?:https?:\/\/)?(?:www\.)?instagram\.com\/)?([\w.-]+)$/,
