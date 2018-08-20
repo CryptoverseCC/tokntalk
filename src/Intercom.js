@@ -44,7 +44,7 @@ const IntercomIconContainer = styled.div`
   }
 `;
 
-export default class Intercom extends Component {
+export class Intercom extends Component {
   state = {
     IntercomComponent: null,
   };
@@ -58,6 +58,7 @@ export default class Intercom extends Component {
   }
 
   render() {
+    const { children, ...restProps } = this.props;
     const { IntercomComponent } = this.state;
     if (!IntercomComponent) {
       return null;
@@ -74,12 +75,21 @@ export default class Intercom extends Component {
           id="userfeeds-crypto-intercom"
           href={`mailto:${REACT_APP_INTERCOM_APP_ID}@intercom-mail.com`}
           style={{ alignSelf: 'center' }}
+          {...restProps}
         >
-          <IntercomIconContainer>
-            <IntercomIcon />
-          </IntercomIconContainer>
+          {children}
         </a>
       </React.Fragment>
     );
   }
 }
+
+const DefaultIntercom = () => (
+  <Intercom>
+    <IntercomIconContainer>
+      <IntercomIcon />
+    </IntercomIconContainer>
+  </Intercom>
+);
+
+export default DefaultIntercom;

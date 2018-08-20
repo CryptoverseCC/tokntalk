@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="22" cy="22" r="22"></circle>
+    </defs>
+    <g id="main-copy-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-759.000000, -8256.000000)">
+        <g id="Group-34" transform="translate(0.000000, 7789.000000)">
+            <g id="Group-4" transform="translate(759.000000, 467.000000)">
+                <g id="Group-2">
+                    <g id="Oval">
+                        <use fill="#848DA5" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <circle stroke="#FFFFFF" stroke-width="1.10249993" cx="22" cy="22" r="21.44875"></circle>
+                    </g>
+                    <circle id="Oval" fill="#FFFFFF" cx="17.49" cy="17.49" r="11.66"></circle>
+                    <circle id="Oval" fill="#FFFFFF" cx="33.11" cy="33.11" r="3.3"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -81,6 +81,7 @@ const DiscoveryContext = React.createContext();
 export default class Discover extends Component {
   componentDidMount() {
     pageView();
+    window.scrollTo(0, 0);
   }
 
   componentWillReceiveProps(nextProps) {

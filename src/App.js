@@ -28,13 +28,11 @@ import {
 import { getEntityData } from './entityApi';
 import Header from './Header';
 import { PositionedFooter } from './Footer';
-import FAQPage from './FAQPage';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
-import NotFound from './NotFound';
 import { Storage, getEntityInfoForAddress } from './utils';
-import WalletModal from './WalletModal';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
+import WalletModal from './WalletModal';
 
 const {
   REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
@@ -489,8 +487,6 @@ class Routes extends Component {
     <IndexPage {...props} getFeedItems={this.props.getFeedItems} getNewFeedItems={this.props.getNewFeedItems} />
   );
 
-  renderFaqPage = (props) => <FAQPage />;
-
   renderShowPage = (props) => (
     <ShowPage
       {...props}
@@ -515,9 +511,7 @@ class Routes extends Component {
       <React.Fragment>
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path="/" component={renderIndexPage} />
-          <Route exact path="/faq" component={renderFaqPage} />
           <Route path="/discover" component={renderDiscover} />
-          <Route path="/404" component={NotFound} />
           <Route exact path="/:entityId" component={renderShowPage} />
           {!isModal ? <Route exact path="/thread/:claimId" component={renderThread} /> : null}
         </Switch>
