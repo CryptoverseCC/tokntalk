@@ -697,7 +697,7 @@ const ViewMoreReplies = ({ leftCount, onClick }) => (
   </div>
 );
 
-export class LikersModal extends React.Component {
+class NonStyledLikersModal extends React.Component {
   state = {
     showVerify: false,
     verifiableItem: undefined,
@@ -717,7 +717,7 @@ export class LikersModal extends React.Component {
       <FixedModal onClose={onClose}>
         <div className={className}>
           <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
-          {likes.map(({ context, context_info, isFromAddress, author, author_info, created_at, family }, index) => (
+          {likes.map(({ id, context, context_info, isFromAddress, author, author_info, created_at, family }, index) => (
             <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
               <LinkedEntityAvatar
                 id={isFromAddress ? author : context}
@@ -735,7 +735,7 @@ export class LikersModal extends React.Component {
                     {timeago().format(created_at)}
                     <Family
                       onClick={() => {
-                        this.onVerify(likes[index]);
+                        this.onVerify({ id, author, family });
                       }}
                       style={{ marginLeft: '15px' }}
                     >
@@ -752,6 +752,12 @@ export class LikersModal extends React.Component {
     );
   }
 }
+
+export const LikersModal = styled(NonStyledLikersModal)`
+  border-radius: 30px;
+  padding: 30px;
+  background: #ffffff;
+`;
 
 class Feed extends Component {
   state = {
