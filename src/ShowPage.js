@@ -262,6 +262,7 @@ const LabelInput = styled.input`
 const EditableLabelContainer = styled.div`
   flex: 1;
   display: flex;
+  position: relative;
   ${({ editing }) =>
     editing &&
     css`
@@ -280,9 +281,11 @@ const SendIcon = styled.img.attrs({ src: checkMark })`
 `;
 
 const ExitIcon = styled.img.attrs({ src: closeIcon })`
-  position: relative;
+  position: absolute;
   width: 10px;
+  height: 10px;
   right: -12px;
+  top: calc(50% - 5px);
   transition: transform 0.2s ease-in;
 
   :hover {
@@ -350,7 +353,7 @@ class EditableLabel extends Component {
             {({ feedStore: { label } }) => (
               <InlineButton
                 onClick={this.submitLabel(label)}
-                style={{ fontSize: '1rem', marginLeft: 'auto', marginRight: '-3px' }}
+                style={{ fontSize: '1rem', marginLeft: 'auto', flexShrink: 0 }}
                 disabled={!isValid}
               >
                 <SendIcon />
