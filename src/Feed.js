@@ -10,12 +10,12 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import styled, { keyframes } from 'styled-components';
 
 import { FixedModal } from './Modal';
-import Link, { A } from './Link';
+import Link from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
 import { IfActiveEntity, LinkedActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
 import InfiniteScroll from './InfiniteScroll';
-import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon, empty } from './Icons';
+import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon } from './Icons';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
 import clubs from './clubs';
@@ -450,8 +450,6 @@ export class Card extends React.Component {
   state = {
     wasShown: !this.props.added,
     areRepliesCollapsed: this.props.collapseReplies && this.props.replies.length > 3,
-    showVerify: false,
-    verifiableItem: undefined,
   };
 
   focusReply = () => {
@@ -467,7 +465,7 @@ export class Card extends React.Component {
   showMoreReplies = () => this.setState({ areRepliesCollapsed: false });
 
   onVerify = (feedItem) => {
-    this.setState({ showVerify: true, verifiableItem: feedItem });
+    this.props.onVerify(feedItem);
   };
 
   renderItem = () => {
@@ -666,7 +664,6 @@ export class Card extends React.Component {
     return (
       <CardBox added={this.props.added && this.state.wasShown} style={this.props.style}>
         {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
-        {this.state.showVerify && <VerifyModal onClose={this.onCloseVerify} feedItem={this.state.verifiableItem} />}
         {this.renderItem()}
       </CardBox>
     );
@@ -697,25 +694,49 @@ const ViewMoreReplies = ({ leftCount, onClick }) => (
   </div>
 );
 
-export const LikersModal = styled(({ likes, onClose, className }) => (
-  <FixedModal onClose={onClose}>
-    <div className={className}>
-      <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
-      {likes.map(({ context, context_info, isFromAddress, author, author_info }, index) => (
-        <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
-          <LinkedEntityAvatar
-            id={isFromAddress ? author : context}
-            entityInfo={isFromAddress ? author_info : context_info}
-            size="medium"
-          />
-          <Link to={`/${isFromAddress ? author : context}`} style={{ display: 'block', marginLeft: '15px' }}>
-            <b>{(isFromAddress ? author_info : context_info).name}</b>
-          </Link>
-        </div>
-      ))}
-    </div>
-  </FixedModal>
-))`
+export class LikersModal extends Component {
+  onVerify = (item) => {
+    this.props.onVerify(item);
+  };
+
+  render() {
+    const { likes, onClose, className } = this.props;
+    return (
+      <FixedModal onClose={onClose}>
+        <LikersModalContent>
+          <H3 style={{ marginBottom: '30px' }}>Liked by</H3>
+          {likes.map(({ id, context, context_info, isFromAddress, author, author_info, created_at, family }, index) => (
+            <div key={`${context}:${index}`} style={{ display: 'flex', marginBottom: '15px' }}>
+              <LinkedEntityAvatar
+                id={isFromAddress ? author : context}
+                entityInfo={isFromAddress ? author_info : context_info}
+                size="medium"
+              />
+              <div style={{ marginLeft: '15px', display: 'flex', flexDirection: 'column' }}>
+                <Link to={`/${isFromAddress ? author : context}`}>
+                  <b>{(isFromAddress ? author_info : context_info).name}</b>
+                </Link>
+                <span style={{ color: '#928F9B', fontSize: '0.8rem' }}>
+                  {timeago().format(created_at)}
+                  <Family
+                    onClick={() => {
+                      this.onVerify({ id, author, family });
+                    }}
+                    style={{ marginLeft: '15px' }}
+                  >
+                    {family}
+                  </Family>
+                </span>
+              </div>
+            </div>
+          ))}
+        </LikersModalContent>
+      </FixedModal>
+    );
+  }
+}
+
+const LikersModalContent = styled.div`
   border-radius: 30px;
   padding: 30px;
   background: #ffffff;
@@ -723,12 +744,18 @@ export const LikersModal = styled(({ likes, onClose, className }) => (
 
 class Feed extends Component {
   state = {
-    showModal: false,
+    showLikes: false,
     feedItemLikes: [],
+    showVerify: false,
+    verifiableItem: undefined,
   };
 
   onShowLikers = (feedItem, reactions) => {
-    this.setState({ showModal: true, feedItemLikes: reactions });
+    this.setState({ showLikes: true, feedItemLikes: reactions });
+  };
+
+  onVerify = (item) => {
+    this.setState({ showVerify: true, verifiableItem: item });
   };
 
   getTemporaryReactions = (id) => this.props.temporaryReactions[id] || [];
@@ -744,7 +771,7 @@ class Feed extends Component {
       style,
       disabledInteractions,
     } = this.props;
-    const { showModal, feedItemLikes } = this.state;
+    const { showLikes, feedItemLikes, showVerify, verifiableItem } = this.state;
 
     return (
       <div className={className} style={{ display: 'flex', justifyContent: 'center', ...style }}>
@@ -783,6 +810,7 @@ class Feed extends Component {
                   added={feedItem.added}
                   onShowLikers={this.onShowLikers}
                   getTemporaryReactions={this.getTemporaryReactions}
+                  onVerify={this.onVerify}
                 />
               );
             })}
@@ -794,7 +822,14 @@ class Feed extends Component {
             </b>
           </EmptyFeedPlaceholder>
         )}
-        {showModal && <LikersModal onClose={() => this.setState({ showModal: false })} likes={feedItemLikes} />}
+        {showLikes && (
+          <LikersModal
+            onClose={() => this.setState({ showLikes: false })}
+            likes={feedItemLikes}
+            onVerify={this.onVerify}
+          />
+        )}
+        {showVerify && <VerifyModal onClose={() => this.setState({ showVerify: false })} feedItem={verifiableItem} />}
       </div>
     );
   }

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { FixedModal } from './Modal';
 import { Card, LikersModal } from './Feed';
+import { VerifyModal } from './VerifyModal';
 import Loader from './Loader';
 import Context from './Context';
 import { HeaderSpacer } from './Header';
@@ -12,6 +13,8 @@ class ThreadCmp extends Component {
   state = {
     showModal: false,
     feedItemLikes: [],
+    showVerify: false,
+    verifiableItem: undefined,
   };
 
   componentDidMount() {
@@ -22,8 +25,12 @@ class ThreadCmp extends Component {
     this.setState({ showModal: true, feedItemLikes: reactions });
   };
 
+  onVerify = (item) => {
+    this.setState({ showVerify: true, verifiableItem: item });
+  };
+
   render() {
-    const { showModal, feedItemLikes } = this.state;
+    const { showModal, feedItemLikes, showVerify, verifiableItem } = this.state;
 
     return (
       <React.Fragment>
@@ -39,6 +46,7 @@ class ThreadCmp extends Component {
                 style={{ background: '#ffffff' }}
                 onShowLikers={this.onShowLikers}
                 getTemporaryReactions={getTemporaryReactions}
+                onVerify={this.onVerify}
               />
             ) : (
               <div
@@ -53,7 +61,14 @@ class ThreadCmp extends Component {
             );
           }}
         </Context.Consumer>
-        {showModal && <LikersModal onClose={() => this.setState({ showModal: false })} likes={feedItemLikes} />}
+        {showModal && (
+          <LikersModal
+            onClose={() => this.setState({ showModal: false })}
+            likes={feedItemLikes}
+            onVerify={this.onVerify}
+          />
+        )}
+        {showVerify && <VerifyModal onClose={() => this.setState({ showVerify: false })} feedItem={verifiableItem} />}
       </React.Fragment>
     );
   }
