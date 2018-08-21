@@ -296,7 +296,7 @@ const ByToken = ({ match, token }) => (
         <DiscoveryContext.Consumer>
           {({ latest }) => (
             <div className="column is-8">
-              {latest > 0 && (
+              {latest.length > 0 && (
                 <FlatContainer>
                   <H4>Recently active</H4>
                   <Link to={`${match.url}/recentlyActive`}>
@@ -307,7 +307,7 @@ const ByToken = ({ match, token }) => (
               )}
               <H3Discover style={{ marginTop: '60px', marginBottom: '30px' }}>
                 Messages in this community
-                {latest > 0 && (
+                {latest.length > 0 && (
                   <Link to={`${match.url}/feed`}>
                     <SeeMore>See more</SeeMore>
                   </Link>
