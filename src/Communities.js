@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Intercom } from './Intercom';
-import './css/landing.css';
+import './css/landing.scss';
 import Logo from './Logo';
 import twitter from './img/landing/twitter.svg';
 import tokntalkGrey from './img/landing/tokntalk-grey.svg';
@@ -27,7 +27,7 @@ import knowThird from './img/landing/know-3.png';
 class Communities extends Component {
   render() {
     return (
-      <React.Fragment>
+      <div className="landing">
         <div className="wrapper-landing">
           <div className="container">
             <nav className="level landing-header">
@@ -259,7 +259,7 @@ class Communities extends Component {
             </div>
           </footer>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

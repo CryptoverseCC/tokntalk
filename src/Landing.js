@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import './css/landing.css';
+import './css/landing.scss';
 import Logo from './Logo';
 import buttonPlay from './img/landing/button-play.svg';
 import twitter from './img/landing/twitter.svg';
@@ -50,7 +50,7 @@ class Landing extends Component {
   render() {
     const { showVideo } = this.state;
     return (
-      <React.Fragment>
+      <div className="landing">
         <div className="wrapper-landing">
           {showVideo && (
             <div className="modal is-active">
@@ -441,7 +441,7 @@ class Landing extends Component {
             </div>
           </footer>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

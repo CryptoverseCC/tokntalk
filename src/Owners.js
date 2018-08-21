@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { pageView } from './Analytics';
-import './css/landing.css';
+import './css/landing.scss';
 
 import Logo from './Logo';
 import twitter from './img/landing/twitter.svg';
@@ -36,7 +36,7 @@ class Owners extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="landing">
         <div className="wrapper-landing">
           <div className="container">
             <nav className="level landing-header">
@@ -308,7 +308,7 @@ class Owners extends Component {
             </div>
           </footer>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
