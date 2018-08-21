@@ -851,10 +851,9 @@ export const ConnectedFeed = ({ forEntity, className }) => (
     }) => {
       let filteredTemporaryFeedItems = temporaryFeedItems;
       if (forEntity) {
-        filteredTemporaryFeedItems = temporaryFeedItems.filter(({ context, about }) => {
-          const userfeedsEntityId = forEntity;
-          return context === userfeedsEntityId || (about && about.id === userfeedsEntityId);
-        });
+        filteredTemporaryFeedItems = temporaryFeedItems.filter(
+          ({ context, about }) => context === forEntity.id || about === forEntity.id,
+        );
       }
       const allFeedItems = pipe(
         uniqBy('id'),

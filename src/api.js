@@ -416,8 +416,8 @@ export const writeTo = async (entity, message, entityTo, { http } = {}) => {
   const feedItemBase = await createFeedItemBase(id, entity, http);
   return {
     ...feedItemBase,
-    about: entityTo,
-    about_info: entity,
+    about: entityTo.id,
+    about_info: entityTo,
     target: message,
     type: 'post_to',
   };
