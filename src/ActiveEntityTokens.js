@@ -16,6 +16,7 @@ import cipher from './img/wallets/cipher.svg';
 import metamask from './img/wallets/metamask.svg';
 import unlockBackground from './img/unlock_bg.png';
 import mouse from './img/mouse_click.png';
+const { REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE } = process.env;
 
 const ActiveEntityTokens = () => (
   <AppContext.Consumer>
@@ -141,6 +142,13 @@ const NoMetamask = () => (
         <WalletContainer href="https://www.cipherbrowser.com/">
           <WalletIcon src={cipher} />
           <p>Cipher</p>
+          <WalletType>Mobile</WalletType>
+        </WalletContainer>
+      </div>
+      <div className="column is-one-quarter">
+        <WalletContainer href={`https://tokenpocket.github.io/applink?dappUrl=${INTERFACE_VALUE}`}>
+          <WalletIcon src={cipher} />
+          <p>TokenPocket</p>
           <WalletType>Mobile</WalletType>
         </WalletContainer>
       </div>
