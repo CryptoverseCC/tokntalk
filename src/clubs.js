@@ -111,6 +111,9 @@ import blockchaincutiesCover from './img/tokens/blockchaincuties.png';
 import snookarma from './img/tokens/snookarma-icon.svg';
 import snookarmaCover from './img/tokens/snookarma.png';
 
+import cryptoarte from './img/tokens/cryptoarte-icon.svg';
+import cryptoarteCover from './img/tokens/cryptoarte.png';
+
 import * as mapping from 'contract-mapping/mapping.json';
 
 const clubs = [
@@ -542,6 +545,18 @@ const clubs = [
       { name: 'Project page', url: 'https://blockchaincuties.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/category/blockchaincuties' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/blockchaincuties/' },
+    ],
+  },
+  {
+    ...mapping.CRYPTO_ARTE,
+    logo: cryptoarte,
+    coverImage: cryptoarteCover,
+    primaryColor: '#CFFFFA',
+    secondaryColor: '#157F75',
+    shadowColor: 'rgba(21,127,117,0.4)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.cryptoarte.io/' },
+      { name: 'OpenSea', url: 'https://opensea.io/category/cryptoarte' },
     ],
   },
   {
