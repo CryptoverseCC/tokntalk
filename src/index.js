@@ -12,6 +12,7 @@ import Owners from './Owners';
 import { Storage } from './utils';
 
 import registerServiceWorker from './registerServiceWorker';
+import registerPushWorker from './registerServiceWorkerPush';
 
 const storage = Storage();
 
@@ -40,3 +41,4 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
+registerPushWorker();
