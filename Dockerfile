@@ -8,4 +8,6 @@ WORKDIR /cryptoverse
 
 RUN yarn install --pure-lockfile
 
+RUN yarn build
+
 WORKDIR /
