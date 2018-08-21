@@ -40,10 +40,51 @@ function registerValidSW(swUrl) {
           userVisibleOnly: true, //Always display notifications
           applicationServerKey: convertedVapidKey,
         })
-        .then((subscription) => console.log(JSON.stringify(subscription)))
+        .then((subscription) => sendSubscriptionToServer(subscription))
         .catch((err) => console.error('Push subscription error: ', err));
     })
     .catch((error) => {
       console.error('Error during service worker registration:', error);
     });
+}
+
+function sendSubscriptionToServer(subscription) {
+  // Get public key and user auth from the subscription object
+  var key = subscription.getKey ? subscription.getKey('p256dh') : '';
+  var auth = subscription.getKey ? subscription.getKey('auth') : '';
+
+  // This example uses the new fetch API. This is not supported in all
+  // browsers yet.
+  return fetch('http://localhost:8080/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      endpoint: subscription.endpoint,
+      // Take byte[] and turn it into a base64 encoded string suitable for
+      // POSTing to a server over HTTP
+      key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : '',
+      auth: auth ? btoa(String.fromCharCode.apply(null, new Uint8Array(auth))) : '',
+    }),
+  });
+}
+
+export function unsubscribeUser() {
+  navigator.serviceWorker.ready.then((registration) => {
+    //Find the registered push subscription in the service worker
+    registration.pushManager
+      .getSubscription()
+      .then((subscription) => {
+        if (!subscription) {
+          return;
+          //If there isn't a subscription, then there's nothing to do
+        }
+        subscription
+          .unsubscribe()
+          .then(() => console.log('Unsubscribed!'))
+          .catch((err) => console.error(err));
+      })
+      .catch((err) => console.error(err));
+  });
 }
