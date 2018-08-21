@@ -10,6 +10,7 @@ import NotFound from './NotFound';
 import FAQ from './FAQPage';
 import Owners from './Owners';
 import { Storage } from './utils';
+import { runInContext, Sentry } from './Sentry';
 
 import registerServiceWorker from './registerServiceWorker';
 
@@ -32,11 +33,17 @@ const TokNTalk = withRouter(({ location }) => {
   );
 });
 
-ReactDOM.render(
-  <Router>
-    <TokNTalk />
-  </Router>,
-  document.getElementById('root'),
-);
+const startApp = () => {
+  ReactDOM.render(
+    <Sentry>
+      <Router>
+        <TokNTalk />
+      </Router>
+    </Sentry>,
+    document.getElementById('root'),
+  );
 
-registerServiceWorker();
+  registerServiceWorker();
+};
+
+runInContext(startApp);
