@@ -711,6 +711,7 @@ export class LikersModal extends Component {
                 id={isFromAddress ? author : context}
                 entityInfo={isFromAddress ? author_info : context_info}
                 size="medium"
+                onClick={onClose}
               />
               <div style={{ marginLeft: '15px', display: 'flex', flexDirection: 'column' }}>
                 <Link to={`/${isFromAddress ? author : context}`}>
