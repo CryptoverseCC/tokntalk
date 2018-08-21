@@ -714,7 +714,7 @@ export class LikersModal extends Component {
               />
               <div style={{ marginLeft: '15px', display: 'flex', flexDirection: 'column' }}>
                 <Link to={`/${isFromAddress ? author : context}`}>
-                  <b>{(isFromAddress ? author_info : context_info).name}</b>
+                  <b onClick={onClose}>{(isFromAddress ? author_info : context_info).name}</b>
                 </Link>
                 <span style={{ color: '#928F9B', fontSize: '0.8rem' }}>
                   {timeago().format(created_at)}
