@@ -700,7 +700,7 @@ export class LikersModal extends Component {
   };
 
   render() {
-    const { likes, onClose, className } = this.props;
+    const { likes, onClose } = this.props;
     return (
       <FixedModal onClose={onClose}>
         <LikersModalContent>

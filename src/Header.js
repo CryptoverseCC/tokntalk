@@ -170,12 +170,13 @@ const stopPropagation = (e) => e.stopPropagation();
 const CatDropdownToggle = ({ openDropdown }) => {
   return (
     <ToggleButton className="level" onClick={openDropdown}>
-      <LinkedActiveEntityAvatar size="small" onClick={stopPropagation} />
+      <span onClick={stopPropagation}>
+        <LinkedActiveEntityAvatar size="small" />
+      </span>
       <DropdownEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }}>
-        <LinkedActiveEntityName
-          style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }}
-          onClick={stopPropagation}
-        />
+        <span onClick={stopPropagation}>
+          <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }} />
+        </span>
         <span
           style={{
             display: 'inline-flex',
