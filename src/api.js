@@ -137,35 +137,28 @@ export const getMyEntities = async () => {
   const [from] = await web3.eth.getAccounts();
   if (!from) return [];
 
-  return [getEntityInfoForAddress(from), ...getEntities(from)];
+  return [getEntityInfoForAddress(from), ...(await getEntities(from))];
 };
 
 const getEntities = async (from) => {
   try {
-    const identities = await fetch('https://api.userfeeds.io/api/decorate-with-opensea', {
-      body: JSON.stringify({
-        flow: [
-          {
-            algorithm: 'cryptoverse_tokens',
-            params: {
-              identity: from.toLowerCase(),
-              asset: ercs721.map(({ address: erc721Address }) => `ethereum:${erc721Address.toLowerCase()}`),
-            },
+    const identities = await getRanking(
+      [
+        {
+          algorithm: 'cryptoverse_tokens',
+          params: {
+            identity: from.toLowerCase(),
+            asset: ercs721.map(({ address: erc721Address }) => `ethereum:${erc721Address.toLowerCase()}`),
           },
-        ],
-      }),
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then(({ items }) =>
-        items.map(({ context, context_info }) => ({
-          id: context,
-          ...context_info,
-        })),
-      );
+        },
+      ],
+      'api/decorate-with-opensea',
+    ).then(({ items }) =>
+      items.map(({ context, context_info }) => ({
+        id: context,
+        ...context_info,
+      })),
+    );
 
     return identities;
   } catch (e) {
