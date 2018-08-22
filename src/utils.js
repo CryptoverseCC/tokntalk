@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import jazzicon from 'jazzicon';
 
 const { REACT_APP_NAME: APP_NAME } = process.env;
@@ -77,3 +77,22 @@ export const createEtherscanUrl = (item) => {
   const familyPrefix = item.family === 'ethereum' ? '' : `${item.family}.`;
   return `https://${familyPrefix}etherscan.io/tx/${item.id.split(':')[1]}`;
 };
+
+class ScrollToTopCmp extends Component {
+  componentDidUpdate(prevProps) {
+    const { location } = this.props;
+    if (location.state && location.state.modal) {
+      return;
+    }
+
+    if (location !== prevProps.location) {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  render() {
+    return null;
+  }
+}
+
+export const ScrollTop = withRouter(ScrollToTopCmp);

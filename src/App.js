@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 import find from 'lodash/fp/find';
 import isEqual from 'lodash/isEqual';
 import produce from 'immer';
@@ -376,7 +375,10 @@ export default class App extends Component {
       react,
       label,
       getEntity,
+      getFeedItem,
+      getFeedItems,
       getMoreFeedItems,
+      getNewFeedItems,
       isBoostable,
       getBoosts,
       getSupportings,
@@ -431,7 +433,10 @@ export default class App extends Component {
             feedItems,
             feedLoading,
             isGettingMoreFeedItems,
+            getFeedItem,
+            getFeedItems,
             getMoreFeedItems,
+            getNewFeedItems,
             temporaryFeedItems,
             temporaryReplies,
             temporaryReactions,
@@ -453,72 +458,62 @@ export default class App extends Component {
           },
         }}
       >
-        <Router>
-          <React.Fragment>
-            <Header />
-            <WalletModal />
-            <UnreadedMessagesProvider>
-              <RoutesWithRouter
-                getFeedItem={this.getFeedItem}
-                getFeedItems={this.getFeedItems}
-                getNewFeedItems={this.getNewFeedItems}
-                getEntityInfo={this.getEntityInfo}
-              />
-            </UnreadedMessagesProvider>
-            <PositionedFooter />
-          </React.Fragment>
-        </Router>
+        <WalletModal />
+        <UnreadedMessagesProvider>{this.props.children}</UnreadedMessagesProvider>
       </Context.Provider>
     );
   }
-}
 
-class Routes extends Component {
-  previousLocation = this.props.location;
-
-  componentWillUpdate(nextProps) {
-    const { location } = this.props;
-    if (nextProps.history.action !== 'POP' && (!location.state || !location.state.modal)) {
-      this.previousLocation = location;
-    }
-  }
-
-  renderIndexPage = (props) => (
-    <IndexPage {...props} getFeedItems={this.props.getFeedItems} getNewFeedItems={this.props.getNewFeedItems} />
+  static ShowPage = (props) => (
+    <React.Fragment>
+      <Header />
+      <Context.Consumer>
+        {({ feedStore, entityStore }) => (
+          <ShowPage
+            {...props}
+            getFeedItems={feedStore.getFeedItems}
+            getNewFeedItems={feedStore.getNewFeedItems}
+            getEntityInfo={entityStore.getEntityInfo}
+          />
+        )}
+      </Context.Consumer>
+      <PositionedFooter />
+    </React.Fragment>
   );
 
-  renderShowPage = (props) => (
-    <ShowPage
-      {...props}
-      getFeedItems={this.props.getFeedItems}
-      getNewFeedItems={this.props.getNewFeedItems}
-      getEntityInfo={this.props.getEntityInfo}
-    />
+  static Discover = (props) => (
+    <React.Fragment>
+      <Header />
+      <Discover {...props} />
+      <PositionedFooter />
+    </React.Fragment>
   );
 
-  renderThread = (props) => <Thread {...props} getFeedItem={this.props.getFeedItem} />;
+  static Index = (props) => (
+    <React.Fragment>
+      <Header />
+      <Context.Consumer>
+        {({ feedStore }) => (
+          <IndexPage {...props} getFeedItems={feedStore.getFeedItems} getNewFeedItems={feedStore.getNewFeedItems} />
+        )}
+      </Context.Consumer>
+      <PositionedFooter />
+    </React.Fragment>
+  );
 
-  renderModalThread = (props) => <ModalThread {...props} getFeedItem={this.props.getFeedItem} />;
+  static Thread = (props) => (
+    <React.Fragment>
+      <Header />
+      <Context.Consumer>
+        {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
+      </Context.Consumer>
+      <PositionedFooter />
+    </React.Fragment>
+  );
 
-  renderDiscover = (props) => <Discover {...props} />;
-
-  render() {
-    const { renderModalThread, renderShowPage, renderFaqPage, renderIndexPage, renderThread, renderDiscover } = this;
-    const { location } = this.props;
-    const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
-
-    return (
-      <React.Fragment>
-        <Switch location={isModal ? this.previousLocation : location}>
-          <Route exact path="/" component={renderIndexPage} />
-          <Route path="/discover" component={renderDiscover} />
-          <Route exact path="/:entityId" component={renderShowPage} />
-          {!isModal ? <Route exact path="/thread/:claimId" component={renderThread} /> : null}
-        </Switch>
-        {isModal ? <Route exact path="/thread/:claimId" component={renderModalThread} /> : null}
-      </React.Fragment>
-    );
-  }
+  static ModalThread = (props) => (
+    <Context.Consumer>
+      {({ feedStore }) => <ModalThread {...props} getFeedItem={feedStore.getFeedItem} />}
+    </Context.Consumer>
+  );
 }
-
-const RoutesWithRouter = withRouter(Routes);
