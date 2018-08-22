@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Link from '../Link';
 import { EntityAvatar } from '../Entity';
 import Catvertised from './Catvertised';
+import { Web3ProviderStatus } from '../Providers';
 import {
   EntityNameWrapper,
   CatvertisedName,
@@ -41,7 +42,6 @@ const AddAKitty = styled.button`
   width: 100%;
   border: none;
   outline: none;
-  background-color: #ebefff;
   color: #264dd9;
   font-size: 1rem;
   padding: 1em 0 0.75em 0;
@@ -51,6 +51,9 @@ const AddAKitty = styled.button`
   @media (max-width: 770px) {
     margin-top: 10px;
   }
+  background-color: ${({ disabled }) => (disabled ? '#f4f8fd' : '#ebefff')};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  color: ${({ disabled }) => (disabled ? '#8C91A2' : '#264dd9')};
 `;
 
 const PAGE = {
@@ -130,7 +133,15 @@ export class PromotionBox extends Component {
         {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
         {!this.props.showPurrmoter && this.renderTabs(supportersCount, supportingCount)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
-          <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}>Start supporting</AddAKitty>
+          <Web3ProviderStatus>
+            {(isEnabled) => {
+              return (
+                <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })} disabled={!isEnabled}>
+                  Start supporting
+                </AddAKitty>
+              );
+            }}
+          </Web3ProviderStatus>
         )}
         {Object.keys(items).length > 0 && this.renderList(items)}
       </React.Fragment>
