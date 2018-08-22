@@ -110,103 +110,16 @@ export default class ShowPage extends Component {
 
   render() {
     const { entityId } = this.props.match.params;
-
     return (
       <Entity id={entityId}>
         {(entity) => (
           <ContentContainer>
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
-              <div className="column is-3-widescreen is-4">
-                <ShowPage.ProfileImageContainer backgroundColor={entity.background_color}>
-                  <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
-                </ShowPage.ProfileImageContainer>
-                <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
-                  <H2 style={{ wordBreak: 'break-word' }}>
-                    <EntityName id={entity.id} />
-                  </H2>
-                  <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
-                  <IfIsActiveEntity
-                    id={entity.id.toString()}
-                    then={<SocialList editable {...entity} />}
-                    other={<SocialList {...entity} />}
-                  />
-                </FlatContainer>
-                <FlatContainer style={{ marginTop: '30px' }}>
-                  <AppContext.Consumer>
-                    {({ boostStore: { getBoosts, getSupportings } }) => (
-                      <PromotionBox
-                        getBoosts={getBoosts}
-                        getSupportings={getSupportings}
-                        token={entityId}
-                        showPurrmoter={false}
-                      />
-                    )}
-                  </AppContext.Consumer>
-                </FlatContainer>
-              </div>
+              {this.renderProfileInfo(entity)}
               <div className="column is-8 is-offset-1-widescreen">
-                {entity.tokens.length ? (
-                  <FlatContainer style={{ marginBottom: '2rem' }}>
-                    <H4 style={{ marginBottom: '15px' }}>
-                      <EntityName id={entityId} /> Communities
-                    </H4>
-                    <CommunitiesListContainer>
-                      <CommunitiesList className="columns is-mobile">
-                        {entity.tokens.map((asset) => {
-                          const [network, address] = asset.split(':');
-                          const token = find({ network, address })(clubs);
-
-                          return (
-                            <StyledTokenTile
-                              key={asset}
-                              small
-                              linkTo={`/discover/byToken/${token.symbol}`}
-                              token={token}
-                              className="column is-one-fifth-desktop is-one-third-mobile"
-                            />
-                          );
-                        })}
-                      </CommunitiesList>
-                    </CommunitiesListContainer>
-                  </FlatContainer>
-                ) : null}
-                <ShowPage.FeedContainer>
-                  <IfActiveEntity>
-                    {(token) => (
-                      <div
-                        className="box cp-box"
-                        style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}
-                      >
-                        <article className="media">
-                          <div className="media-left">
-                            <LinkedActiveEntityAvatar size="large" />
-                          </div>
-                          <div className="media-content">
-                            <div className="content">
-                              <Link
-                                to={`/${token}`}
-                                style={{
-                                  fontFamily: 'AvenirNext',
-                                  fontSize: '1rem',
-                                  fontWeight: '700',
-                                }}
-                              >
-                                <ActiveEntityName />
-                              </Link>
-                              <IfIsActiveEntity
-                                id={entity.id.toString()}
-                                then={<ConnectedCommentForm Form={CommentForm} />}
-                                other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
-                              />
-                            </div>
-                          </div>
-                        </article>
-                      </div>
-                    )}
-                  </IfActiveEntity>
-                  <ConnectedFeed forEntity={entity} className="todo" />
-                </ShowPage.FeedContainer>
+                {this.renderCommunities(entity)}
+                {this.renderFeedContainer(entity)}
               </div>
             </div>
           </ContentContainer>
@@ -214,6 +127,105 @@ export default class ShowPage extends Component {
       </Entity>
     );
   }
+
+  renderProfileInfo = (entity) => {
+    return (
+      <div className="column is-3-widescreen is-4">
+        <ShowPage.ProfileImageContainer backgroundColor={entity.background_color}>
+          <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
+        </ShowPage.ProfileImageContainer>
+        <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
+          <H2 style={{ wordBreak: 'break-word' }}>
+            <EntityName id={entity.id} />
+          </H2>
+          <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
+          <IfIsActiveEntity
+            id={entity.id.toString()}
+            then={<SocialList editable {...entity} />}
+            other={<SocialList {...entity} />}
+          />
+        </FlatContainer>
+        <FlatContainer style={{ marginTop: '30px' }}>
+          <AppContext.Consumer>
+            {({ boostStore: { getBoosts, getSupportings } }) => (
+              <PromotionBox
+                getBoosts={getBoosts}
+                getSupportings={getSupportings}
+                token={entity.id}
+                showPurrmoter={false}
+              />
+            )}
+          </AppContext.Consumer>
+        </FlatContainer>
+      </div>
+    );
+  };
+
+  renderCommunities = (entity) => {
+    return entity.tokens.length ? (
+      <FlatContainer style={{ marginBottom: '2rem' }}>
+        <H4 style={{ marginBottom: '15px' }}>
+          <EntityName id={entity.id} /> Communities
+        </H4>
+        <CommunitiesListContainer>
+          <CommunitiesList className="columns is-mobile">
+            {entity.tokens.map((asset) => {
+              const [network, address] = asset.split(':');
+              const token = find({ network, address })(clubs);
+
+              return (
+                <StyledTokenTile
+                  key={asset}
+                  small
+                  linkTo={`/discover/byToken/${token.symbol}`}
+                  token={token}
+                  className="column is-one-fifth-desktop is-one-third-mobile"
+                />
+              );
+            })}
+          </CommunitiesList>
+        </CommunitiesListContainer>
+      </FlatContainer>
+    ) : null;
+  };
+
+  renderFeedContainer = (entity) => {
+    return (
+      <ShowPage.FeedContainer>
+        <IfActiveEntity>
+          {(token) => (
+            <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}>
+              <article className="media">
+                <div className="media-left">
+                  <LinkedActiveEntityAvatar size="large" />
+                </div>
+                <div className="media-content">
+                  <div className="content">
+                    <Link
+                      to={`/${token}`}
+                      style={{
+                        fontFamily: 'AvenirNext',
+                        fontSize: '1rem',
+                        fontWeight: '700',
+                      }}
+                    >
+                      <ActiveEntityName />
+                    </Link>
+                    <IfIsActiveEntity
+                      id={entity.id.toString()}
+                      then={<ConnectedCommentForm Form={CommentForm} />}
+                      other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
+                    />
+                  </div>
+                </div>
+              </article>
+            </div>
+          )}
+        </IfActiveEntity>
+        <ConnectedFeed forEntity={entity} className="todo" />
+      </ShowPage.FeedContainer>
+    );
+  };
 }
 
 const SocialBadge = styled.a`
