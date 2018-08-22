@@ -10,10 +10,11 @@ import clubs, { TokenImage } from './clubs';
 import { DiscoverIcon } from './Icons';
 import { UnreadedCount } from './UnreadedMessages';
 
-import toshi from './img/wallets/toshi.svg';
+import coinbase from './img/wallets/coinbase.png';
 import trust from './img/wallets/trust.svg';
 import cipher from './img/wallets/cipher.svg';
 import metamask from './img/wallets/metamask.svg';
+import tokenpocket from './img/wallets/tokenpocket.png';
 import unlockBackground from './img/unlock_bg.png';
 import mouse from './img/mouse_click.png';
 const { REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE } = process.env;
@@ -117,37 +118,37 @@ const NoMetamask = () => (
     </p>
     <p style={{ marginBottom: '30px' }}>To connect with token owners</p>
     <div className="columns is-multiline is-mobile">
-      <div className="column is-one-quarter">
+      <div className="column is-one-third ">
         <WalletContainer href="https://metamask.io/">
           <WalletIcon src={metamask} />
           <p>Metamask</p>
           <WalletType>Desktop</WalletType>
         </WalletContainer>
       </div>
-      <div className="column is-one-quarter">
+      <div className="column is-one-third">
         <WalletContainer href="https://trustwalletapp.com/">
           <WalletIcon src={trust} />
           <p>Trust</p>
           <WalletType>Mobile</WalletType>
         </WalletContainer>
       </div>
-      <div className="column is-one-quarter">
-        <WalletContainer href="https://www.toshi.org/">
-          <WalletIcon src={toshi} />
-          <p>Toshi</p>
+      <div className="column is-one-third">
+        <WalletContainer href="https://wallet.coinbase.com/">
+          <WalletIcon src={coinbase} />
+          <p>Coinbase</p>
           <WalletType>Mobile</WalletType>
         </WalletContainer>
       </div>
-      <div className="column is-one-quarter">
+      <div className="column is-one-third">
         <WalletContainer href="https://www.cipherbrowser.com/">
           <WalletIcon src={cipher} />
           <p>Cipher</p>
           <WalletType>Mobile</WalletType>
         </WalletContainer>
       </div>
-      <div className="column is-one-quarter">
+      <div className="column is-one-third">
         <WalletContainer href={`https://tokenpocket.github.io/applink?dappUrl=${INTERFACE_VALUE}`}>
-          <WalletIcon src={cipher} />
+          <WalletIcon src={tokenpocket} />
           <p>TokenPocket</p>
           <WalletType>Mobile</WalletType>
         </WalletContainer>
