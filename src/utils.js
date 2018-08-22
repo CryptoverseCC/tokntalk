@@ -17,6 +17,8 @@ export function getCurrentProviderName() {
   try {
     if (window.web3.currentProvider.isMetaMask) return 'metamask';
 
+    if (window.web3.currentProvider.isTokenPocket) return 'tokenPocket';
+
     if (window.web3.currentProvider.isTrust) return 'trust';
 
     if (typeof window.SOFA !== 'undefined') return 'toshi';
