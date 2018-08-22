@@ -133,11 +133,15 @@ export const getRanking = (flow, path = 'ranking') => {
 };
 
 export const getMyEntities = async () => {
-  try {
-    const web3 = await getWeb3();
-    const [from] = await web3.eth.getAccounts();
-    if (!from) return [];
+  const web3 = await getWeb3();
+  const [from] = await web3.eth.getAccounts();
+  if (!from) return [];
 
+  return [getEntityInfoForAddress(from), ...getEntities(from)];
+};
+
+const getEntities = async (from) => {
+  try {
     const identities = await fetch('https://api.userfeeds.io/api/decorate-with-opensea', {
       body: JSON.stringify({
         flow: [
@@ -163,7 +167,7 @@ export const getMyEntities = async () => {
         })),
       );
 
-    return [getEntityInfoForAddress(from), ...identities];
+    return identities;
   } catch (e) {
     return [];
   }
