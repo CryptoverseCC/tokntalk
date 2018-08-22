@@ -51,7 +51,9 @@ const AddAKitty = styled.button`
   @media (max-width: 770px) {
     margin-top: 10px;
   }
-  background-color: ${({ disabled }) => (disabled ? '#000000' : '#ebefff')};
+  background-color: ${({ disabled }) => (disabled ? '#f4f8fd' : '#ebefff')};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  color: ${({ disabled }) => (disabled ? '#8C91A2' : '#264dd9')};
 `;
 
 const PAGE = {
