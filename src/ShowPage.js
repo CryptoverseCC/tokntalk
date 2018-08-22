@@ -184,9 +184,11 @@ export default class ShowPage extends Component {
   renderCousins = (entity) => {
     return (
       <AppContext.Consumer>
-        {({ cousinsStore: { getCousins, cousins }, web3Store: { from } }) => (
-          <CousinsBox getCousins={getCousins} address={from} cousins={cousins} entity={entity} />
-        )}
+        {({ cousinsStore: { getCousins, cousins }, entityStore: { entityInfo } }) => {
+          return entityInfo[entity.id] ? (
+            <CousinsBox getCousins={getCousins} cousins={cousins} entity={entityInfo[entity.id]} />
+          ) : null;
+        }}
       </AppContext.Consumer>
     );
   };
@@ -260,12 +262,12 @@ export default class ShowPage extends Component {
 
 class CousinsBox extends React.Component {
   componentDidMount() {
-    this.props.getCousins(this.props.address);
+    this.props.getCousins(this.props.entity.owner);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.address !== this.props.address) {
-      this.props.getCousins(nextProps.address);
+    if (nextProps.entity !== this.props.entity) {
+      this.props.getCousins(nextProps.entity);
     }
   }
 
@@ -273,14 +275,19 @@ class CousinsBox extends React.Component {
     return (
       <div>
         {this.props.cousins.map((cousin) => {
-          console.log(cousin);
-          // const [network, address] = asset.split(':');
-          // const token = find({ network, address })(clubs);
-
           return (
             <div>
               <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
-              <EntityName id={cousin.id} />
+              <Link
+                to={`/${cousin.id}`}
+                style={{
+                  fontFamily: 'AvenirNext',
+                  fontSize: '1rem',
+                  fontWeight: '700',
+                }}
+              >
+                <EntityName id={cousin.id} />
+              </Link>
             </div>
           );
         })}
