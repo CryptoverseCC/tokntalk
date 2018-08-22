@@ -109,9 +109,11 @@ class Index extends Component {
 
   async componentDidMount() {
     try {
+      let assets = clubs.map((club) => `${club.network}:${club.address}`);
       const { items } = await getRanking([
         {
           algorithm: 'cryptoverse_clubs_sorted',
+          params: { clubs: assets },
         },
       ]);
       this.setState({ loading: false, score: items });
