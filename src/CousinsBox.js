@@ -9,18 +9,18 @@ export class CousinsBox extends Component {
   };
 
   async componentDidMount() {
-    this.updateEntities(this.props.entity);
+    this.updateEntities(this.props.owner);
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.entity.owner !== this.props.entity.owner) {
+    if (nextProps.owner !== this.props.owner) {
       this.setState({ entities: [] });
-      this.updateEntities(nextProps.entity);
+      this.updateEntities(nextProps.owner);
     }
   }
 
-  updateEntities = async (entity) => {
-    const entities = await getEntities(entity.owner);
+  updateEntities = async (owner) => {
+    const entities = await getEntities(owner);
     this.setState({ entities });
   };
 

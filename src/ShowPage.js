@@ -185,7 +185,10 @@ export default class ShowPage extends Component {
     return (
       <AppContext.Consumer>
         {({ entityStore: { entityInfo } }) => {
-          return entityInfo[entity.id] ? <CousinsBox entity={{ id: entity.id, ...entityInfo[entity.id] }} /> : null;
+          if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
+            const owner = entity.isAddress ? entity.id : entity.owner;
+            return <CousinsBox entity={entity} owner={owner} />;
+          }
         }}
       </AppContext.Consumer>
     );
