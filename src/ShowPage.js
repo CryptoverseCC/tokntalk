@@ -131,33 +131,51 @@ export default class ShowPage extends Component {
   renderProfileInfo = (entity) => {
     return (
       <div className="column is-3-widescreen is-4">
-        <ShowPage.ProfileImageContainer backgroundColor={entity.background_color}>
-          <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
-        </ShowPage.ProfileImageContainer>
-        <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
-          <H2 style={{ wordBreak: 'break-word' }}>
-            <EntityName id={entity.id} />
-          </H2>
-          <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
-          <IfIsActiveEntity
-            id={entity.id.toString()}
-            then={<SocialList editable {...entity} />}
-            other={<SocialList {...entity} />}
-          />
-        </FlatContainer>
-        <FlatContainer style={{ marginTop: '30px' }}>
-          <AppContext.Consumer>
-            {({ boostStore: { getBoosts, getSupportings } }) => (
-              <PromotionBox
-                getBoosts={getBoosts}
-                getSupportings={getSupportings}
-                token={entity.id}
-                showPurrmoter={false}
-              />
-            )}
-          </AppContext.Consumer>
-        </FlatContainer>
+        {this.renderProfileAvatar(entity)}
+        {this.renderEntityInfo(entity)}
+        {this.renderPromotionBox(entity)}
       </div>
+    );
+  };
+
+  renderProfileAvatar = (entity) => {
+    return (
+      <ShowPage.ProfileImageContainer backgroundColor={entity.background_color}>
+        <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
+      </ShowPage.ProfileImageContainer>
+    );
+  };
+
+  renderEntityInfo = (entity) => {
+    return (
+      <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
+        <H2 style={{ wordBreak: 'break-word' }}>
+          <EntityName id={entity.id} />
+        </H2>
+        <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
+        <IfIsActiveEntity
+          id={entity.id.toString()}
+          then={<SocialList editable {...entity} />}
+          other={<SocialList {...entity} />}
+        />
+      </FlatContainer>
+    );
+  };
+
+  renderPromotionBox = (entity) => {
+    return (
+      <FlatContainer style={{ marginTop: '30px' }}>
+        <AppContext.Consumer>
+          {({ boostStore: { getBoosts, getSupportings } }) => (
+            <PromotionBox
+              getBoosts={getBoosts}
+              getSupportings={getSupportings}
+              token={entity.id}
+              showPurrmoter={false}
+            />
+          )}
+        </AppContext.Consumer>
+      </FlatContainer>
     );
   };
 
