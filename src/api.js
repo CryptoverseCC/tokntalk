@@ -140,7 +140,7 @@ export const getMyEntities = async () => {
   return [getEntityInfoForAddress(from), ...(await getEntities(from))];
 };
 
-const getEntities = async (from) => {
+export const getEntities = async (from) => {
   try {
     const identities = await getRanking(
       [

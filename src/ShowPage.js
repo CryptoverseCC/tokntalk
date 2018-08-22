@@ -11,6 +11,7 @@ import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
+  LinkedEntityAvatar,
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
@@ -134,6 +135,7 @@ export default class ShowPage extends Component {
         {this.renderProfileAvatar(entity)}
         {this.renderEntityInfo(entity)}
         {this.renderPromotionBox(entity)}
+        {this.renderCousins(entity)}
       </div>
     );
   };
@@ -176,6 +178,16 @@ export default class ShowPage extends Component {
           )}
         </AppContext.Consumer>
       </FlatContainer>
+    );
+  };
+
+  renderCousins = (entity) => {
+    return (
+      <AppContext.Consumer>
+        {({ cousinsStore: { getCousins, cousins }, web3Store: { from } }) => (
+          <CousinsBox getCousins={getCousins} address={from} cousins={cousins} entity={entity} />
+        )}
+      </AppContext.Consumer>
     );
   };
 
@@ -244,6 +256,37 @@ export default class ShowPage extends Component {
       </ShowPage.FeedContainer>
     );
   };
+}
+
+class CousinsBox extends React.Component {
+  componentDidMount() {
+    this.props.getCousins(this.props.address);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.address !== this.props.address) {
+      this.props.getCousins(nextProps.address);
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        {this.props.cousins.map((cousin) => {
+          console.log(cousin);
+          // const [network, address] = asset.split(':');
+          // const token = find({ network, address })(clubs);
+
+          return (
+            <div>
+              <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
+              <EntityName id={cousin.id} />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 }
 
 const SocialBadge = styled.a`
