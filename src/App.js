@@ -9,7 +9,6 @@ import IndexPage from './IndexPage';
 import ShowPage from './ShowPage';
 import {
   getMyEntities,
-  getEntities,
   getWeb3State,
   sendMessage,
   reply,
@@ -75,7 +74,6 @@ export default class App extends Component {
     temporaryReactions: {},
     boosts: {},
     supportings: {},
-    cousins: [],
     from: undefined,
     provider: undefined,
     waitingForConfirm: 0,
@@ -200,11 +198,6 @@ export default class App extends Component {
     if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
       this.setState({ supportings });
     }
-  };
-
-  getCousins = async (address) => {
-    const entities = await getEntities(address);
-    this.setState({ cousins: entities });
   };
 
   get isBoostable() {
@@ -389,7 +382,6 @@ export default class App extends Component {
       isBoostable,
       getBoosts,
       getSupportings,
-      getCousins,
       toggleHttpClaims,
     } = this;
     const {
@@ -410,7 +402,6 @@ export default class App extends Component {
       networkName,
       boosts,
       supportings,
-      cousins,
       http,
       waitingForConfirm,
     } = this.state;
@@ -464,10 +455,6 @@ export default class App extends Component {
             from,
             networkName,
             waitingForConfirm,
-          },
-          cousinsStore: {
-            cousins,
-            getCousins,
           },
         }}
       >

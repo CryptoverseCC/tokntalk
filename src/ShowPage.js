@@ -11,7 +11,6 @@ import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
-  LinkedEntityAvatar,
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
@@ -26,6 +25,7 @@ import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './C
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
+import { CousinsBox } from './CousinsBox';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -184,10 +184,8 @@ export default class ShowPage extends Component {
   renderCousins = (entity) => {
     return (
       <AppContext.Consumer>
-        {({ cousinsStore: { getCousins, cousins }, entityStore: { entityInfo } }) => {
-          return entityInfo[entity.id] ? (
-            <CousinsBox getCousins={getCousins} cousins={cousins} entity={entityInfo[entity.id]} />
-          ) : null;
+        {({ entityStore: { entityInfo } }) => {
+          return entityInfo[entity.id] ? <CousinsBox entity={{ id: entity.id, ...entityInfo[entity.id] }} /> : null;
         }}
       </AppContext.Consumer>
     );
@@ -258,42 +256,6 @@ export default class ShowPage extends Component {
       </ShowPage.FeedContainer>
     );
   };
-}
-
-class CousinsBox extends React.Component {
-  componentDidMount() {
-    this.props.getCousins(this.props.entity.owner);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.entity !== this.props.entity) {
-      this.props.getCousins(nextProps.entity);
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        {this.props.cousins.map((cousin) => {
-          return (
-            <div>
-              <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
-              <Link
-                to={`/${cousin.id}`}
-                style={{
-                  fontFamily: 'AvenirNext',
-                  fontSize: '1rem',
-                  fontWeight: '700',
-                }}
-              >
-                <EntityName id={cousin.id} />
-              </Link>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
 }
 
 const SocialBadge = styled.a`
