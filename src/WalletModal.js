@@ -5,16 +5,18 @@ import { FixedModal } from './Modal';
 import AppContext from './Context';
 import { H3 } from './Components';
 
-import toshi from './img/wallets/toshi.svg';
+import toshi from './img/wallets/coinbase.png';
 import trust from './img/wallets/trust.svg';
 import cipher from './img/wallets/cipher.svg';
 import metamask from './img/wallets/metamask.svg';
+import tokenPocket from './img/wallets/tokenpocket.png';
 
 const walletsLogoMapping = {
   toshi,
   trust,
   cipher,
   metamask,
+  tokenPocket,
 };
 
 const ProviderLogo = ({ name, ...restProps }) => <img src={walletsLogoMapping[name] || metamask} {...restProps} />;
