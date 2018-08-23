@@ -1,7 +1,28 @@
 import React, { Component } from 'react';
+import styled, { css } from 'styled-components';
 import { getEntities } from './api';
 import { EntityName, LinkedEntityAvatar } from './Entity';
 import Link from './Link';
+import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
+
+const CousinsList = styled.div`
+  overflow-y: scroll;
+  max-height: 300px;
+  overflow-x: hidden;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #dde0eb;
+  }
+`;
 
 export class CousinsBox extends Component {
   state = {
@@ -26,25 +47,33 @@ export class CousinsBox extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.entities.filter((entity) => entity.id != this.props.entity.id).map((cousin) => {
-          return (
-            <div key={cousin.id}>
-              <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
-              <Link
-                to={`/${cousin.id}`}
-                style={{
-                  fontFamily: 'AvenirNext',
-                  fontSize: '1rem',
-                  fontWeight: '700',
-                }}
+      <FlatContainer style={{ marginTop: '2rem' }}>
+        <H4 style={{ marginTop: '10px' }}>Cousins</H4>
+        <p style={{ fontSize: '0.8rem', color: '#928f9b' }}>Other tokens from this address</p>
+        <CousinsList>
+          {this.state.entities.filter((entity) => entity.id != this.props.entity.id).map((cousin) => {
+            return (
+              <div
+                key={cousin.id}
+                style={{ display: 'flex', boxAlign: 'center', alignItems: 'center', marginTop: '20px' }}
               >
-                <EntityName id={cousin.id} />
-              </Link>
-            </div>
-          );
-        })}
-      </div>
+                <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
+                <Link
+                  to={`/${cousin.id}`}
+                  style={{
+                    fontFamily: 'AvenirNext',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    marginLeft: '10px',
+                  }}
+                >
+                  <EntityName id={cousin.id} />
+                </Link>
+              </div>
+            );
+          })}
+        </CousinsList>
+      </FlatContainer>
     );
   }
 }
