@@ -15,6 +15,9 @@ import dasabiCover from './img/tokens/dasabi.png';
 import cryptobots from './img/tokens/cryptobots-icon.svg';
 import cryptobotsCover from './img/tokens/cryptobots.png';
 
+import nfty from './img/tokens/nfty-icon.png';
+import nftyCover from './img/tokens/nfty.png';
+
 import tokenville from './img/tokens/tokenville-icon.png';
 import tokenvilleCover from './img/tokens/tokenville.jpg';
 
@@ -598,6 +601,15 @@ const clubs = [
     secondaryColor: '#FFA002',
     shadowColor: 'rgba(61,81,181,0.4)',
     externalLinks: [{ name: 'Project page', url: 'https://www.snookarma.com/' }],
+  },
+  {
+    ...mapping.NFTY_TOKEN,
+    logo: nfty,
+    coverImage: nftyCover,
+    primaryColor: '#f1e2ff',
+    secondaryColor: '#9b51e0',
+    shadowColor: 'rgba(155,81,224,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://medium.com/nfty-news' }],
   },
   {
     ...mapping.PERCENT,
