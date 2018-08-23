@@ -27,6 +27,12 @@ import dacCover from './img/tokens/dac.jpg';
 import bat from './img/tokens/bat-icon.svg';
 import batCover from './img/tokens/bat.png';
 
+import godsunchained from './img/tokens/godsunchained-icon.png';
+import godsunchainedCover from './img/tokens/godsunchained.jpg';
+
+import cryptogirls from './img/tokens/cryptogirls-icon.png';
+import cryptogirlsCover from './img/tokens/cryptogirls.png';
+
 import ben from './img/tokens/bentyn-icon.png';
 import benCover from './img/tokens/bentyn.jpg';
 
@@ -531,6 +537,31 @@ const clubs = [
     shadowColor: 'rgba(118,33,36,0.3)',
     externalLinks: [
       { name: 'Project page', url: 'https://www.facebook.com/DSB-%E5%A4%A7%E7%81%91%E5%B9%A3-144522902894187/' },
+    ],
+  },
+  {
+    ...mapping.GODS_UNCHAINED,
+    logo: godsunchained,
+    coverImage: godsunchainedCover,
+    primaryColor: '#1a1840',
+    secondaryColor: '#82e0ff',
+    shadowColor: 'rgba(26,24,64,0.3)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://godsunchained.com/' },
+      { name: 'Exchange', url: 'https://opensea.io/assets/godsunchained' },
+      { name: 'Discord', url: 'https://discord.gg/DKGr2pW' },
+    ],
+  },
+  {
+    ...mapping.CRYPTOGIRLS,
+    logo: cryptogirls,
+    coverImage: cryptogirlsCover,
+    primaryColor: '#746eff',
+    secondaryColor: '#58f9eb',
+    shadowColor: 'rgba(116,110,255,0.3)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.cryptogirls.ro/' },
+      { name: 'Discord', url: 'https://discordapp.com/invite/PNZF7Fq' },
     ],
   },
   {
