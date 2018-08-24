@@ -71,7 +71,7 @@ export class CollapsableText extends Component {
 }
 
 const sanitizeMessage = (message) => {
-  const expression = /(\bhttps?:\/\/[^.,?!:;\s<>"]+(?:[.,?!:;]+[^.,?!:;\s<>"]+)+)/g;
+  const expression = /(\bhttps?:\/\/[^.,?!:;)\s<>"]+(?:[.,?!:;)]+[^.,?!:;)\s<>"]+)+)/g;
   const replaceMatchWithLink = (match) => {
     return `<a href="${match}">${escapeHtml(match)}</a>`;
   };
