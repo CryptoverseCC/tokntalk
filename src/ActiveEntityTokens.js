@@ -174,7 +174,7 @@ const NoActiveEntity = () => (
   >
     <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Unlock your wallet</p>
     <span>To connect with token owners alike</span>
-    <img style={{ width: '208px', height: 'auto', marginTop: '20px' }} src={mouse} />
+    <img style={{ width: '208px', height: 'auto', marginTop: '20px' }} alt="" src={mouse} />
   </YourCommunitiesContainer>
 );
 
@@ -188,7 +188,7 @@ const DiscoverMore = ({ children, props }) => (
         paddingTop: '15px',
         borderTop: '1px solid #dce0eb',
       }}
-      to="/discover"
+      to="/clubs"
     >
       <DiscoverIcon
         style={{
@@ -212,7 +212,7 @@ const Token = ({ asset }) => {
   const token = find({ network, address })(clubs);
 
   return (
-    <YourCommunitiesLink to={`/discover/byToken/${token.symbol}`}>
+    <YourCommunitiesLink to={`/clubs/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
       <StyledUnreadedMessages token={token} />

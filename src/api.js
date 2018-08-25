@@ -176,19 +176,19 @@ export const getLabels = async (entityId) => {
   }
 };
 
-export const getEntityTokens = async (entityId) => {
-  const tokens = await getRanking([
+export const getEntityTokens = async (entityId, tokens = clubs) => {
+  const entityTokens = await getRanking([
     {
       algorithm: isAddress(entityId) ? 'experimental_assets_balances' : 'experimental_assets_balances_erc721',
       params: {
         context: entityId,
         identity: entityId,
-        asset: clubs.map(({ network, address }) => `${network}:${address}`),
+        asset: tokens.map(({ network, address }) => `${network}:${address}`),
       },
     },
   ]);
 
-  return Object.entries(tokens).map(([token]) => token);
+  return Object.entries(entityTokens).map(([token]) => token);
 };
 
 export const getBoosts = async (token) => {

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import qs from 'qs';
 import { Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import timeago from 'timeago.js';
+import { isAddress } from 'web3-utils';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
 import find from 'lodash/fp/find';
@@ -12,8 +14,8 @@ import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
-import { Storage, validateParams } from './utils';
-import clubs, { TokenImage } from './clubs';
+import { Storage, validateParams, rewriteCmp } from './utils';
+import clubs, { TokenImage, getCustomClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
@@ -39,14 +41,6 @@ const H1Discover = styled.h1`
   font-size: 4rem;
   font-weight: bold;
   line-height: 1.1;
-  @media (max-width: 770px) {
-    margin-left: 2%;
-  }
-`;
-
-const H2Discover = styled.h2`
-  font-size: 2rem;
-  font-weight: bold;
   @media (max-width: 770px) {
     margin-left: 2%;
   }
@@ -95,7 +89,8 @@ export default class Discover extends Component {
     return (
       <Switch>
         <Route exact path={`${match.url}/`} component={Index} />
-        <Route path={`${match.url}/byToken/:token`} component={decoratedByTokenIndex} />
+        <Route path={`${match.url}/byToken/:token`} component={rewriteCmp('/byToken', '')} />
+        <Route path={`${match.url}/:token`} component={decoratedByTokenIndex} />
       </Switch>
     );
   }
@@ -152,7 +147,7 @@ class Index extends Component {
       <React.Fragment>
         {tokens.map((token) => (
           <TokenTile
-            linkTo={`${match.url}/byToken/${token.symbol}`}
+            linkTo={`${match.url}/${token.symbol}`}
             key={token.address}
             token={token}
             className="column is-one-quarter"
@@ -259,7 +254,7 @@ const ByToken = ({ match, token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to="/discover">
+        <Link to="/clubs">
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -313,10 +308,7 @@ const ByToken = ({ match, token }) => (
                   </Link>
                 )}
               </H3Discover>
-              <IfActiveEntityHasToken
-                asset={`${token.network}:${token.address}`}
-                other={<NoTokensWarning token={token} />}
-              >
+              <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
                 {token.is721 ? (
                   <IfActiveEntityIs
                     asset={`${token.network}:${token.address}`}
@@ -330,7 +322,7 @@ const ByToken = ({ match, token }) => (
               </IfActiveEntityHasToken>
               <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
                 {(isActiveEntityFromFamily) => (
-                  <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+                  <DoesActiveEntityHasToken token={token}>
                     {(hasToken) => (
                       <FeedForToken
                         disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
@@ -472,7 +464,7 @@ const RecentlyActivePage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/discover/byToken/${token.symbol}`}>
+        <Link to={`/clubs/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -575,7 +567,7 @@ const SocialPage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/discover/byToken/${token.symbol}`}>
+        <Link to={`/clubs/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -672,7 +664,7 @@ const FeedPage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/discover/byToken/${token.symbol}`}>
+        <Link to={`/clubs/${token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -703,7 +695,7 @@ const FeedPage = ({ token }) => (
       </ContentContainer>
     </Hero>
     <ContentContainer>
-      <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
+      <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
         {token.is721 ? (
           <IfActiveEntityIs
             asset={`${token.network}:${token.address}`}
@@ -717,7 +709,7 @@ const FeedPage = ({ token }) => (
       </IfActiveEntityHasToken>
       <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
         {(isActiveEntityFromFamily) => (
-          <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+          <DoesActiveEntityHasToken token={token}>
             {(hasToken) => (
               <FeedForToken
                 disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
@@ -739,7 +731,7 @@ const isTokenValid = (token) => {
 
   if (token.indexOf(':') !== -1) {
     const [network, address] = token.split(':');
-    return !!find({ network, address })(clubs);
+    return ['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) !== -1 && isAddress(address);
   }
 
   return !!find({ symbol: token })(clubs);
@@ -755,15 +747,19 @@ const validateTokenParam = validateParams(
 const mapTokenUrlParam = (Cmp) => (props) => {
   const { token } = props.match.params;
 
-  let erc20Token;
+  let club;
   if (token.indexOf(':') === -1) {
-    erc20Token = find({ symbol: token })(clubs);
+    club = find({ symbol: token })(clubs);
   } else {
     const [network, address] = token.split(':');
-    erc20Token = find({ network, address })(clubs);
+    club = find({ network, address })(clubs);
+    if (!club) {
+      const options = qs.parse(props.location.search.replace('?', ''));
+      club = getCustomClub(network, address, options);
+    }
   }
 
-  return <Cmp token={erc20Token} {...props} />;
+  return <Cmp token={club} {...props} />;
 };
 
 const decoratedByTokenIndex = validateTokenParam(mapTokenUrlParam(ByTokenIndex));

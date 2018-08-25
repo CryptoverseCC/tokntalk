@@ -21,7 +21,7 @@ import clubs from './clubs';
 import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
-import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
+import { FlatContainer, ContentContainer, H2, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
@@ -195,7 +195,7 @@ export default class ShowPage extends Component {
                 <StyledTokenTile
                   key={asset}
                   small
-                  linkTo={`/discover/byToken/${token.symbol}`}
+                  linkTo={`/clubs/${token.symbol}`}
                   token={token}
                   className="column is-one-fifth-desktop is-one-third-mobile"
                 />
@@ -431,7 +431,7 @@ export class SocialList extends React.Component {
     return href ? href : undefined;
   };
 
-  domainRegex = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/;
+  domainRegex = /^(?:https?:\/\/)?(?:[^@/\n]+@)?(?:www\.)?([^:/?\n]+)/;
   getDomain = (url) => {
     const result = this.domainRegex.exec(url);
     if (result) {
