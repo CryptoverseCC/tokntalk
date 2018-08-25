@@ -24,6 +24,10 @@ import knowFirst from './img/landing/know-1.png';
 import knowSecond from './img/landing/know-2.png';
 import knowThird from './img/landing/know-3.png';
 
+import communityFirst from './img/landing/community-1.png';
+import communitySecond from './img/landing/community-2.png';
+import realityFirst from './img/landing/reality-1.png';
+
 class Communities extends Component {
   render() {
     return (
@@ -35,7 +39,7 @@ class Communities extends Component {
                 <div className="level-item">
                   <Link to="/about" style={{ display: 'flex' }}>
                     <Logo />
-                    <p className="landing-logo-typo">Tok'n'talk</p>
+                    <p className="landing-logo-typo">Tokntalk</p>
                   </Link>
                 </div>
               </div>
@@ -46,63 +50,66 @@ class Communities extends Component {
                 <Link to="/owners" className="level-item landing-header-link">
                   Token Owners
                 </Link>
-                <Link to="/" className="level-item landing-header-link landing-header-link-button">
-                  <span>Hop inside</span>
-                  <img src={arrowRight} id="landing-header-arrow" />
-                </Link>
               </div>
             </nav>
           </div>
 
           <section
-            className="section has-text-centered landing-hero landing-hero-communities"
+            className="section landing-hero landing-hero-communities"
             style={{ borderBottom: 'none' }}
             id="first-section"
           >
             <div className="container">
-              <h1 className="title">Boost</h1>
-              <p className="subtitle" style={{ maxWidth: '650px' }}>
-                Know more about your community and start accepting payments in your native currency.
-              </p>
-              <img src={stairsHero} style={{ width: '850px', height: 'auto' }} id="landing-stairs" />
+              <div class="columns">
+                <div class="column-is-8">
+                  <h2>Social Network for Your Token</h2>
+                  <p className="subtitle-communities" style={{ maxWidth: '650px' }}>
+                    Only messages from token owners. No scams. Everything can be verified.
+                  </p>
+                  <div class="control">
+                    <input class="input is-large" type="email" placeholder="Email" />
+                    <span class="is-right">
+                      <a class="button">Button</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
           <section className="section has-text-centered" style={{ marginTop: '0' }}>
             <div className="container">
-              <div className="landing-section-introduction">
-                <h2>Better economy.</h2>
-                <p className="subtitle">Let your project be discovered by other communities. Grow your economy.</p>
-                <Intercom className="landing-link">
-                  <span className="landing-link-inside">Add a token</span>
-                </Intercom>
-              </div>
               <div className="columns">
                 <div className="column is-one-third">
-                  <figure className="landing-feature pink">
-                    <img src={economyFirst} style={{ width: '432px', height: 'auto' }} />
+                  <figure className="landing-feature blue">
+                    <img src={communitySecond} style={{ width: '403px', height: 'auto' }} />
                   </figure>
-                  <h3>Discoverability</h3>
+                  <h3>Token</h3>
                   <p className="landing-paragraph">
-                    Distribute your tokens more easily. Take care of your community and your community will take care of
-                    you.
+                    Social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={economySecond} style={{ width: '399px', height: 'auto' }} />
+                    <img src={realityFirst} style={{ width: '585px', height: 'auto' }} />
                   </figure>
-                  <h3>Extra income</h3>
-                  <p className="landing-paragraph">Accept Ether or your own ERC20 token from your supporters.</p>
+                  <h3>Person</h3>
+                  <p className="landing-paragraph">
+                    Act as any Non Fungible Token{' '}
+                    <span style={{ fontSize: '16px', color: '#848DA5', fontWeight: '700' }}>ERC721</span> or an
+                    (0x)Address. Switch between personalities and grow your characters.
+                  </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature pink">
-                    <img src={economyThird} style={{ width: '402px', height: 'auto', marginTop: '100px' }} />
+                  <figure className="landing-feature blue">
+                    <img src={communityFirst} style={{ width: '402px', height: 'auto' }} />
                   </figure>
-                  <h3>For your users</h3>
+                  <h3>Social Network</h3>
                   <p className="landing-paragraph">
-                    Let your crowd track latest news in your project in a verifiable way from the moment you release
-                    your token.
+                    Discovery platform for your project from the moment you release your token. <br />
+                    Click.
+                    <br />
+                    You have Social Network.
                   </p>
                 </div>
               </div>
@@ -123,10 +130,8 @@ class Communities extends Component {
           <section className="section has-text-centered">
             <div className="container">
               <div className="landing-section-introduction">
-                <h2>Get to know your community.</h2>
-                <p className="subtitle">
-                  Messages coming only from your token holders. No spam, no trolls, no impersonations.
-                </p>
+                <h2>Native to your needs.</h2>
+                <p className="subtitle">You are in full control. It's your token. </p>
                 <Intercom className="landing-link">
                   <span className="landing-link-inside">Add a token</span>
                 </Intercom>
