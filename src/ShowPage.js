@@ -25,6 +25,7 @@ import { FlatContainer, ContentContainer, H2, H4, SocialUsername } from './Compo
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
+import { CousinsBox } from './CousinsBox';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -134,6 +135,7 @@ export default class ShowPage extends Component {
         {this.renderProfileAvatar(entity)}
         {this.renderEntityInfo(entity)}
         {this.renderPromotionBox(entity)}
+        {this.renderCousins(entity)}
       </div>
     );
   };
@@ -176,6 +178,19 @@ export default class ShowPage extends Component {
           )}
         </AppContext.Consumer>
       </FlatContainer>
+    );
+  };
+
+  renderCousins = (entity) => {
+    return (
+      <AppContext.Consumer>
+        {({ entityStore: { entityInfo } }) => {
+          if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
+            const owner = entity.isAddress ? entity.id : entity.owner;
+            return <CousinsBox entity={entity} owner={owner} />;
+          }
+        }}
+      </AppContext.Consumer>
     );
   };
 
