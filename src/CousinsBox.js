@@ -29,11 +29,11 @@ export class CousinsBox extends Component {
     entities: [],
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     this.updateEntities(this.props.owner);
   }
 
-  async componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.owner !== this.props.owner) {
       this.setState({ entities: [] });
       this.updateEntities(nextProps.owner);
