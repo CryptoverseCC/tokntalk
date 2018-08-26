@@ -24,7 +24,7 @@ const Eye = styled.div`
   box-sizing: content-box;
   display: inline-block;
   background-color: white;
-  border: 2px solid #264dd9;
+  border: 2px solid #4001e4;
   width: 36px;
   height: 36px;
   position: relative;
@@ -44,7 +44,7 @@ const Inside = styled.div`
   display: block;
   position: absolute;
   border-radius: 16px;
-  background: linear-gradient(270deg, #264dd9, #d026d9, #d92626, #d3d711, #03d038, #00dbff, #264dd9);
+  background: linear-gradient(270deg, #4001e4, #d026d9, #d92626, #d3d711, #03d038, #00dbff, #4001e4);
   background-size: 1400% 1400%;
 
   ${Eye}:hover & {

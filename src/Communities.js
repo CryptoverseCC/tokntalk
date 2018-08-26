@@ -14,19 +14,16 @@ import tokntalkColor from './img/landing/tokntalk-color.svg';
 import arrowUp from './img/landing/round-up.svg';
 import arrowRight from './img/landing/tail-right.svg';
 
-import stairsHero from './img/landing/stairs.png';
-
-import economyFirst from './img/landing/economy-1.png';
-import economySecond from './img/landing/economy-2.png';
-import economyThird from './img/landing/economy-3.png';
-
-import knowFirst from './img/landing/know-1.png';
-import knowSecond from './img/landing/know-2.png';
-import knowThird from './img/landing/know-3.png';
-
-import communityFirst from './img/landing/community-1.png';
-import communitySecond from './img/landing/community-2.png';
-import realityFirst from './img/landing/reality-1.png';
+import TokenOwnersZero from './img/landing/TokenOwnersZero.png';
+import TokenOwnersFirst from './img/landing/TokenOwnersFirst.png';
+import TokenOwnersSecond from './img/landing/TokenOwnersSecond.png';
+import TokenOwnersThird from './img/landing/TokenOwnersThird.png';
+import TokenOwnersFourth from './img/landing/TokenOwnersFourth.png';
+import TokenOwnersFifth from './img/landing/TokenOwnersFifth.png';
+import TokenOwnersSixth from './img/landing/TokenOwnersSixth.png';
+import TokenOwnersSeventh from './img/landing/TokenOwnersSeventh.png';
+import TokenOwnersEigth from './img/landing/TokenOwnersEight.png';
+import TokenOwnersNinth from './img/landing/TokenOwnersNinth.png';
 
 class Communities extends Component {
   render() {
@@ -36,19 +33,21 @@ class Communities extends Component {
           <div className="container">
             <nav className="level landing-header">
               <div className="level-left">
-                <div className="level-item">
-                  <Link to="/about" style={{ display: 'flex' }}>
-                    <Logo />
-                    <p className="landing-logo-typo">Tokntalk</p>
-                  </Link>
-                </div>
-              </div>
-              <div className="level-right">
-                <Link to="/communities" className="level-item landing-header-link">
-                  Communities
+                <Link to="/about" style={{ display: 'flex' }}>
+                  <Logo />
+                  <p className="landing-logo-typo">Tokntalk</p>
                 </Link>
-                <Link to="/owners" className="level-item landing-header-link">
-                  Token Owners
+              </div>
+              <div className="level-right" style={{ zIndex: '999' }}>
+                <Link to="/communities" className="level-item landing-header-link">
+                  Owners
+                </Link>
+                <Link to="/communities" className="level-item landing-header-link">
+                  Creators
+                </Link>
+                <Link to="/" className="level-item landing-header-link landing-header-link-button">
+                  <span>Hop inside</span>
+                  <img src={arrowRight} id="landing-header-arrow" />
                 </Link>
               </div>
             </nav>
@@ -59,21 +58,51 @@ class Communities extends Component {
             style={{ borderBottom: 'none' }}
             id="first-section"
           >
-            <div className="container">
+            <div className="container" style={{ zIndex: '1' }}>
               <div class="columns">
-                <div class="column-is-8">
-                  <h2>Social Network for Your Token</h2>
-                  <p className="subtitle-communities" style={{ maxWidth: '650px' }}>
+                <div class="column is-6">
+                  <h2>
+                    Social Network <br />
+                    for Your Token
+                  </h2>
+                  <p className="subtitle-communities" style={{ maxWidth: '520px' }}>
                     Only messages from token owners. No scams. Everything can be verified.
                   </p>
+                  <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }}>
+                    Paste your ERC20 contract address or <Link to="/">contact us</Link> for ERC721
+                  </p>
                   <div class="control">
-                    <input class="input is-large" type="email" placeholder="Email" />
-                    <span class="is-right">
-                      <a class="button">Button</a>
-                    </span>
+                    <input class="input is-large" type="email" placeholder="0xAddress" />
+                    <a class="landing-button button-inside-input">Generate</a>
+                  </div>
+                  <div class="columns landing-sample-communities">
+                    <div class="column">
+                      <Link to="/0x9cd16ab977d72bae1385d0fb98114245004c106e" class="landing-sample-community">
+                        <p>ERC721</p>
+                        <h4>CryptoCrystals</h4>
+                      </Link>
+                    </div>
+                    <div class="column">
+                      <div class="landing-sample-community">
+                        <p>ERC20</p>
+                        <h4>Percent Token</h4>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="landing-sample-community">
+                        <p>ERC20</p>
+                        <h4>MakerDao</h4>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <div class="column is-6 has-text-centered">
+                  <img src={TokenOwnersZero} style={{ width: '390px', height: 'auto' }} />
+                </div>
               </div>
+            </div>
+            <div class="columns">
+              <div id="landing-hero-background" class="column is-6 offset-by-6 pink" />
             </div>
           </section>
 
@@ -81,35 +110,32 @@ class Communities extends Component {
             <div className="container">
               <div className="columns">
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communitySecond} style={{ width: '403px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersFirst} style={{ width: '340px', height: 'auto' }} />
                   </figure>
                   <h3>Token</h3>
                   <p className="landing-paragraph">
-                    Social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
+                    Only token owners can take part in the discussion. No spam, no trolls. Every user wants the value of
+                    the token to grow.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={realityFirst} style={{ width: '585px', height: 'auto' }} />
+                    <img src={TokenOwnersSecond} style={{ width: '395px', height: 'auto' }} />
                   </figure>
-                  <h3>Person</h3>
+                  <h3>User</h3>
                   <p className="landing-paragraph">
-                    Act as any Non Fungible Token{' '}
-                    <span style={{ fontSize: '16px', color: '#848DA5', fontWeight: '700' }}>ERC721</span> or an
-                    (0x)Address. Switch between personalities and grow your characters.
+                    Members of your community can be Addresses or Non Fungible Tokens. <br /> No extra accounts needed.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communityFirst} style={{ width: '402px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersThird} style={{ width: '340px', height: 'auto' }} />
                   </figure>
                   <h3>Social Network</h3>
                   <p className="landing-paragraph">
-                    Discovery platform for your project from the moment you release your token. <br />
-                    Click.
-                    <br />
-                    You have Social Network.
+                    Start coordinating your token efforts in a verified, trusful way from the moment of the token
+                    release.
                   </p>
                 </div>
               </div>
@@ -130,49 +156,82 @@ class Communities extends Component {
           <section className="section has-text-centered">
             <div className="container">
               <div className="landing-section-introduction">
-                <h2>Native to your needs.</h2>
-                <p className="subtitle">You are in full control. It's your token. </p>
+                <h2>You are in control.</h2>
+                <p className="subtitle">
+                  Protect your users and let others discover your project. Define the display of the data.
+                </p>
                 <Intercom className="landing-link">
-                  <span className="landing-link-inside">Add a token</span>
+                  <span className="landing-link-inside">Contact us</span>
                 </Intercom>
               </div>
-              <div className="columns">
+              <div className="columns is-multiline">
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={knowFirst} style={{ width: '402px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersFourth} style={{ width: '340px', marginTop: '130px', height: 'auto' }} />
                   </figure>
-                  <h3>Know</h3>
+                  <h3>Discoverability</h3>
                   <p className="landing-paragraph">
-                    See holdings and your users’ activity. Find out about your competition and related tokens.
+                    Every message from your token owners can be displayed on many websites. Like the one here.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={knowSecond} style={{ width: '402px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersFifth} style={{ width: '340px', height: 'auto' }} />
                   </figure>
-                  <h3>Learn</h3>
+                  <h3>Extra income</h3>
                   <p className="landing-paragraph">
-                    Learn from their discussions or ask them questions. You can be sure that your users have ‘skin in
-                    the game’.
+                    Receive your own ERC20 token in exchange for a more visible space in your community.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={knowThird} style={{ width: '402px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersSixth} style={{ width: '340px', height: 'auto' }} />
                   </figure>
-                  <h3>Improve</h3>
+                  <h3>Protected users</h3>
                   <p className="landing-paragraph">
-                    Receive feedback from valuable, verified members of your community and improve your product.
+                    Your users can verify that a particular message came from a token owner. No more impersonations and
+                    fake accounts.
+                  </p>
+                </div>
+                <div className="column is-one-third">
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersSeventh} style={{ width: '340px', height: 'auto' }} />
+                  </figure>
+                  <h3>Know more</h3>
+                  <p className="landing-paragraph">
+                    See your users activity on the blockchain. Learn more about their tokens and transactions.
+                  </p>
+                </div>
+                <div className="column is-one-third">
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersEigth} style={{ width: '340px', height: 'auto' }} />
+                  </figure>
+                  <h3>Custom UI</h3>
+                  <p className="landing-paragraph">
+                    Your own network can look and feel the way you want. Display information in a most suitable form.
+                  </p>
+                </div>
+                <div className="column is-one-third">
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersNinth} style={{ width: '340px', height: 'auto' }} />
+                  </figure>
+                  <h3>Custom rankings</h3>
+                  <p className="landing-paragraph">
+                    Use economic data of the user, like transactions and ownership, to determine the position of the
+                    posted message in the feed.
                   </p>
                 </div>
               </div>
               <div className="landing-testimonial">
-                <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:128">
-                  <figure className="landing-testimonial-profile" id="furlin" />
+                <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">
+                  <figure className="landing-testimonial-profile" id="falafel" />
                 </Link>
-                <p className="landing-testimonial-paragraph">“now i understand“</p>
+                <p className="landing-testimonial-paragraph">
+                  “Crypto is tough. Everyone thinks I’m cheating, deleting tweets and playing double game. Now everyone
+                  sees my transactions.“
+                </p>
                 <p className="author">
-                  <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">Furlin</Link>, Cryptokitty
+                  <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">Falafel</Link>, Cryptokitty
                 </p>
               </div>
             </div>
@@ -182,17 +241,20 @@ class Communities extends Component {
             <div className="container">
               <div className="landing-section-introduction">
                 <h2>Your crowd is already here.</h2>
-                <p className="subtitle">Every token holder is a user.</p>
-                <Link className="landing-link" to="/">
-                  <span className="landing-link-inside">Add your token</span>
-                </Link>
+                <p className="subtitle">
+                  Every token holder is already a user. <br /> No accounts or extra software needed.
+                </p>
               </div>
               <div className="columns">
                 <div className="column is-twelve">
-                  <figure className="landing-feature landing-ending" id="usershere">
-                    <Link to="/" className="landing-button">
-                      Say Hello
-                    </Link>
+                  <figure className="landing-feature landing-ending" id="hopinside">
+                    <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }}>
+                      Paste your ERC20 contract address or <Link to="/">contact us</Link> for ERC721
+                    </p>
+                    <div class="control">
+                      <input class="input is-large" type="email" placeholder="0xAddress" />
+                      <a class="landing-button button-inside-input">Generate</a>
+                    </div>
                   </figure>
                 </div>
               </div>

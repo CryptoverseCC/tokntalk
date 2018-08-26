@@ -30,6 +30,15 @@ import influenceThird from './img/landing/influence-3.png';
 import buildFirst from './img/landing/build-1.png';
 import buildSecond from './img/landing/build-2.png';
 import buildThird from './img/landing/build-3.png';
+import TokenOwnersFirst from './img/landing/TokenOwnersFirst.png';
+import TokenOwnersSecond from './img/landing/TokenOwnersSecond.png';
+import TokenOwnersSixth from './img/landing/TokenOwnersSixth.png';
+import UserFirst from './img/landing/UserFirst.png';
+import UserSecond from './img/landing/UserSecond.png';
+import UserTransferable from './img/landing/UserTransferable.png';
+import UserConnected from './img/landing/UserConnected.png';
+import UsersNew from './img/landing/UsersNew.png';
+
 import { pageView } from './Analytics';
 
 class Landing extends Component {
@@ -75,19 +84,17 @@ class Landing extends Component {
           <div className="container">
             <nav className="level landing-header">
               <div className="level-left">
-                <div className="level-item">
-                  <Link to="/about" style={{ display: 'flex' }}>
-                    <Logo />
-                    <p className="landing-logo-typo">Tok'n'talk</p>
-                  </Link>
-                </div>
-              </div>
-              <div className="level-right">
-                <Link to="/communities" className="level-item landing-header-link">
-                  Communities
+                <Link to="/about" style={{ display: 'flex' }}>
+                  <Logo />
+                  <p className="landing-logo-typo">Tokntalk</p>
                 </Link>
-                <Link to="/owners" className="level-item landing-header-link">
-                  Token Owners
+              </div>
+              <div className="level-right" style={{ zIndex: '999' }}>
+                <Link to="/communities" className="level-item landing-header-link">
+                  Owners
+                </Link>
+                <Link to="/communities" className="level-item landing-header-link">
+                  Creators
                 </Link>
                 <Link to="/" className="level-item landing-header-link landing-header-link-button">
                   <span>Hop inside</span>
@@ -137,42 +144,34 @@ class Landing extends Component {
 
           <section className="section has-text-centered">
             <div className="container">
-              <div className="landing-section-introduction">
-                <h2>Explore the reality from many angles.</h2>
-                <p className="subtitle">Discover messages from token holders for token holders.</p>
-                <Link className="landing-link" to="/">
-                  <span className="landing-link-inside">Start exploring</span>
-                </Link>
-              </div>
               <div className="columns">
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={realityFirst} style={{ width: '585px', height: 'auto' }} />
+                    <img src={TokenOwnersSecond} style={{ width: '395px', height: 'auto' }} />
                   </figure>
-                  <h3>Yours</h3>
+                  <h3>You</h3>
                   <p className="landing-paragraph">
-                    Act as any Non Fungible Token{' '}
-                    <span style={{ fontSize: '16px', color: '#848DA5', fontWeight: '700' }}>ERC721</span> or an
-                    (0x)Address. Switch between personalities and grow your characters.
+                    Act as an Addresses or a Non Fungible Token. No extra accounts needed. Switch between personalities.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={realitySecond} style={{ width: '402px', height: 'auto' }} />
+                    <img src={UserFirst} style={{ width: '377px', height: 'auto' }} />
                   </figure>
-                  <h3>Transparent</h3>
+                  <h3>Your tokens</h3>
                   <p className="landing-paragraph">
-                    Look at news from many perspectives. <br />
-                    Get valuable insight and know motivations behind opinions.
+                    Only token owners can write in the token communities. Participate and start discovering other
+                    tokens.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={realityThird} style={{ width: '411px', height: 'auto', marginTop: '100px' }} />
+                    <img src={buildThird} style={{ width: '209px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Controllable</h3>
+                  <h3>Earn ETH</h3>
                   <p className="landing-paragraph">
-                    Use your holdings as filters. Display only messages coming from your networks or wander around.
+                    Grow your influence. Receive rewards from your supporters in exchange for visible space on your
+                    profile.
                   </p>
                 </div>
               </div>
@@ -195,145 +194,67 @@ class Landing extends Component {
           <section className="section has-text-centered">
             <div className="container">
               <div className="landing-section-introduction">
-                <h2>Grow community around your token.</h2>
-                <p className="subtitle">Use existing tokens or create a new one and talk in the trusted environment.</p>
-                <Link className="landing-link" to="/discover">
-                  <span className="landing-link-inside">Your clubs</span>
-                </Link>
-                <Link className="landing-link" to="/communities" style={{ marginLeft: '30px' }}>
-                  <span className="landing-link-inside">Add your token</span>
-                </Link>
+                <h2>Social platform that works for you.</h2>
+                <a className="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
+                  <span className="landing-link-inside">Start posting</span>
+                </a>
               </div>
-              <div className="columns">
+              <div className="columns is-multiline">
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communityFirst} style={{ width: '402px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersSixth} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Instant</h3>
+                  <h3>Transparent</h3>
                   <p className="landing-paragraph">
-                    Discovery platform for your project from the moment you release your token. <br />
-                    Click.
-                    <br />
-                    You have Social Network.
+                    Get valuable insight. Always know what are the motivations behind opinions. See tokens of the people
+                    you talk with.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communitySecond} style={{ width: '403px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersFirst} style={{ width: '338px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Trusted</h3>
+                  <h3>Trustful</h3>
                   <p className="landing-paragraph">
                     Social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communityThird} style={{ width: '402px', height: 'auto' }} />
-                  </figure>
-                  <h3>For you</h3>
-                  <p className="landing-paragraph">
-                    Get to know people, discuss next features, coordinate your efforts. Talk about future of your
-                    project.
-                  </p>
-                </div>
-              </div>
-              <div className="landing-testimonial">
-                <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">
-                  <figure className="landing-testimonial-profile" id="falafel" />
-                </Link>
-                <p className="landing-testimonial-paragraph">
-                  “Crypto is tough. Everyone thinks I’m cheating, deleting tweets and playing double game. Now everyone
-                  sees my transactions.“
-                </p>
-                <p className="author">
-                  <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">Falafel</Link>, Cryptokitty
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="section has-text-centered">
-            <div className="container">
-              <div className="landing-section-introduction">
-                <h2>Get rewards from your supporters.</h2>
-                <p className="subtitle">Act according to your beliefs. Grow your community. Be a leader!</p>
-                <Link className="landing-link" to="/owners">
-                  <span className="landing-link-inside">Learn how to start</span>
-                </Link>
-              </div>
-              <div className="columns">
-                <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={influenceFirst} style={{ width: '399px', height: 'auto' }} />
+                    <img src={UserSecond} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Any token</h3>
-                  <p className="landing-paragraph">Accept any token from your supporters instantly.</p>
-                </div>
-                <div className="column is-one-third">
-                  <figure className="landing-feature pink">
-                    <img src={influenceSecond} style={{ width: '402px', height: 'auto' }} />
-                  </figure>
-                  <h3>Transferable </h3>
+                  <h3>Rewarding</h3>
                   <p className="landing-paragraph">
-                    Pass on your characters when you want to go do something else (and get paid in the process). Don't
-                    let your efforts go to waste.
+                    Every profile can receive ETH from supporters. Accept donations or offer services assigned to your
+                    character.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={influenceThird} id="landing-yourtoken" />
+                    <img src={UsersNew} style={{ width: '350px', height: 'auto', marginTop: '90px' }} />
                   </figure>
-                  <h3>Your token</h3>
-                  <p className="landing-paragraph">Create your own token and grow your own economy. </p>
-                </div>
-              </div>
-            </div>
-            <div className="landing-testimonial">
-              <Link to="/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">
-                <figure className="landing-testimonial-profile" id="cryptocow" />
-              </Link>
-              <p className="landing-testimonial-paragraph">“seems like an easy way to get more ethereum :}“</p>
-              <p className="author">
-                <Link to="/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">CryptoCow #78</Link>, Cryptocow
-              </p>
-            </div>
-          </section>
-
-          <section className="section has-text-centered">
-            <div className="container">
-              <div className="landing-section-introduction">
-                <h2>Unbundle your creativity.</h2>
-                <p className="subtitle">Create a custom functionality for your tokens.</p>
-                <a className="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
-                  <span className="landing-link-inside">See on Github</span>
-                </a>
-              </div>
-              <div className="columns">
-                <div className="column is-one-third">
-                  <figure className="landing-feature yellow">
-                    <img src={buildFirst} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
-                  </figure>
-                  <h3>Token</h3>
+                  <h3>Endless</h3>
                   <p className="landing-paragraph">
-                    Implement token-specific functionality and grow value of your community.{' '}
+                    Find thriving communities and get in early. Coordinate your efforts and grow the economy.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature yellow">
-                    <img src={buildSecond} style={{ width: '338px', height: 'auto', marginTop: '30px' }} />
+                  <figure className="landing-feature pink">
+                    <img src={UserConnected} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Platform</h3>
+                  <h3>Connected</h3>
                   <p className="landing-paragraph">
-                    Create a platform-specific functionality and easily monetize your work.
+                    Speak for your community anywhere you want. Connect your social media accounts and link back to your
+                    profile.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature yellow">
-                    <img src={buildThird} style={{ width: '209px', height: 'auto', marginTop: '30px' }} />
+                  <figure className="landing-feature pink">
+                    <img src={UserTransferable} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Multi-chain</h3>
+                  <h3>Transferable</h3>
                   <p className="landing-paragraph">
-                    Live on Ethereum Mainnet, Kovan, Ropsten. Multiple storage systems available.
+                    Grow value of your character. Become an influencer and sell your character to receive more Ethereum.
                   </p>
                 </div>
               </div>
