@@ -174,18 +174,10 @@
     top: 0;
     height: 90vh;
     border-bottom-right-radius: 20rem;
-    background: url('../img/landing/bgabout.png'),
+    background: url('../img/landing/bgowner.png'),
       linear-gradient(to bottom, rgba(248, 247, 254, 1) 0%, rgba(232, 231, 247, 1) 50%, rgba(250, 250, 255, 1) 100%);
     background-position: center bottom;
     background-size: cover;
-  }
-
-  .landing-hero-main {
-    background-image: url('../img/landing/grid.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center bottom;
-    margin-bottom: 0px;
   }
 
   .landing-hero-owner {

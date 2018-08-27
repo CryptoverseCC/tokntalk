@@ -282,7 +282,7 @@ class Landing extends Component {
               </div>
               <div className="columns">
                 <div className="column is-twelve">
-                  <figure className="landing-feature landing-ending" id="hopinside">
+                  <figure className="landing-feature landing-ending" id="usershere">
                     <Link to="/" className="landing-button" id="landing-button-big">
                       Hop inside
                     </Link>

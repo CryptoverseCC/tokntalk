@@ -177,7 +177,8 @@ class Communities extends Component {
                   </figure>
                   <h3>Discoverability</h3>
                   <p className="landing-paragraph">
-                    Every message from your token owners can be displayed on many websites. Like the one here.
+                    Every message from your token owners can be displayed on many websites. Like the one{' '}
+                    <Link to="/">here.</Link>
                   </p>
                 </div>
                 <div className="column is-one-third">
