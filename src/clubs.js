@@ -123,7 +123,7 @@ import snookarmaCover from './img/tokens/snookarma.png';
 import cryptoarte from './img/tokens/cryptoarte-icon.svg';
 import cryptoarteCover from './img/tokens/cryptoarte.png';
 
-import unknowClub from './img/tokens/cryptocows-icon.png';
+import unknowClub from './img/tokens/unknown-icon.svg';
 import unknowClubCover from './img/tokens/percent.png';
 
 import * as mapping from 'contract-mapping/mapping.json';
@@ -646,9 +646,9 @@ const sizes = {
 export const getCustomClub = (network, address, options) => ({
   symbol: '???',
   name: `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`,
-  primaryColor: '#BEC4CB',
-  secondaryColor: '#2D1F18',
-  shadowColor: 'rgba(88,66,54,0.25)',
+  primaryColor: '#4000e4',
+  secondaryColor: 'white',
+  shadowColor: 'rgba(64,0,228,0.25)',
   externalLinks: [],
   ...options,
   isCustom: true,

@@ -71,6 +71,18 @@ const WarningContainerColored = styled.div`
   }
 `;
 
+const WelcomeMessage = styled.div`
+  border-radius: 12px;
+  padding: 30px;
+  background-color: #ecf1f9;
+  display: flex;
+  align-items: center;
+  @media (max-width: 770px) {
+    width: 96%;
+    margin-left: 2%;
+  }
+`;
+
 const DiscoveryContext = React.createContext();
 
 export default class Discover extends Component {
@@ -818,10 +830,24 @@ const IsLoading = ({ children }) => (
 );
 
 const CustomClubInfo = styled((props) => (
-  <WarningContainerColored {...props}>Welcome, it's a custom club</WarningContainerColored>
-))`
-  background: #bec4cb;
-`;
+  <WelcomeMessage {...props}>
+    <H1 style={{ fontSize: '3rem' }}>🎨</H1>
+    <div style={{ marginLeft: '30px' }}>
+      <H3>Let’s customize! </H3>
+      <p style={{ fontSize: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+        Add an icon, a name and list the project here. We can also help with a custom interface, ranking algorithms and
+        anything you’d like!
+      </p>
+      <p>
+        Contact us at{' '}
+        <Link to="/thread/claim:0x35df61fa026498b5254b9dcf669b1f7baef9e09767de2f10c347f3e83e910b7869dae53cd906ee6e78b179053b2e9797eb2bc64fe1f1d0841a27aef222ade2681c">
+          Tokntalk
+        </Link>{' '}
+        or on <Link to="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram.</Link>
+      </p>
+    </div>
+  </WelcomeMessage>
+))``;
 
 const NoTokensWarning = ({ token }) => (
   <WarningContainerColored
