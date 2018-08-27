@@ -75,7 +75,7 @@
     cursor: pointer;
   }
 
-  .landing-header-link-active{
+  .landing-header-link-active {
     border-bottom: 3px solid #65f3ff;
   }
 
@@ -135,12 +135,14 @@
     font-size: 40px;
     max-width: 800px;
     margin: 0 auto 30px;
+    line-height: 1.2;
   }
 
   .subtitle-communities {
     font-size: 30px;
     margin-bottom: 30px;
     max-width: 800px;
+    line-height: 1.2;
   }
 
   .section {
@@ -160,12 +162,8 @@
     top: 0;
     height: 90vh;
     border-bottom-left-radius: 20rem;
-    background: url('../img/landing/bgabout.png'), linear-gradient(
-      to bottom,
-      rgba(248, 247, 254, 1) 0%,
-      rgba(232, 231, 247, 1) 50%,
-      rgba(250, 250, 255, 1) 100%
-    );
+    background: url('../img/landing/bgabout.png'),
+      linear-gradient(to bottom, rgba(248, 247, 254, 1) 0%, rgba(232, 231, 247, 1) 50%, rgba(250, 250, 255, 1) 100%);
     background-position: center bottom;
     background-size: cover;
   }
@@ -176,12 +174,8 @@
     top: 0;
     height: 90vh;
     border-bottom-right-radius: 20rem;
-    background: url('../img/landing/bgabout.png'), linear-gradient(
-      to bottom,
-      rgba(248, 247, 254, 1) 0%,
-      rgba(232, 231, 247, 1) 50%,
-      rgba(250, 250, 255, 1) 100%
-    );
+    background: url('../img/landing/bgabout.png'),
+      linear-gradient(to bottom, rgba(248, 247, 254, 1) 0%, rgba(232, 231, 247, 1) 50%, rgba(250, 250, 255, 1) 100%);
     background-position: center bottom;
     background-size: cover;
   }
@@ -333,7 +327,7 @@
     border-radius: 20px;
     height: 470px;
     width: 100%;
-    background-color: red;
+    background-color: white;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -474,7 +468,7 @@
     width: 64px;
     height: 64px;
     border-radius: 8px;
-    background-color: red;
+    background-color: white;
     margin: 0 auto 20px;
     background-image: url('../img/landing/addressProfile.svg');
     background-size: cover;
@@ -685,8 +679,8 @@
   }
 
   .input.is-large {
-    font-family:'AvenirNext';
-    padding-bottom: calc(.375em - 10px);
+    font-family: 'AvenirNext';
+    padding-bottom: calc(0.375em - 10px);
     border: 1px solid #e4e6ea;
     height: 4em;
     font-size: 1rem;
@@ -712,14 +706,15 @@
     box-shadow: none;
   }
 
-  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  ::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
     color: #cbcfd8;
-    font-family:'AvenirNext';
+    font-family: 'AvenirNext';
   }
 
   .input.is-large:focus {
     box-shadow: 0 1.2rem 4rem -0.8rem rgba(132, 128, 173, 0.6);
-    border:1px solid #a37fff;
+    border: 1px solid #a37fff;
     transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
   }
 
@@ -753,12 +748,72 @@
     transition: all 0.2s ease-in;
   }
 
+  .landing-mobile-only {
+    display: none;
+  }
 
   @media (max-width: 770px) {
+    #landing-hero-background-main,
+    #landing-hero-background {
+      display: none;
+    }
+
+    .landing-hero-communities {
+      height: auto;
+    }
+
+    .landing-mobile-only {
+      display: block;
+    }
+
+    .landing-video {
+      width: 100%;
+      height: 320px;
+      margin-top: 4rem;
+    }
+
+    .landing-button-mobile {
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    .landing-button-mobile:last-child {
+      margin-top: 1rem;
+    }
+
+    .control {
+      min-width: 100%;
+    }
+
+    .landing-mobile-no {
+      display: none;
+    }
+
+    .landing-paste {
+      text-align: center;
+      margin: 0 auto;
+      max-width: 240px;
+    }
+
+    #landing-mobile {
+      text-align: center !important;
+    }
+    .subtitle-communities {
+      text-align: center;
+    }
+    .landing-header-link-button {
+      border-left: none;
+    }
+    .landing-sample-communities {
+      text-align: center;
+    }
+
+    .landing-sample-communities .column {
+      width: 33%;
+    }
     .landing-header-link {
       display: inline-block;
       width: 33%;
-      border-left: 1px solid #e3e1ec;
       text-align: center;
     }
 
@@ -792,6 +847,7 @@
 
     h2 {
       font-size: 42px;
+      text-align: center;
     }
 
     h3 {
@@ -801,7 +857,7 @@
 
     .landing-paragraph {
       font-size: 18px;
-      margin-bottom: 60px;
+      margin-bottom: 30px;
     }
 
     .landing-testimonial {
@@ -824,6 +880,7 @@
 
     .landing-footer-navigation a {
       font-size: 18px;
+      margin-left: 20px;
     }
 
     #usershere {
@@ -841,6 +898,10 @@
 
     #hopinside {
       background-position: 50%;
+    }
+
+    #hopinside .control {
+      min-width: 90%;
     }
 
     .landing-hero-owner {

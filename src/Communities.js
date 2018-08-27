@@ -33,10 +33,12 @@ class Communities extends Component {
           <div className="container" style={{ zIndex: '1' }}>
             <nav className="level landing-header">
               <div className="level-left">
-                <Link to="/about" style={{ display: 'flex' }}>
-                  <Logo />
-                  <p className="landing-logo-typo">Tokntalk</p>
-                </Link>
+                <div className="level-item">
+                  <Link to="/about" style={{ display: 'flex' }}>
+                    <Logo />
+                    <p className="landing-logo-typo">Tokntalk</p>
+                  </Link>
+                </div>
               </div>
               <div className="level-right">
                 <Link to="/about" className="level-item landing-header-link">
@@ -59,8 +61,8 @@ class Communities extends Component {
             id="first-section"
           >
             <div className="container" style={{ zIndex: '1' }}>
-              <div class="columns">
-                <div class="column is-6">
+              <div className="columns">
+                <div className="column is-6">
                   <h2>
                     Social Network <br />
                     for Your Token
@@ -68,30 +70,30 @@ class Communities extends Component {
                   <p className="subtitle-communities" style={{ maxWidth: '520px' }}>
                     Only messages from token owners. No scams. Everything can be verified.
                   </p>
-                  <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }}>
+                  <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }} className="landing-paste">
                     Paste your ERC20 contract address or <Link to="/">contact us</Link> for ERC721
                   </p>
-                  <div class="control">
-                    <input class="input is-large" type="email" placeholder="0xAddress" />
-                    <a class="landing-button button-inside-input">Generate</a>
+                  <div className="control">
+                    <input className="input is-large" type="email" placeholder="0xAddress" />
+                    <a className="landing-button button-inside-input">Generate</a>
                   </div>
-                  <div class="columns landing-sample-communities">
-                    <div class="column">
-                      <Link to="/discover/byToken/CC" class="landing-sample-community">
+                  <div className="columns is-mobile landing-sample-communities">
+                    <div className="column">
+                      <Link to="/discover/byToken/CC" className="landing-sample-community">
                         <p>ERC721</p>
-                        <h4>CryptoCrystals</h4>
+                        <h4>Crystals</h4>
                       </Link>
                     </div>
-                    <div class="column">
+                    <div className="column">
                       <Link to="/discover/byToken/％">
-                        <div class="landing-sample-community">
+                        <div className="landing-sample-community">
                           <p>ERC20</p>
-                          <h4>Percent Token</h4>
+                          <h4>Percent</h4>
                         </div>
                       </Link>
                     </div>
-                    <div class="column">
-                      <div class="landing-sample-community">
+                    <div className="column">
+                      <div className="landing-sample-community">
                         <Link to="/discover/byToken/MKR">
                           <p>ERC20</p>
                           <h4>MakerDao</h4>
@@ -100,13 +102,13 @@ class Communities extends Component {
                     </div>
                   </div>
                 </div>
-                <div class="column is-6 has-text-centered">
+                <div className="column is-6 has-text-centered landing-mobile-no">
                   <img src={TokenOwnersZero} style={{ width: '390px', height: 'auto' }} />
                 </div>
               </div>
             </div>
-            <div class="columns">
-              <div id="landing-hero-background" class="column is-5 offset-by-6 pink" />
+            <div className="columns">
+              <div id="landing-hero-background" className="column is-5 offset-by-6 pink" />
             </div>
           </section>
 
@@ -252,12 +254,15 @@ class Communities extends Component {
               <div className="columns">
                 <div className="column is-twelve">
                   <figure className="landing-feature landing-ending" id="hopinside">
-                    <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }}>
+                    <p
+                      style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }}
+                      className="landing-paste"
+                    >
                       Paste your ERC20 contract address or <Link to="/">contact us</Link> for ERC721
                     </p>
-                    <div class="control">
-                      <input class="input is-large" type="email" placeholder="0xAddress" />
-                      <a class="landing-button button-inside-input">Generate</a>
+                    <div className="control">
+                      <input className="input is-large" type="email" placeholder="0xAddress" />
+                      <a className="landing-button button-inside-input">Generate</a>
                     </div>
                   </figure>
                 </div>
@@ -270,7 +275,7 @@ class Communities extends Component {
               <div className="columns" style={{ marginBottom: '90px' }}>
                 <div className="column has-text-centered">
                   <h3>Stay in touch</h3>
-                  <p className="landing-paragraph">
+                  <p className="landing-paragraph" style={{ paddingBottom: '0' }}>
                     We are also using the channels you're used to. Dont be a stranger and join the conversation.
                   </p>
                   <a href="https://twitter.com/tokntalkclub" target="_blank" className="landing-footer-intouch">
@@ -288,7 +293,7 @@ class Communities extends Component {
                 </div>
                 <div className="column has-text-centered">
                   <h3>Behind the scenes</h3>
-                  <p className="landing-paragraph">
+                  <p className="landing-paragraph" style={{ paddingBottom: '0' }}>
                     Find out more about our bigger vision and read what we think about attention economy.
                   </p>
                   <a href="" className="landing-footer-intouch">

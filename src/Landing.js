@@ -15,8 +15,6 @@ import arrowUp from './img/landing/round-up.svg';
 import arrowRight from './img/landing/tail-right.svg';
 import exitBig from './img/landing/exit-big.svg';
 
-import buildFirst from './img/landing/build-1.png';
-import buildSecond from './img/landing/build-2.png';
 import buildThird from './img/landing/build-3.png';
 import TokenOwnersFirst from './img/landing/TokenOwnersFirst.png';
 import TokenOwnersSecond from './img/landing/TokenOwnersSecond.png';
@@ -72,10 +70,12 @@ class Landing extends Component {
           <div className="container" style={{ zIndex: '9' }}>
             <nav className="level landing-header">
               <div className="level-left">
-                <Link to="/about" style={{ display: 'flex' }}>
-                  <Logo />
-                  <p className="landing-logo-typo">Tokntalk</p>
-                </Link>
+                <div class="level-item">
+                  <Link to="/about" style={{ display: 'flex' }}>
+                    <Logo />
+                    <p className="landing-logo-typo">Tokntalk</p>
+                  </Link>
+                </div>
               </div>
               <div className="level-right" style={{ zIndex: '999' }}>
                 <Link to="/about" className="level-item landing-header-link landing-header-link-active">
@@ -99,7 +99,7 @@ class Landing extends Component {
           >
             <div className="container" style={{ zIndex: '1' }}>
               <div class="columns">
-                <div class="column is-6 has-text-centered">
+                <div class="column is-6 has-text-centered landing-mobile-no">
                   <figure className="landing-video">
                     <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
                       <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
@@ -110,7 +110,7 @@ class Landing extends Component {
                     35s Introduction
                   </p>
                 </div>
-                <div class="column is-6">
+                <div class="column is-6" id="landing-mobile">
                   <h2>
                     Social Platform <br />
                     for Tokens
@@ -118,12 +118,23 @@ class Landing extends Component {
                   <p className="subtitle-communities" style={{ maxWidth: '560px' }}>
                     Explore token oriented communities. Grow your characters and earn rewards from your supporters.
                   </p>
-                  <Link to="/" className="landing-button">
+                  <Link to="/" className="landing-button landing-button-mobile">
                     Hop inside
                   </Link>
-                  <Link to="/communities" className="landing-button-secondary">
-                    For token creator
+                  <Link to="/communities" className="landing-button-secondary landing-button-mobile">
+                    For creators
                   </Link>
+                </div>
+                <div class="column is-6 has-text-centered landing-mobile-only">
+                  <figure className="landing-video">
+                    <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
+                      <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
+                    </a>
+                    <div className="landing-video-overlay" />
+                  </figure>
+                  <p style={{ fontSize: '20px', color: '#848DA5', marginTop: '10px', marginRight: '5%' }}>
+                    35s Introduction
+                  </p>
                 </div>
               </div>
             </div>
@@ -286,7 +297,7 @@ class Landing extends Component {
               <div className="columns" style={{ marginBottom: '90px' }}>
                 <div className="column has-text-centered">
                   <h3>Stay in touch</h3>
-                  <p className="landing-paragraph">
+                  <p className="landing-paragraph" style={{ paddingBottom: '0' }}>
                     We are also using the channels you're used to. Dont be a stranger and join the conversation.
                   </p>
                   <a href="https://twitter.com/tokntalkclub" target="_blank" className="landing-footer-intouch">
@@ -304,7 +315,7 @@ class Landing extends Component {
                 </div>
                 <div className="column has-text-centered">
                   <h3>Behind the scenes</h3>
-                  <p className="landing-paragraph">
+                  <p className="landing-paragraph" style={{ paddingBottom: '0' }}>
                     Find out more about our bigger vision and read what we think about attention economy.
                   </p>
                   <a href="" className="landing-footer-intouch">
