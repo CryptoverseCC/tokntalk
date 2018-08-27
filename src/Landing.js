@@ -16,21 +16,16 @@ import arrowUp from './img/landing/round-up.svg';
 import arrowRight from './img/landing/tail-right.svg';
 import exitBig from './img/landing/exit-big.svg';
 
-import realityFirst from './img/landing/reality-1.png';
-import realitySecond from './img/landing/reality-2.png';
-import realityThird from './img/landing/reality-3.png';
-
-import communityFirst from './img/landing/community-1.png';
-import communitySecond from './img/landing/community-2.png';
-import communityThird from './img/landing/community-3.png';
-
-import influenceFirst from './img/landing/influence-1.png';
-import influenceSecond from './img/landing/influence-2.png';
-import influenceThird from './img/landing/influence-3.png';
-
-import buildFirst from './img/landing/build-1.png';
-import buildSecond from './img/landing/build-2.png';
 import buildThird from './img/landing/build-3.png';
+import TokenOwnersFirst from './img/landing/TokenOwnersFirst.png';
+import TokenOwnersSecond from './img/landing/TokenOwnersSecond.png';
+import TokenOwnersSixth from './img/landing/TokenOwnersSixth.png';
+import UserFirst from './img/landing/UserFirst.png';
+import UserSecond from './img/landing/UserSecond.png';
+import UserTransferable from './img/landing/UserTransferable.png';
+import UserConnected from './img/landing/UserConnected.png';
+import UsersNew from './img/landing/UsersNew.png';
+
 import { pageView } from './Analytics';
 
 class Landing extends Component {
@@ -73,22 +68,22 @@ class Landing extends Component {
             </div>
           )}
 
-          <div className="container">
+          <div className="container" style={{ zIndex: '9' }}>
             <nav className="level landing-header">
               <div className="level-left">
                 <div className="level-item">
                   <Link to="/about" style={{ display: 'flex' }}>
                     <Logo />
-                    <p className="landing-logo-typo">Tok'n'talk</p>
+                    <p className="landing-logo-typo">Tokntalk</p>
                   </Link>
                 </div>
               </div>
-              <div className="level-right">
-                <Link to="/communities" className="level-item landing-header-link">
-                  Communities
+              <div className="level-right" style={{ zIndex: '999' }}>
+                <Link to="/about" className="level-item landing-header-link landing-header-link-active">
+                  Owners
                 </Link>
-                <Link to="/owners" className="level-item landing-header-link">
-                  Token Owners
+                <Link to="/communities" className="level-item landing-header-link">
+                  Creators
                 </Link>
                 <Link to="/" className="level-item landing-header-link landing-header-link-button">
                   <span>Hop inside</span>
@@ -99,81 +94,86 @@ class Landing extends Component {
           </div>
 
           <section
-            className="section has-text-centered landing-hero landing-hero-main"
+            className="section landing-hero landing-hero-communities"
             style={{ borderBottom: 'none' }}
             id="first-section"
           >
-            <div className="container">
-              <p className="subtitle" style={{ color: '#848DA5' }}>
-                Social platform for
-              </p>
-              <h1 className="title">Tokens</h1>
-              <p className="subtitle">
-                Explore token oriented communities. Grow your characters and earn rewards from your supporters.
-              </p>
-              <Link className="landing-link" to="/">
-                <span className="landing-link-inside">Start exploring</span>
-              </Link>
+            <div className="container" style={{ zIndex: '1' }}>
+              <div className="columns">
+                <div className="column is-6 has-text-centered landing-mobile-no">
+                  <figure className="landing-video">
+                    <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
+                      <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
+                    </a>
+                    <div className="landing-video-overlay" />
+                  </figure>
+                  <p style={{ fontSize: '20px', color: '#848DA5', marginTop: '10px', marginRight: '5%' }}>
+                    35s Introduction
+                  </p>
+                </div>
+                <div className="column is-6" id="landing-mobile">
+                  <h2>
+                    Social Platform <br />
+                    for Tokens
+                  </h2>
+                  <p className="subtitle-communities" style={{ maxWidth: '560px' }}>
+                    Explore token oriented communities. Grow your characters and earn rewards from your supporters.
+                  </p>
+                  <Link to="/" className="landing-button landing-button-mobile">
+                    Hop inside
+                  </Link>
+                  <Link to="/communities" className="landing-button-secondary landing-button-mobile">
+                    For creators
+                  </Link>
+                </div>
+                <div className="column is-6 has-text-centered landing-mobile-only">
+                  <figure className="landing-video">
+                    <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
+                      <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
+                    </a>
+                    <div className="landing-video-overlay" />
+                  </figure>
+                  <p style={{ fontSize: '20px', color: '#848DA5', marginTop: '10px', marginRight: '5%' }}>
+                    35s Introduction
+                  </p>
+                </div>
+              </div>
             </div>
-          </section>
-
-          <section
-            className="section has-text-centered"
-            style={{
-              background: 'radial-gradient(at center center, rgb(198, 191, 224) 0%, rgb(255, 255, 255) 70%)',
-              marginTop: '0',
-              borderBottom: 'none',
-            }}
-          >
-            <div className="container">
-              <figure className="landing-video">
-                <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
-                  <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
-                </a>
-                <div className="landing-video-overlay" />
-              </figure>
-              <p style={{ fontSize: '20px', color: '#848DA5' }}>35s Introduction</p>
+            <div className="columns">
+              <div id="landing-hero-background-main" className="column is-5" />
             </div>
           </section>
 
           <section className="section has-text-centered">
             <div className="container">
-              <div className="landing-section-introduction">
-                <h2>Explore the reality from many angles.</h2>
-                <p className="subtitle">Discover messages from token holders for token holders.</p>
-                <Link className="landing-link" to="/">
-                  <span className="landing-link-inside">Start exploring</span>
-                </Link>
-              </div>
               <div className="columns">
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={realityFirst} style={{ width: '585px', height: 'auto' }} />
+                    <img src={TokenOwnersSecond} style={{ width: '395px', height: 'auto' }} />
                   </figure>
-                  <h3>Yours</h3>
+                  <h3>You</h3>
                   <p className="landing-paragraph">
-                    Act as any Non Fungible Token{' '}
-                    <span style={{ fontSize: '16px', color: '#848DA5', fontWeight: '700' }}>ERC721</span> or an
-                    (0x)Address. Switch between personalities and grow your characters.
+                    Act as an Addresses or a Non Fungible Token. No extra accounts needed. Switch between personalities.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={realitySecond} style={{ width: '402px', height: 'auto' }} />
+                    <img src={UserFirst} style={{ width: '377px', height: 'auto' }} />
                   </figure>
-                  <h3>Transparent</h3>
+                  <h3>Your tokens</h3>
                   <p className="landing-paragraph">
-                    Look at news from many perspectives. <br />
-                    Get valuable insight and know motivations behind opinions.
+                    Only token owners can write in the token communities. Participate and start discovering other
+                    tokens.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={realityThird} style={{ width: '411px', height: 'auto', marginTop: '100px' }} />
+                    <img src={buildThird} style={{ width: '209px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Controllable</h3>
+                  <h3>Earn ETH</h3>
                   <p className="landing-paragraph">
-                    Use your holdings as filters. Display only messages coming from your networks or wander around.
+                    Grow your influence. Receive rewards from your supporters in exchange for visible space on your
+                    profile.
                   </p>
                 </div>
               </div>
@@ -196,96 +196,68 @@ class Landing extends Component {
           <section className="section has-text-centered">
             <div className="container">
               <div className="landing-section-introduction">
-                <h2>Grow community around your token.</h2>
-                <p className="subtitle">Use existing tokens or create a new one and talk in the trusted environment.</p>
-                <Link className="landing-link" to="/discover">
-                  <span className="landing-link-inside">Your clubs</span>
-                </Link>
-                <Link className="landing-link" to="/communities" style={{ marginLeft: '30px' }}>
-                  <span className="landing-link-inside">Add your token</span>
+                <h2>Social platform that works for you.</h2>
+                <Link className="landing-button" to="/">
+                  Start posting
                 </Link>
               </div>
-              <div className="columns">
+              <div className="columns is-multiline">
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communityFirst} style={{ width: '402px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersSixth} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Instant</h3>
+                  <h3>Transparent</h3>
                   <p className="landing-paragraph">
-                    Discovery platform for your project from the moment you release your token. <br />
-                    Click.
-                    <br />
-                    You have Social Network.
+                    Get valuable insight. Always know what are the motivations behind opinions. See tokens of the people
+                    you talk with.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communitySecond} style={{ width: '403px', height: 'auto' }} />
+                  <figure className="landing-feature pink">
+                    <img src={TokenOwnersFirst} style={{ width: '338px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Trusted</h3>
+                  <h3>Trustful</h3>
                   <p className="landing-paragraph">
                     Social feeds with access controlled by tokens. No spam, no trolls, no impersonations.
                   </p>
                 </div>
                 <div className="column is-one-third">
-                  <figure className="landing-feature blue">
-                    <img src={communityThird} style={{ width: '402px', height: 'auto' }} />
-                  </figure>
-                  <h3>For you</h3>
-                  <p className="landing-paragraph">
-                    Get to know people, discuss next features, coordinate your efforts. Talk about future of your
-                    project.
-                  </p>
-                </div>
-              </div>
-              <div className="landing-testimonial">
-                <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">
-                  <figure className="landing-testimonial-profile" id="falafel" />
-                </Link>
-                <p className="landing-testimonial-paragraph">
-                  “Crypto is tough. Everyone thinks I’m cheating, deleting tweets and playing double game. Now everyone
-                  sees my transactions.“
-                </p>
-                <p className="author">
-                  <Link to="/ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:680314">Falafel</Link>, Cryptokitty
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="section has-text-centered">
-            <div className="container">
-              <div className="landing-section-introduction">
-                <h2>Get rewards from your supporters.</h2>
-                <p className="subtitle">Act according to your beliefs. Grow your community. Be a leader!</p>
-                <Link className="landing-link" to="/owners">
-                  <span className="landing-link-inside">Learn how to start</span>
-                </Link>
-              </div>
-              <div className="columns">
-                <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={influenceFirst} style={{ width: '399px', height: 'auto' }} />
+                    <img src={UserSecond} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
                   </figure>
-                  <h3>Any token</h3>
-                  <p className="landing-paragraph">Accept any token from your supporters instantly.</p>
-                </div>
-                <div className="column is-one-third">
-                  <figure className="landing-feature pink">
-                    <img src={influenceSecond} style={{ width: '402px', height: 'auto' }} />
-                  </figure>
-                  <h3>Transferable </h3>
+                  <h3>Rewarding</h3>
                   <p className="landing-paragraph">
-                    Pass on your characters when you want to go do something else (and get paid in the process). Don't
-                    let your efforts go to waste.
+                    Every profile can receive ETH from supporters. Accept donations or offer services assigned to your
+                    character.
                   </p>
                 </div>
                 <div className="column is-one-third">
                   <figure className="landing-feature pink">
-                    <img src={influenceThird} id="landing-yourtoken" />
+                    <img src={UsersNew} style={{ width: '350px', height: 'auto', marginTop: '90px' }} />
                   </figure>
-                  <h3>Your token</h3>
-                  <p className="landing-paragraph">Create your own token and grow your own economy. </p>
+                  <h3>Endless</h3>
+                  <p className="landing-paragraph">
+                    Find thriving communities and get in early. Coordinate your efforts and grow the economy.
+                  </p>
+                </div>
+                <div className="column is-one-third">
+                  <figure className="landing-feature pink">
+                    <img src={UserConnected} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
+                  </figure>
+                  <h3>Connected</h3>
+                  <p className="landing-paragraph">
+                    Speak for your community anywhere you want. Connect your social media accounts and link back to your
+                    profile.
+                  </p>
+                </div>
+                <div className="column is-one-third">
+                  <figure className="landing-feature pink">
+                    <img src={UserTransferable} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
+                  </figure>
+                  <h3>Transferable</h3>
+                  <p className="landing-paragraph">
+                    Grow value of your character. Become an influencer and sell your character to receive more Ethereum.
+                  </p>
                 </div>
               </div>
             </div>
@@ -300,59 +272,6 @@ class Landing extends Component {
             </div>
           </section>
 
-          <section className="section has-text-centered">
-            <div className="container">
-              <div className="landing-section-introduction">
-                <h2>Unbundle your creativity.</h2>
-                <p className="subtitle">Create a custom functionality for your tokens.</p>
-                <a className="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
-                  <span className="landing-link-inside">See on Github</span>
-                </a>
-              </div>
-              <div className="columns">
-                <div className="column is-one-third">
-                  <figure className="landing-feature yellow">
-                    <img src={buildFirst} style={{ width: '340px', height: 'auto', marginTop: '30px' }} />
-                  </figure>
-                  <h3>Token</h3>
-                  <p className="landing-paragraph">
-                    Implement token-specific functionality and grow value of your community.{' '}
-                  </p>
-                </div>
-                <div className="column is-one-third">
-                  <figure className="landing-feature yellow">
-                    <img src={buildSecond} style={{ width: '338px', height: 'auto', marginTop: '30px' }} />
-                  </figure>
-                  <h3>Platform</h3>
-                  <p className="landing-paragraph">
-                    Create a platform-specific functionality and easily monetize your work.
-                  </p>
-                </div>
-                <div className="column is-one-third">
-                  <figure className="landing-feature yellow">
-                    <img src={buildThird} style={{ width: '209px', height: 'auto', marginTop: '30px' }} />
-                  </figure>
-                  <h3>Multi-chain</h3>
-                  <p className="landing-paragraph">
-                    Live on Ethereum Mainnet, Kovan, Ropsten. Multiple storage systems available.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="landing-testimonial">
-              <Link to="/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">
-                <figure className="landing-testimonial-profile" id="cryptovoxel" />
-              </Link>
-              <p className="landing-testimonial-paragraph">
-                “Imagine watching this feed in VR and sending messages to nearby players!“
-              </p>
-              <p className="author">
-                <Link to="/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">36 Math Throughway</Link>,
-                Cryptovoxel
-              </p>
-            </div>
-          </section>
-
           <section className="section has-text-centered" style={{ borderBottom: 'none' }}>
             <div className="container">
               <div className="landing-section-introduction">
@@ -361,14 +280,11 @@ class Landing extends Component {
                   More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every
                   Ethereum provider.
                 </p>
-                <Link className="landing-link" to="/">
-                  <span className="landing-link-inside">Say hello</span>
-                </Link>
               </div>
               <div className="columns">
                 <div className="column is-twelve">
-                  <figure className="landing-feature landing-ending" id="hopinside">
-                    <Link to="/" className="landing-button">
+                  <figure className="landing-feature landing-ending" id="usershere">
+                    <Link to="/" className="landing-button" id="landing-button-big">
                       Hop inside
                     </Link>
                   </figure>
@@ -382,7 +298,7 @@ class Landing extends Component {
               <div className="columns" style={{ marginBottom: '90px' }}>
                 <div className="column has-text-centered">
                   <h3>Stay in touch</h3>
-                  <p className="landing-paragraph">
+                  <p className="landing-paragraph" style={{ paddingBottom: '0' }}>
                     We are also using the channels you're used to. Dont be a stranger and join the conversation.
                   </p>
                   <a
@@ -405,7 +321,7 @@ class Landing extends Component {
                 </div>
                 <div className="column has-text-centered">
                   <h3>Behind the scenes</h3>
-                  <p className="landing-paragraph">
+                  <p className="landing-paragraph" style={{ paddingBottom: '0' }}>
                     Find out more about our bigger vision and read what we think about attention economy.
                   </p>
                   <a href="" className="landing-footer-intouch">
@@ -421,8 +337,8 @@ class Landing extends Component {
                     <img src={tokntalkGrey} />
                   </a>
                   <div className="landing-footer-navigation">
-                    <Link to="/communities">Communities</Link>
-                    <Link to="/owners">Owners</Link>
+                    <Link to="/communities">Creators</Link>
+                    <Link to="/about">Owners</Link>
                     <a
                       href="https://drive.google.com/drive/u/1/folders/1hGOq4bEI2lIf5qZr90XQQdG-N0wLZIGK"
                       target="_blank"
