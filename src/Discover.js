@@ -245,7 +245,7 @@ class ByTokenIndex extends Component {
   }
 }
 
-const ByToken = ({ match, token }) => (
+const ByToken = ({ location, match, token }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -295,7 +295,7 @@ const ByToken = ({ match, token }) => (
               {latest.length > 0 && (
                 <FlatContainer>
                   <H4>Recently active</H4>
-                  <Link to={`${match.url}/recentlyActive`}>
+                  <Link to={`${match.url}/recentlyActive${location.search}`}>
                     <SeeMore style={{ marginBottom: '30px', fontWeight: '600' }}>See more</SeeMore>
                   </Link>
                   <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
@@ -304,7 +304,7 @@ const ByToken = ({ match, token }) => (
               <H3Discover style={{ marginTop: '60px', marginBottom: '30px' }}>
                 Messages in this community
                 {latest.length > 0 && (
-                  <Link to={`${match.url}/feed`}>
+                  <Link to={`${match.url}/feed${location.search}`}>
                     <SeeMore>See more</SeeMore>
                   </Link>
                 )}
@@ -355,7 +355,7 @@ const ByToken = ({ match, token }) => (
           </FlatContainer>
           <FlatContainer>
             <H4>In social</H4>
-            <Link to={`${match.url}/social`}>
+            <Link to={`${match.url}/social${location.search}`}>
               <SeeMore style={{ marginBottom: '30px' }}>See more</SeeMore>
             </Link>
             <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
@@ -456,7 +456,7 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
   </React.Fragment>
 );
 
-const RecentlyActivePage = ({ token }) => (
+const RecentlyActivePage = ({ token, location }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -465,7 +465,7 @@ const RecentlyActivePage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/clubs/${token.symbol}`}>
+        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -559,7 +559,7 @@ const SocialHeader = styled.p`
   font-weight: 600;
 `;
 
-const SocialPage = ({ token }) => (
+const SocialPage = ({ token, location }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -568,7 +568,7 @@ const SocialPage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/clubs/${token.symbol}`}>
+        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -656,7 +656,7 @@ const ClubForm = ({ token }) => (
   </IfActiveEntity>
 );
 
-const FeedPage = ({ token }) => (
+const FeedPage = ({ token, location }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -665,7 +665,7 @@ const FeedPage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/clubs/${token.symbol}`}>
+        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
