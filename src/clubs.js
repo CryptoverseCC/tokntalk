@@ -566,7 +566,7 @@ const clubs = [
     secondaryColor: '#58f9eb',
     shadowColor: 'rgba(116,110,255,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'https://www.cryptogirls.ro/' },
+      { name: 'Project page', url: 'https://cryptogirl.game' },
       { name: 'Discord', url: 'https://discordapp.com/invite/PNZF7Fq' },
     ],
   },
