@@ -30,7 +30,7 @@ class Communities extends Component {
     return (
       <div className="landing">
         <div className="wrapper-landing">
-          <div className="container">
+          <div className="container" style={{ zIndex: '1' }}>
             <nav className="level landing-header">
               <div className="level-left">
                 <Link to="/about" style={{ display: 'flex' }}>
@@ -38,11 +38,11 @@ class Communities extends Component {
                   <p className="landing-logo-typo">Tokntalk</p>
                 </Link>
               </div>
-              <div className="level-right" style={{ zIndex: '999' }}>
-                <Link to="/communities" className="level-item landing-header-link">
+              <div className="level-right">
+                <Link to="/about" className="level-item landing-header-link">
                   Owners
                 </Link>
-                <Link to="/communities" className="level-item landing-header-link">
+                <Link to="/communities" className="level-item landing-header-link landing-header-link-active">
                   Creators
                 </Link>
                 <Link to="/" className="level-item landing-header-link landing-header-link-button">
@@ -77,21 +77,25 @@ class Communities extends Component {
                   </div>
                   <div class="columns landing-sample-communities">
                     <div class="column">
-                      <Link to="/0x9cd16ab977d72bae1385d0fb98114245004c106e" class="landing-sample-community">
+                      <Link to="/discover/byToken/CC" class="landing-sample-community">
                         <p>ERC721</p>
                         <h4>CryptoCrystals</h4>
                       </Link>
                     </div>
                     <div class="column">
-                      <div class="landing-sample-community">
-                        <p>ERC20</p>
-                        <h4>Percent Token</h4>
-                      </div>
+                      <Link to="/discover/byToken/％">
+                        <div class="landing-sample-community">
+                          <p>ERC20</p>
+                          <h4>Percent Token</h4>
+                        </div>
+                      </Link>
                     </div>
                     <div class="column">
                       <div class="landing-sample-community">
-                        <p>ERC20</p>
-                        <h4>MakerDao</h4>
+                        <Link to="/discover/byToken/MKR">
+                          <p>ERC20</p>
+                          <h4>MakerDao</h4>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -102,7 +106,7 @@ class Communities extends Component {
               </div>
             </div>
             <div class="columns">
-              <div id="landing-hero-background" class="column is-6 offset-by-6 pink" />
+              <div id="landing-hero-background" class="column is-5 offset-by-6 pink" />
             </div>
           </section>
 
@@ -300,8 +304,8 @@ class Communities extends Component {
                     <img src={tokntalkGrey} />
                   </a>
                   <div className="landing-footer-navigation">
-                    <Link to="/communities">Communities</Link>
-                    <Link to="/owners">Owners</Link>
+                    <Link to="/communities">Creators</Link>
+                    <Link to="/about">Owners</Link>
                     <a
                       href="https://drive.google.com/drive/u/1/folders/1hGOq4bEI2lIf5qZr90XQQdG-N0wLZIGK"
                       target="_blank"

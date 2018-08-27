@@ -15,18 +15,6 @@ import arrowUp from './img/landing/round-up.svg';
 import arrowRight from './img/landing/tail-right.svg';
 import exitBig from './img/landing/exit-big.svg';
 
-import realityFirst from './img/landing/reality-1.png';
-import realitySecond from './img/landing/reality-2.png';
-import realityThird from './img/landing/reality-3.png';
-
-import communityFirst from './img/landing/community-1.png';
-import communitySecond from './img/landing/community-2.png';
-import communityThird from './img/landing/community-3.png';
-
-import influenceFirst from './img/landing/influence-1.png';
-import influenceSecond from './img/landing/influence-2.png';
-import influenceThird from './img/landing/influence-3.png';
-
 import buildFirst from './img/landing/build-1.png';
 import buildSecond from './img/landing/build-2.png';
 import buildThird from './img/landing/build-3.png';
@@ -81,7 +69,7 @@ class Landing extends Component {
             </div>
           )}
 
-          <div className="container">
+          <div className="container" style={{ zIndex: '9' }}>
             <nav className="level landing-header">
               <div className="level-left">
                 <Link to="/about" style={{ display: 'flex' }}>
@@ -90,7 +78,7 @@ class Landing extends Component {
                 </Link>
               </div>
               <div className="level-right" style={{ zIndex: '999' }}>
-                <Link to="/communities" className="level-item landing-header-link">
+                <Link to="/about" className="level-item landing-header-link landing-header-link-active">
                   Owners
                 </Link>
                 <Link to="/communities" className="level-item landing-header-link">
@@ -105,40 +93,42 @@ class Landing extends Component {
           </div>
 
           <section
-            className="section has-text-centered landing-hero landing-hero-main"
+            className="section landing-hero landing-hero-communities"
             style={{ borderBottom: 'none' }}
             id="first-section"
           >
-            <div className="container">
-              <p className="subtitle" style={{ color: '#848DA5' }}>
-                Social platform for
-              </p>
-              <h1 className="title">Tokens</h1>
-              <p className="subtitle">
-                Explore token oriented communities. Grow your characters and earn rewards from your supporters.
-              </p>
-              <Link className="landing-link" to="/">
-                <span className="landing-link-inside">Start exploring</span>
-              </Link>
+            <div className="container" style={{ zIndex: '1' }}>
+              <div class="columns">
+                <div class="column is-6 has-text-centered">
+                  <figure className="landing-video">
+                    <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
+                      <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
+                    </a>
+                    <div className="landing-video-overlay" />
+                  </figure>
+                  <p style={{ fontSize: '20px', color: '#848DA5', marginTop: '10px', marginRight: '5%' }}>
+                    35s Introduction
+                  </p>
+                </div>
+                <div class="column is-6">
+                  <h2>
+                    Social Platform <br />
+                    for Tokens
+                  </h2>
+                  <p className="subtitle-communities" style={{ maxWidth: '560px' }}>
+                    Explore token oriented communities. Grow your characters and earn rewards from your supporters.
+                  </p>
+                  <Link to="/" className="landing-button">
+                    Hop inside
+                  </Link>
+                  <Link to="/communities" className="landing-button-secondary">
+                    For token creator
+                  </Link>
+                </div>
+              </div>
             </div>
-          </section>
-
-          <section
-            className="section has-text-centered"
-            style={{
-              background: 'radial-gradient(at center center, rgb(198, 191, 224) 0%, rgb(255, 255, 255) 70%)',
-              marginTop: '0',
-              borderBottom: 'none',
-            }}
-          >
-            <div className="container">
-              <figure className="landing-video">
-                <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
-                  <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
-                </a>
-                <div className="landing-video-overlay" />
-              </figure>
-              <p style={{ fontSize: '20px', color: '#848DA5' }}>35s Introduction</p>
+            <div class="columns">
+              <div id="landing-hero-background-main" class="column is-5" />
             </div>
           </section>
 
@@ -195,9 +185,9 @@ class Landing extends Component {
             <div className="container">
               <div className="landing-section-introduction">
                 <h2>Social platform that works for you.</h2>
-                <a className="landing-link" href="https://github.com/CryptoVerseCC/tokntalk">
-                  <span className="landing-link-inside">Start posting</span>
-                </a>
+                <Link className="landing-button" to="/">
+                  Start posting
+                </Link>
               </div>
               <div className="columns is-multiline">
                 <div className="column is-one-third">
@@ -260,15 +250,12 @@ class Landing extends Component {
               </div>
             </div>
             <div className="landing-testimonial">
-              <Link to="/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">
-                <figure className="landing-testimonial-profile" id="cryptovoxel" />
+              <Link to="/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">
+                <figure className="landing-testimonial-profile" id="cryptocow" />
               </Link>
-              <p className="landing-testimonial-paragraph">
-                “Imagine watching this feed in VR and sending messages to nearby players!“
-              </p>
+              <p className="landing-testimonial-paragraph">“seems like an easy way to get more ethereum :}“</p>
               <p className="author">
-                <Link to="/ethereum:0x79986af15539de2db9a5086382daeda917a9cf0c:2357">36 Math Throughway</Link>,
-                Cryptovoxel
+                <Link to="/ethereum:0xd4202b234c15255bf0511d3380e83bda9172a72b:78">CryptoCow #78</Link>, Cryptocow
               </p>
             </div>
           </section>
@@ -281,14 +268,11 @@ class Landing extends Component {
                   More than <span style={{ fontWeight: '600' }}>forty</span> communities accessible through every
                   Ethereum provider.
                 </p>
-                <Link className="landing-link" to="/">
-                  <span className="landing-link-inside">Say hello</span>
-                </Link>
               </div>
               <div className="columns">
                 <div className="column is-twelve">
                   <figure className="landing-feature landing-ending" id="hopinside">
-                    <Link to="/" className="landing-button">
+                    <Link to="/" className="landing-button" id="landing-button-big">
                       Hop inside
                     </Link>
                   </figure>
@@ -336,8 +320,8 @@ class Landing extends Component {
                     <img src={tokntalkGrey} />
                   </a>
                   <div className="landing-footer-navigation">
-                    <Link to="/communities">Communities</Link>
-                    <Link to="/owners">Owners</Link>
+                    <Link to="/communities">Creators</Link>
+                    <Link to="/about">Owners</Link>
                     <a
                       href="https://drive.google.com/drive/u/1/folders/1hGOq4bEI2lIf5qZr90XQQdG-N0wLZIGK"
                       target="_blank"

@@ -8,7 +8,6 @@ import About from './Landing';
 import Communities from './Communities';
 import NotFound from './NotFound';
 import FAQ from './FAQPage';
-import Owners from './Owners';
 import { Storage, ScrollTop } from './utils';
 import { runInContext, Sentry } from './Sentry';
 
@@ -43,7 +42,6 @@ const TokNTalk = withRouter(
           <Switch location={isModal ? this.previousLocation : location}>
             <Route exact path="/about" component={About} />
             <Route exact path="/communities" component={Communities} />
-            <Route exact path="/owners" component={Owners} />
             <Route exact exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
 
