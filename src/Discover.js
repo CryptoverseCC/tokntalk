@@ -291,6 +291,7 @@ const ByToken = ({ match, token }) => (
         <DiscoveryContext.Consumer>
           {({ latest }) => (
             <div className="column is-8">
+              {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
               {latest.length > 0 && (
                 <FlatContainer>
                   <H4>Recently active</H4>
@@ -792,6 +793,12 @@ export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
 const IsLoading = ({ children }) => (
   <DiscoveryContext.Consumer>{({ loading }) => loading && children}</DiscoveryContext.Consumer>
 );
+
+const CustomClubInfo = styled((props) => (
+  <WarningContainerColored {...props}>Welcome, it's a custom club</WarningContainerColored>
+))`
+  background: #bec4cb;
+`;
 
 const NoTokensWarning = ({ token }) => (
   <WarningContainerColored
