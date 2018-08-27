@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { Tab, Tabs, TabList } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+
+import { fromWeiToString } from '../balance';
 import { Purrmoter } from './Purrmoter';
 import Context from '../Context';
 import styled from 'styled-components';
@@ -15,11 +18,8 @@ import {
   CatvertisedItem,
   EntityDescription,
 } from './Styles';
-import { Tab, Tabs, TabList } from 'react-tabs';
 
-const formatCurrency = (value) => {
-  return (value * 10 ** -18).toFixed(3);
-};
+const formatCurrency = (value, decimals) => fromWeiToString(value, decimals);
 
 const CatvertisedItemLink = styled(Link)`
   display: flex;
@@ -166,7 +166,9 @@ export class PromotionBox extends Component {
                   <CatvertisedName>
                     <EntityNameWrapper>{contextInfo.name}</EntityNameWrapper>
                   </CatvertisedName>
-                  <CatvertisedScore>{formatCurrency(score)} ETH</CatvertisedScore>
+                  <CatvertisedScore>
+                    {formatCurrency(score, this.props.assetInfo.decimals)} {this.props.assetInfo.symbol}
+                  </CatvertisedScore>
                 </EntityDescription>
               </CatvertisedItemLink>
             </CatvertisedItem>
