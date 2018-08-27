@@ -88,6 +88,11 @@ const PromotionTab = styled(({ count, children, ...props }) => (
 PromotionTab.tabsRole = 'Tab';
 
 export class PromotionBox extends Component {
+  static defaultProps = {
+    asset: 'ethereum',
+    assetInfo: { symbol: 'ETH', decimals: 18 },
+  };
+
   state = {
     currentPage: PAGE.SUPPORTERS,
   };
@@ -100,14 +105,14 @@ export class PromotionBox extends Component {
   `;
 
   componentDidMount() {
-    this.props.getBoosts(this.props.token);
-    this.props.getSupportings(this.props.token);
+    this.props.getBoosts(this.props.token, this.props.asset);
+    this.props.getSupportings(this.props.token, this.props.asset);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.token !== this.props.token) {
-      this.props.getBoosts(nextProps.token);
-      this.props.getSupportings(nextProps.token);
+      this.props.getBoosts(nextProps.token, nextProps.asset);
+      this.props.getSupportings(nextProps.token, nextProps.asset);
     }
   }
 
@@ -190,6 +195,8 @@ export class PromotionBox extends Component {
       <Catvertised
         getBoosts={() => boosts}
         token={this.props.token}
+        asset={this.props.asset}
+        assetInfo={this.props.assetInfo}
         onBackClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}
       />
     );

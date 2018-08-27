@@ -354,6 +354,9 @@ const clubs = [
       { name: 'Project page', url: 'https://www.cryptovoxels.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptovoxels' },
     ],
+    promotionBox: {
+      recipient: `${mapping.CRYPTO_VOXELS.network}:${mapping.CRYPTO_VOXELS.address}:2`,
+    },
   },
   {
     ...mapping.AVOCADO,
@@ -622,6 +625,14 @@ const clubs = [
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
     externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
+    promotionBox: {
+      recipient: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330', // Barbossa
+      asset: `${mapping.PERCENT.network}:${mapping.PERCENT.address}`,
+      assetInfo: {
+        symbol: '％',
+        decimals: 1,
+      },
+    },
   },
 ].map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }));
 

@@ -1,7 +1,7 @@
 import uuidv4 from 'uuid/v4';
 import find from 'lodash/fp/find';
 import last from 'lodash/fp/last';
-import { isAddress } from 'web3-utils';
+import { isAddress, BN } from 'web3-utils';
 
 import { getEntityInfoForAddress, getCurrentProviderName } from './utils';
 import getWeb3 from './web3';
@@ -10,7 +10,10 @@ import {
   claimContractAbi,
   networkNameForNetworkId,
   claimWithValueTransferContractAddressesForNetworkId,
+  claimWithTokenValueTransferContractAddressesForNetworkId,
   claimWithValueTransferContractAbi,
+  claimWithTokenValueTransferContractAbi,
+  erc20ContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
 import clubs from './clubs';
@@ -20,7 +23,6 @@ const {
   REACT_APP_USERFEEDS_API_ADDRESS: USERFEEDS_API_ADDRESS,
   REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE,
   REACT_APP_INTERFACE_BOOST_ADDRESS: INTERFACE_BOOST_ADDRESS,
-  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
 } = process.env;
 
 export const isValidAndSupportedErc721 = (address) => !!find({ address })(ercs721);
@@ -191,14 +193,14 @@ export const getEntityTokens = async (entityId, tokens = clubs) => {
   return Object.entries(entityTokens).map(([token]) => token);
 };
 
-export const getBoosts = async (token) => {
+export const getBoosts = async (token, asset) => {
   try {
     const res = await getRanking(
       [
         {
           algorithm: 'cryptoverse_boost',
           params: {
-            asset: INTERFACE_BOOST_NETWORK,
+            asset,
             entity: token,
             fee_address: INTERFACE_BOOST_ADDRESS,
           },
@@ -224,14 +226,14 @@ export const getBoosts = async (token) => {
   }
 };
 
-export const getSupportings = async (token) => {
+export const getSupportings = async (token, asset) => {
   try {
     const res = await getRanking(
       [
         {
           algorithm: 'cryptoverse_supporting',
           params: {
-            asset: INTERFACE_BOOST_NETWORK,
+            asset,
             entity: token,
             fee_address: INTERFACE_BOOST_ADDRESS,
           },
@@ -313,6 +315,22 @@ const getClaimWithValueTransferContract = async () => {
   return contract;
 };
 
+const getClaimWithTokenValueTransferContract = async () => {
+  const web3 = await getWeb3();
+  const { networkId } = await getWeb3State();
+  const contractAddress = claimWithTokenValueTransferContractAddressesForNetworkId[networkId];
+  const contract = new web3.eth.Contract(claimWithTokenValueTransferContractAbi, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  return contract;
+};
+
+const getErc20Contract = async (contractAddress) => {
+  const web3 = await getWeb3();
+  const contract = new web3.eth.Contract(erc20ContractAbi, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  return contract;
+};
+
 const createFeedItemBase = async (id, entity, http) => {
   const { from, blockNumber, networkName } = await getWeb3State();
 
@@ -365,9 +383,30 @@ const claimWithValueTransfer = async (data, value, ownerAddress) => {
       .post(
         JSON.stringify(data),
         [ownerAddress.toLowerCase(), INTERFACE_BOOST_ADDRESS.toLowerCase()],
-        [value - value / 10, value / 10],
+        [new BN(value).sub(new BN(value).divn(10)).toString(10), new BN(value).divn(10).toString(10)],
       )
       .send({ from, value })
+      .on('transactionHash', (transactionHash) => resolve(transactionHash));
+  });
+};
+
+export const setApprove = async (erc20, value) => {
+  const spender = claimWithTokenValueTransferContractAddressesForNetworkId[1];
+  const { from } = await getWeb3State();
+  const contract = await getErc20Contract(erc20);
+  return contract.methods.approve(spender, value).send({ from });
+};
+
+const claimWithTokenValueTransfer = async (data, value, ownerAddress, erc20) => {
+  const { from } = await getWeb3State();
+  const contract = await getClaimWithTokenValueTransferContract();
+  return new Promise((resolve) => {
+    contract.methods
+      .post(JSON.stringify(data), [ownerAddress.toLowerCase(), INTERFACE_BOOST_ADDRESS.toLowerCase()], erc20, [
+        new BN(value).sub(new BN(value).divn(10)).toString(10),
+        new BN(value).divn(10).toString(10),
+      ])
+      .send({ from })
       .on('transactionHash', (transactionHash) => resolve(transactionHash));
   });
 };
@@ -466,22 +505,29 @@ export const label = async (entity, message, labelType, { http } = {}) => {
   };
 };
 
-export const boost = async (entity, aboutEntity, value) => {
+export const boost = async (who, whom, value, asset) => {
   const { networkName } = await getWeb3State();
   let ownerAddress;
-  if (isAddress(aboutEntity)) {
-    ownerAddress = aboutEntity;
+  if (isAddress(whom)) {
+    ownerAddress = whom;
   } else {
-    ownerAddress = (await getEntityData(aboutEntity)).owner;
+    ownerAddress = (await getEntityData(whom)).owner;
   }
 
   const data = {
     type: ['about'],
-    claim: { target: entity.id, about: aboutEntity },
+    claim: { target: who.id, about: whom },
     credits: getCreditsData(),
   };
 
-  const transactionHash = await claimWithValueTransfer(data, value, ownerAddress);
+  let transactionHash;
+  if (asset === 'ethereum') {
+    transactionHash = await claimWithValueTransfer(data, value, ownerAddress);
+  } else {
+    const [, erc20] = asset.split(':');
+    transactionHash = await claimWithTokenValueTransfer(data, value, ownerAddress, erc20);
+  }
+
   return { transactionHash, networkName };
 };
 

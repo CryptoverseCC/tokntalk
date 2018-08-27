@@ -35,6 +35,7 @@ import {
 import exportIcon from './img/export.svg';
 import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
+import { PromotionBox } from './promotion/PromotionBox';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -338,6 +339,22 @@ const ByToken = ({ location, match, token }) => (
           )}
         </DiscoveryContext.Consumer>
         <div className="column is-3 is-offset-1">
+          {token.promotionBox && (
+            <FlatContainer style={{ marginBottom: '30px' }}>
+              <AppContext.Consumer>
+                {({ boostStore: { getBoosts, getSupportings } }) => (
+                  <PromotionBox
+                    getBoosts={getBoosts}
+                    getSupportings={getSupportings}
+                    asset={token.promotionBox.asset}
+                    assetInfo={token.promotionBox.assetInfo}
+                    token={token.promotionBox.recipient}
+                    showPurrmoter={true}
+                  />
+                )}
+              </AppContext.Consumer>
+            </FlatContainer>
+          )}
           <FlatContainer style={{ marginBottom: '4rem' }}>
             <H4 style={{ marginBottom: '30px' }}>External links</H4>
             <ul style={{ fontWeight: '600' }}>
@@ -627,7 +644,7 @@ const SocialPage = ({ token, location }) => (
 
 const ClubForm = ({ token }) => (
   <IfActiveEntity>
-    {({ entityId }) => (
+    {(entityId) => (
       <FormContainer>
         <article className="media">
           <div className="media-left">

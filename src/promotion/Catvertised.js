@@ -1,13 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+
+import { setApprove, boost } from '../api';
 import { A } from '../Link';
 import Context from '../Context';
 import { LinkedEntityAvatar, EntityName, Entities, EntityAvatar } from '../Entity';
 import checkmarkIcon from '../img/checkmark.svg';
 import { EntityNameWrapper, CatvertisedName, CatvertisedList, CatvertisedItem } from './Styles';
+import { toWei } from '../balance';
 
 const StyledInput = styled.div.attrs({
-  children: (props) => (
+  children: ({ tokenSymbol, ...props }) => (
     <input
       style={{
         fontSize: '18px',
@@ -37,7 +40,7 @@ const StyledInput = styled.div.attrs({
   margin-top: 10px;
 
   &:before {
-    content: 'ETH';
+    content: ${({ tokenSymbol }) => `'${tokenSymbol}'`};
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -167,12 +170,12 @@ export default class Catvertised extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getBoosts(this.props.token);
+    this.props.getBoosts(this.props.token, this.props.asset);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.token !== this.props.token) {
-      this.props.getBoosts(nextProps.token);
+      this.props.getBoosts(nextProps.token, this.props.asset);
     }
   }
 
@@ -184,12 +187,13 @@ export default class Catvertised extends React.Component {
   `;
 
   calculatePosition = (boosts) => {
+    const { decimals } = this.props.assetInfo;
     const scores = Object.entries(boosts)
       .sort(([, { score: a }], [, { score: b }]) => b - a)
       .map(([, { score }]) => score);
     let position = 0;
     while (position < scores.length) {
-      if (scores[position] > this.state.value * 10 ** 18) {
+      if (scores[position] > this.state.value * 10 ** decimals) {
         position += 1;
       } else {
         break;
@@ -205,19 +209,68 @@ export default class Catvertised extends React.Component {
     this.setState({ step: 'submitted' });
   };
 
+  onSupport = async (e) => {
+    try {
+      e.preventDefault();
+
+      if (this.props.asset !== 'ethereum') {
+        this.setState({ step: 'approving' });
+        const [, erc20] = this.props.asset.split(':');
+        await setApprove(erc20, toWei(this.state.value, this.props.assetInfo.decimals));
+      }
+
+      const { transactionHash, networkName } = await boost(
+        this.state.entity,
+        this.props.token,
+        toWei(this.state.value, this.props.assetInfo.decimals),
+        this.props.asset,
+      );
+
+      this.setState({
+        etherscanUrl: createEtherscanUrl(transactionHash, networkName),
+        step: 'submitted',
+      });
+    } catch (e) {
+      this.setState({ step: 'form' }); // ToDo display error
+    }
+  };
+
   render() {
     return (
       <Context.Consumer>
-        {({ boostStore: { boosts, boost, isBoostable } }) => (
+        {({ boostStore: { boosts, isBoostable } }) => (
           <Catvertised.Container className={this.props.className}>
             {this.state.step === 'pickCat' && this.renderPickCat()}
-            {this.state.step === 'form' && this.renderForm(boosts, boost, isBoostable)}
+            {this.state.step === 'form' && this.renderForm(boosts, isBoostable)}
+            {this.state.step === 'approving' && this.renderApproving()}
             {this.state.step === 'submitted' && this.renderSubmitted()}
           </Catvertised.Container>
         )}
       </Context.Consumer>
     );
   }
+
+  renderApproving = () => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 600,
+          fontSize: '2rem',
+          color: '#1b2437',
+        }}
+      >
+        ⏳
+      </div>
+      <div style={{ fontSize: '1rem' }}>Waiting for approve transaction to be mined.</div>
+    </div>
+  );
 
   renderPickCat = () => {
     return (
@@ -253,7 +306,7 @@ export default class Catvertised extends React.Component {
     );
   };
 
-  renderForm = (boosts, boost, isBoostable) => {
+  renderForm = (boosts, isBoostable) => {
     return (
       <React.Fragment>
         <CatvertisedBack onClick={() => this.setState({ step: 'pickCat' })}>←</CatvertisedBack>
@@ -272,22 +325,9 @@ export default class Catvertised extends React.Component {
         >
           Support with
         </div>
-        <form
-          style={{ marginBottom: '-5px' }}
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const { transactionHash, networkName } = await boost(
-              this.state.entity,
-              this.props.token,
-              this.state.value * 10 ** 18,
-            );
-            this.setState({
-              etherscanUrl: createEtherscanUrl(transactionHash, networkName),
-              step: 'submitted',
-            });
-          }}
-        >
+        <form style={{ marginBottom: '-5px' }} onSubmit={this.onSupport}>
           <StyledInput
+            tokenSymbol={this.props.assetInfo.symbol}
             pattern="^[0-9]+(\.[0-9]+)?$"
             type="text"
             value={this.state.value}
@@ -297,9 +337,8 @@ export default class Catvertised extends React.Component {
             }}
           />
           <Position>Position: {this.renderPosition(this.calculatePosition(boosts))}</Position>
-
           <StyledButton disabled={!isBoostable || this.state.value <= 0}>
-            {!isBoostable ? 'Switch to mainnet' : this.state.value <= 0 ? 'Not enough ETH' : 'Support!'}
+            {!isBoostable ? 'Switch to mainnet' : 'Support!'}
           </StyledButton>
         </form>
       </React.Fragment>

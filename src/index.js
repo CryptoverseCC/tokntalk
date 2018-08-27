@@ -15,7 +15,16 @@ import { runInContext, Sentry } from './Sentry';
 
 import registerServiceWorker from './registerServiceWorker';
 
+const runMigrations = (storage) => {
+  const version = parseInt(storage.getItem('version'), 10);
+  if (isNaN(version)) {
+    storage.setItem('entityInfo', '');
+    storage.setItem('version', 1);
+  }
+};
+
 const storage = Storage();
+runMigrations(storage);
 
 const validateEntityId = validateParams(
   {
