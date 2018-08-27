@@ -219,6 +219,7 @@ export default class Catvertised extends React.Component {
         await setApprove(erc20, toWei(this.state.value, this.props.assetInfo.decimals));
       }
 
+      this.setState({ step: 'signing' });
       const { transactionHash, networkName } = await boost(
         this.state.entity,
         this.props.token,
@@ -243,12 +244,35 @@ export default class Catvertised extends React.Component {
             {this.state.step === 'pickCat' && this.renderPickCat()}
             {this.state.step === 'form' && this.renderForm(boosts, isBoostable)}
             {this.state.step === 'approving' && this.renderApproving()}
+            {this.state.step === 'signing' && this.renderSigning()}
             {this.state.step === 'submitted' && this.renderSubmitted()}
           </Catvertised.Container>
         )}
       </Context.Consumer>
     );
   }
+
+  renderSigning = () => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 600,
+          fontSize: '2rem',
+          color: '#1b2437',
+        }}
+      >
+        ⏳
+      </div>
+      <div style={{ fontSize: '1rem' }}>Sign the transaction</div>
+    </div>
+  );
 
   renderApproving = () => (
     <div

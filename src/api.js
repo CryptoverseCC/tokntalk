@@ -394,7 +394,12 @@ export const setApprove = async (erc20, value) => {
   const spender = claimWithTokenValueTransferContractAddressesForNetworkId[1];
   const { from } = await getWeb3State();
   const contract = await getErc20Contract(erc20);
-  return contract.methods.approve(spender, value).send({ from });
+  const result = await contract.methods.allowance(from, spender).call();
+  const allowance = new BN(result);
+  if (allowance.gten(value)) {
+    return Promise.resolve(true);
+  }
+  return contract.methods.approve(spender, new BN(value).sub(allowance)).send({ from });
 };
 
 const claimWithTokenValueTransfer = async (data, value, ownerAddress, erc20) => {
