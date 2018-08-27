@@ -61,7 +61,7 @@ export class Intercom extends Component {
     const { children, ...restProps } = this.props;
     const { IntercomComponent } = this.state;
     if (!IntercomComponent) {
-      return null;
+      return children;
     }
 
     return (

@@ -9,7 +9,7 @@ import uniqBy from 'lodash/fp/uniqBy';
 import find from 'lodash/fp/find';
 
 import { pageView } from './Analytics';
-import Link from './Link';
+import Link, { A } from './Link';
 import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
@@ -843,7 +843,7 @@ const CustomClubInfo = styled((props) => (
         <Link to="/thread/claim:0x35df61fa026498b5254b9dcf669b1f7baef9e09767de2f10c347f3e83e910b7869dae53cd906ee6e78b179053b2e9797eb2bc64fe1f1d0841a27aef222ade2681c">
           Tokntalk
         </Link>{' '}
-        or on <Link to="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram.</Link>
+        or on <A href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram.</A>
       </p>
     </div>
   </WelcomeMessage>

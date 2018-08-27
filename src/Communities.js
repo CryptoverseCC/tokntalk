@@ -89,7 +89,7 @@ class Communities extends Component {
                     Only messages from token owners. No scams. Everything can be verified.
                   </p>
                   <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }} className="landing-paste">
-                    Paste your ERC20 contract address or <Link to="/">contact us</Link> for ERC721
+                    Paste your ERC20 contract address or <Intercom>contact us</Intercom> for ERC721
                   </p>
                   <div className="control">
                     <input
