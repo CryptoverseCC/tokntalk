@@ -149,6 +149,13 @@ export default class App extends Component {
     });
   };
 
+  saveEntities = () => {
+    const toSave = Object.entries(this.state.entityInfo)
+      .filter(([, value]) => !value.isAddress)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+    this.storage.setItem('entityInfo', JSON.stringify(toSave));
+  };
+
   getEntityInfo = async (entityId) => {
     if (this.entityInfoRequests[entityId]) return;
     let entityData;
@@ -160,9 +167,7 @@ export default class App extends Component {
       entityData = await entityInfoRequest;
     }
 
-    this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, () => {
-      this.storage.setItem('entityInfo', JSON.stringify(this.state.entityInfo));
-    });
+    this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, this.saveEntities);
   };
 
   getEntity = (entityId) => {
@@ -186,18 +191,18 @@ export default class App extends Component {
     };
   };
 
-  getBoosts = async (tokenId) => {
-    const boosts = await getBoosts(tokenId);
-    if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
-      this.setState({ boosts });
-    }
+  getBoosts = async (tokenId, asset) => {
+    const boosts = await getBoosts(tokenId, asset);
+    // if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
+    this.setState({ boosts });
+    // }
   };
 
-  getSupportings = async (tokenId) => {
-    const supportings = await getSupportings(tokenId);
-    if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
-      this.setState({ supportings });
-    }
+  getSupportings = async (tokenId, asset) => {
+    const supportings = await getSupportings(tokenId, asset);
+    // if (this.state.feedId === tokenId || (this.state.feedId === undefined && tokenId === DEFAULT_TOKEN_ID)) {
+    this.setState({ supportings });
+    // }
   };
 
   get isBoostable() {

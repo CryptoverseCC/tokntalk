@@ -19,7 +19,9 @@ const walletsLogoMapping = {
   tokenPocket,
 };
 
-const ProviderLogo = ({ name, ...restProps }) => <img src={walletsLogoMapping[name] || metamask} {...restProps} />;
+const ProviderLogo = ({ name, ...restProps }) => (
+  <img alt={name} src={walletsLogoMapping[name] || metamask} {...restProps} />
+);
 
 const Container = styled.div`
   background: #ffffff;

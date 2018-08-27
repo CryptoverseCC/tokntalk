@@ -3,14 +3,7 @@ import styled from 'styled-components';
 
 import Link from './Link';
 import NetworkWarning from './NetworkWarning';
-import {
-  IfActiveEntity,
-  Entities,
-  EntityName,
-  EntityAvatar,
-  LinkedActiveEntityAvatar,
-  LinkedActiveEntityName,
-} from './Entity';
+import { IfActiveEntity, Entities, EntityAvatar, LinkedActiveEntityAvatar, LinkedActiveEntityName } from './Entity';
 import TranslationsContext from './Translations';
 import Locked from './img/locked.svg';
 import NoMetamask from './img/no.svg';
@@ -102,7 +95,7 @@ const Header = () => {
         <LinkContainer>
           <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
           <CrossLink to="/about">About</CrossLink>
-          <CrossLink to="/discover">Token Communities</CrossLink>
+          <CrossLink to="/clubs">Token Communities</CrossLink>
         </LinkContainer>
         <Context.Consumer>
           {({ appStore: { http, toggleHttpClaims } }) => (
@@ -294,7 +287,7 @@ const LinkDropdown = () => (
   <LinkDropdownContainer>
     <React.Fragment>
       <DropdownLink to="/about">About</DropdownLink>
-      <DropdownLink to="/discover">Discover</DropdownLink>
+      <DropdownLink to="/clubs">Clubs</DropdownLink>
     </React.Fragment>
   </LinkDropdownContainer>
 );

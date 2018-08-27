@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import qs from 'qs';
 import { Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import timeago from 'timeago.js';
+import { isAddress } from 'web3-utils';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
 import find from 'lodash/fp/find';
@@ -12,8 +14,8 @@ import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
-import { Storage, validateParams } from './utils';
-import clubs, { TokenImage } from './clubs';
+import { Storage, validateParams, rewriteCmp } from './utils';
+import clubs, { TokenImage, getCustomClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
@@ -33,20 +35,13 @@ import {
 import exportIcon from './img/export.svg';
 import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
+import { PromotionBox } from './promotion/PromotionBox';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
   font-size: 4rem;
   font-weight: bold;
   line-height: 1.1;
-  @media (max-width: 770px) {
-    margin-left: 2%;
-  }
-`;
-
-const H2Discover = styled.h2`
-  font-size: 2rem;
-  font-weight: bold;
   @media (max-width: 770px) {
     margin-left: 2%;
   }
@@ -95,7 +90,8 @@ export default class Discover extends Component {
     return (
       <Switch>
         <Route exact path={`${match.url}/`} component={Index} />
-        <Route path={`${match.url}/byToken/:token`} component={decoratedByTokenIndex} />
+        <Route path={`${match.url}/byToken/:token`} component={rewriteCmp('/byToken', '')} />
+        <Route path={`${match.url}/:token`} component={decoratedByTokenIndex} />
       </Switch>
     );
   }
@@ -152,7 +148,7 @@ class Index extends Component {
       <React.Fragment>
         {tokens.map((token) => (
           <TokenTile
-            linkTo={`${match.url}/byToken/${token.symbol}`}
+            linkTo={`${match.url}/${token.symbol}`}
             key={token.address}
             token={token}
             className="column is-one-quarter"
@@ -250,7 +246,7 @@ class ByTokenIndex extends Component {
   }
 }
 
-const ByToken = ({ match, token }) => (
+const ByToken = ({ location, match, token }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -259,7 +255,7 @@ const ByToken = ({ match, token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to="/discover">
+        <Link to="/clubs">
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -296,10 +292,11 @@ const ByToken = ({ match, token }) => (
         <DiscoveryContext.Consumer>
           {({ latest }) => (
             <div className="column is-8">
+              {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
               {latest.length > 0 && (
                 <FlatContainer>
                   <H4>Recently active</H4>
-                  <Link to={`${match.url}/recentlyActive`}>
+                  <Link to={`${match.url}/recentlyActive${location.search}`}>
                     <SeeMore style={{ marginBottom: '30px', fontWeight: '600' }}>See more</SeeMore>
                   </Link>
                   <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
@@ -308,15 +305,12 @@ const ByToken = ({ match, token }) => (
               <H3Discover style={{ marginTop: '60px', marginBottom: '30px' }}>
                 Messages in this community
                 {latest.length > 0 && (
-                  <Link to={`${match.url}/feed`}>
+                  <Link to={`${match.url}/feed${location.search}`}>
                     <SeeMore>See more</SeeMore>
                   </Link>
                 )}
               </H3Discover>
-              <IfActiveEntityHasToken
-                asset={`${token.network}:${token.address}`}
-                other={<NoTokensWarning token={token} />}
-              >
+              <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
                 {token.is721 ? (
                   <IfActiveEntityIs
                     asset={`${token.network}:${token.address}`}
@@ -330,7 +324,7 @@ const ByToken = ({ match, token }) => (
               </IfActiveEntityHasToken>
               <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
                 {(isActiveEntityFromFamily) => (
-                  <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+                  <DoesActiveEntityHasToken token={token}>
                     {(hasToken) => (
                       <FeedForToken
                         disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
@@ -345,6 +339,22 @@ const ByToken = ({ match, token }) => (
           )}
         </DiscoveryContext.Consumer>
         <div className="column is-3 is-offset-1">
+          {token.promotionBox && (
+            <FlatContainer style={{ marginBottom: '30px' }}>
+              <AppContext.Consumer>
+                {({ boostStore: { getBoosts, getSupportings } }) => (
+                  <PromotionBox
+                    getBoosts={getBoosts}
+                    getSupportings={getSupportings}
+                    asset={token.promotionBox.asset}
+                    assetInfo={token.promotionBox.assetInfo}
+                    token={token.promotionBox.recipient}
+                    showPurrmoter={true}
+                  />
+                )}
+              </AppContext.Consumer>
+            </FlatContainer>
+          )}
           <FlatContainer style={{ marginBottom: '4rem' }}>
             <H4 style={{ marginBottom: '30px' }}>External links</H4>
             <ul style={{ fontWeight: '600' }}>
@@ -362,7 +372,7 @@ const ByToken = ({ match, token }) => (
           </FlatContainer>
           <FlatContainer>
             <H4>In social</H4>
-            <Link to={`${match.url}/social`}>
+            <Link to={`${match.url}/social${location.search}`}>
               <SeeMore style={{ marginBottom: '30px' }}>See more</SeeMore>
             </Link>
             <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
@@ -463,7 +473,7 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
   </React.Fragment>
 );
 
-const RecentlyActivePage = ({ token }) => (
+const RecentlyActivePage = ({ token, location }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -472,7 +482,7 @@ const RecentlyActivePage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/discover/byToken/${token.symbol}`}>
+        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -566,7 +576,7 @@ const SocialHeader = styled.p`
   font-weight: 600;
 `;
 
-const SocialPage = ({ token }) => (
+const SocialPage = ({ token, location }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -575,7 +585,7 @@ const SocialPage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/discover/byToken/${token.symbol}`}>
+        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -634,7 +644,7 @@ const SocialPage = ({ token }) => (
 
 const ClubForm = ({ token }) => (
   <IfActiveEntity>
-    {({ entityId }) => (
+    {(entityId) => (
       <FormContainer>
         <article className="media">
           <div className="media-left">
@@ -663,7 +673,7 @@ const ClubForm = ({ token }) => (
   </IfActiveEntity>
 );
 
-const FeedPage = ({ token }) => (
+const FeedPage = ({ token, location }) => (
   <React.Fragment>
     <Hero
       primaryColor={token.primaryColor}
@@ -672,7 +682,7 @@ const FeedPage = ({ token }) => (
       style={{ alignItems: 'center' }}
     >
       <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/discover/byToken/${token.symbol}`}>
+        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
           <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
             <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
               <BackArrow>
@@ -703,7 +713,7 @@ const FeedPage = ({ token }) => (
       </ContentContainer>
     </Hero>
     <ContentContainer>
-      <IfActiveEntityHasToken asset={`${token.network}:${token.address}`} other={<NoTokensWarning token={token} />}>
+      <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
         {token.is721 ? (
           <IfActiveEntityIs
             asset={`${token.network}:${token.address}`}
@@ -717,7 +727,7 @@ const FeedPage = ({ token }) => (
       </IfActiveEntityHasToken>
       <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
         {(isActiveEntityFromFamily) => (
-          <DoesActiveEntityHasToken asset={`${token.network}:${token.address}`}>
+          <DoesActiveEntityHasToken token={token}>
             {(hasToken) => (
               <FeedForToken
                 disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
@@ -739,7 +749,7 @@ const isTokenValid = (token) => {
 
   if (token.indexOf(':') !== -1) {
     const [network, address] = token.split(':');
-    return !!find({ network, address })(clubs);
+    return ['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) !== -1 && isAddress(address);
   }
 
   return !!find({ symbol: token })(clubs);
@@ -755,15 +765,19 @@ const validateTokenParam = validateParams(
 const mapTokenUrlParam = (Cmp) => (props) => {
   const { token } = props.match.params;
 
-  let erc20Token;
+  let club;
   if (token.indexOf(':') === -1) {
-    erc20Token = find({ symbol: token })(clubs);
+    club = find({ symbol: token })(clubs);
   } else {
     const [network, address] = token.split(':');
-    erc20Token = find({ network, address })(clubs);
+    club = find({ network, address })(clubs);
+    if (!club) {
+      const options = qs.parse(props.location.search.replace('?', ''));
+      club = getCustomClub(network, address, options);
+    }
   }
 
-  return <Cmp token={erc20Token} {...props} />;
+  return <Cmp token={club} {...props} />;
 };
 
 const decoratedByTokenIndex = validateTokenParam(mapTokenUrlParam(ByTokenIndex));
@@ -796,6 +810,12 @@ export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
 const IsLoading = ({ children }) => (
   <DiscoveryContext.Consumer>{({ loading }) => loading && children}</DiscoveryContext.Consumer>
 );
+
+const CustomClubInfo = styled((props) => (
+  <WarningContainerColored {...props}>Welcome, it's a custom club</WarningContainerColored>
+))`
+  background: #bec4cb;
+`;
 
 const NoTokensWarning = ({ token }) => (
   <WarningContainerColored

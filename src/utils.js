@@ -53,6 +53,10 @@ export const validateParams = (validators, redirectTo) => (Cmp) => {
   };
 };
 
+export const rewriteCmp = (from, to) => ({ location }) => {
+  return <Redirect to={{ ...location, pathname: location.pathname.replace(from, to) }} />;
+};
+
 const iconCache = {};
 export const getAvatarUrlForAddress = (address) => {
   if (!iconCache[address]) {

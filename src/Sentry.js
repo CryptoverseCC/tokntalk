@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Raven from 'raven-js';
 
 const { NODE_ENV, REACT_APP_SENTRY_URL: SENTRY_URL } = process.env;

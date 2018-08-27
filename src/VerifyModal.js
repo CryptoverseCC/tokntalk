@@ -78,10 +78,6 @@ const Hash = styled.p`
 
 `;
 
-const VerifyContainer = styled.div`
-  margin-top: 30px;
-`;
-
 const VerifyContainerLabel = styled.p`
   font-size: 1rem;
   font-weight: 600;
@@ -204,7 +200,7 @@ export class VerifyModal extends Component {
             <VerifyContainerLabel>Stored on</VerifyContainerLabel>
           </div>
           <div className="column is-three-quarters">
-            <img style={{ marginRight: '10px', display: 'inline-block' }} src={httpStorage} />
+            <img alt="" style={{ marginRight: '10px', display: 'inline-block' }} src={httpStorage} />
             <p style={{ fontWeight: '600', display: 'inline-block' }}>HTTP Server</p>
           </div>
         </div>
@@ -274,7 +270,7 @@ export class VerifyModal extends Component {
             <VerifyContainerLabel>Stored on</VerifyContainerLabel>
           </div>
           <div className="column is-three-quarters">
-            <img style={{ marginRight: '10px', display: 'inline-block' }} src={onChain} />
+            <img alt="" style={{ marginRight: '10px', display: 'inline-block' }} src={onChain} />
             <p style={{ fontWeight: '600', display: 'inline-block' }}>{feedItem.family}</p>
           </div>
         </div>

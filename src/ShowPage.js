@@ -21,10 +21,11 @@ import clubs from './clubs';
 import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
-import { FlatContainer, ContentContainer, H2, H3, H4, SocialUsername } from './Components';
+import { FlatContainer, ContentContainer, H2, H4, SocialUsername } from './Components';
 import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
+import { CousinsBox } from './CousinsBox';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -134,6 +135,7 @@ export default class ShowPage extends Component {
         {this.renderProfileAvatar(entity)}
         {this.renderEntityInfo(entity)}
         {this.renderPromotionBox(entity)}
+        {this.renderCousins(entity)}
       </div>
     );
   };
@@ -179,6 +181,19 @@ export default class ShowPage extends Component {
     );
   };
 
+  renderCousins = (entity) => {
+    return (
+      <AppContext.Consumer>
+        {({ entityStore: { entityInfo } }) => {
+          if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
+            const owner = entity.isAddress ? entity.id : entity.owner;
+            return <CousinsBox entity={entity} owner={owner} />;
+          }
+        }}
+      </AppContext.Consumer>
+    );
+  };
+
   renderCommunities = (entity) => {
     return entity.tokens.length ? (
       <FlatContainer style={{ marginBottom: '2rem' }}>
@@ -195,7 +210,7 @@ export default class ShowPage extends Component {
                 <StyledTokenTile
                   key={asset}
                   small
-                  linkTo={`/discover/byToken/${token.symbol}`}
+                  linkTo={`/clubs/${token.symbol}`}
                   token={token}
                   className="column is-one-fifth-desktop is-one-third-mobile"
                 />
@@ -431,7 +446,7 @@ export class SocialList extends React.Component {
     return href ? href : undefined;
   };
 
-  domainRegex = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/;
+  domainRegex = /^(?:https?:\/\/)?(?:[^@/\n]+@)?(?:www\.)?([^:/?\n]+)/;
   getDomain = (url) => {
     const result = this.domainRegex.exec(url);
     if (result) {

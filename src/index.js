@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import { isAddress } from 'web3-utils';
 
 import './index.css';
 import App from './App';
@@ -8,12 +9,39 @@ import About from './Landing';
 import Communities from './Communities';
 import NotFound from './NotFound';
 import FAQ from './FAQPage';
-import { Storage, ScrollTop } from './utils';
+import { Storage, ScrollTop, rewriteCmp, validateParams } from './utils';
 import { runInContext, Sentry } from './Sentry';
 
 import registerServiceWorker from './registerServiceWorker';
 
+const runMigrations = (storage) => {
+  const version = parseInt(storage.getItem('version'), 10);
+  if (isNaN(version)) {
+    storage.setItem('entityInfo', '');
+    storage.setItem('version', 1);
+  }
+};
+
 const storage = Storage();
+runMigrations(storage);
+
+const validateEntityId = validateParams(
+  {
+    entityId: (entityId) => {
+      if (entityId.indexOf(':') > -1) {
+        const [network, address, id] = entityId.split(':');
+        return (
+          ['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) !== -1 &&
+          isAddress(address) &&
+          !isNaN(parseInt(id))
+        );
+      }
+
+      return isAddress(entityId);
+    },
+  },
+  '/404',
+);
 
 const TokNTalk = withRouter(
   class extends Component {
@@ -42,12 +70,13 @@ const TokNTalk = withRouter(
           <Switch location={isModal ? this.previousLocation : location}>
             <Route exact path="/about" component={About} />
             <Route exact path="/communities" component={Communities} />
-            <Route exact exact path="/faq" component={FAQ} />
+            <Route exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
 
             <Route exact path="/" component={App.Index} />
-            <Route path="/discover" component={App.Discover} />
-            <Route exact path="/:entityId" component={App.ShowPage} />
+            <Route path="/clubs" component={App.Discover} />
+            <Route path="/discover" component={rewriteCmp('/discover', '/clubs')} />
+            <Route exact path="/:entityId" component={validateEntityId(App.ShowPage)} />
             {!isModal ? <Route exact path="/thread/:claimId" component={App.Thread} /> : null}
           </Switch>
           {isModal ? <Route exact path="/thread/:claimId" component={App.ModalThread} /> : null}

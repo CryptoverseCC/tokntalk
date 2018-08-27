@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { isAddress } from 'web3-utils';
@@ -307,7 +308,12 @@ class Communities extends Component {
                   <p className="landing-paragraph" style={{ paddingBottom: '0' }}>
                     We are also using the channels you're used to. Dont be a stranger and join the conversation.
                   </p>
-                  <a href="https://twitter.com/tokntalkclub" target="_blank" className="landing-footer-intouch">
+                  <a
+                    href="https://twitter.com/tokntalkclub"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="landing-footer-intouch"
+                  >
                     <img src={twitterColor} />
                     <span>Twitter</span>
                   </a>
@@ -343,6 +349,7 @@ class Communities extends Component {
                     <a
                       href="https://drive.google.com/drive/u/1/folders/1hGOq4bEI2lIf5qZr90XQQdG-N0wLZIGK"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       Press
                     </a>
