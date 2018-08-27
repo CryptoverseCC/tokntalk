@@ -70,7 +70,7 @@ class Landing extends Component {
           <div className="container" style={{ zIndex: '9' }}>
             <nav className="level landing-header">
               <div className="level-left">
-                <div class="level-item">
+                <div className="level-item">
                   <Link to="/about" style={{ display: 'flex' }}>
                     <Logo />
                     <p className="landing-logo-typo">Tokntalk</p>
@@ -98,8 +98,8 @@ class Landing extends Component {
             id="first-section"
           >
             <div className="container" style={{ zIndex: '1' }}>
-              <div class="columns">
-                <div class="column is-6 has-text-centered landing-mobile-no">
+              <div className="columns">
+                <div className="column is-6 has-text-centered landing-mobile-no">
                   <figure className="landing-video">
                     <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
                       <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
@@ -110,7 +110,7 @@ class Landing extends Component {
                     35s Introduction
                   </p>
                 </div>
-                <div class="column is-6" id="landing-mobile">
+                <div className="column is-6" id="landing-mobile">
                   <h2>
                     Social Platform <br />
                     for Tokens
@@ -125,7 +125,7 @@ class Landing extends Component {
                     For creators
                   </Link>
                 </div>
-                <div class="column is-6 has-text-centered landing-mobile-only">
+                <div className="column is-6 has-text-centered landing-mobile-only">
                   <figure className="landing-video">
                     <a className="landing-player" onClick={this.playVideo} style={{ cursor: 'pointer' }}>
                       <img alt="" src={buttonPlay} style={{ marginRight: '-2px', marginTop: '5px' }} />
@@ -138,8 +138,8 @@ class Landing extends Component {
                 </div>
               </div>
             </div>
-            <div class="columns">
-              <div id="landing-hero-background-main" class="column is-5" />
+            <div className="columns">
+              <div id="landing-hero-background-main" className="column is-5" />
             </div>
           </section>
 

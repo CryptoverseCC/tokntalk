@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { isAddress } from 'web3-utils';
 
 import { Intercom } from './Intercom';
 import './css/landing.scss';
@@ -26,6 +27,22 @@ import TokenOwnersEigth from './img/landing/TokenOwnersEight.png';
 import TokenOwnersNinth from './img/landing/TokenOwnersNinth.png';
 
 class Communities extends Component {
+  state = {
+    contractAddress: '',
+    isValid: false,
+  };
+
+  generateCommunity = () => {
+    if (this.state.isValid) {
+      this.props.history.push(`/clubs/ethereum:${this.state.contractAddress}`);
+    }
+  };
+
+  onInputChange = (e) => {
+    const { value } = e.target;
+    this.setState({ contractAddress: value, isValid: isAddress(value) });
+  };
+
   render() {
     return (
       <div className="landing">
@@ -74,18 +91,29 @@ class Communities extends Component {
                     Paste your ERC20 contract address or <Link to="/">contact us</Link> for ERC721
                   </p>
                   <div className="control">
-                    <input className="input is-large" type="email" placeholder="0xAddress" />
-                    <a className="landing-button button-inside-input">Generate</a>
+                    <input
+                      className="input is-large"
+                      type="email"
+                      placeholder="0xAddress"
+                      value={this.state.contractAddress}
+                      onChange={this.onInputChange}
+                    />
+                    <a
+                      className={`landing-button button-inside-input ${!this.state.isValid ? 'disabled' : ''}`}
+                      onClick={this.generateCommunity}
+                    >
+                      Generate
+                    </a>
                   </div>
                   <div className="columns is-mobile landing-sample-communities">
                     <div className="column">
-                      <Link to="/discover/byToken/CC" className="landing-sample-community">
+                      <Link to="/clubs/CC" className="landing-sample-community">
                         <p>ERC721</p>
                         <h4>Crystals</h4>
                       </Link>
                     </div>
                     <div className="column">
-                      <Link to="/discover/byToken/％">
+                      <Link to="/clubs/％">
                         <div className="landing-sample-community">
                           <p>ERC20</p>
                           <h4>Percent</h4>
@@ -94,7 +122,7 @@ class Communities extends Component {
                     </div>
                     <div className="column">
                       <div className="landing-sample-community">
-                        <Link to="/discover/byToken/MKR">
+                        <Link to="/clubs/MKR">
                           <p>ERC20</p>
                           <h4>MakerDao</h4>
                         </Link>
