@@ -370,16 +370,22 @@ const ByToken = ({ location, match, token }) => (
               })}
             </ul>
           </FlatContainer>
-          <FlatContainer>
-            <H4>In social</H4>
-            <Link to={`${match.url}/social${location.search}`}>
-              <SeeMore style={{ marginBottom: '30px' }}>See more</SeeMore>
-            </Link>
-            <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
-            <Social asset={`${token.network}:${token.address}`} social="twitter" limit={2} />
-            <Social asset={`${token.network}:${token.address}`} social="instagram" limit={2} />
-            <Social asset={`${token.network}:${token.address}`} social="facebook" limit={2} />
-          </FlatContainer>
+          <DiscoveryContext.Consumer>
+            {({ facebook, instagram, github, twitter }) =>
+              facebook.length || instagram.length || github.length || twitter.length ? (
+                <FlatContainer>
+                  <H4>In social</H4>
+                  <Link to={`${match.url}/social${location.search}`}>
+                    <SeeMore style={{ marginBottom: '30px' }}>See more</SeeMore>
+                  </Link>
+                  <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
+                  <Social asset={`${token.network}:${token.address}`} social="twitter" limit={2} />
+                  <Social asset={`${token.network}:${token.address}`} social="instagram" limit={2} />
+                  <Social asset={`${token.network}:${token.address}`} social="facebook" limit={2} />
+                </FlatContainer>
+              ) : null
+            }
+          </DiscoveryContext.Consumer>
         </div>
       </div>
     </ContentContainer>
