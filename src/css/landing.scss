@@ -326,6 +326,17 @@
     justify-content: center;
   }
 
+  a.landing-button.button-inside-input.disabled {
+    background-color: #848da5;
+    transition: all 0.15s ease;
+    cursor: not-allowed;
+  }
+
+  a.landing-button.button-inside-input.disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
   .landing-ending {
     background-size: cover;
     background-repeat: no-repeat;
@@ -691,6 +702,7 @@
     box-shadow: none;
     top: 6px;
     cursor: pointer;
+    transition: all 0.15s ease;
   }
 
   .button-inside-input:active {

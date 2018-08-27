@@ -291,8 +291,19 @@ class Communities extends Component {
                       Paste your ERC20 contract address or <Link to="/">contact us</Link> for ERC721
                     </p>
                     <div className="control">
-                      <input className="input is-large" type="email" placeholder="0xAddress" />
-                      <a className="landing-button button-inside-input">Generate</a>
+                      <input
+                        className="input is-large"
+                        type="email"
+                        placeholder="0xAddress"
+                        value={this.state.contractAddress}
+                        onChange={this.onInputChange}
+                      />
+                      <a
+                        className={`landing-button button-inside-input ${!this.state.isValid ? 'disabled' : ''}`}
+                        onClick={this.generateCommunity}
+                      >
+                        Generate
+                      </a>
                     </div>
                   </figure>
                 </div>
