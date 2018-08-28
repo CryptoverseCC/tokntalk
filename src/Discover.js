@@ -925,7 +925,11 @@ export class FeedForToken extends Component {
             params: { id: asset },
           },
           {
-            algorithm: token.is721 ? 'experimental_filter_origin' : 'experimental_author_balance',
+            algorithm: token.is721
+              ? 'experimental_filter_origin'
+              : token.isCustom
+                ? 'experimental_author_balance_rdb'
+                : 'experimental_author_balance',
             params: { asset },
           },
         ],
