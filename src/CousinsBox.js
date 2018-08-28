@@ -67,7 +67,7 @@ export class CousinsBox extends Component {
                     marginLeft: '10px',
                   }}
                 >
-                  <EntityName id={cousin.id} />
+                  {cousin.name}
                 </Link>
               </div>
             );
