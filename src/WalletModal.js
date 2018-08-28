@@ -45,7 +45,7 @@ const WalletModal = ({ provider }) => (
     <Container>
       <StyledProviderLogo name={provider} />
       <H3>Working</H3>
-      <p>Check your wallet to sign the transaction.</p>
+      <p>Check your wallet to sign your message.</p>
     </Container>
   </FixedModal>
 );
