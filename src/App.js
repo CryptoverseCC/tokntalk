@@ -151,7 +151,7 @@ export default class App extends Component {
 
   saveEntities = () => {
     const toSave = Object.entries(this.state.entityInfo)
-      .filter(([, value]) => !value.isAddress)
+      .filter(([, value]) => !!value && !value.isAddress)
       .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
     this.storage.setItem('entityInfo', JSON.stringify(toSave));
   };

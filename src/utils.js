@@ -11,6 +11,9 @@ export const Storage = (storage = localStorage) => ({
   setItem(key, value) {
     return storage.setItem(`${APP_NAME}_${key}`, value);
   },
+  removeItem(key) {
+    return storage.removeItem(`${APP_NAME}_${key}`);
+  },
 });
 
 export function getCurrentProviderName() {
