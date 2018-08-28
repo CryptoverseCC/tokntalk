@@ -591,13 +591,14 @@ export class Card extends React.Component {
   getSuffix = (feedItem) => {
     const suffix = {
       post_club: () => {
-        const [network, address] = feedItem.about.split(':');
-        const token = find({ network, address })(clubs);
-
+        const token = feedItem.about_info;
         return (
           <React.Fragment>
             <span style={{ color: '#8c91a2', fontSize: '0.8rem' }}>wrote in</span>
-            <Link to={`/clubs/${token.symbol}`} style={{ marginLeft: '0.325em' }}>
+            <Link
+              to={`/clubs/${token.isCustom ? `${token.network}:${token.address}` : token.symbol}`}
+              style={{ marginLeft: '0.325em' }}
+            >
               <b>{token.name} club </b>
             </Link>
           </React.Fragment>

@@ -16,7 +16,7 @@ import {
   erc20ContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
-import clubs from './clubs';
+import clubs, { getCustomClub } from './clubs';
 import ercs721 from './erc721';
 
 const {
@@ -40,7 +40,7 @@ export const isValidFeedItem = (feedItem) => {
   if (feedItem.type === 'post_club') {
     const [network, address] = feedItem.about.split(':');
     const token = find({ network, address })(clubs);
-    if (!token) {
+    if (!token && (['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) === -1 || !isAddress(address))) {
       return false;
     }
   }
@@ -71,6 +71,16 @@ export const enhanceFeedItem = (feedItem) => {
   if (feedItem.type === 'post_to_simple') {
     feedItem.about_info = getEntityInfoForAddress(feedItem.about);
     feedItem.type = 'post_to';
+  }
+
+  if (feedItem.type === 'post_club') {
+    const [network, address] = feedItem.about.split(':');
+    let club = find({ network, address })(clubs);
+    if (!club) {
+      club = getCustomClub(network, address);
+    }
+
+    feedItem.about_info = club;
   }
 
   if (feedItem.likes) {
