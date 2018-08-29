@@ -59,14 +59,11 @@ class Communities extends Component {
                 </div>
               </div>
               <div className="level-right">
-                <Link to="/about" className="level-item landing-header-link">
-                  Owners
-                </Link>
                 <Link to="/communities" className="level-item landing-header-link landing-header-link-active">
-                  Creators
+                  Create a token club
                 </Link>
                 <Link to="/" className="level-item landing-header-link landing-header-link-button">
-                  <span>Hop inside</span>
+                  <span>Discover clubs</span>
                   <img src={arrowRight} id="landing-header-arrow" />
                 </Link>
               </div>
@@ -83,13 +80,13 @@ class Communities extends Component {
                 <div className="column is-6">
                   <h2>
                     Social Network <br />
-                    for Your Token
+                    for Any Token
                   </h2>
                   <p className="subtitle-communities" style={{ maxWidth: '520px' }}>
                     Only messages from token owners. No scams. Everything can be verified.
                   </p>
                   <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }} className="landing-paste">
-                    Paste your ERC20 contract address or <Intercom>contact us</Intercom> for ERC721
+                    Paste ERC20 contract address or <Intercom>contact us</Intercom> for ERC721
                   </p>
                   <div className="control">
                     <input

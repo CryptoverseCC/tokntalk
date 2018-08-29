@@ -78,15 +78,12 @@ class Landing extends Component {
                   </Link>
                 </div>
               </div>
-              <div className="level-right" style={{ zIndex: '999' }}>
-                <Link to="/about" className="level-item landing-header-link landing-header-link-active">
-                  Owners
-                </Link>
+              <div className="level-right">
                 <Link to="/communities" className="level-item landing-header-link">
-                  Creators
+                  Create a token club
                 </Link>
                 <Link to="/" className="level-item landing-header-link landing-header-link-button">
-                  <span>Hop inside</span>
+                  <span>Discover clubs</span>
                   <img src={arrowRight} id="landing-header-arrow" />
                 </Link>
               </div>
@@ -120,10 +117,10 @@ class Landing extends Component {
                     Explore token oriented communities. Grow your characters and earn rewards from your supporters.
                   </p>
                   <Link to="/" className="landing-button landing-button-mobile">
-                    Hop inside
+                    Discover token clubs
                   </Link>
                   <Link to="/communities" className="landing-button-secondary landing-button-mobile">
-                    For creators
+                    Create a club
                   </Link>
                 </div>
                 <div className="column is-6 has-text-centered landing-mobile-only">
