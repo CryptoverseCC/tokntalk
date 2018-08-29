@@ -39,7 +39,7 @@ const validateEntityId = validateParams(
         return (
           ['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) !== -1 &&
           isAddress(address) &&
-          !isNaN(parseInt(id))
+          !isNaN(parseInt(id, 10))
         );
       }
 

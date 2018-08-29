@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import pipe from 'lodash/fp/pipe';
-import find from 'lodash/fp/find';
 import uniqBy from 'lodash/fp/uniqBy';
 import sortBy from 'lodash/fp/sortBy';
 import reverse from 'lodash/fp/reverse';
@@ -18,7 +17,6 @@ import InfiniteScroll from './InfiniteScroll';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon } from './Icons';
 import TranslationsContext from './Translations';
 import Loader from './Loader';
-import clubs from './clubs';
 import { H3 } from './Components';
 import { CollapsableText, ShowMore } from './CollapsableText';
 import { VerifyModal } from './VerifyModal';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { getEntities } from './api';
-import { EntityName, LinkedEntityAvatar } from './Entity';
+import { LinkedEntityAvatar } from './Entity';
 import Link from './Link';
 import { FlatContainer, H4 } from './Components';
 

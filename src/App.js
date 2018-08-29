@@ -33,10 +33,7 @@ import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 
-const {
-  REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK,
-  REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID,
-} = process.env;
+const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
 export const produceEntities = (myEntities, previousActiveEntity) => {
   const firstEntity = myEntities[0];
