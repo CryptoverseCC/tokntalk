@@ -42,6 +42,9 @@ import benCover from './img/tokens/bentyn.jpg';
 import ddgt from './img/tokens/okimaki-icon.png';
 import ddgtCover from './img/tokens/okimaki.png';
 
+import joy from './img/tokens/joy-icon.png';
+import joyCover from './img/tokens/joy.png';
+
 import gnt from './img/tokens/golem-icon.svg';
 import gntCover from './img/tokens/golem.png';
 
@@ -616,6 +619,18 @@ const clubs = [
     secondaryColor: '#9b51e0',
     shadowColor: 'rgba(155,81,224,0.3)',
     externalLinks: [{ name: 'Project page', url: 'https://medium.com/nfty-news' }],
+  },
+  {
+    ...mapping.JOHN_ORION_YOUNG,
+    logo: joy,
+    coverImage: joyCover,
+    primaryColor: '#fafafa',
+    secondaryColor: '#111111',
+    shadowColor: 'rgba(17,17,17,0.3)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://johnorionyoung.com//' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/johnorionyoung' },
+    ],
   },
   {
     ...mapping.PERCENT,
