@@ -39,8 +39,8 @@ export const isValidFeedItem = (feedItem) => {
   }
   if (feedItem.type === 'post_club') {
     const [network, address] = feedItem.about.split(':');
-    const token = find({ network, address })(clubs);
-    if (!token && (['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) === -1 || !isAddress(address))) {
+    const club = find({ network, address })(clubs);
+    if (!club && (['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) === -1 || !isAddress(address))) {
       return false;
     }
   }
@@ -474,10 +474,11 @@ export const writeTo = async (entity, message, entityTo, { http } = {}) => {
   };
 };
 
-export const writeAbout = async (entity, message, about, { http } = {}) => {
+export const writeAbout = async (entity, message, club, { http } = {}) => {
+  const about = `${club.network}:${club.address}`;
   const data = {
     type: ['about'],
-    claim: { target: message, about: about },
+    claim: { target: message, about },
     ...(!entity.isAddress ? { context: entity.id } : null),
     credits: getCreditsData(),
   };
@@ -486,6 +487,7 @@ export const writeAbout = async (entity, message, about, { http } = {}) => {
   return {
     ...feedItemBase,
     about,
+    about_info: club,
     target: message,
     type: 'post_club',
   };

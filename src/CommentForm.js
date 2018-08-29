@@ -168,7 +168,7 @@ export const ConnectedClubForm = ({ token, ...props }) => (
   <Context.Consumer>
     {({ feedStore: { writeAbout } }) => (
       <TextAreaForm
-        sendMessage={(message) => writeAbout(message, `${token.network}:${token.address}`)}
+        sendMessage={(message) => writeAbout(message, token)}
         placeholder={`Write in ${token.name} club`}
         {...props}
       />
