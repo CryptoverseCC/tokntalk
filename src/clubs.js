@@ -624,9 +624,9 @@ const clubs = [
     ...mapping.JOHN_ORION_YOUNG,
     logo: joy,
     coverImage: joyCover,
-    primaryColor: '#fafafa',
-    secondaryColor: '#111111',
-    shadowColor: 'rgba(17,17,17,0.3)',
+    primaryColor: '#F9E957',
+    secondaryColor: '#EC2121',
+    shadowColor: 'rgba(249,233,87,0.3)',
     externalLinks: [
       { name: 'Project page', url: 'https://johnorionyoung.com//' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/johnorionyoung' },
