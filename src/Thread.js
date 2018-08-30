@@ -43,7 +43,7 @@ class ThreadCmp extends Component {
                 feedItem={feedItem}
                 replies={feedItem.replies}
                 reactions={feedItem.likes}
-                style={{ background: '#ffffff' }}
+                style={{ marginTop: '10px' }}
                 onShowLikers={this.onShowLikers}
                 getTemporaryReactions={getTemporaryReactions}
                 onVerify={this.onVerify}
@@ -86,7 +86,6 @@ export const Thread = (props) => (
 const ModalContainer = styled.div`
   max-height: 90vh;
   overflow-y: scroll;
-  border-radius: 12px;
 `;
 
 export class ModalThread extends Component {

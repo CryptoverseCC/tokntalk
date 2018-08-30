@@ -325,28 +325,26 @@ const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onV
   return (
     <React.Fragment>
       <div>
-        <SenderName to={`/${from}`}>{entityInfo.name}</SenderName>
-        <span style={{ color: '#928F9B', display: 'inline-block', marginLeft: '15px', fontSize: '0.8rem' }}>
-          {id ? (
-            <Link
-              style={{ color: '#1b2437' }}
-              to={{
-                pathname: `/thread/${id}`,
-                state: { modal: true },
-                search: `?backUrl=${encodeURIComponent(window.location.pathname)}`,
-              }}
-            >
-              {timeago().format(createdAt)}
-            </Link>
-          ) : (
-            timeago().format(createdAt)
-          )}
-          <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
-            {family}
-          </Family>
-        </span>
+        <SenderName to={`/${from}`}>{entityInfo.name}</SenderName> {suffix}
       </div>
-      {suffix}
+      <div style={{ color: '#928F9B', fontSize: '0.8rem' }}>
+        {timeago().format(createdAt)}
+        <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
+          {family}
+        </Family>
+        {id ? (
+          <Link
+            style={{ color: '#1b2437', marginLeft: '15px' }}
+            to={{
+              pathname: `/thread/${id}`,
+              state: { modal: true },
+              search: `?backUrl=${encodeURIComponent(window.location.pathname)}`,
+            }}
+          >
+            Perma link
+          </Link>
+        ) : null}
+      </div>
     </React.Fragment>
   );
 };
@@ -640,20 +638,6 @@ export class Card extends React.Component {
 
   getSuffix = (feedItem) => {
     const suffix = {
-      // post_club: () => {
-      //   const token = feedItem.about_info;
-      //   return (
-      //     <React.Fragment>
-      //       <span style={{ color: '#8c91a2', fontSize: '0.8rem' }}>wrote in</span>
-      //       <Link
-      //         to={`/clubs/${token.isCustom ? `${token.network}:${token.address}` : token.symbol}`}
-      //         style={{ marginLeft: '0.325em' }}
-      //       >
-      //         <b>{token.name} club </b>
-      //       </Link>
-      //     </React.Fragment>
-      //   );
-      // },
       post_to: () => {
         const id = feedItem.about;
         const about = feedItem.about_info;
