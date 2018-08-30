@@ -421,12 +421,66 @@ const blink = keyframes`
   }
 `;
 
-const CardBox = styled.div`
-  box-shadow: 0 2rem 4rem -1.5rem rgba(118, 103, 170, 0.09);
+const ClubStip = styled.div`
+  border-radius: 12px 0 0 12px;
+  position: absolute;
+  background: ${({ color }) => color};
+  top: 0;
+  left: 0;
+  width: 45px;
+  height: 100%;
+
+  @media (max-width: 770px) {
+    width: 30px;
+  }
+`;
+
+const ClubLink = styled(Link)`
+  position: absolute;
+  display: flex;
+  align-items: center
+  top: -5px;
+  right: -5px;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 0.8rem;
+  color: ${({ secondaryColor }) => secondaryColor}!important;
+  background: ${({ primaryColor }) => primaryColor};
+
+  ::after {
+    content: '→';
+    margin-left: 5px;
+  }
+`;
+
+const CardBoxContent = styled.div`
   overflow: hidden;
   border-radius: 12px;
-  padding: 1.25rem;
   background-color: white;
+  padding: 1.25rem;
+  ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};
+`;
+const CardBox = styled(({ children, club, className, style }) => {
+  return (
+    <div className={className} style={style}>
+      {club && <ClubStip color={club.primaryColor} />}
+      {club && (
+        <ClubLink
+          to={`/clubs/${club.isCustom ? `${club.network}:${club.address}` : club.symbol}`}
+          primaryColor={club.primaryColor}
+          secondaryColor={club.secondaryColor}
+        >
+          <img src={club.logo} style={{ height: '0.8rem', marginRight: '5px' }} />
+          {club.name}
+        </ClubLink>
+      )}
+      <CardBoxContent>{children}</CardBoxContent>
+    </div>
+  );
+})`
+  position: relative;
+  margin-right: 10px;
+  box-shadow: 0 2rem 4rem -1.5rem rgba(118, 103, 170, 0.09);
   :not(:first-child) {
     margin-top: 2rem;
   }
@@ -438,8 +492,6 @@ const CardBox = styled.div`
       margin-top: 1rem;
     }
   }
-
-  ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};
 `;
 
 export class Card extends React.Component {
@@ -588,20 +640,20 @@ export class Card extends React.Component {
 
   getSuffix = (feedItem) => {
     const suffix = {
-      post_club: () => {
-        const token = feedItem.about_info;
-        return (
-          <React.Fragment>
-            <span style={{ color: '#8c91a2', fontSize: '0.8rem' }}>wrote in</span>
-            <Link
-              to={`/clubs/${token.isCustom ? `${token.network}:${token.address}` : token.symbol}`}
-              style={{ marginLeft: '0.325em' }}
-            >
-              <b>{token.name} club </b>
-            </Link>
-          </React.Fragment>
-        );
-      },
+      // post_club: () => {
+      //   const token = feedItem.about_info;
+      //   return (
+      //     <React.Fragment>
+      //       <span style={{ color: '#8c91a2', fontSize: '0.8rem' }}>wrote in</span>
+      //       <Link
+      //         to={`/clubs/${token.isCustom ? `${token.network}:${token.address}` : token.symbol}`}
+      //         style={{ marginLeft: '0.325em' }}
+      //       >
+      //         <b>{token.name} club </b>
+      //       </Link>
+      //     </React.Fragment>
+      //   );
+      // },
       post_to: () => {
         const id = feedItem.about;
         const about = feedItem.about_info;
@@ -660,8 +712,13 @@ export class Card extends React.Component {
   };
 
   render() {
+    const { feedItem } = this.props;
     return (
-      <CardBox added={this.props.added && this.state.wasShown} style={this.props.style}>
+      <CardBox
+        added={this.props.added && this.state.wasShown}
+        style={this.props.style}
+        club={feedItem.type === 'post_club' ? feedItem.about_info : null}
+      >
         {!this.state.wasShown && <ReactVisibilitySensor onChange={this.onItemVisibilityChange} />}
         {this.renderItem()}
       </CardBox>

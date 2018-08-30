@@ -483,7 +483,7 @@ export class SocialList extends React.Component {
               {this.isAddress(id) && (
                 <IdentityAvatar
                   entity={id}
-                  backgroundColor={`#${background_color}`}
+                  backgroundColor={background_color}
                   size="verySmall"
                   src={image_preview_url}
                 />

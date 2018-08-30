@@ -53,7 +53,7 @@ export const EntityName = ({ id }) => {
 export const EntityAvatar = ({ id, entityInfo, ...props }) => {
   if (!!entityInfo) {
     const { background_color, image_preview_url } = entityInfo;
-    return <IdentityAvatar entity={id} {...props} backgroundColor={`#${background_color}`} src={image_preview_url} />;
+    return <IdentityAvatar entity={id} {...props} backgroundColor={background_color} src={image_preview_url} />;
   }
 
   return (
@@ -63,7 +63,7 @@ export const EntityAvatar = ({ id, entityInfo, ...props }) => {
           <IdentityAvatar
             entity={id}
             {...props}
-            backgroundColor={`#${getEntity(id).background_color}`}
+            backgroundColor={getEntity(id).background_color}
             src={getEntity(id).image_preview_url}
           />
         ) : (
@@ -80,7 +80,7 @@ export const LinkedEntityAvatar = ({ id, entityInfo, ...props }) => {
 
     return (
       <StyledLink to={`/${id}`}>
-        <IdentityAvatar entity={id} {...props} backgroundColor={`#${background_color}`} src={image_preview_url} />
+        <IdentityAvatar entity={id} {...props} backgroundColor={background_color} src={image_preview_url} />
       </StyledLink>
     );
   }
@@ -92,7 +92,7 @@ export const LinkedEntityAvatar = ({ id, entityInfo, ...props }) => {
           <IdentityAvatar
             entity={id}
             {...props}
-            backgroundColor={`#${getEntity(id).background_color}`}
+            backgroundColor={getEntity(id).background_color}
             src={getEntity(id).image_preview_url}
           />
         </StyledLink>
