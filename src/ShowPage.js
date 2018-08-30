@@ -26,6 +26,7 @@ import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
+import { niceScroll } from './cssUtils';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -46,19 +47,7 @@ const CommunitiesListContainer = styled.div`
 
 const CommunitiesList = styled.div`
   overflow-x: scroll;
-
-  ::-webkit-scrollbar {
-    height: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #dde0eb;
-  }
+  ${niceScroll};
 `;
 
 const StyledTokenTile = styled(TokenTile)`

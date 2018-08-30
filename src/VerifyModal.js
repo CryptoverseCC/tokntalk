@@ -11,6 +11,7 @@ import checkmarkIcon from './img/checkmark.svg';
 import httpStorage from './img/httpstorage.svg';
 import onChain from './img/onchain.svg';
 import { A } from './Link';
+import { niceScroll } from './cssUtils';
 
 const CheckIcon = styled.img.attrs({ src: checkmarkIcon })`
   width: 44px;
@@ -26,18 +27,7 @@ const ModalContainer = styled.div`
   max-width: 600px;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 2rem 4rem -2rem;
 
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #dde0eb;
-  }
+  ${niceScroll};
 `;
 
 const Header = styled.div`
@@ -62,20 +52,7 @@ const Hash = styled.p`
   font-size: 1rem;
   letter-spacing: 0.05em
   padding: 1.25rem 1.5rem 1rem 1.5rem;
-
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #dde0eb;
-  }
-
+  ${niceScroll};
 `;
 
 const VerifyContainerLabel = styled.p`

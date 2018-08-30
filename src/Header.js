@@ -11,6 +11,7 @@ import NoIdentity from './img/noidentity.svg';
 import Context from './Context';
 import Logo from './Logo';
 import Dropdown from './Dropdown';
+import { niceScroll } from './cssUtils';
 
 export const HeaderSpacer = styled.div`
   height: 65px;
@@ -207,18 +208,8 @@ const CatDropdownContent = styled.ul`
   max-height: 50vh;
   overflow-y: scroll;
   margin: 0;
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
 
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #dde0eb;
-  }
+  ${niceScroll};
 `;
 
 const CatDropdown = () => {

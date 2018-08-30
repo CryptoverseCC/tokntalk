@@ -1,27 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
 import { getEntities } from './api';
 import { LinkedEntityAvatar } from './Entity';
 import Link from './Link';
 import { FlatContainer, H4 } from './Components';
+import { niceScroll } from './cssUtils';
 
 const CousinsList = styled.div`
   overflow-y: scroll;
   max-height: 300px;
   overflow-x: hidden;
 
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #dde0eb;
-  }
+  ${niceScroll};
 `;
 
 export class CousinsBox extends Component {

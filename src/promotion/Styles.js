@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { niceScroll } from '../cssUtils';
 
 export const EntityNameWrapper = styled.b`
   white-space: nowrap;
@@ -25,18 +26,7 @@ export const CatvertisedList = styled.ul`
   overflow-y: scroll;
   position: relative;
 
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #dde0eb;
-  }
+  ${niceScroll};
 
   @media (max-width: 770px) {
     display: flex;

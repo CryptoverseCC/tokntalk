@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { FixedModal } from './Modal';
-import { Card, LikersModal } from './Feed';
+import { Card } from './Feed';
+import LikersModal from './LikersModal';
 import { VerifyModal } from './VerifyModal';
 import Loader from './Loader';
 import Context from './Context';
