@@ -522,7 +522,7 @@ const getInfoAboutReplyVisibility = (hasToken, isActiveEntityFromFamily, club, i
       message = `Your message will be only displayed here. Aquire ${club.name} to display your message in the club.`;
     } else if (club.is721 && !isActiveEntityFromFamily && hasToken) {
       warning = true;
-      message = `Your message will not be displayed in in the ${club.name} club. Switch avatar.`;
+      message = `Your message will not be displayed in the ${club.name} club. Switch avatar.`;
     } else {
       message = `Your message will be displayed in the ${club.name} club and here.`;
     }
