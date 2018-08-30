@@ -503,7 +503,7 @@ const clubs = [
     shadowColor: 'rgba(3,255,255,0.5)',
     externalLinks: [
       { name: 'Project page', url: 'https://???.??' },
-      { name: 'ForkDelta', url: 'https://forkdelta.github.io/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH' },
+      { name: 'ForkDelta', url: 'https://forkdelta.app/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH' },
     ],
   },
   {
