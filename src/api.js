@@ -166,10 +166,12 @@ export const getEntities = async (from) => {
       ],
       'api/decorate-with-opensea',
     ).then(({ items }) =>
-      items.map(({ context, context_info }) => ({
-        id: context,
-        ...context_info,
-      })),
+      items
+        .filter(({ context_info: { name, image_preview_url } }) => image_preview_url !== null && name !== null)
+        .map(({ context, context_info }) => ({
+          id: context,
+          ...context_info,
+        })),
     );
 
     return identities;
