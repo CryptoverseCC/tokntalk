@@ -976,6 +976,7 @@ export class FeedForToken extends Component {
 
             return (
               <Feed
+                isClubFeed
                 disabledInteractions={disabledInteractions}
                 className={className}
                 style={style}

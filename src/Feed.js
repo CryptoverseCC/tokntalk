@@ -12,7 +12,14 @@ import { FixedModal } from './Modal';
 import Link from './Link';
 import Context from './Context';
 import { ConnectedReplyForm, ReplyForm } from './CommentForm';
-import { IfActiveEntity, LinkedActiveEntityAvatar, LinkedEntityAvatar, IfActiveEntityLiked } from './Entity';
+import {
+  IfActiveEntity,
+  LinkedActiveEntityAvatar,
+  LinkedEntityAvatar,
+  IfActiveEntityLiked,
+  IsActiveEntityFromFamily,
+  DoesActiveEntityHasToken,
+} from './Entity';
 import InfiniteScroll from './InfiniteScroll';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon, LikeIcon, ReplyIcon } from './Icons';
 import TranslationsContext from './Translations';
@@ -280,9 +287,9 @@ const Reply = ({
               />
             )}
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
-            <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
+            <Verify onClick={onVerify} style={{ marginLeft: '15px' }}>
               Verify
-            </Family>
+            </Verify>
           </small>
         </div>
       </div>
@@ -290,7 +297,7 @@ const Reply = ({
   </article>
 );
 
-const ReplyFormContainer = ({ about, ...props }) => (
+const ReplyFormContainer = ({ about, children, ...props }) => (
   <article className="media" style={{ borderTop: 'none' }}>
     <div className="media-left is-hidden-mobile">
       <div style={{ height: '64px', width: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
@@ -302,6 +309,7 @@ const ReplyFormContainer = ({ about, ...props }) => (
       </div>
       <div className="column">
         <ConnectedReplyForm Form={ReplyForm} about={about} {...props} />
+        {children}
       </div>
     </div>
   </article>
@@ -311,7 +319,7 @@ const SenderName = styled(Link)`
   font-size: 1rem;
 `;
 
-const Family = styled.span`
+const Verify = styled.span`
   color: #1b2437;
   font-weight: 600;
   cursor: pointer;
@@ -329,9 +337,9 @@ const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onV
       </div>
       <div style={{ color: '#928F9B', fontSize: '0.8rem' }}>
         {timeago().format(createdAt)}
-        <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
+        <Verify onClick={onVerify} style={{ marginLeft: '15px' }}>
           Verify
-        </Family>
+        </Verify>
         {id ? (
           <Link
             style={{ color: '#1b2437', marginLeft: '15px' }}
@@ -505,6 +513,36 @@ const CardBox = styled(({ children, club, className, style }) => {
   }
 `;
 
+const getInfoAboutReplyVisibility = (hasToken, isActiveEntityFromFamily, club, isClubFeed) => {
+  let message = '';
+  let warning = false;
+  if (!isClubFeed) {
+    if (!hasToken) {
+      warning = true;
+      message = `Your message will be only displayed here. Aquire ${club.name} to display your message in the club.`;
+    } else if (club.is721 && !isActiveEntityFromFamily && hasToken) {
+      warning = true;
+      message = `Your message will not be displayed in in the ${club.name} club. Switch avatar.`;
+    } else {
+      message = `Your message will be displayed in the ${club.name} club and here.`;
+    }
+  }
+
+  return { warning, message };
+};
+
+const ReplyClubInfo = styled.div`
+  display: none;
+  text-align: right;
+  margin-top: 5px;
+  font-size: 0.8em;
+  color: ${({ warning }) => 'rgb(146, 143, 155)'};
+
+  *:focus-within + & {
+    display: block;
+  }
+`;
+
 export class Card extends React.Component {
   replyForm = null;
 
@@ -531,7 +569,7 @@ export class Card extends React.Component {
 
   renderItem = () => {
     const { areRepliesCollapsed } = this.state;
-    const { feedItem, replies, reactions, disabledInteractions } = this.props;
+    const { feedItem, replies, reactions, disabledInteractions, isClubFeed } = this.props;
 
     if (feedItem.type === 'like') {
       return this.renderLikeItem(feedItem, disabledInteractions);
@@ -591,7 +629,35 @@ export class Card extends React.Component {
         })}
         {!disabledInteractions && (
           <IfActiveEntity>
-            {() => <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)} />}
+            {() =>
+              feedItem.type === 'post_club' ? (
+                <IsActiveEntityFromFamily asset={`${feedItem.about_info.network}:${feedItem.about_info.address}`}>
+                  {(isActiveEntityFromFamily) => (
+                    <DoesActiveEntityHasToken token={feedItem.about_info}>
+                      {(hasToken) => {
+                        const { warning, message } = getInfoAboutReplyVisibility(
+                          hasToken,
+                          isActiveEntityFromFamily,
+                          feedItem.about_info,
+                          isClubFeed,
+                        );
+                        return (
+                          <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
+                            <ReplyClubInfo warning={warning}>{message}</ReplyClubInfo>
+                          </ReplyFormContainer>
+                        );
+                      }}
+                    </DoesActiveEntityHasToken>
+                  )}
+                </IsActiveEntityFromFamily>
+              ) : (
+                <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
+                  {isClubFeed && (
+                    <ReplyClubInfo>Your message will be displayed here and on the main feed.</ReplyClubInfo>
+                  )}
+                </ReplyFormContainer>
+              )
+            }
           </IfActiveEntity>
         )}
       </React.Fragment>
@@ -772,14 +838,14 @@ export class LikersModal extends Component {
                 </Link>
                 <span style={{ color: '#928F9B', fontSize: '0.8rem' }}>
                   {timeago().format(created_at)}
-                  <Family
+                  <Verify
                     onClick={() => {
                       this.onVerify({ id, author, family });
                     }}
                     style={{ marginLeft: '15px' }}
                   >
                     {family}
-                  </Family>
+                  </Verify>
                 </span>
               </div>
             </div>
@@ -824,6 +890,7 @@ class Feed extends Component {
       className,
       style,
       disabledInteractions,
+      isClubFeed,
     } = this.props;
     const { showLikes, feedItemLikes, showVerify, verifiableItem } = this.state;
 
@@ -857,6 +924,7 @@ class Feed extends Component {
                 <Card
                   collapseReplies
                   disabledInteractions={disabledInteractions}
+                  isClubFeed={isClubFeed}
                   feedItem={feedItem}
                   replies={replies}
                   reactions={reactions}
