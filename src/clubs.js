@@ -619,6 +619,14 @@ const clubs = [
     secondaryColor: '#9b51e0',
     shadowColor: 'rgba(155,81,224,0.3)',
     externalLinks: [{ name: 'Project page', url: 'https://medium.com/nfty-news' }],
+    promotionBox: {
+      recipient: 'ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:497', // Flynn
+      asset: `${mapping.NFTY_TOKEN.network}:${mapping.NFTY_TOKEN.address}`,
+      assetInfo: {
+        symbol: 'NFTY',
+        decimals: 3,
+      },
+    },
   },
   {
     ...mapping.JOHN_ORION_YOUNG,
@@ -631,6 +639,9 @@ const clubs = [
       { name: 'Project page', url: 'https://johnorionyoung.com//' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/johnorionyoung' },
     ],
+    promotionBox: {
+      recipient: 'ethereum:0x96313f2c374f901e3831ea6de67b1165c4f39a54:0', // Original Joy
+    },
   },
   {
     ...mapping.PERCENT,
