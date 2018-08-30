@@ -444,10 +444,22 @@ const ClubLink = styled(Link)`
   font-size: 0.8rem;
   color: ${({ secondaryColor }) => secondaryColor}!important;
   background: ${({ primaryColor }) => primaryColor};
+  box-shadow: ${({ shadowColor }) => `0 1rem 1rem -0.5rem ${shadowColor}`};
+  transition: all 0.15s ease;
 
   ::after {
     content: '→';
     margin-left: 5px;
+  }
+
+  :hover {
+    transform: translateY(-2px);
+    box-shadow: ${({ shadowColor }) => `0 1rem 1.5rem -0.5rem ${shadowColor}`};
+  }
+
+  :active {
+    transform: scale(0.98);
+    box-shadow: ${({ shadowColor }) => `0 1rem 0.9rem -0.5rem ${shadowColor}`};
   }
 `;
 
@@ -467,6 +479,7 @@ const CardBox = styled(({ children, club, className, style }) => {
           to={`/clubs/${club.isCustom ? `${club.network}:${club.address}` : club.symbol}`}
           primaryColor={club.primaryColor}
           secondaryColor={club.secondaryColor}
+          shadowColor={club.shadowColor}
         >
           <img src={club.logo} style={{ height: '0.8rem', marginRight: '5px' }} />
           {club.name}
