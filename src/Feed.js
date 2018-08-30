@@ -281,7 +281,7 @@ const Reply = ({
             )}
             <span style={{ marginLeft: '10px' }}>{timeago().format(createdAt)}</span>{' '}
             <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
-              {family}
+              Verify
             </Family>
           </small>
         </div>
@@ -330,7 +330,7 @@ const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onV
       <div style={{ color: '#928F9B', fontSize: '0.8rem' }}>
         {timeago().format(createdAt)}
         <Family onClick={onVerify} style={{ marginLeft: '15px' }}>
-          {family}
+          Verify
         </Family>
         {id ? (
           <Link
