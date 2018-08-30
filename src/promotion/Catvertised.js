@@ -397,7 +397,7 @@ export default class Catvertised extends React.Component {
           Success!
         </div>
         <div style={{ fontSize: '1rem' }}>
-          You've supported <EntityName id={this.state.entity.id} />
+          <EntityName id={this.state.entity.id} /> is now a supporter!
         </div>
         <A href={this.state.etherscanUrl} style={{ marginTop: '10px' }}>
           Check it on Etherscan
