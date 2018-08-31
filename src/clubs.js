@@ -18,6 +18,9 @@ import cryptobotsCover from './img/tokens/cryptobots.png';
 import nfty from './img/tokens/nfty-icon.png';
 import nftyCover from './img/tokens/nfty.png';
 
+import coinbase from './img/tokens/coinbasewalletcryptoswag-icon.svg';
+import coinbaseCover from './img/tokens/coinbasewalletcryptoswag.png';
+
 import tokenville from './img/tokens/tokenville-icon.png';
 import tokenvilleCover from './img/tokens/tokenville.jpg';
 
@@ -636,12 +639,24 @@ const clubs = [
     secondaryColor: '#EC2121',
     shadowColor: 'rgba(249,233,87,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'https://johnorionyoung.com//' },
+      { name: 'Project page', url: 'https://johnorionyoung.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/johnorionyoung' },
     ],
     promotionBox: {
       recipient: 'ethereum:0x96313f2c374f901e3831ea6de67b1165c4f39a54:0', // Original Joy
     },
+  },
+  {
+    ...mapping.COINBASE_WALLET_CRYPTO_SWAG,
+    logo: coinbase,
+    coverImage: coinbaseCover,
+    primaryColor: '#0443c2',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(0,80,255,0.3)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://wallet.coinbase.com/' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/coinbasewalletcryptoswag' },
+    ],
   },
   {
     ...mapping.PERCENT,
