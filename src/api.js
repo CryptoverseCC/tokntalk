@@ -33,8 +33,18 @@ export const hasValidContext = ({ context }) => {
   return isValidAndSupportedErc721(address);
 };
 
+const supportedFeedTypes = [
+  'regular',
+  'like',
+  'post_to',
+  'post_about',
+  'post_club',
+  'social',
+  'post_to_simple',
+  'boost',
+];
 export const isValidFeedItem = (feedItem) => {
-  if (!['regular', 'like', 'post_to', 'post_about', 'post_club', 'social', 'post_to_simple'].includes(feedItem.type)) {
+  if (!supportedFeedTypes.includes(feedItem.type)) {
     return false;
   }
   if (feedItem.type === 'post_club') {
@@ -81,6 +91,11 @@ export const enhanceFeedItem = (feedItem) => {
     }
 
     feedItem.about_info = club;
+  }
+
+  if (feedItem.type === 'boost') {
+    feedItem.about_info = feedItem.about_info ? feedItem.about_info : getEntityInfoForAddress(feedItem.about);
+    feedItem.target_info = feedItem.target_info ? feedItem.target_info : getEntityInfoForAddress(feedItem.target);
   }
 
   if (feedItem.likes) {

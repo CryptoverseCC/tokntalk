@@ -576,23 +576,27 @@ export class Card extends React.Component {
 
     return (
       <React.Fragment>
-        <Post
-          id={feedItem.id}
-          style={{ borderTop: 'none' }}
-          from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
-          entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
-          createdAt={feedItem.created_at}
-          message={feedItem.target}
-          family={feedItem.family}
-          suffix={this.getSuffix(feedItem)}
-          reaction={
-            (feedItem.type === 'response' && <ReplyReaction />) ||
-            (feedItem.type === 'social' &&
-              Object.keys(LabelItems).includes(feedItem.label) &&
-              React.createElement(LabelItems[feedItem.label]))
-          }
-          onVerify={() => this.onVerify(feedItem)}
-        />
+        {feedItem.type === 'boost' ? (
+          this.renderBoostPost(feedItem)
+        ) : (
+          <Post
+            id={feedItem.id}
+            style={{ borderTop: 'none' }}
+            from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
+            entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
+            createdAt={feedItem.created_at}
+            message={feedItem.target}
+            family={feedItem.family}
+            suffix={this.getSuffix(feedItem)}
+            reaction={
+              (feedItem.type === 'response' && <ReplyReaction />) ||
+              (feedItem.type === 'social' &&
+                Object.keys(LabelItems).includes(feedItem.label) &&
+                React.createElement(LabelItems[feedItem.label]))
+            }
+            onVerify={() => this.onVerify(feedItem)}
+          />
+        )}
         <PostReactions
           id={feedItem.id}
           reactions={reactions}
@@ -662,6 +666,33 @@ export class Card extends React.Component {
       </React.Fragment>
     );
   };
+
+  renderBoostPost = (feedItem) => (
+    <Post
+      id={feedItem.id}
+      style={{ borderTop: 'none' }}
+      from={feedItem.target}
+      entityInfo={feedItem.target_info}
+      createdAt={feedItem.created_at}
+      message={createEtherscanUrl(feedItem)}
+      family={feedItem.family}
+      suffix={
+        <React.Fragment>
+          <span>supported</span>
+          <LinkedEntityAvatar
+            size="verySmall"
+            style={{ marginLeft: '0.325em', display: 'inline-block' }}
+            id={feedItem.about}
+            entityInfo={feedItem.about_info}
+          />
+          <Link to={`/${feedItem.about}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
+            <b>{feedItem.about_info.name}</b>
+          </Link>
+        </React.Fragment>
+      }
+      onVerify={() => this.onVerify(feedItem)}
+    />
+  );
 
   renderLikeItem = (feedItem, disabledInteractions) => {
     const { isFromAddress } = feedItem;
