@@ -75,13 +75,13 @@ const Fade = transition.div`
 
   &:enter-active {
     opacity: 1;
-    transition: opacity 300ms ease-in;
+    transition: opacity 150ms ease-in;
 
   }
 
   &:exit-active {
     opacity: 0.01;
-    transition: opacity 300ms ease-out;
+    transition: opacity 150ms ease-out;
   }
 
   &:exit {
@@ -100,7 +100,7 @@ export class FixedModal extends Component {
 
   onClose = (e) => {
     e.stopPropagation();
-    this.setState({ show: false }, () => setTimeout(this.props.onClose, 300));
+    this.setState({ show: false }, () => setTimeout(this.props.onClose, 150));
   };
 
   stopPropagatio = (e) => e.stopPropagation();
@@ -110,9 +110,9 @@ export class FixedModal extends Component {
     const { children } = this.props;
 
     return (
-      <Overlay timeout={300} in={show} onClick={this.onClose}>
+      <Overlay timeout={150} in={show} onClick={this.onClose}>
         <FixedModalContent onClick={this.stopPropagatio}>
-          <Fade timeout={300} in={show}>
+          <Fade timeout={150} in={show}>
             {children}
           </Fade>
         </FixedModalContent>
