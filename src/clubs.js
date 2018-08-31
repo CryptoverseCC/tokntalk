@@ -214,6 +214,9 @@ const clubs = [
       { name: 'Marketplace', url: 'http://digitalartchain.com/publish.html' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/digitalartchain' },
     ],
+    promotionBox: {
+      recipient: 'ethereum:0x323a3e1693e7a0959f65972f3bf2dfcb93239dfe:107', // DAC
+    },
   },
   {
     ...mapping.KNOWN_ORIGIN,
@@ -478,6 +481,9 @@ const clubs = [
     secondaryColor: '#1639AA',
     shadowColor: 'rgba(22,57,170,0.2)',
     externalLinks: [{ name: 'Project page', url: 'https://twitter.com/sanmaricoin' }],
+    promotionBox: {
+      recipient: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:839415', // Sanmari CK
+    },
   },
   {
     ...mapping.KIYOSALO,
