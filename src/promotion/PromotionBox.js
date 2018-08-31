@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Tab, Tabs, TabList } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+import styled, { css } from 'styled-components';
 
 import { fromWeiToString } from '../balance';
 import { Purrmoter } from './Purrmoter';
 import Context from '../Context';
-import styled from 'styled-components';
 import Link from '../Link';
 import { EntityAvatar } from '../Entity';
 import Catvertised from './Catvertised';
@@ -63,10 +61,10 @@ const PAGE = {
 };
 
 const PromotionTab = styled(({ count, children, ...props }) => (
-  <Tab {...props}>
+  <div {...props}>
     <span style={{ fontSize: '2rem' }}>{count}</span>
     <span style={{ fontSize: '1rem' }}>{children}</span>
-  </Tab>
+  </div>
 ))`
   display: flex;
   flex-direction: column;
@@ -78,14 +76,14 @@ const PromotionTab = styled(({ count, children, ...props }) => (
   font-weight: 600;
   padding-left: 0;
 
-  &.react-tabs__tab--selected {
-    cursor: unset;
-    color: #264dd9;
-    border-bottom: 2px #264dd9 solid;
-  }
+  ${({ selected }) =>
+    selected &&
+    css`
+      cursor: unset;
+      color: #264dd9;
+      border-bottom: 2px #264dd9 solid;
+    `};
 `;
-
-PromotionTab.tabsRole = 'Tab';
 
 export class PromotionBox extends Component {
   static defaultProps = {
@@ -179,16 +177,24 @@ export class PromotionBox extends Component {
 
   renderTabs = (supportersCount, supportingCount) => {
     return (
-      <Tabs selectedIndex={this.state.currentPage} onSelect={(index) => this.setState({ currentPage: index })}>
-        <TabList className="columns is-mobile is-marginless">
-          <PromotionTab className="column is-half" tabIndex={PAGE.SUPPORTERS} count={supportersCount}>
-            Supporters
-          </PromotionTab>
-          <PromotionTab className="column is-half" tabIndex={PAGE.SUPPORTING} count={supportingCount}>
-            Supporting
-          </PromotionTab>
-        </TabList>
-      </Tabs>
+      <div className="columns is-mobile is-marginless">
+        <PromotionTab
+          className="column is-half"
+          selected={PAGE.SUPPORTERS === this.state.currentPage}
+          count={supportersCount}
+          onClick={() => this.setState({ currentPage: PAGE.SUPPORTERS })}
+        >
+          Supporters
+        </PromotionTab>
+        <PromotionTab
+          className="column is-half"
+          selected={PAGE.SUPPORTING === this.state.currentPage}
+          count={supportingCount}
+          onClick={() => this.setState({ currentPage: PAGE.SUPPORTING })}
+        >
+          Supporting
+        </PromotionTab>
+      </div>
     );
   };
 
