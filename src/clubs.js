@@ -120,6 +120,12 @@ import cryptovoxelCover from './img/tokens/cryptovoxels.png';
 import cryptocrystal from './img/tokens/cryptocrystals-icon.png';
 import cryptocrystalCover from './img/tokens/cryptocrystals.png';
 
+import digix from './img/tokens/digix-icon.svg';
+import digixCover from './img/tokens/digix.png';
+
+import warriders from './img/tokens/warriders-icon.png';
+import warridersCover from './img/tokens/warriders.png';
+
 import blockchaincuties from './img/tokens/blockchaincuties-icon.svg';
 import blockchaincutiesCover from './img/tokens/blockchaincuties.png';
 
@@ -619,6 +625,24 @@ const clubs = [
     secondaryColor: '#FFA002',
     shadowColor: 'rgba(61,81,181,0.4)',
     externalLinks: [{ name: 'Project page', url: 'https://www.snookarma.com/' }],
+  },
+  {
+    ...mapping.WAR_RIDERS,
+    logo: warriders,
+    coverImage: warridersCover,
+    primaryColor: '#0b0d23',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(11,13,35,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://warriders.com/' }],
+  },
+  {
+    ...mapping.DIGIX_GLOBAL,
+    logo: digix,
+    coverImage: digixCover,
+    primaryColor: '#273144',
+    secondaryColor: '#e0d46e',
+    shadowColor: 'rgba(39,49,68,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://digix.global/dgd/' }],
   },
   {
     ...mapping.NFTY_TOKEN,
