@@ -696,7 +696,7 @@ const IsLoading = ({ children }) => (
   <DiscoveryContext.Consumer>{({ loading }) => loading && children}</DiscoveryContext.Consumer>
 );
 
-const CustomClubInfo = styled((props) => (
+const CustomClubInfo = (props) => (
   <WelcomeMessage {...props}>
     <H1 style={{ fontSize: '3rem' }}>
       <span role="img">🎨</span>
@@ -722,7 +722,7 @@ const CustomClubInfo = styled((props) => (
       You are <b>The Hero</b> this community deserves. <b>It's your time!</b>
     </div>
   </WelcomeMessage>
-))``;
+);
 
 const RedditFeed = (props) => {
   const url = props.url + '.embed';

@@ -150,6 +150,9 @@ module.exports = {
               // Because ipfs-api is es6 module on npm
               path.resolve(fs.realpathSync(process.cwd()), 'node_modules/ipfs-api'),
               path.resolve(fs.realpathSync(process.cwd()), 'node_modules/class-is'),
+              // Becasue of opensea
+              path.resolve(fs.realpathSync(process.cwd()), 'node_modules/opensea-js'),
+              path.resolve(fs.realpathSync(process.cwd()), 'node_modules/typed-promisify'),
             ],
             loader: require.resolve('babel-loader'),
             options: {
