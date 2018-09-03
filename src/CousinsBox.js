@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import List from 'react-virtualized/dist/commonjs/List';
 import styled from 'styled-components';
+import List from 'react-virtualized/dist/commonjs/List';
 
 import { getEntities } from './api';
 import { LinkedEntityAvatar } from './Entity';
