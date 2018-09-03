@@ -19,7 +19,10 @@ export class UnreadedMessagesProvider extends Component {
   }
 
   refreshUnreadedMessages = async () => {
-    await this.getUnreadedMessages();
+    try {
+      const unreadedMessages = await this.getUnreadedMessages();
+      this.setState({ unreadedMessages });
+    } catch (e) {}
     setTimeout(this.refreshUnreadedMessages, 5000);
   };
 
@@ -34,17 +37,13 @@ export class UnreadedMessagesProvider extends Component {
     }, {});
 
     let unreaded;
-    try {
-      const { items } = await getRanking([
-        {
-          algorithm: 'cryptoverse_club_feed_new_count',
-          params: { versions },
-        },
-      ]);
-      unreaded = items.reduce((acc, item) => ({ ...acc, [item.club_id]: item.count }), {});
-    } catch (e) {
-      unreaded = {};
-    }
+    const { items } = await getRanking([
+      {
+        algorithm: 'cryptoverse_club_feed_new_count',
+        params: { versions },
+      },
+    ]);
+    unreaded = items.reduce((acc, item) => ({ ...acc, [item.club_id]: item.count }), {});
 
     const unreadedMessages = clubs.reduce((acc, club) => {
       const asset = `${club.network}:${club.address}`;
@@ -53,8 +52,7 @@ export class UnreadedMessagesProvider extends Component {
         [club.address]: unreaded[asset],
       };
     }, {});
-
-    this.setState({ unreadedMessages });
+    return unreadedMessages;
   };
 
   render() {
