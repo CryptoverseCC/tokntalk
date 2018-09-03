@@ -12,6 +12,9 @@ import bbscCover from './img/tokens/bbsc.png';
 import dasabi from './img/tokens/dasabi-icon.svg';
 import dasabiCover from './img/tokens/dasabi.png';
 
+import dummy from './img/tokens/dummy-icon.png';
+import dummyCover from './img/tokens/dummy.png';
+
 import cryptobots from './img/tokens/cryptobots-icon.svg';
 import cryptobotsCover from './img/tokens/cryptobots.png';
 
@@ -643,6 +646,15 @@ const clubs = [
     secondaryColor: '#e0d46e',
     shadowColor: 'rgba(39,49,68,0.3)',
     externalLinks: [{ name: 'Project page', url: 'https://digix.global/dgd/' }],
+  },
+  {
+    ...mapping.DUMMY_COIN,
+    logo: dummy,
+    coverImage: dummyCover,
+    primaryColor: '#ffff00',
+    secondaryColor: '#000000',
+    shadowColor: 'rgba(255,255,0,0.4)',
+    externalLinks: [{ name: 'Project page', url: 'http://dummycoin.lol/' }],
   },
   {
     ...mapping.NFTY_TOKEN,

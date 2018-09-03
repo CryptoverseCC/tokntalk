@@ -2862,7 +2862,7 @@ content-type@~1.0.4:
 
 "contract-mapping@https://github.com/CryptoVerseCC/contract-mapping#master":
   version "0.0.0"
-  resolved "https://github.com/CryptoVerseCC/contract-mapping#04ac78ccd1aeff13181193452c2c05a435f08afd"
+  resolved "https://github.com/CryptoVerseCC/contract-mapping#43918b8337c35d6fcf804b0e09ac671b264fe844"
 
 convert-source-map@^1.1.1, convert-source-map@^1.4.0, convert-source-map@^1.5.0, convert-source-map@^1.5.1:
   version "1.5.1"
