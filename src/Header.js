@@ -255,17 +255,6 @@ const DropdownLink = styled(CrossLink)`
   font-weight: 600;
 `;
 
-const LinkDropdownContent = styled.ul`
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 30px rgba(6, 3, 16, 0.06);
-  border-radius: 12px;
-  margin: 0;
-  padding: 0.5rem;
-  max-height: 50vh;
-  overflow-y: scroll;
-`;
-
 const LinkDropdownContainer = styled.div`
   margin-left: 10px;
   display: none;
