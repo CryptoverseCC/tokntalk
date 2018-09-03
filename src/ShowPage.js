@@ -17,7 +17,7 @@ import IdentityAvatar from './Avatar';
 import { socialIcons } from './Icons';
 import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
-import clubs from './clubs';
+import { findClub } from './clubs';
 import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
@@ -193,13 +193,13 @@ export default class ShowPage extends Component {
           <CommunitiesList className="columns is-mobile">
             {entity.tokens.map((asset) => {
               const [network, address] = asset.split(':');
-              const token = find({ network, address })(clubs);
+              const token = findClub(network, address);
 
               return (
                 <StyledTokenTile
                   key={asset}
                   small
-                  linkTo={`/clubs/${token.symbol}`}
+                  linkTo={token.isCustom ? `/clubs/${network}:${address}` : `/clubs/${token.symbol}`}
                   token={token}
                   className="column is-one-fifth-desktop is-one-third-mobile"
                 />
@@ -446,7 +446,7 @@ export class SocialList extends React.Component {
 
   getCommunityToken = (id) => {
     const [network, address] = id.split(':');
-    return find({ network, address })(clubs);
+    return findClub(network, address);
   };
 
   isAddress = (id) => {

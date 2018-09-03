@@ -15,7 +15,7 @@ import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
 import { Storage, validateParams, rewriteCmp } from './utils';
-import clubs, { TokenImage, getCustomClub } from './clubs';
+import clubs, { TokenImage, getCustomClub, findClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
@@ -136,7 +136,7 @@ class Index extends Component {
       {this.renderTiles(
         entity.tokens.map((asset) => {
           const [network, address] = asset.split(':');
-          return find({ network, address })(clubs);
+          return findClub(network, address);
         }),
       )}
     </div>
