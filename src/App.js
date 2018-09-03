@@ -90,8 +90,10 @@ export default class App extends Component {
   }
 
   refreshMyEntities = async () => {
-    const newMyEntities = produceEntities(await getMyEntities(), this.previousActiveEntity());
-    this.setState(newMyEntities, this.saveActiveEntity);
+    try {
+      const newMyEntities = produceEntities(await getMyEntities(), this.previousActiveEntity());
+      this.setState(newMyEntities, this.saveActiveEntity);
+    } catch (e) {}
   };
 
   previousActiveEntity = () => {
