@@ -54,6 +54,11 @@ export const isValidFeedItem = (feedItem) => {
       return false;
     }
   }
+
+  if (feedItem.type === 'boost' && (!feedItem.about || !feedItem.target)) {
+    return false;
+  }
+
   if (!feedItem.context) {
     return true;
   } else if (!hasValidContext(feedItem)) {
