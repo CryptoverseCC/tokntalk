@@ -212,7 +212,7 @@ const Token = ({ asset }) => {
   const token = findClub(network, address);
 
   return (
-    <YourCommunitiesLink to={`/clubs/${token.symbol}`}>
+    <YourCommunitiesLink to={token.isCustom ? `/clubs/${network}:${address}` : `/clubs/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
       <StyledUnreadedMessages token={token} />

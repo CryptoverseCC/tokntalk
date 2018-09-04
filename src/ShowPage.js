@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import find from 'lodash/fp/find';
 
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';

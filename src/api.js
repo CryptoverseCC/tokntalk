@@ -204,11 +204,9 @@ export const getLabels = async (entityId) => {
 export const getEntityTokens = async (entityId, tokens = clubs) => {
   const entityTokens = await getRanking([
     {
-      algorithm: isAddress(entityId) ? 'cryptoverse_unsupported_balances' : 'experimental_assets_balances_erc721',
+      algorithm: 'cryptoverse_balances',
       params: {
-        context: entityId,
-        identity: entityId,
-        asset: isAddress(entityId) ? [] : tokens.map(({ network, address }) => `${network}:${address}`),
+        entity: entityId,
       },
     },
   ]);
