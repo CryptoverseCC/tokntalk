@@ -1,36 +1,44 @@
 import React, { Component } from 'react';
 
+import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AppContext from './Context';
 import { pageView } from './Analytics';
-import { ConnectedFeed } from './Feed';
+import { getFeed } from './Feed';
 import Hero from './Hero';
 import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
-import PopularFeed from './SimpleFeed';
 import ActiveEntityTokens from './ActiveEntityTokens';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
+
+const fetchPopularFeed = async () => {
+  const { items } = await getRanking(
+    [
+      {
+        algorithm: 'cryptoverse_last_week_popular_feed',
+      },
+    ],
+    'api/decorate-with-opensea',
+  );
+  let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
+  return feedItems;
+};
+
+const NewestFeed = getFeed(getFeedItemsFromCache(), true, true, undefined, (f0, f1) => f1.created_at - f0.created_at);
+const PopularFeed = getFeed(fetchPopularFeed, false, false);
+const ActiveFeed = getFeed(getFeedItemsFromCache('cache-cryptoverse-active-feed'), true, false);
 
 export default class IndexPage extends Component {
   state = { feedType: 'new' };
 
   componentDidMount() {
     pageView();
-    this.props.getFeedItems();
-    this.refreshInterval = setInterval(() => this.props.getNewFeedItems(), 15000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.refreshInterval);
   }
 
   changeFeedType = (feedType) => {
     this.setState({ feedType });
-    if (feedType === 'new') {
-      this.props.getFeedItems();
-    }
   };
 
   render() {
@@ -56,8 +64,13 @@ export default class IndexPage extends Component {
           </div>
           <div className="column is-8 is-offset-1-widescreen">
             <Hero style={{ marginBottom: '30px' }} />
-            <FeedTypeSwitcher type={feedType} onChange={this.changeFeedType} style={{ marginBottom: '2em' }} />
-            {feedType === 'new' ? <ConnectedFeed className="todo" /> : <PopularFeed />}
+            <FeedTypeSwitcher
+              type={feedType}
+              onChange={this.changeFeedType}
+              style={{ marginBottom: '2em' }}
+              options={[FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE]}
+            />
+            {feedType === 'new' ? <NewestFeed /> : feedType === 'popular' ? <PopularFeed /> : <ActiveFeed />}
           </div>
         </div>
       </ContentContainer>

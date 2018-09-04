@@ -22,7 +22,6 @@ import {
   getBoosts,
   getSupportings,
   getFeedItem,
-  getFeedItems,
 } from './api';
 import { getEntityData } from './entityApi';
 import Header from './Header';
@@ -59,13 +58,6 @@ export default class App extends Component {
     entityTokens: {},
     feedItem: null,
     feedItemLoading: false,
-    feedItems: [],
-    shownFeedItemsCount: 10,
-    feedVersion: undefined,
-    lastFeedItemId: undefined,
-    feedLoading: false,
-    feedLoadingMore: false,
-    feedId: undefined,
     temporaryFeedItems: [],
     temporaryReplies: {},
     temporaryReactions: {},
@@ -305,67 +297,6 @@ export default class App extends Component {
     }
   };
 
-  getFeedItems = async (entityId) => {
-    try {
-      this.setState({ feedLoading: true, feedId: entityId }, async () => {
-        const { feedItems, total: feedItemsCount, version: feedVersion, lastItemId } = await getFeedItems({
-          entityId,
-          size: 10,
-        });
-        if (this.state.feedId !== entityId) return;
-        this.setState({ feedLoading: false, feedItems, feedItemsCount, feedVersion, lastFeedItemId: lastItemId });
-      });
-    } catch (e) {
-      console.warn('Failed to download feedItems');
-    }
-  };
-
-  getNewFeedItems = async (entityId) => {
-    try {
-      // ToDo
-      const { feedVersion: lastVersion, lastFeedItemId } = this.state;
-
-      const { feedItems: newFeedItems, total: feedItemsCount, version: feedVersion } = await getFeedItems({
-        entityId,
-        lastVersion,
-        oldestKnown: lastFeedItemId,
-      });
-
-      const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
-      if (this.state.feedId !== entityId) return;
-
-      // ToDo sort by date
-      this.setState(({ feedItems }) => ({ feedVersion, feedItems: [...addedFeedItems, ...feedItems], feedItemsCount }));
-    } catch (e) {
-      console.warn('Failed to download feedItems');
-    }
-  };
-
-  getMoreFeedItems = async (entityId) => {
-    if (this.state.feedLoadingMore || this.state.feedItemsCount <= this.state.feedItems.length) return;
-    try {
-      this.setState({ feedLoadingMore: true }, async () => {
-        const { lastFeedItemId } = this.state;
-        const { feedItems: moreFeedItems, total: feedItemsCount, lastItemId } = await getFeedItems({
-          entityId,
-          size: 30,
-          oldestKnown: lastFeedItemId,
-        });
-
-        if (this.state.feedId !== entityId) return;
-
-        this.setState(({ feedItems }) => ({
-          lastFeedItemId: lastItemId,
-          feedLoadingMore: false,
-          feedItems: [...feedItems, ...moreFeedItems], // ToDo
-          feedItemsCount,
-        }));
-      });
-    } catch (e) {
-      console.warn('Failed to download more feedItems');
-    }
-  };
-
   render() {
     const {
       changeActiveEntityTo,
@@ -378,9 +309,6 @@ export default class App extends Component {
       label,
       getEntity,
       getFeedItem,
-      getFeedItems,
-      getMoreFeedItems,
-      getNewFeedItems,
       isBoostable,
       getBoosts,
       getSupportings,
@@ -391,9 +319,6 @@ export default class App extends Component {
       myEntities,
       feedItem,
       feedItemLoading,
-      feedItems,
-      isGettingMoreFeedItems,
-      feedLoading,
       entityInfo,
       temporaryFeedItems,
       temporaryReplies,
@@ -432,13 +357,7 @@ export default class App extends Component {
             label,
             feedItem,
             feedItemLoading,
-            feedItems,
-            feedLoading,
-            isGettingMoreFeedItems,
             getFeedItem,
-            getFeedItems,
-            getMoreFeedItems,
-            getNewFeedItems,
             temporaryFeedItems,
             temporaryReplies,
             temporaryReactions,

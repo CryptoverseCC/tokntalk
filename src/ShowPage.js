@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import find from 'lodash/fp/find';
 
+import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
-import { ConnectedFeed } from './Feed';
+import { getFeed } from './Feed';
 import {
   Entity,
   EntityName,
@@ -56,26 +57,39 @@ const StyledTokenTile = styled(TokenTile)`
   }
 `;
 
+const getSingleFeed = async ({ entityId }) => {
+  const { items } = await getRanking(
+    [{ algorithm: 'cryptoverse_single_feed', params: { id: entityId } }],
+    'api/decorate-with-opensea',
+  );
+
+  return items.filter(isValidFeedItem).map(enhanceFeedItem);
+};
+
+const filterTemporaryItemsNotForEntity = ({ entityId }) => ({ context, about }) =>
+  context === entityId || about === entityId;
+
+const Feed = getFeed(
+  getSingleFeed,
+  false,
+  true,
+  filterTemporaryItemsNotForEntity,
+  (f0, f1) => f1.created_at - f0.created_at,
+);
+
 export default class ShowPage extends Component {
   state = { editing: undefined };
 
   componentDidMount() {
     pageView();
-    this.props.getFeedItems(this.props.match.params.entityId);
     this.props.getEntityInfo(this.props.match.params.entityId);
-    // this.refreshInterval = setInterval(() => this.props.getNewFeedItems(this.props.match.params.entityId), 3000);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.entityId !== this.props.match.params.entityId) {
       pageView();
-      this.props.getFeedItems(nextProps.match.params.entityId);
       this.props.getEntityInfo(nextProps.match.params.entityId);
     }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.refreshInterval);
   }
 
   static ProfileImageContainer = styled.div`
@@ -244,7 +258,7 @@ export default class ShowPage extends Component {
             </div>
           )}
         </IfActiveEntity>
-        <ConnectedFeed forEntity={entity} className="todo" />
+        <Feed options={{ entityId: entity.id }} />
       </ShowPage.FeedContainer>
     );
   };

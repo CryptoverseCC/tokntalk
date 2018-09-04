@@ -136,22 +136,24 @@ export const getFeedItem = async ({ claimId }) => {
   return feedItems[0];
 };
 
-export const getFeedItems = async ({ lastVersion, oldestKnown, size, entityId }) => {
+export const getFeedItemsFromCache = (algorithm = 'cache-cryptoverse-feed') => async ({
+  lastVersion,
+  oldestKnown,
+  size,
+}) => {
   const versionParam = lastVersion ? `lastVersion=${lastVersion}` : '';
   const oldestParam = oldestKnown ? `oldestKnown=${oldestKnown}` : '';
   const sizeParam = size ? `size=${size}` : '';
 
-  const response = await (entityId
-    ? getRanking([{ algorithm: 'cryptoverse_single_feed', params: { id: entityId } }], 'api/decorate-with-opensea')
-    : fetch(`${USERFEEDS_API_ADDRESS}/api/cache-cryptoverse-feed?${versionParam}&${oldestParam}&${sizeParam}`).then(
-        (r) => r.json(),
-      ));
+  const response = await fetch(
+    `${USERFEEDS_API_ADDRESS}/api/${algorithm}?${versionParam}&${oldestParam}&${sizeParam}`,
+  ).then((r) => r.json());
 
   const { items, total, version } = response;
   const validFeedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
   const lastItem = last(items);
 
-  return { feedItems: validFeedItems.slice(0, 30), total, version, lastItemId: lastItem ? lastItem.id : undefined };
+  return { feedItems: validFeedItems, total, version, lastItemId: lastItem ? lastItem.id : undefined };
 };
 
 export const getRanking = (flow, path = 'ranking') => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import capitalize from 'lodash/capitalize';
 
 const FeedTypeButton = styled.div`
   display: inline;
@@ -27,15 +28,20 @@ const FeedTypeButton = styled.div`
   }
 `;
 
-const FeedTypeSwitcher = ({ type, onChange, style, className }) => (
+const defaultOptions = ['new', 'popular'];
+
+const FeedTypeSwitcher = ({ type, onChange, style, className, options = defaultOptions }) => (
   <div className={className} style={style}>
-    <FeedTypeButton onClick={() => onChange('new')} selected={type === 'new'}>
-      New
-    </FeedTypeButton>
-    <FeedTypeButton onClick={() => onChange('popular')} selected={type === 'popular'}>
-      Popular
-    </FeedTypeButton>
+    {options.map((option) => (
+      <FeedTypeButton key={option} onClick={() => onChange(option)} selected={type === option}>
+        {capitalize(option)}
+      </FeedTypeButton>
+    ))}
   </div>
 );
+
+FeedTypeSwitcher.NEW = 'new';
+FeedTypeSwitcher.POPULAR = 'popular';
+FeedTypeSwitcher.ACTIVE = 'active';
 
 export default FeedTypeSwitcher;

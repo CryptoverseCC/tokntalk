@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import equals from 'lodash/fp/equals';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
 import sortBy from 'lodash/fp/sortBy';
-import reverse from 'lodash/fp/reverse';
 import capitalize from 'lodash/capitalize';
 import timeago from 'timeago.js';
 import ReactVisibilitySensor from 'react-visibility-sensor';
@@ -939,41 +939,159 @@ class Feed extends Component {
 }
 export default Feed;
 
-export const ConnectedFeed = ({ forEntity, className }) => (
-  <Context.Consumer>
-    {({
-      feedStore: {
-        feedItems,
-        feedLoading,
-        temporaryFeedItems,
-        temporaryReplies,
-        temporaryReactions,
-        getMoreFeedItems,
-        feedLoadingMore,
-      },
-    }) => {
-      let filteredTemporaryFeedItems = temporaryFeedItems;
-      if (forEntity) {
-        filteredTemporaryFeedItems = temporaryFeedItems.filter(
-          ({ context, about }) => context === forEntity.id || about === forEntity.id,
-        );
+export const getFeed = (
+  fetchFnk,
+  isFetchFnkCacheable,
+  showTemporaryFeedItems,
+  getFilterForTemporaryFeedItemsFnk,
+  sortFnk,
+) =>
+  class extends Component {
+    state = {
+      feedLoading: false,
+      feedItems: [],
+      visibleItemsCount: 0,
+      allFeedItems: [],
+      feedVersion: undefined,
+      lastFeedItemId: undefined,
+      feedLoadingMore: false,
+    };
+
+    componentDidMount() {
+      this.fetchFeedItems();
+      if (isFetchFnkCacheable) {
+        this.fetchNewItemsPeriodically();
       }
-      const allFeedItems = pipe(
-        uniqBy('id'),
-        sortBy('created_at'),
-        reverse,
-      )([...feedItems, ...filteredTemporaryFeedItems]);
+    }
+
+    componentWillUnmount() {
+      clearTimeout(this.timeoutId);
+    }
+
+    timeoutId = null;
+    fetchNewItemsPeriodically = () => {
+      this.timeoutId = setTimeout(async () => {
+        await this.getNewFeedItems();
+        this.fetchNewItemsPeriodically();
+      }, 3000);
+    };
+
+    componentDidUpdate(prevProps) {
+      if (!equals(this.props.options, prevProps.options)) {
+        this.fetchFeedItems();
+      }
+    }
+
+    fetchFeedItems = async () => {
+      this.setState({ feedLoading: true });
+      try {
+        if (isFetchFnkCacheable) {
+          const { feedItems, total: feedItemsCount, version: feedVersion, lastItemId } = await fetchFnk({
+            ...this.props.options,
+            size: 30,
+          });
+          this.setState({ feedLoading: false, feedItems, feedItemsCount, feedVersion, lastFeedItemId: lastItemId });
+        } else {
+          const items = await fetchFnk(this.props.options);
+          this.setState({
+            feedLoading: false,
+            allFeedItems: items,
+            feedItems: items.slice(0, 10),
+            visibleItemsCount: items.length > 10 ? 10 : items.length,
+          });
+        }
+      } catch (e) {
+        console.warn('Failed to download feedItems', e);
+        this.setState({ loading: false });
+      }
+    };
+
+    getMoreFeedItems = async () => {
+      try {
+        if (isFetchFnkCacheable) {
+          if (this.state.feedLoadingMore) {
+            return;
+          }
+
+          this.setState({ feedLoadingMore: true }, async () => {
+            const { lastFeedItemId } = this.state;
+            const { feedItems: moreFeedItems, total: feedItemsCount, lastItemId } = await fetchFnk({
+              ...this.props.options,
+              size: 30,
+              oldestKnown: lastFeedItemId,
+            });
+
+            this.setState(({ feedItems }) => ({
+              lastFeedItemId: lastItemId,
+              feedLoadingMore: false,
+              feedItems: [...feedItems, ...moreFeedItems],
+              feedItemsCount,
+            }));
+          });
+        } else {
+          this.setState(({ visibleItemsCount, allFeedItems }) => {
+            const countToShow =
+              allFeedItems.length > visibleItemsCount + 30 ? visibleItemsCount + 30 : allFeedItems.length;
+            return {
+              visibleItemsCount: countToShow,
+              feedItems: allFeedItems.slice(0, countToShow),
+            };
+          });
+        }
+      } catch (e) {
+        console.warn('Failed to download more feedItems', e);
+      }
+    };
+
+    getNewFeedItems = async () => {
+      try {
+        const { feedVersion: lastVersion, lastFeedItemId } = this.state;
+        const { feedItems: newFeedItems, total: feedItemsCount, version: feedVersion } = await fetchFnk({
+          ...this.props.options,
+          lastVersion,
+          oldestKnown: lastFeedItemId,
+        });
+
+        const addedFeedItems = newFeedItems.map((item) => ({ ...item, added: true }));
+        this.setState(({ feedItems }) => ({
+          feedVersion,
+          feedItems: [...addedFeedItems, ...feedItems],
+          feedItemsCount,
+        }));
+      } catch (e) {
+        console.warn('Failed to download feedItems', e);
+      }
+    };
+
+    render() {
+      const { className } = this.props;
+      const { feedItems, feedLoading, feedLoadingMore } = this.state;
+
       return (
-        <Feed
-          className={className}
-          feedItems={allFeedItems}
-          feedLoading={feedLoading}
-          temporaryReplies={temporaryReplies}
-          temporaryReactions={temporaryReactions}
-          getMoreFeedItems={() => (forEntity ? getMoreFeedItems(forEntity.id) : getMoreFeedItems())}
-          feedLoadingMore={feedLoadingMore}
-        />
+        <Context.Consumer>
+          {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
+            let filteredTemporaryFeedItems = [];
+            if (showTemporaryFeedItems) {
+              filteredTemporaryFeedItems = getFilterForTemporaryFeedItemsFnk
+                ? temporaryFeedItems.filter(getFilterForTemporaryFeedItemsFnk(this.props.options))
+                : temporaryFeedItems;
+            }
+
+            const allFeedItems = uniqBy('id')([...feedItems, ...filteredTemporaryFeedItems]);
+
+            return (
+              <Feed
+                className={className}
+                feedItems={sortFnk ? allFeedItems.sort(sortFnk) : allFeedItems}
+                feedLoading={feedLoading}
+                temporaryReplies={temporaryReplies}
+                temporaryReactions={temporaryReactions}
+                getMoreFeedItems={this.getMoreFeedItems}
+                feedLoadingMore={feedLoadingMore}
+              />
+            );
+          }}
+        </Context.Consumer>
       );
-    }}
-  </Context.Consumer>
-);
+    }
+  };
