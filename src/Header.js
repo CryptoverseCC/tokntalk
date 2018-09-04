@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import List from 'react-virtualized/dist/commonjs/List';
 
 import Link from './Link';
 import NetworkWarning from './NetworkWarning';
@@ -105,7 +106,16 @@ const Header = () => {
             </ToggleHttpButton>
           )}
         </Context.Consumer>
-        <IfActiveEntity then={() => <CatDropdown />} other={<Status />} />
+        <IfActiveEntity
+          then={() => (
+            <Entities>
+              {({ entities, changeActiveEntityTo }) => (
+                <CatDropdown entities={entities} changeActiveEntityTo={changeActiveEntityTo} />
+              )}
+            </Entities>
+          )}
+          other={<Status />}
+        />
       </StyledHeader>
     </HeaderContainer>
   );
@@ -201,51 +211,59 @@ const PickEntity = styled.button`
   }
 `;
 
-const CatDropdownContent = styled.ul`
+const CatDropdownContent = styled.div`
   box-shadow: 0 10px 30px rgba(6, 3, 16, 0.06);
   border-radius: 25px 0 12px 25px;
   padding: 0.5rem;
   max-height: 50vh;
-  overflow-y: scroll;
   margin: 0;
+`;
 
+const CatDropdownList = styled(List)`
   ${niceScroll};
 `;
 
-const CatDropdown = () => {
-  return (
-    <div style={{ marginLeft: 'auto' }}>
-      <Dropdown
-        Content={CatDropdownContent}
-        toggle={({ openDropdown }) => <CatDropdownToggle openDropdown={openDropdown} />}
-        position="right"
-      >
-        {({ closeDropdown }) => (
-          <Entities>
-            {({ entities, changeActiveEntityTo }) =>
-              entities.map((entity) => {
-                const { id, ...entityInfo } = entity;
-                return (
-                  <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
-                    <PickEntity
-                      onClick={() => {
-                        changeActiveEntityTo(entity);
-                        closeDropdown();
-                      }}
-                    >
-                      <EntityAvatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
-                      <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
-                    </PickEntity>
-                  </li>
-                );
-              })
-            }
-          </Entities>
-        )}
-      </Dropdown>
-    </div>
-  );
-};
+class CatDropdown extends Component {
+  render() {
+    const entities = this.props.entities;
+    return (
+      <div style={{ marginLeft: 'auto' }}>
+        <Dropdown
+          Content={CatDropdownContent}
+          toggle={({ openDropdown }) => <CatDropdownToggle openDropdown={openDropdown} />}
+          position="right"
+        >
+          {({ closeDropdown }) => (
+            <CatDropdownList
+              height={300}
+              width={240}
+              rowHeight={74}
+              rowCount={entities.length}
+              rowRenderer={this.renderCatDropdownEntity(closeDropdown)}
+            />
+          )}
+        </Dropdown>
+      </div>
+    );
+  }
+
+  renderCatDropdownEntity = (closeDropdown) => ({ index, key, style }) => {
+    const entity = this.props.entities[index];
+    return (
+      <div key={key} className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem', ...style }}>
+        <PickEntity
+          onClick={() => {
+            this.props.changeActiveEntityTo(entity);
+            closeDropdown();
+          }}
+        >
+          <EntityAvatar id={entity.id} entityInfo={entity.entityInfo} size="small" lazy={false} />
+          <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
+        </PickEntity>
+      </div>
+    );
+  };
+}
 
 const DropdownLink = styled(CrossLink)`
   padding: 10px;
