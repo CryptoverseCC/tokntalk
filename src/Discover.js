@@ -160,7 +160,7 @@ class Index extends Component {
       <React.Fragment>
         {tokens.map((token) => (
           <TokenTile
-            linkTo={`${match.url}/${token.symbol}`}
+            linkTo={token.isCustom ? `${match.url}/${token.network}:${token.address}` : `${match.url}/${token.symbol}`}
             key={token.address}
             token={token}
             className="column is-one-quarter"

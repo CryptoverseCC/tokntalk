@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
+import sortBy from 'lodash/fp/sortBy';
 
 import { pageView } from './Analytics';
 import { ConnectedFeed } from './Feed';
@@ -183,31 +184,34 @@ export default class ShowPage extends Component {
   };
 
   renderCommunities = (entity) => {
-    return entity.tokens.length ? (
+    const clubs = entity.tokens
+      .map((asset) => asset.split(':'))
+      .map(([network, address]) => findClub(network, address));
+    const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+    return sortedClubs.length ? (
       <FlatContainer style={{ marginBottom: '2rem' }}>
         <H4 style={{ marginBottom: '15px' }}>
           <EntityName id={entity.id} /> Communities
         </H4>
         <CommunitiesListContainer>
           <CommunitiesList className="columns is-mobile">
-            {entity.tokens.map((asset) => {
-              const [network, address] = asset.split(':');
-              const token = findClub(network, address);
-
-              return (
-                <StyledTokenTile
-                  key={asset}
-                  small
-                  linkTo={token.isCustom ? `/clubs/${network}:${address}` : `/clubs/${token.symbol}`}
-                  token={token}
-                  className="column is-one-fifth-desktop is-one-third-mobile"
-                />
-              );
-            })}
+            {sortedClubs.map((club) => this.renderSingleCommunity(club))}
           </CommunitiesList>
         </CommunitiesListContainer>
       </FlatContainer>
     ) : null;
+  };
+
+  renderSingleCommunity = (club) => {
+    return (
+      <StyledTokenTile
+        key={club.address}
+        small
+        linkTo={club.isCustom ? `/clubs/${club.network}:${club.address}` : `/clubs/${club.symbol}`}
+        token={club}
+        className="column is-one-fifth-desktop is-one-third-mobile"
+      />
+    );
   };
 
   renderFeedContainer = (entity) => {
