@@ -12,6 +12,18 @@ import bbscCover from './img/tokens/bbsc.png';
 import dasabi from './img/tokens/dasabi-icon.svg';
 import dasabiCover from './img/tokens/dasabi.png';
 
+import cryptobaseball from './img/tokens/cryptobaseball-icon.png';
+import cryptobaseballCover from './img/tokens/cryptobaseball.png';
+
+import hyperdragons from './img/tokens/hyperdragons-icon.png';
+import hyperdragonsCover from './img/tokens/hyperdragons.png';
+
+import playertokens from './img/tokens/playertoken-icon.svg';
+import playertokensCover from './img/tokens/playertoken.png';
+
+import domraider from './img/tokens/domraider-icon.svg';
+import domraiderCover from './img/tokens/domraider.png';
+
 import dummy from './img/tokens/dummy-icon.png';
 import dummyCover from './img/tokens/dummy.png';
 
@@ -557,6 +569,42 @@ const clubs = [
       { name: 'Project page', url: 'https://tokenville.tv/' },
       { name: 'Exchange', url: 'https://tokenville.tv/token' },
     ],
+  },
+  {
+    ...mapping.CRYPTOBASEBALL,
+    logo: cryptobaseball,
+    coverImage: cryptobaseballCover,
+    primaryColor: '#010d21',
+    secondaryColor: '#f3f3f7',
+    shadowColor: 'rgba(1,13,33,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://www.mlbcryptobaseball.com/' }],
+  },
+  {
+    ...mapping.PLAYERTOKENS,
+    logo: playertokens,
+    coverImage: playertokensCover,
+    primaryColor: '#111111',
+    secondaryColor: '#ffb41f',
+    shadowColor: 'rgba(17,17,17,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://playertokens.co/' }],
+  },
+  {
+    ...mapping.DOMRAIDER,
+    logo: domraider,
+    coverImage: domraiderCover,
+    primaryColor: '#212a4b',
+    secondaryColor: '#f4ca55',
+    shadowColor: 'rgba(33,42,75,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://www.domraider.com/' }],
+  },
+  {
+    ...mapping.HYPERDRAGONS,
+    logo: hyperdragons,
+    coverImage: hyperdragonsCover,
+    primaryColor: '#303caf',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(48,60,175,0.3)',
+    externalLinks: [{ name: 'Project page', url: 'https://hyperdragons.alfakingdom.com/' }],
   },
   {
     ...mapping.DASABI,
