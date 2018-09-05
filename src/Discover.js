@@ -29,11 +29,11 @@ import {
   IsActiveEntityFromFamily,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
-  Entity,
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
   WithActiveEntity,
 } from './Entity';
+import { getEntityTokens } from './api';
 import exportIcon from './img/export.svg';
 import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
@@ -196,18 +196,22 @@ class Index extends Component {
         </div>
         <div className="columns">
           <div className="column is-12">
-            {this.state.currentTab === Index.TAB.YOURS &&
-              this.props.activeEntity && (
-                <Entity id={this.props.activeEntity.id}>
-                  {(entity) => <DiscoveryTabContent {...this.props} getSortedClubs={discoveryYours} entity={entity} />}
-                </Entity>
-              )}
-            {this.state.currentTab === Index.TAB.MOST_ACTIVE && (
-              <DiscoveryTabContent {...this.props} getSortedClubs={discoveryMostActive} />
-            )}
-            {this.state.currentTab === Index.TAB.NEWEST && (
-              <DiscoveryTabContent {...this.props} getSortedClubs={discoveryNewest} />
-            )}
+            <DiscoveryTabContent
+              {...this.props}
+              getSortedClubs={discoveryYours}
+              entity={this.props.activeEntity}
+              isActive={this.props.activeEntity && this.state.currentTab === Index.TAB.YOURS}
+            />
+            <DiscoveryTabContent
+              {...this.props}
+              getSortedClubs={discoveryMostActive}
+              isActive={this.state.currentTab === Index.TAB.MOST_ACTIVE}
+            />
+            <DiscoveryTabContent
+              {...this.props}
+              getSortedClubs={discoveryNewest}
+              isActive={this.state.currentTab === Index.TAB.NEWEST}
+            />
           </div>
           <div className="column is-3 is-offset-1" />
         </div>
@@ -221,12 +225,12 @@ class DiscoveryTabContent extends Component {
     loading: true,
     score: [],
   };
-  async componentDidMount() {
-    this.updateItems(this.props.entity);
-  }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.entity !== newProps.entity) {
+    const entityHasChanged = this.props.entity !== newProps.entity;
+    const tabHasBeenSelectedForTheFirstTime =
+      !this.props.isActive && newProps.isActive && this.state.score.length === 0;
+    if (tabHasBeenSelectedForTheFirstTime || entityHasChanged) {
       this.updateItems(newProps.entity);
     }
   }
@@ -242,12 +246,12 @@ class DiscoveryTabContent extends Component {
   };
 
   render() {
-    return (
+    return this.props.isActive ? (
       <div className="columns is-multiline">
         <AddToken className="column is-one-quarter" />
         {this.renderTiles(this.state.loading ? [] : this.state.score)}
       </div>
-    );
+    ) : null;
   }
 
   renderTiles = (tokens) => {
@@ -268,11 +272,12 @@ class DiscoveryTabContent extends Component {
 }
 
 const discoveryYours = async (entity) => {
-  const a = entity.tokens.map((asset) => {
+  const tokens = await getEntityTokens(entity.id);
+  const clubs = tokens.map((asset) => {
     const [network, address] = asset.split(':');
     return findClub(network, address);
   });
-  return a;
+  return clubs;
 };
 
 const discoveryMostActive = async (entity) => {
