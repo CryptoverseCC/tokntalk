@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import find from 'lodash/fp/find';
+import sortBy from 'lodash/fp/sortBy';
 
 import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
@@ -18,7 +18,7 @@ import IdentityAvatar from './Avatar';
 import { socialIcons } from './Icons';
 import { CommentForm, ConnectedWriteToForm, ConnectedCommentForm } from './CommentForm';
 import Link from './Link';
-import clubs from './clubs';
+import { findClub } from './clubs';
 import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
@@ -198,31 +198,32 @@ export default class ShowPage extends Component {
   };
 
   renderCommunities = (entity) => {
-    return entity.tokens.length ? (
+    const clubs = entity.tokens
+      .map((asset) => asset.split(':'))
+      .map(([network, address]) => findClub(network, address));
+    const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+    return sortedClubs.length ? (
       <FlatContainer style={{ marginBottom: '2rem' }}>
         <H4 style={{ marginBottom: '15px' }}>
           <EntityName id={entity.id} /> Communities
         </H4>
         <CommunitiesListContainer>
-          <CommunitiesList className="columns is-mobile">
-            {entity.tokens.map((asset) => {
-              const [network, address] = asset.split(':');
-              const token = find({ network, address })(clubs);
-
-              return (
-                <StyledTokenTile
-                  key={asset}
-                  small
-                  linkTo={`/clubs/${token.symbol}`}
-                  token={token}
-                  className="column is-one-fifth-desktop is-one-third-mobile"
-                />
-              );
-            })}
-          </CommunitiesList>
+          <CommunitiesList className="columns is-mobile">{sortedClubs.map(this.renderSingleCommunity)}</CommunitiesList>
         </CommunitiesListContainer>
       </FlatContainer>
     ) : null;
+  };
+
+  renderSingleCommunity = (club) => {
+    return (
+      <StyledTokenTile
+        key={club.address}
+        small
+        linkTo={club.isCustom ? `/clubs/${club.network}:${club.address}` : `/clubs/${club.symbol}`}
+        token={club}
+        className="column is-one-fifth-desktop is-one-third-mobile"
+      />
+    );
   };
 
   renderFeedContainer = (entity) => {
@@ -460,7 +461,7 @@ export class SocialList extends React.Component {
 
   getCommunityToken = (id) => {
     const [network, address] = id.split(':');
-    return find({ network, address })(clubs);
+    return findClub(network, address);
   };
 
   isAddress = (id) => {

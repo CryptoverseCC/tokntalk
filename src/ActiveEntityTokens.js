@@ -6,7 +6,7 @@ import Link from './Link';
 import { H4 } from './Components';
 import AppContext from './Context';
 import { IfActiveEntity, Entity } from './Entity';
-import clubs, { TokenImage } from './clubs';
+import { TokenImage, findClub } from './clubs';
 import { DiscoverIcon } from './Icons';
 import { UnreadedCount } from './UnreadedMessages';
 
@@ -209,10 +209,10 @@ const StyledUnreadedMessages = styled(UnreadedCount)`
 
 const Token = ({ asset }) => {
   const [network, address] = asset.split(':');
-  const token = find({ network, address })(clubs);
+  const token = findClub(network, address);
 
   return (
-    <YourCommunitiesLink to={`/clubs/${token.symbol}`}>
+    <YourCommunitiesLink to={token.isCustom ? `/clubs/${network}:${address}` : `/clubs/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
       <StyledUnreadedMessages token={token} />

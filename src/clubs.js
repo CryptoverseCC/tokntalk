@@ -1,4 +1,5 @@
 import React from 'react';
+import find from 'lodash/fp/find';
 
 import cryptokitties from './img/tokens/cryptokitties-icon.svg';
 import cryptokittiesCover from './img/tokens/cryptokitties.png';
@@ -773,22 +774,29 @@ const sizes = {
   medium: { width: '54px', height: '54px' },
 };
 
+export const findClub = (network, address) => {
+  return find({ network, address })(clubs) || getCustomClub(network, address);
+};
+
 // ToDo take only valid options
-export const getCustomClub = (network, address, options) => ({
-  symbol: '???',
-  name: `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`,
-  primaryColor: '#4000e4',
-  secondaryColor: 'white',
-  shadowColor: 'rgba(64,0,228,0.25)',
-  externalLinks: [],
-  ...options,
-  isCustom: true,
-  is721: false,
-  network,
-  address: address.toLowerCase(),
-  logo: unknowClub,
-  coverImage: unknowClubCover,
-});
+export const getCustomClub = (network, address, options) => {
+  const shortName = `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`;
+  return {
+    symbol: shortName,
+    name: shortName,
+    primaryColor: '#4000e4',
+    secondaryColor: 'white',
+    shadowColor: 'rgba(64,0,228,0.25)',
+    externalLinks: [],
+    ...options,
+    isCustom: true,
+    is721: false,
+    network,
+    address: address.toLowerCase(),
+    logo: unknowClub,
+    coverImage: unknowClubCover,
+  };
+};
 
 export const TokenImage = ({ token, size = 'small', ...restProps }) => {
   if (!token) {

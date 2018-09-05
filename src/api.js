@@ -16,7 +16,7 @@ import {
   erc20ContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
-import clubs, { getCustomClub } from './clubs';
+import clubs, { findClub } from './clubs';
 import ercs721 from './erc721';
 
 const {
@@ -49,8 +49,7 @@ export const isValidFeedItem = (feedItem) => {
   }
   if (feedItem.type === 'post_club') {
     const [network, address] = feedItem.about.split(':');
-    const club = find({ network, address })(clubs);
-    if (!club && (['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) === -1 || !isAddress(address))) {
+    if (['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) === -1 || !isAddress(address)) {
       return false;
     }
   }
@@ -90,15 +89,11 @@ export const enhanceFeedItem = (feedItem) => {
 
   if (feedItem.type === 'post_club') {
     const [network, address] = feedItem.about.split(':');
-    let club = find({ network, address })(clubs);
-    if (!club) {
-      club = getCustomClub(network, address);
-    }
-
+    const club = findClub(network, address);
     feedItem.about_info = club;
   }
 
-  if (feedItem.type === 'boost') {
+  if (feedItem.type === 'boost' && feedItem.about) {
     feedItem.about_info = feedItem.about_info ? feedItem.about_info : getEntityInfoForAddress(feedItem.about);
     feedItem.target_info = feedItem.target_info ? feedItem.target_info : getEntityInfoForAddress(feedItem.target);
   }
@@ -215,11 +210,9 @@ export const getLabels = async (entityId) => {
 export const getEntityTokens = async (entityId, tokens = clubs) => {
   const entityTokens = await getRanking([
     {
-      algorithm: isAddress(entityId) ? 'experimental_assets_balances' : 'experimental_assets_balances_erc721',
+      algorithm: 'cryptoverse_balances',
       params: {
-        context: entityId,
-        identity: entityId,
-        asset: tokens.map(({ network, address }) => `${network}:${address}`),
+        entity: entityId,
       },
     },
   ]);
