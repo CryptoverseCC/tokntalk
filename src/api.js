@@ -49,8 +49,7 @@ export const isValidFeedItem = (feedItem) => {
   }
   if (feedItem.type === 'post_club') {
     const [network, address] = feedItem.about.split(':');
-    const club = findClub(network, address);
-    if (!club && (['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) === -1 || !isAddress(address))) {
+    if (['ethereum', 'kovan', 'rinkeby', 'ropsten'].indexOf(network) === -1 || !isAddress(address)) {
       return false;
     }
   }
