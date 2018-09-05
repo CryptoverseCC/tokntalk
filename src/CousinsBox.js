@@ -32,8 +32,10 @@ export class CousinsBox extends Component {
   }
 
   updateEntities = async (owner) => {
-    const entities = await getEntities(owner);
-    this.setState({ entities });
+    try {
+      const entities = await getEntities(owner);
+      this.setState({ entities });
+    } catch (ex) {}
   };
 
   render() {
