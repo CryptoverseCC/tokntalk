@@ -194,9 +194,7 @@ export default class ShowPage extends Component {
           <EntityName id={entity.id} /> Communities
         </H4>
         <CommunitiesListContainer>
-          <CommunitiesList className="columns is-mobile">
-            {sortedClubs.map((club) => this.renderSingleCommunity(club))}
-          </CommunitiesList>
+          <CommunitiesList className="columns is-mobile">{sortedClubs.map(this.renderSingleCommunity)}</CommunitiesList>
         </CommunitiesListContainer>
       </FlatContainer>
     ) : null;
