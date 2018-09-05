@@ -169,33 +169,26 @@ export const getMyEntities = async () => {
   return [getEntityInfoForAddress(from), ...(await getEntities(from))];
 };
 
-export const getEntities = async (from) => {
-  try {
-    const identities = await getRanking(
-      [
-        {
-          algorithm: 'cryptoverse_tokens',
-          params: {
-            identity: from.toLowerCase(),
-            asset: ercs721.map(({ address: erc721Address }) => `ethereum:${erc721Address.toLowerCase()}`),
-          },
+export const getEntities = async (from) =>
+  getRanking(
+    [
+      {
+        algorithm: 'cryptoverse_tokens',
+        params: {
+          identity: from.toLowerCase(),
+          asset: ercs721.map(({ address: erc721Address }) => `ethereum:${erc721Address.toLowerCase()}`),
         },
-      ],
-      'api/decorate-with-opensea',
-    ).then(({ items }) =>
-      items
-        .filter(({ context_info: { name, image_preview_url } }) => image_preview_url !== null && name !== null)
-        .map(({ context, context_info }) => ({
-          id: context,
-          ...context_info,
-        })),
-    );
-
-    return identities;
-  } catch (e) {
-    return [];
-  }
-};
+      },
+    ],
+    'api/decorate-with-opensea',
+  ).then(({ items }) =>
+    items
+      .filter(({ context_info: { name, image_preview_url } }) => image_preview_url !== null && name !== null)
+      .map(({ context, context_info }) => ({
+        id: context,
+        ...context_info,
+      })),
+  );
 
 export const getLabels = async (entityId) => {
   try {
