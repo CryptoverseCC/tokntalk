@@ -9,6 +9,7 @@ import {
   Entity,
   EntityName,
   IfIsActiveEntity,
+  IfIsOwnedByCurrentUser,
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
@@ -158,8 +159,8 @@ export default class ShowPage extends Component {
           <EntityName id={entity.id} />
         </H2>
         <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
-        <IfIsActiveEntity
-          id={entity.id.toString()}
+        <IfIsOwnedByCurrentUser
+          entity={entity}
           then={<SocialList editable {...entity} />}
           other={<SocialList {...entity} />}
         />
