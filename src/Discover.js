@@ -172,13 +172,15 @@ class Index extends Component {
           Communities
         </H1Discover>
         <div className="columns is-mobile is-marginless">
-          <DisoveryTab
-            className="column is-1"
-            selected={this.state.currentTab === Index.TAB.YOURS}
-            onClick={() => this.setState({ currentTab: Index.TAB.YOURS })}
-          >
-            Yours
-          </DisoveryTab>
+          {this.props.activeEntity && (
+            <DisoveryTab
+              className="column is-1"
+              selected={this.state.currentTab === Index.TAB.YOURS}
+              onClick={() => this.setState({ currentTab: Index.TAB.YOURS })}
+            >
+              Yours
+            </DisoveryTab>
+          )}
           <DisoveryTab
             className="column is-1"
             selected={this.state.currentTab === Index.TAB.MOST_ACTIVE}
@@ -223,14 +225,13 @@ class Index extends Component {
 class DiscoveryTabContent extends Component {
   state = {
     loading: true,
+    initialized: false,
     score: [],
   };
 
   componentWillReceiveProps(newProps) {
     const entityHasChanged = this.props.entity !== newProps.entity;
-    const tabHasBeenSelectedForTheFirstTime =
-      !this.props.isActive && newProps.isActive && this.state.score.length === 0;
-    if (tabHasBeenSelectedForTheFirstTime || entityHasChanged) {
+    if ((!this.state.initialized || entityHasChanged) && newProps.isActive) {
       this.updateItems(newProps.entity);
     }
   }
@@ -238,7 +239,7 @@ class DiscoveryTabContent extends Component {
   updateItems = async (entity) => {
     try {
       const items = await this.props.getSortedClubs(entity);
-      this.setState({ loading: false, score: items });
+      this.setState({ loading: false, score: items, initialized: true });
     } catch (e) {
       console.warn(e);
       this.setState({ loading: false });
