@@ -30,6 +30,10 @@ export const IfIsOwnedByCurrentUser = ({ entity, children, then, other }) => (
   </Context.Consumer>
 );
 
+export const WithActiveEntity = ({ children }) => (
+  <Context.Consumer>{({ entityStore: { activeEntity } }) => children(activeEntity)}</Context.Consumer>
+);
+
 export const IfIsActiveEntity = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => (activeEntity && activeEntity.id === id ? then || children : other || null)}
