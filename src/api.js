@@ -183,11 +183,16 @@ export const getEntities = async (from) =>
     'api/decorate-with-opensea',
   ).then(({ items }) =>
     items
-      .filter(({ context_info: { name, image_preview_url } }) => image_preview_url !== null && name !== null)
-      .map(({ context, context_info }) => ({
-        id: context,
-        ...context_info,
-      })),
+
+      .filter(({ context_info: { image_preview_url } }) => image_preview_url !== null)
+      .map(({ context, context_info }) => {
+        const name = context_info.name ? context_info.name : `${getEntityPrefix(context)}${getEntityId(context)}`;
+        return {
+          ...context_info,
+          id: context,
+          name,
+        };
+      }),
   );
 
 export const getLabels = async (entityId) => {

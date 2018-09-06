@@ -600,6 +600,7 @@ const clubs = [
   },
   {
     ...mapping.HYPERDRAGONS,
+    entityPrefix: 'HyperDragons #',
     logo: hyperdragons,
     coverImage: hyperdragonsCover,
     primaryColor: '#303caf',
