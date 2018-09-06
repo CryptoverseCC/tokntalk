@@ -292,7 +292,7 @@ const discoveryMostActive = async (entity) => {
       params: { clubs: assets },
     },
   ]);
-  return sortByScore(items);
+  return sortByScore(items).slice(0, 20);
 };
 
 const discoveryNewest = async (entity) => {
@@ -303,7 +303,7 @@ const discoveryNewest = async (entity) => {
       params: { clubs: assets },
     },
   ]);
-  return sortByScore(items);
+  return sortByScore(items).slice(0, 20);
 };
 
 const sortByScore = (score) => {
