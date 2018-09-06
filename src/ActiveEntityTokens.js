@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import find from 'lodash/fp/find';
+import sortBy from 'lodash/fp/sortBy';
 
 import Link from './Link';
 import { H4 } from './Components';
@@ -28,20 +28,25 @@ const ActiveEntityTokens = () => (
       if (typeof provider === 'boolean' && !provider) {
         return <NoMetamask />;
       }
-
       return (
         <IfActiveEntity other={<NoActiveEntity />}>
           {(activeEntityId) => (
             <Entity id={activeEntityId}>
-              {(entity) => (
-                <YourCommunitiesContainer>
-                  <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
-                  {entity.tokens.map((asset) => (
-                    <Token key={asset} asset={asset} />
-                  ))}
-                  <DiscoverMore>{!entity.tokens.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
-                </YourCommunitiesContainer>
-              )}
+              {(entity) => {
+                const clubs = entity.tokens
+                  .map((asset) => asset.split(':'))
+                  .map(([network, address]) => findClub(network, address));
+                const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+                return (
+                  <YourCommunitiesContainer>
+                    <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
+                    {sortedClubs.map((club) => (
+                      <Token key={club.address} token={club} />
+                    ))}
+                    <DiscoverMore>{!entity.tokens.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
+                  </YourCommunitiesContainer>
+                );
+              }}
             </Entity>
           )}
         </IfActiveEntity>
@@ -207,12 +212,9 @@ const StyledUnreadedMessages = styled(UnreadedCount)`
   background: white;
 `;
 
-const Token = ({ asset }) => {
-  const [network, address] = asset.split(':');
-  const token = findClub(network, address);
-
+const Token = ({ token }) => {
   return (
-    <YourCommunitiesLink to={token.isCustom ? `/clubs/${network}:${address}` : `/clubs/${token.symbol}`}>
+    <YourCommunitiesLink to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
       <StyledUnreadedMessages token={token} />
