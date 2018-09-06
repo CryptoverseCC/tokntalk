@@ -43,5 +43,6 @@ const FeedTypeSwitcher = ({ type, onChange, style, className, options = defaultO
 FeedTypeSwitcher.NEW = 'new';
 FeedTypeSwitcher.POPULAR = 'popular';
 FeedTypeSwitcher.ACTIVE = 'active';
+FeedTypeSwitcher.NOTIFICATIONS = 'notifications';
 
 export default FeedTypeSwitcher;

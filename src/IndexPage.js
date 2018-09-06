@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
+import { getFeedItemsFromCache, getRanking, feedItemValidator, enhanceFeedItem, SUPPORTED_FEED_TYPES } from './api';
 import AppContext from './Context';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
@@ -10,6 +10,7 @@ import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import ActiveEntityTokens from './ActiveEntityTokens';
+import { IfActiveEntity, Entity, Entities } from './Entity';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -22,13 +23,28 @@ const fetchPopularFeed = async () => {
     ],
     'api/decorate-with-opensea',
   );
-  let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
+  let feedItems = items.filter(feedItemValidator()).map(enhanceFeedItem);
+  return feedItems;
+};
+
+const fetchNotificationsFeed = async ({ tokens }) => {
+  const { items } = await getRanking(
+    [
+      {
+        algorithm: 'cryptoverse_notifications_feed',
+        params: { id: tokens },
+      },
+    ],
+    'api/decorate-with-opensea',
+  );
+  let feedItems = items.filter(feedItemValidator(SUPPORTED_FEED_TYPES + 'response')).map(enhanceFeedItem);
   return feedItems;
 };
 
 const NewestFeed = getFeed(getFeedItemsFromCache(), true, true, undefined, (f0, f1) => f1.created_at - f0.created_at);
 const PopularFeed = getFeed(fetchPopularFeed, false, false);
 const ActiveFeed = getFeed(getFeedItemsFromCache('cache-cryptoverse-active-feed'), true, false);
+const NotificationsFeed = getFeed(fetchNotificationsFeed, false, false);
 
 export default class IndexPage extends Component {
   state = { feedType: 'new' };
@@ -68,9 +84,21 @@ export default class IndexPage extends Component {
               type={feedType}
               onChange={this.changeFeedType}
               style={{ marginBottom: '2em' }}
-              options={[FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE]}
+              options={[
+                FeedTypeSwitcher.NEW,
+                FeedTypeSwitcher.POPULAR,
+                FeedTypeSwitcher.ACTIVE,
+                FeedTypeSwitcher.NOTIFICATIONS,
+              ]}
             />
-            {feedType === 'new' ? <NewestFeed /> : feedType === 'popular' ? <PopularFeed /> : <ActiveFeed />}
+            {feedType === FeedTypeSwitcher.NEW && <NewestFeed />}
+            {feedType === FeedTypeSwitcher.POPULAR && <PopularFeed />}
+            {feedType === FeedTypeSwitcher.ACTIVE && <ActiveFeed />}
+            {feedType === FeedTypeSwitcher.NOTIFICATIONS && (
+              <Entities>
+                {({ entities }) => <NotificationsFeed options={{ tokens: entities.map((entity) => entity.id) }} />}
+              </Entities>
+            )}
           </div>
         </div>
       </ContentContainer>

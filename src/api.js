@@ -33,7 +33,7 @@ export const hasValidContext = ({ context }) => {
   return isValidAndSupportedErc721(address);
 };
 
-const supportedFeedTypes = [
+export const SUPPORTED_FEED_TYPES = [
   'regular',
   'like',
   'post_to',
@@ -43,7 +43,7 @@ const supportedFeedTypes = [
   'post_to_simple',
   'boost',
 ];
-export const isValidFeedItem = (feedItem) => {
+export const feedItemValidator = (supportedFeedTypes = SUPPORTED_FEED_TYPES) => (feedItem) => {
   if (!supportedFeedTypes.includes(feedItem.type)) {
     return false;
   }
@@ -126,7 +126,7 @@ export const getFeedItem = async ({ claimId }) => {
     'api/decorate-with-opensea',
   );
 
-  feedItems = feedItems.filter(isValidFeedItem).map(enhanceFeedItem);
+  feedItems = feedItems.filter(feedItemValidator()).map(enhanceFeedItem);
 
   return feedItems[0];
 };
@@ -145,7 +145,7 @@ export const getFeedItemsFromCache = (algorithm = 'cache-cryptoverse-feed') => a
   ).then((r) => r.json());
 
   const { items, total, version } = response;
-  const validFeedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
+  const validFeedItems = items.filter(feedItemValidator()).map(enhanceFeedItem);
   const lastItem = last(items);
 
   return { feedItems: validFeedItems, total, version, lastItemId: lastItem ? lastItem.id : undefined };
