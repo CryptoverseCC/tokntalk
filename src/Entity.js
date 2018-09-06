@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import sortBy from 'lodash/fp/sortBy';
 
 import { getEntityPrefix, getEntityId } from './entityApi';
 import Context from './Context';
 import IdentityAvatar, { AvatarPlaceholder } from './Avatar';
 import StyledLink from './Link';
 import { getEntityTokens } from './api';
+import { findClub } from './clubs';
 
 export const IfOnMainnet = ({ children, then, other }) => (
   <Context.Consumer>
@@ -44,6 +46,18 @@ export const IfOwnerOfEntity = ({ id, children, then, other }) => (
 
 export const Entity = ({ id, children }) => (
   <Context.Consumer>{({ entityStore: { getEntity } }) => children(getEntity(id))}</Context.Consumer>
+);
+
+export const EntityClubs = ({ id, children }) => (
+  <Entity id={id}>
+    {(entity) => {
+      const clubs = entity.tokens
+        .map((asset) => asset.split(':'))
+        .map(([network, address]) => findClub(network, address));
+      const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+      return children(sortedClubs);
+    }}
+  </Entity>
 );
 
 export const EntityName = ({ id }) => {

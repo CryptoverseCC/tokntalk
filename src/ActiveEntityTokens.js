@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import sortBy from 'lodash/fp/sortBy';
 
 import Link from './Link';
 import { H4 } from './Components';
 import AppContext from './Context';
-import { IfActiveEntity, Entity } from './Entity';
-import { TokenImage, findClub } from './clubs';
+import { IfActiveEntity, EntityClubs } from './Entity';
+import { TokenImage } from './clubs';
 import { DiscoverIcon } from './Icons';
 import { UnreadedCount } from './UnreadedMessages';
 
@@ -31,23 +30,19 @@ const ActiveEntityTokens = () => (
       return (
         <IfActiveEntity other={<NoActiveEntity />}>
           {(activeEntityId) => (
-            <Entity id={activeEntityId}>
-              {(entity) => {
-                const clubs = entity.tokens
-                  .map((asset) => asset.split(':'))
-                  .map(([network, address]) => findClub(network, address));
-                const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+            <EntityClubs id={activeEntityId}>
+              {(clubs) => {
                 return (
                   <YourCommunitiesContainer>
                     <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
-                    {sortedClubs.map((club) => (
+                    {clubs.map((club) => (
                       <Token key={club.address} token={club} />
                     ))}
-                    <DiscoverMore>{!entity.tokens.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
+                    <DiscoverMore>{!clubs.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
                   </YourCommunitiesContainer>
                 );
               }}
-            </Entity>
+            </EntityClubs>
           )}
         </IfActiveEntity>
       );

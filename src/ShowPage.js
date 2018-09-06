@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import sortBy from 'lodash/fp/sortBy';
 
 import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
@@ -13,6 +12,7 @@ import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
+  EntityClubs,
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
@@ -199,20 +199,22 @@ export default class ShowPage extends Component {
   };
 
   renderCommunities = (entity) => {
-    const clubs = entity.tokens
-      .map((asset) => asset.split(':'))
-      .map(([network, address]) => findClub(network, address));
-    const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
-    return sortedClubs.length ? (
-      <FlatContainer style={{ marginBottom: '2rem' }}>
-        <H4 style={{ marginBottom: '15px' }}>
-          <EntityName id={entity.id} /> Communities
-        </H4>
-        <CommunitiesListContainer>
-          <CommunitiesList className="columns is-mobile">{sortedClubs.map(this.renderSingleCommunity)}</CommunitiesList>
-        </CommunitiesListContainer>
-      </FlatContainer>
-    ) : null;
+    return (
+      <EntityClubs id={entity.id}>
+        {(clubs) =>
+          clubs.length ? (
+            <FlatContainer style={{ marginBottom: '2rem' }}>
+              <H4 style={{ marginBottom: '15px' }}>
+                <EntityName id={entity.id} /> Communities
+              </H4>
+              <CommunitiesListContainer>
+                <CommunitiesList className="columns is-mobile">{clubs.map(this.renderSingleCommunity)}</CommunitiesList>
+              </CommunitiesListContainer>
+            </FlatContainer>
+          ) : null
+        }
+      </EntityClubs>
+    );
   };
 
   renderSingleCommunity = (club) => {
