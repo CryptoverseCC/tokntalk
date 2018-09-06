@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 
 import Dropdown from './Dropdown';
 import { findClub } from './clubs';
-import { IfActiveEntity, Entity } from './Entity';
+import { withActiveEntity } from './Entity';
 import { transferErc20, transferEth } from './api';
 import { toWei } from './balance';
 import { A } from './Link';
@@ -182,13 +182,13 @@ class SendTokens extends Component {
       token: { name: 'Ethereum', symbol: 'ETH' },
       value: 0,
       txHash: '',
-      tokens: this.mapAssetsToTokens(this.props.entity.tokens),
+      tokens: this.mapAssetsToTokens(this.props.activeEntity.tokens),
     };
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.entity.tokens !== newProps.entity.tokens) {
-      this.setState({ tokens: this.mapAssetsToTokens(newProps.entity.tokens) });
+    if (this.props.activeEntity.tokens !== newProps.activeEntity.tokens) {
+      this.setState({ tokens: this.mapAssetsToTokens(newProps.activeEntity.tokens) });
     }
   }
 
@@ -296,11 +296,5 @@ class SendTokens extends Component {
     );
   }
 }
-
-const withActiveEntity = (Cmp) => (props) => (
-  <IfActiveEntity>
-    {(entityId) => <Entity id={entityId}>{(entity) => <Cmp {...props} entity={entity} />}</Entity>}
-  </IfActiveEntity>
-);
 
 export default withActiveEntity(SendTokens);
