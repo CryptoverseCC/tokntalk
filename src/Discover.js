@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import qs from 'qs';
 import { Switch, Route } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import timeago from 'timeago.js';
 import { isAddress } from 'web3-utils';
 import pipe from 'lodash/fp/pipe';
@@ -29,10 +29,11 @@ import {
   IsActiveEntityFromFamily,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
-  Entity,
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
+  WithActiveEntity,
 } from './Entity';
+import { getEntityTokens } from './api';
 import exportIcon from './img/export.svg';
 import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
@@ -84,6 +85,27 @@ const WelcomeMessage = styled.div`
   }
 `;
 
+const DisoveryTab = styled(({ children, ...props }) => (
+  <div {...props}>
+    <span style={{ fontSize: '1rem' }}>{children}</span>
+  </div>
+))`
+  border-bottom: 2px #f0f1f6 solid;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  font-weight: 600;
+  padding-left: 0;
+
+  ${({ selected }) =>
+    selected &&
+    css`
+      cursor: unset;
+      color: #264dd9;
+      border-bottom: 2px #264dd9 solid;
+    `};
+`;
+
 const DiscoveryContext = React.createContext();
 
 export default class Discover extends Component {
@@ -102,7 +124,7 @@ export default class Discover extends Component {
 
     return (
       <Switch>
-        <Route exact path={`${match.url}/`} component={Index} />
+        <Route exact path={`${match.url}/`} component={IndexWithActiveEntity} />
         <Route path={`${match.url}/byToken/:token`} component={rewriteCmp('/byToken', '')} />
         <Route path={`${match.url}/:token`} component={decoratedByTokenIndex} />
       </Switch>
@@ -110,27 +132,20 @@ export default class Discover extends Component {
   }
 }
 
+const IndexWithActiveEntity = ({ ...props }) => (
+  <WithActiveEntity>{(entity) => <Index {...props} activeEntity={entity} />}</WithActiveEntity>
+);
+
 class Index extends Component {
-  state = {
-    loading: true,
-    score: [],
+  static TAB = {
+    YOURS: 0,
+    MOST_ACTIVE: 1,
+    NEWEST: 2,
   };
 
-  async componentDidMount() {
-    try {
-      let assets = clubs.map((club) => `${club.network}:${club.address}`);
-      const { items } = await getRanking([
-        {
-          algorithm: 'cryptoverse_clubs_sorted',
-          params: { clubs: assets },
-        },
-      ]);
-      this.setState({ loading: false, score: items });
-    } catch (e) {
-      console.warn(e);
-      this.setState({ loading: false });
-    }
-  }
+  state = {
+    currentTab: Index.TAB.MOST_ACTIVE,
+  };
 
   renderEntityTokens = (entity) => {
     const clubs = entity.tokens.map((asset) => {
@@ -141,17 +156,108 @@ class Index extends Component {
     return <div className="columns is-multiline">{this.renderTiles(sortedClubs)}</div>;
   };
 
-  renderOthersTokens = () => (
-    <div className="columns is-multiline">
-      <AddToken className="column is-one-quarter" />
-      {this.renderTiles(this.state.loading ? [] : this.sortByScore())}
-    </div>
-  );
+  componentWillReceiveProps(newProps) {
+    if (this.props.activeEntity !== newProps.activeEntity) {
+      this.setState({ currentTab: newProps.activeEntity !== null ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
+    }
+  }
 
-  sortByScore = () => {
-    const tokensMap = clubs.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
-    return this.state.score.filter((item) => tokensMap[item.id]).map((item) => tokensMap[item.id]);
+  render() {
+    return (
+      <ContentContainer>
+        <HeaderSpacer />
+        <H1Discover>
+          Token
+          <br />
+          Communities
+        </H1Discover>
+        <div className="columns is-mobile is-marginless">
+          {this.props.activeEntity && (
+            <DisoveryTab
+              className="column is-1"
+              selected={this.state.currentTab === Index.TAB.YOURS}
+              onClick={() => this.setState({ currentTab: Index.TAB.YOURS })}
+            >
+              Yours
+            </DisoveryTab>
+          )}
+          <DisoveryTab
+            className="column is-1"
+            selected={this.state.currentTab === Index.TAB.MOST_ACTIVE}
+            onClick={() => this.setState({ currentTab: Index.TAB.MOST_ACTIVE })}
+          >
+            Most active
+          </DisoveryTab>
+          <DisoveryTab
+            className="column is-1"
+            selected={this.state.currentTab === Index.TAB.NEWEST}
+            onClick={() => this.setState({ currentTab: Index.TAB.NEWEST })}
+          >
+            Newest
+          </DisoveryTab>
+        </div>
+        <div className="columns">
+          <div className="column is-12">
+            <DiscoveryTabContent
+              {...this.props}
+              getSortedClubs={discoveryYours}
+              entity={this.props.activeEntity}
+              isActive={this.props.activeEntity && this.state.currentTab === Index.TAB.YOURS}
+            />
+            <DiscoveryTabContent
+              {...this.props}
+              getSortedClubs={discoveryMostActive}
+              isActive={this.state.currentTab === Index.TAB.MOST_ACTIVE}
+            />
+            <DiscoveryTabContent
+              {...this.props}
+              getSortedClubs={discoveryNewest}
+              isActive={this.state.currentTab === Index.TAB.NEWEST}
+            />
+          </div>
+          <div className="column is-3 is-offset-1" />
+        </div>
+      </ContentContainer>
+    );
+  }
+}
+
+class DiscoveryTabContent extends Component {
+  state = {
+    loading: true,
+    initialized: false,
+    score: [],
   };
+
+  componentWillReceiveProps(newProps) {
+    const entityHasChanged = this.props.entity !== newProps.entity;
+    if ((!this.state.initialized || entityHasChanged) && newProps.isActive) {
+      this.updateItems(newProps.entity);
+    }
+  }
+
+  updateItems = async (entity) => {
+    try {
+      const items = await this.props.getSortedClubs(entity);
+      this.setState({ loading: false, score: items, initialized: true });
+    } catch (e) {
+      console.warn(e);
+      this.setState({ loading: false });
+    }
+  };
+
+  render() {
+    return this.props.isActive ? (
+      this.state.loading ? (
+        <Loader />
+      ) : (
+        <div className="columns is-multiline">
+          <AddToken className="column is-one-quarter" />
+          {this.renderTiles(this.state.loading ? [] : this.state.score)}
+        </div>
+      )
+    ) : null;
+  }
 
   renderTiles = (tokens) => {
     const { match } = this.props;
@@ -168,44 +274,43 @@ class Index extends Component {
       </React.Fragment>
     );
   };
-
-  render() {
-    return (
-      <ContentContainer>
-        <HeaderSpacer />
-        <H1Discover>
-          Token
-          <br />
-          Communities
-        </H1Discover>
-        <div className="columns">
-          <div className="column is-12">
-            <IfActiveEntity
-              then={(entityId) => (
-                <Entity id={entityId}>
-                  {(entity) => (
-                    <React.Fragment>
-                      <H3Discover>Yours</H3Discover>
-                      {this.renderEntityTokens(entity)}
-                      <H3Discover>Most active</H3Discover>
-                      {this.renderOthersTokens()}
-                    </React.Fragment>
-                  )}
-                </Entity>
-              )}
-              other={
-                <React.Fragment>
-                  <H3Discover>Most active</H3Discover> {this.renderOthersTokens()}
-                </React.Fragment>
-              }
-            />
-          </div>
-          <div className="column is-3 is-offset-1" />
-        </div>
-      </ContentContainer>
-    );
-  }
 }
+
+const discoveryYours = async (entity) => {
+  const tokens = await getEntityTokens(entity.id);
+  const clubs = tokens.map((asset) => {
+    const [network, address] = asset.split(':');
+    return findClub(network, address);
+  });
+  return clubs;
+};
+
+const discoveryMostActive = async (entity) => {
+  let assets = clubs.map((club) => `${club.network}:${club.address}`);
+  const { items } = await getRanking([
+    {
+      algorithm: 'cryptoverse_clubs_sorted',
+      params: { clubs: assets },
+    },
+  ]);
+  return sortByScore(items).slice(0, 20);
+};
+
+const discoveryNewest = async (entity) => {
+  let assets = clubs.map((club) => `${club.network}:${club.address}`);
+  const { items } = await getRanking([
+    {
+      algorithm: 'cryptoverse_clubs_sorted_newest',
+      params: { clubs: assets },
+    },
+  ]);
+  return sortByScore(items).slice(0, 20);
+};
+
+const sortByScore = (score) => {
+  const tokensMap = clubs.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
+  return score.filter((item) => tokensMap[item.id]).map((item) => tokensMap[item.id]);
+};
 
 class ByTokenIndex extends Component {
   state = {
