@@ -10,7 +10,7 @@ import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import ActiveEntityTokens from './ActiveEntityTokens';
-import { IfActiveEntity, Entity, Entities } from './Entity';
+import { IfActiveEntity, Entity, Entities, WithActiveEntity } from './Entity';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -59,6 +59,7 @@ export default class IndexPage extends Component {
 
   render() {
     const { feedType } = this.state;
+    const defaultUnloggedFeeds = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE];
     return (
       <ContentContainer>
         <HeaderSpacer style={{ marginBottom: '60px' }} />
@@ -80,17 +81,18 @@ export default class IndexPage extends Component {
           </div>
           <div className="column is-8 is-offset-1-widescreen">
             <Hero style={{ marginBottom: '30px' }} />
-            <FeedTypeSwitcher
-              type={feedType}
-              onChange={this.changeFeedType}
-              style={{ marginBottom: '2em' }}
-              options={[
-                FeedTypeSwitcher.NEW,
-                FeedTypeSwitcher.POPULAR,
-                FeedTypeSwitcher.ACTIVE,
-                FeedTypeSwitcher.NOTIFICATIONS,
-              ]}
-            />
+            <WithActiveEntity>
+              {(activeEntity) => (
+                <FeedTypeSwitcher
+                  type={feedType}
+                  onChange={this.changeFeedType}
+                  style={{ marginBottom: '2em' }}
+                  options={
+                    activeEntity ? defaultUnloggedFeeds.concat(FeedTypeSwitcher.NOTIFICATIONS) : defaultUnloggedFeeds
+                  }
+                />
+              )}
+            </WithActiveEntity>
             {feedType === FeedTypeSwitcher.NEW && <NewestFeed />}
             {feedType === FeedTypeSwitcher.POPULAR && <PopularFeed />}
             {feedType === FeedTypeSwitcher.ACTIVE && <ActiveFeed />}
