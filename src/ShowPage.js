@@ -29,6 +29,7 @@ import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
 import { niceScroll } from './cssUtils';
+import SendTokens from './SendTokens';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -121,7 +122,7 @@ export default class ShowPage extends Component {
           <ContentContainer>
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
-              {this.renderProfileInfo(entity)}
+              <div className="column is-3-widescreen is-4">{this.renderProfileInfo(entity)}</div>
               <div className="column is-8 is-offset-1-widescreen">
                 {this.renderCommunities(entity)}
                 {this.renderFeedContainer(entity)}
@@ -135,12 +136,12 @@ export default class ShowPage extends Component {
 
   renderProfileInfo = (entity) => {
     return (
-      <div className="column is-3-widescreen is-4">
+      <React.Fragment>
         {this.renderProfileAvatar(entity)}
         {this.renderEntityInfo(entity)}
         {this.renderPromotionBox(entity)}
         {this.renderCousins(entity)}
-      </div>
+      </React.Fragment>
     );
   };
 
@@ -158,6 +159,7 @@ export default class ShowPage extends Component {
         <H2 style={{ wordBreak: 'break-word' }}>
           <EntityName id={entity.id} />
         </H2>
+        <AppContext>{({ web3Store }) => web3Store.networkName === 'ethereum' && <SendTokens to={entity} />}</AppContext>
         <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
         <IfIsOwnedByCurrentUser
           entity={entity}

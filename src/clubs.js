@@ -391,6 +391,7 @@ const clubs = [
   },
   {
     ...mapping.AVOCADO,
+    decimals: 18,
     logo: avocado,
     coverImage: avocadoCover,
     primaryColor: '#CDFA7F',
@@ -400,6 +401,7 @@ const clubs = [
   },
   {
     ...mapping.BASIC_ATTENTION_TOKEN,
+    decimals: 18,
     logo: bat,
     coverImage: batCover,
     primaryColor: '#818181',
@@ -409,6 +411,7 @@ const clubs = [
   },
   {
     ...mapping.BENTYN,
+    decimals: 4,
     logo: ben,
     coverImage: benCover,
     primaryColor: '#BEC4CB',
@@ -422,6 +425,7 @@ const clubs = [
   },
   {
     ...mapping.DECENTRALAND_MANA,
+    decimals: 18,
     logo: mana,
     coverImage: manaCover,
     primaryColor: '#353535',
@@ -434,6 +438,7 @@ const clubs = [
   },
   {
     ...mapping.MAKER,
+    decimals: 18,
     logo: mkr,
     coverImage: mkrCover,
     primaryColor: '#C6FFF4',
@@ -446,6 +451,7 @@ const clubs = [
   },
   {
     ...mapping.GOLEM,
+    decimals: 18,
     logo: gnt,
     coverImage: gntCover,
     primaryColor: '#68625d',
@@ -455,6 +461,7 @@ const clubs = [
   },
   {
     ...mapping.OMNISE_GO,
+    decimals: 18,
     logo: omg,
     coverImage: omgCover,
     primaryColor: '#1A52EF',
@@ -467,6 +474,7 @@ const clubs = [
   },
   {
     ...mapping.UNICORN,
+    decimals: 0,
     logo: unicorn,
     coverImage: unicornCover,
     primaryColor: '#C8F9FF',
@@ -479,6 +487,7 @@ const clubs = [
   },
   {
     ...mapping.STATUS,
+    decimals: 18,
     logo: snt,
     coverImage: sntCover,
     primaryColor: '#5B6CEE',
@@ -488,6 +497,7 @@ const clubs = [
   },
   {
     ...mapping.ZRX,
+    decimals: 18,
     logo: zrx,
     coverImage: zrxCover,
     primaryColor: '#3C3C3C',
@@ -497,6 +507,7 @@ const clubs = [
   },
   {
     ...mapping.SANMARICOIN,
+    decimals: 18,
     logo: sanmaricoin,
     coverImage: sanmaricoinCover,
     primaryColor: '#C8D5FF',
@@ -509,6 +520,7 @@ const clubs = [
   },
   {
     ...mapping.KIYOSALO,
+    decimals: 18,
     logo: kiyosalo,
     coverImage: kiyosaloCover,
     primaryColor: '#bcdbff',
@@ -518,6 +530,7 @@ const clubs = [
   },
   {
     ...mapping.DDGT,
+    decimals: 18,
     logo: ddgt,
     coverImage: ddgtCover,
     primaryColor: '#122d4b',
@@ -527,6 +540,7 @@ const clubs = [
   },
   {
     ...mapping.TOKEN_X,
+    decimals: 2,
     logo: x,
     coverImage: xCover,
     primaryColor: '#03FFFF',
@@ -549,6 +563,7 @@ const clubs = [
   },
   {
     ...mapping.BAOBOSHICOIN,
+    decimals: 18,
     logo: bbsc,
     coverImage: bbscCover,
     primaryColor: '#e60300',
@@ -561,6 +576,7 @@ const clubs = [
   },
   {
     ...mapping.TOKENVILLE,
+    decimals: 18,
     logo: tokenville,
     coverImage: tokenvilleCover,
     primaryColor: '#171A4C',
@@ -591,6 +607,7 @@ const clubs = [
   },
   {
     ...mapping.DOMRAIDER,
+    decimals: 8,
     logo: domraider,
     coverImage: domraiderCover,
     primaryColor: '#212a4b',
@@ -610,6 +627,7 @@ const clubs = [
   },
   {
     ...mapping.DASABI,
+    decimals: 18,
     logo: dasabi,
     coverImage: dasabiCover,
     primaryColor: '#762124',
@@ -672,6 +690,7 @@ const clubs = [
   },
   {
     ...mapping.SNOOKARMA,
+    decimals: 2,
     logo: snookarma,
     coverImage: snookarmaCover,
     primaryColor: '#3F51B5',
@@ -690,6 +709,7 @@ const clubs = [
   },
   {
     ...mapping.DIGIX_GLOBAL,
+    decimals: 9,
     logo: digix,
     coverImage: digixCover,
     primaryColor: '#273144',
@@ -699,6 +719,7 @@ const clubs = [
   },
   {
     ...mapping.DUMMY_COIN,
+    decimals: 8,
     logo: dummy,
     coverImage: dummyCover,
     primaryColor: '#ffff00',
@@ -708,6 +729,7 @@ const clubs = [
   },
   {
     ...mapping.NFTY_TOKEN,
+    decimals: 3,
     logo: nfty,
     coverImage: nftyCover,
     primaryColor: '#f1e2ff',
@@ -752,6 +774,7 @@ const clubs = [
   },
   {
     ...mapping.PERCENT,
+    decimals: 1,
     logo: percent,
     coverImage: percentCover,
     primaryColor: '#C8F9FF',

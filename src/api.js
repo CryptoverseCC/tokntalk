@@ -427,6 +427,28 @@ export const setApprove = async (erc20, value) => {
   return contract.methods.approve(spender, new BN(value).sub(allowance)).send({ from });
 };
 
+export const transferEth = async (to, value) => {
+  const web3 = await getWeb3();
+  const { from } = await getWeb3State();
+
+  return new Promise((resolve, reject) => {
+    const promiEvent = web3.eth.sendTransaction({ from, to, value });
+    promiEvent.on('error', reject);
+    promiEvent.on('transactionHash', resolve);
+  });
+};
+
+export const transferErc20 = async (erc20, to, value) => {
+  const { from } = await getWeb3State();
+  const contract = await getErc20Contract(erc20);
+
+  return new Promise((resolve, reject) => {
+    const promiEvent = contract.methods.transfer(to, value).send({ from });
+    promiEvent.on('error', reject);
+    promiEvent.on('transactionHash', resolve);
+  });
+};
+
 const claimWithTokenValueTransfer = async (data, value, ownerAddress, erc20) => {
   const { from } = await getWeb3State();
   const contract = await getClaimWithTokenValueTransferContract();

@@ -68,7 +68,10 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 12px;
   transition: all 0.2s ease;
+  cursor: pointer;
+
   &:disabled {
+    cursor: not-allowed;
     background: #e4dcfb;
     transition: all 0.2s ease;
   }

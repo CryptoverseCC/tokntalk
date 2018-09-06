@@ -115,4 +115,13 @@ export const erc20ContractAbi = [
     payable: false,
     type: 'function',
   },
+  {
+    constant: false,
+    name: 'transfer',
+    inputs: [{ name: '_to', type: 'address' }, { name: '_value', type: 'uint256' }],
+    outputs: [{ name: '', type: 'bool' }],
+    payable: false,
+    type: 'function',
+    stateMutability: 'nonpayable',
+  },
 ];
