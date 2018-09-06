@@ -247,10 +247,14 @@ class DiscoveryTabContent extends Component {
 
   render() {
     return this.props.isActive ? (
-      <div className="columns is-multiline">
-        <AddToken className="column is-one-quarter" />
-        {this.renderTiles(this.state.loading ? [] : this.state.score)}
-      </div>
+      this.state.loading ? (
+        <Loader />
+      ) : (
+        <div className="columns is-multiline">
+          <AddToken className="column is-one-quarter" />
+          {this.renderTiles(this.state.loading ? [] : this.state.score)}
+        </div>
+      )
     ) : null;
   }
 
