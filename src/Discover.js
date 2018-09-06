@@ -299,7 +299,7 @@ const discoveryNewest = async (entity) => {
   let assets = clubs.map((club) => `${club.network}:${club.address}`);
   const { items } = await getRanking([
     {
-      algorithm: 'cryptoverse_clubs_sorted',
+      algorithm: 'cryptoverse_clubs_sorted_newest',
       params: { clubs: assets },
     },
   ]);
