@@ -7,6 +7,7 @@ import { isAddress } from 'web3-utils';
 import pipe from 'lodash/fp/pipe';
 import uniqBy from 'lodash/fp/uniqBy';
 import find from 'lodash/fp/find';
+import sortBy from 'lodash/fp/sortBy';
 
 import { pageView } from './Analytics';
 import Link, { A } from './Link';
@@ -131,16 +132,14 @@ class Index extends Component {
     }
   }
 
-  renderEntityTokens = (entity) => (
-    <div className="columns is-multiline">
-      {this.renderTiles(
-        entity.tokens.map((asset) => {
-          const [network, address] = asset.split(':');
-          return findClub(network, address);
-        }),
-      )}
-    </div>
-  );
+  renderEntityTokens = (entity) => {
+    const clubs = entity.tokens.map((asset) => {
+      const [network, address] = asset.split(':');
+      return findClub(network, address);
+    });
+    const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+    return <div className="columns is-multiline">{this.renderTiles(sortedClubs)}</div>;
+  };
 
   renderOthersTokens = () => (
     <div className="columns is-multiline">
