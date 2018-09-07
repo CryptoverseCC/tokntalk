@@ -930,7 +930,7 @@ export class FeedForToken extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      let feedItems = items.filter(feedItemValidator()).map(enhanceFeedItem);
+      let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
       if (feedType === 'new') {
         feedItems = feedItems.sort((a, b) => b.created_at - a.created_at);
       }

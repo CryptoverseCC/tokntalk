@@ -30,7 +30,7 @@ export default class SimpleFeed extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      let feedItems = items.filter(feedItemValidator()).map(enhanceFeedItem);
+      let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
 
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
     } catch (e) {

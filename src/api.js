@@ -33,7 +33,7 @@ export const hasValidContext = ({ context }) => {
   return isValidAndSupportedErc721(address);
 };
 
-export const SUPPORTED_FEED_TYPES = [
+const SUPPORTED_FEED_TYPES = [
   'regular',
   'like',
   'post_to',
@@ -42,9 +42,10 @@ export const SUPPORTED_FEED_TYPES = [
   'social',
   'post_to_simple',
   'boost',
+  'response',
 ];
-export const feedItemValidator = (supportedFeedTypes = SUPPORTED_FEED_TYPES) => (feedItem) => {
-  if (!supportedFeedTypes.includes(feedItem.type)) {
+export const feedItemValidator = (feedItem) => {
+  if (!SUPPORTED_FEED_TYPES.includes(feedItem.type)) {
     return false;
   }
   if (feedItem.type === 'post_club') {
@@ -126,7 +127,7 @@ export const getFeedItem = async ({ claimId }) => {
     'api/decorate-with-opensea',
   );
 
-  feedItems = feedItems.filter(feedItemValidator()).map(enhanceFeedItem);
+  feedItems = feedItems.filter(feedItemValidator).map(enhanceFeedItem);
 
   return feedItems[0];
 };
@@ -145,7 +146,7 @@ export const getFeedItemsFromCache = (algorithm = 'cache-cryptoverse-feed') => a
   ).then((r) => r.json());
 
   const { items, total, version } = response;
-  const validFeedItems = items.filter(feedItemValidator()).map(enhanceFeedItem);
+  const validFeedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
   const lastItem = last(items);
 
   return { feedItems: validFeedItems, total, version, lastItemId: lastItem ? lastItem.id : undefined };

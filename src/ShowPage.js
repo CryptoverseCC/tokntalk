@@ -64,7 +64,7 @@ const getSingleFeed = async ({ entityId }) => {
     'api/decorate-with-opensea',
   );
 
-  return items.filter(feedItemValidator()).map(enhanceFeedItem);
+  return items.filter(feedItemValidator).map(enhanceFeedItem);
 };
 
 const filterTemporaryItemsNotForEntity = ({ entityId }) => ({ context, about }) =>

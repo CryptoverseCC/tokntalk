@@ -23,7 +23,7 @@ const fetchPopularFeed = async () => {
     ],
     'api/decorate-with-opensea',
   );
-  let feedItems = items.filter(feedItemValidator()).map(enhanceFeedItem);
+  let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
   return feedItems;
 };
 
@@ -37,7 +37,7 @@ const fetchNotificationsFeed = async ({ tokens }) => {
     ],
     'api/decorate-with-opensea',
   );
-  let feedItems = items.filter(feedItemValidator(SUPPORTED_FEED_TYPES + 'response')).map(enhanceFeedItem);
+  let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
   return feedItems;
 };
 
