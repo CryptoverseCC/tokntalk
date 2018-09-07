@@ -94,6 +94,10 @@ export const enhanceFeedItem = (feedItem) => {
     feedItem.about_info = club;
   }
 
+  if (feedItem.type === 'response') {
+    feedItem.reply_to = enhanceFeedItem(feedItem.reply_to);
+  }
+
   if (feedItem.type === 'boost' && feedItem.about) {
     feedItem.about_info = feedItem.about_info ? feedItem.about_info : getEntityInfoForAddress(feedItem.about);
     feedItem.target_info = feedItem.target_info ? feedItem.target_info : getEntityInfoForAddress(feedItem.target);
