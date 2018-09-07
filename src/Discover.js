@@ -262,12 +262,12 @@ class DiscoveryTabContent extends Component {
     const { match } = this.props;
     return (
       <React.Fragment>
-        {tokens.map((token) => (
+        {tokens.map((token, index) => (
           <TokenTile
             linkTo={token.isCustom ? `${match.url}/${token.network}:${token.address}` : `${match.url}/${token.symbol}`}
             key={token.address}
             token={token}
-            className="column is-one-quarter"
+            className={`column ${index < 20 ? 'is-one-quarter' : index < 40 ? 'is-one-fifth' : 'is-2'}`}
           />
         ))}
       </React.Fragment>
@@ -288,7 +288,7 @@ const discoveryYours = async (entity) => {
   }
 };
 
-const discoveryMostActive = async (entity) => {
+const discoveryMostActive = async () => {
   let assets = clubs.map((club) => `${club.network}:${club.address}`);
   const { items } = await getRanking([
     {
@@ -296,10 +296,10 @@ const discoveryMostActive = async (entity) => {
       params: { clubs: assets },
     },
   ]);
-  return sortByScore(items).slice(0, 20);
+  return sortByScore(items);
 };
 
-const discoveryNewest = async (entity) => {
+const discoveryNewest = async () => {
   let assets = clubs.map((club) => `${club.network}:${club.address}`);
   const { items } = await getRanking([
     {
@@ -307,7 +307,7 @@ const discoveryNewest = async (entity) => {
       params: { clubs: assets },
     },
   ]);
-  return sortByScore(items).slice(0, 20);
+  return sortByScore(items);
 };
 
 const sortByScore = (score) => {
