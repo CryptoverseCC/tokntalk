@@ -573,6 +573,9 @@ export class Card extends React.Component {
     if (feedItem.type === 'like') {
       return this.renderLikeItem(feedItem, disabledInteractions);
     }
+    if (feedItem.type === 'response') {
+      return this.renderResponseItem(feedItem, disabledInteractions);
+    }
 
     return (
       <React.Fragment>
@@ -740,6 +743,76 @@ export class Card extends React.Component {
           suffix={this.getSuffix(feedItem.target)}
           disabledInteractions={disabledInteractions}
           onVerify={() => this.onVerify(feedItem.target)}
+        />
+      </React.Fragment>
+    );
+  };
+
+  renderResponseItem = (feedItem, disabledInteractions) => {
+    const reply = feedItem.reply_to;
+    return (
+      <React.Fragment>
+        <article className="media">
+          <div className="media-left" style={{ width: '64px' }}>
+            <LinkedEntityAvatar
+              size="medium"
+              id={feedItem.isFromAddress ? feedItem.author : feedItem.context}
+              entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
+            />
+          </div>
+          <div className="media-content">
+            <CardTitle
+              id={reply.id}
+              from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
+              entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
+              createdAt={feedItem.created_at}
+              family={feedItem.family}
+              suffix={
+                <span>
+                  responded to <b>Post</b>
+                </span>
+              }
+              onVerify={() => this.onVerify(feedItem)}
+            />
+          </div>
+        </article>
+        <Post
+          style={{
+            borderTop: '0',
+            borderRadius: '12px',
+            backgroundColor: '#04f8fd',
+            marginLeft: '80px',
+            paddingLeft: '15px',
+            paddingBottom: '5px',
+            paddingRight: '15px',
+          }}
+          from={reply.isFromAddress ? reply.author : reply.context}
+          entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
+          createdAt={reply.created_at}
+          message={reply.target}
+          family={reply.family}
+          suffix={this.getSuffix(reply.target)}
+          disabledInteractions={disabledInteractions}
+          onVerify={() => this.onVerify(reply)}
+        />
+        <Post
+          style={{
+            borderTop: '0',
+            borderRadius: '12px',
+            backgroundColor: '#f4f8fd',
+            marginLeft: '80px',
+            paddingLeft: '15px',
+            paddingBottom: '5px',
+            paddingRight: '15px',
+          }}
+          from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
+          entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
+          createdAt={feedItem.created_at}
+          message={feedItem.target}
+          family={feedItem.family}
+          suffix={this.getSuffix(feedItem.target)}
+          disabledInteractions={disabledInteractions}
+          onVerify={() => this.onVerify(feedItem)}
         />
       </React.Fragment>
     );
