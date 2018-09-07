@@ -278,7 +278,6 @@ class DiscoveryTabContent extends Component {
 }
 
 const discoveryYours = async (entity) => {
-  console.log('yours');
   const tokens = await getEntityTokens(entity.id);
   const clubs = tokens.map((asset) => {
     const [network, address] = asset.split(':');
@@ -288,7 +287,6 @@ const discoveryYours = async (entity) => {
 };
 
 const discoveryMostActive = async (entity) => {
-  console.log('discover');
   let assets = clubs.map((club) => `${club.network}:${club.address}`);
   const { items } = await getRanking([
     {
@@ -296,12 +294,10 @@ const discoveryMostActive = async (entity) => {
       params: { clubs: assets },
     },
   ]);
-  console.log(items);
   return sortByScore(items).slice(0, 20);
 };
 
 const discoveryNewest = async (entity) => {
-  console.log('newest');
   let assets = clubs.map((club) => `${club.network}:${club.address}`);
   const { items } = await getRanking([
     {
