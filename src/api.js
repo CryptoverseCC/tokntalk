@@ -134,10 +134,16 @@ export const getFeedItem = async ({ claimId }) => {
   feedItems = feedItems.filter(isValidFeedItem).map(enhanceFeedItem);
 
   const item = feedItems[0];
-  const repliesToAdd = [];
-  item.replies.forEach((element) => repliesToAdd.push(element, ...element.replies));
-  item.replies = repliesToAdd;
+  item.replies = flattenReplies(item);
   return item;
+};
+
+const flattenReplies = (item) => {
+  if (item.replies) {
+    return item.replies.reduce((acc, element) => acc.concat(element, ...flattenReplies(element)), []);
+  } else {
+    return [];
+  }
 };
 
 export const getFeedItemsFromCache = (algorithm = 'cache-cryptoverse-feed') => async ({
