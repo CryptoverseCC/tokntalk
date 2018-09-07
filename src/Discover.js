@@ -148,12 +148,12 @@ class Index extends Component {
   };
 
   componentDidMount() {
-    this.setState({ currentTab: this.props.activeEntity !== null ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
+    this.setState({ currentTab: this.props.activeEntity ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
   }
 
   componentWillReceiveProps(newProps) {
     if (this.props.activeEntity !== newProps.activeEntity) {
-      this.setState({ currentTab: newProps.activeEntity !== null ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
+      this.setState({ currentTab: newProps.activeEntity ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
     }
   }
 
@@ -225,9 +225,7 @@ class DiscoveryTabContent extends Component {
   };
 
   async componentDidMount() {
-    if (this.props.entity) {
-      await this.updateItems(this.props.entity);
-    }
+    await this.updateItems(this.props.entity);
   }
 
   async componentWillReceiveProps(newProps) {
@@ -278,12 +276,16 @@ class DiscoveryTabContent extends Component {
 }
 
 const discoveryYours = async (entity) => {
-  const tokens = await getEntityTokens(entity.id);
-  const clubs = tokens.map((asset) => {
-    const [network, address] = asset.split(':');
-    return findClub(network, address);
-  });
-  return sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+  if (entity) {
+    const tokens = await getEntityTokens(entity.id);
+    const clubs = tokens.map((asset) => {
+      const [network, address] = asset.split(':');
+      return findClub(network, address);
+    });
+    return sortBy((club) => (club.isCustom ? 1 : 0), clubs);
+  } else {
+    return [];
+  }
 };
 
 const discoveryMostActive = async (entity) => {
