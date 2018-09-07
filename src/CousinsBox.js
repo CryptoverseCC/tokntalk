@@ -36,7 +36,7 @@ export class CousinsBox extends Component {
   };
 
   render() {
-    return (
+    return this.state.entities.length ? (
       <FlatContainer style={{ marginTop: '2rem' }}>
         <H4 style={{ marginTop: '10px' }}>Cousins</H4>
         <p style={{ fontSize: '0.8rem', color: '#928f9b' }}>Other tokens from this address</p>
@@ -45,14 +45,14 @@ export class CousinsBox extends Component {
           width={232.33}
           rowHeight={74}
           rowRenderer={this.renderRow}
-          rowCount={this.state.entities.length}
+          rowCount={this.state.entities.length - 1}
         />
       </FlatContainer>
-    );
+    ) : null;
   }
 
   renderRow = ({ index, key, style }) => {
-    const cousin = this.state.entities[index];
+    const cousin = this.state.entities.filter((entity) => entity.id !== this.props.entity.id)[index];
     return (
       <div
         key={key}
