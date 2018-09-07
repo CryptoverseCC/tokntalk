@@ -600,6 +600,9 @@ export class Card extends React.Component {
     if (feedItem.type === 'like') {
       return this.renderLikeItem(feedItem, disabledInteractions);
     }
+    if (feedItem.type === 'response') {
+      return this.renderResponseItem(feedItem);
+    }
 
     return (
       <React.Fragment>
@@ -746,6 +749,48 @@ export class Card extends React.Component {
             onVerify={() => this.onVerify(feedItem.target)}
           />
         )}
+      </React.Fragment>
+    );
+  };
+
+  renderResponseItem = (feedItem) => {
+    const reply = feedItem.reply_to;
+    const entityInfo = feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info;
+    const from = feedItem.isFromAddress ? feedItem.author : feedItem.context;
+    return (
+      <React.Fragment>
+        <article className="media">
+          <div className="media-left" style={{ width: '64px' }}>
+            <LinkedEntityAvatar size="medium" id={from} entityInfo={entityInfo} />
+          </div>
+          <div className="media-content">
+            <CardTitle
+              id={reply.id}
+              from={from}
+              entityInfo={entityInfo}
+              createdAt={feedItem.created_at}
+              family={feedItem.family}
+              suffix={
+                <span>
+                  replied to{' '}
+                  <LinkedEntityAvatar
+                    size="verySmall"
+                    style={{ marginLeft: '0.325em', display: 'inline-block' }}
+                    id={feedItem.id}
+                    entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
+                  />
+                  <Link to={`/${feedItem.id}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
+                    <b>{(reply.isFromAddress ? reply.author_info : reply.context_info).name}</b>
+                  </Link>
+                </span>
+              }
+              onVerify={() => this.onVerify(feedItem)}
+            />
+          </div>
+        </article>
+        <StartingMessage style={{ marginLeft: '80px' }}>
+          <CollapsableText text={feedItem.target} />
+        </StartingMessage>
       </React.Fragment>
     );
   };

@@ -28,9 +28,9 @@ const FeedTypeButton = styled.div`
   }
 `;
 
-const defaultOptions = ['new', 'popular'];
+const defaultOptions = () => [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR];
 
-const FeedTypeSwitcher = ({ type, onChange, style, className, options = defaultOptions }) => (
+const FeedTypeSwitcher = ({ type, onChange, style, className, options = defaultOptions() }) => (
   <div className={className} style={style}>
     {options.map((option) => (
       <FeedTypeButton key={option} onClick={() => onChange(option)} selected={type === option}>
@@ -43,5 +43,6 @@ const FeedTypeSwitcher = ({ type, onChange, style, className, options = defaultO
 FeedTypeSwitcher.NEW = 'new';
 FeedTypeSwitcher.POPULAR = 'popular';
 FeedTypeSwitcher.ACTIVE = 'active';
+FeedTypeSwitcher.NOTIFICATIONS = 'notifications';
 
 export default FeedTypeSwitcher;

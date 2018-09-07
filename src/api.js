@@ -33,7 +33,7 @@ export const hasValidContext = ({ context }) => {
   return isValidAndSupportedErc721(address);
 };
 
-const supportedFeedTypes = [
+const SUPPORTED_FEED_TYPES = [
   'regular',
   'like',
   'post_to',
@@ -42,9 +42,10 @@ const supportedFeedTypes = [
   'social',
   'post_to_simple',
   'boost',
+  'response',
 ];
 export const isValidFeedItem = (feedItem) => {
-  if (!supportedFeedTypes.includes(feedItem.type)) {
+  if (!SUPPORTED_FEED_TYPES.includes(feedItem.type)) {
     return false;
   }
   if (feedItem.type === 'post_club') {
