@@ -542,6 +542,33 @@ const ReplyClubInfo = styled.div`
   }
 `;
 
+const BoostPost = ({ feedItem, onVerify, style }) => (
+  <Post
+    id={feedItem.id}
+    style={style}
+    from={feedItem.target}
+    entityInfo={feedItem.target_info}
+    createdAt={feedItem.created_at}
+    message={createEtherscanUrl(feedItem)}
+    family={feedItem.family}
+    suffix={
+      <React.Fragment>
+        <span>supported</span>
+        <LinkedEntityAvatar
+          size="verySmall"
+          style={{ marginLeft: '0.325em', display: 'inline-block' }}
+          id={feedItem.about}
+          entityInfo={feedItem.about_info}
+        />
+        <Link to={`/${feedItem.about}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
+          <b>{feedItem.about_info.name}</b>
+        </Link>
+      </React.Fragment>
+    }
+    onVerify={() => onVerify(feedItem)}
+  />
+);
+
 export class Card extends React.Component {
   replyForm = null;
 
@@ -577,7 +604,7 @@ export class Card extends React.Component {
     return (
       <React.Fragment>
         {feedItem.type === 'boost' ? (
-          this.renderBoostPost(feedItem)
+          <BoostPost feedItem={feedItem} onVerify={this.onVerify} />
         ) : (
           <Post
             id={feedItem.id}
@@ -667,35 +694,17 @@ export class Card extends React.Component {
     );
   };
 
-  renderBoostPost = (feedItem) => (
-    <Post
-      id={feedItem.id}
-      style={{ borderTop: 'none' }}
-      from={feedItem.target}
-      entityInfo={feedItem.target_info}
-      createdAt={feedItem.created_at}
-      message={createEtherscanUrl(feedItem)}
-      family={feedItem.family}
-      suffix={
-        <React.Fragment>
-          <span>supported</span>
-          <LinkedEntityAvatar
-            size="verySmall"
-            style={{ marginLeft: '0.325em', display: 'inline-block' }}
-            id={feedItem.about}
-            entityInfo={feedItem.about_info}
-          />
-          <Link to={`/${feedItem.about}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
-            <b>{feedItem.about_info.name}</b>
-          </Link>
-        </React.Fragment>
-      }
-      onVerify={() => this.onVerify(feedItem)}
-    />
-  );
-
   renderLikeItem = (feedItem, disabledInteractions) => {
     const { isFromAddress } = feedItem;
+    const likeTargetStyles = {
+      borderTop: '0',
+      borderRadius: '12px',
+      backgroundColor: '#f4f8fd',
+      marginLeft: '80px',
+      paddingLeft: '15px',
+      paddingBottom: '5px',
+      paddingRight: '15px',
+    };
     return (
       <React.Fragment>
         <article className="media">
@@ -722,25 +731,21 @@ export class Card extends React.Component {
             />
           </div>
         </article>
-        <Post
-          style={{
-            borderTop: '0',
-            borderRadius: '12px',
-            backgroundColor: '#f4f8fd',
-            marginLeft: '80px',
-            paddingLeft: '15px',
-            paddingBottom: '5px',
-            paddingRight: '15px',
-          }}
-          from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
-          entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
-          createdAt={feedItem.target.created_at}
-          message={feedItem.target.target}
-          family={feedItem.target.family}
-          suffix={this.getSuffix(feedItem.target)}
-          disabledInteractions={disabledInteractions}
-          onVerify={() => this.onVerify(feedItem.target)}
-        />
+        {feedItem.target.type === 'boost' ? (
+          <BoostPost feedItem={feedItem.target} onVerify={this.onVerify} style={likeTargetStyles} />
+        ) : (
+          <Post
+            style={likeTargetStyles}
+            from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
+            entityInfo={feedItem.target.isFromAddress ? feedItem.target.author_info : feedItem.target.context_info}
+            createdAt={feedItem.target.created_at}
+            message={feedItem.target.target}
+            family={feedItem.target.family}
+            suffix={this.getSuffix(feedItem.target)}
+            disabledInteractions={disabledInteractions}
+            onVerify={() => this.onVerify(feedItem.target)}
+          />
+        )}
       </React.Fragment>
     );
   };
