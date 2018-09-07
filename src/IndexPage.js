@@ -23,8 +23,7 @@ const fetchPopularFeed = async () => {
     ],
     'api/decorate-with-opensea',
   );
-  let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
-  return feedItems;
+  return items.filter(isValidFeedItem).map(enhanceFeedItem);
 };
 
 const fetchNotificationsFeed = async ({ tokens }) => {
@@ -37,8 +36,7 @@ const fetchNotificationsFeed = async ({ tokens }) => {
     ],
     'api/decorate-with-opensea',
   );
-  let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
-  return feedItems;
+  return items.filter(isValidFeedItem).map(enhanceFeedItem);
 };
 
 const NewestFeed = getFeed(getFeedItemsFromCache(), true, true, undefined, (f0, f1) => f1.created_at - f0.created_at);
