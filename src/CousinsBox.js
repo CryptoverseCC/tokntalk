@@ -36,6 +36,7 @@ export class CousinsBox extends Component {
   };
 
   render() {
+    const activeEntity = this.props.entity;
     return this.state.entities.length ? (
       <FlatContainer style={{ marginTop: '2rem' }}>
         <H4 style={{ marginTop: '10px' }}>Cousins</H4>
@@ -45,7 +46,7 @@ export class CousinsBox extends Component {
           width={232.33}
           rowHeight={74}
           rowRenderer={this.renderRow}
-          rowCount={this.state.entities.length - 1}
+          rowCount={activeEntity.isAddress ? this.state.entities.length : this.state.entities.length - 1}
         />
       </FlatContainer>
     ) : null;
