@@ -220,6 +220,12 @@ class DiscoveryTabContent extends Component {
     score: [],
   };
 
+  componentDidMount() {
+    if (this.props.entity) {
+      this.updateItems(this.props.entity);
+    }
+  }
+
   componentWillReceiveProps(newProps) {
     const entityHasChanged = this.props.entity !== newProps.entity;
     if ((!this.state.initialized || entityHasChanged) && newProps.isActive) {
