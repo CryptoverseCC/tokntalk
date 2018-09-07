@@ -574,7 +574,7 @@ export class Card extends React.Component {
       return this.renderLikeItem(feedItem, disabledInteractions);
     }
     if (feedItem.type === 'response') {
-      return this.renderResponseItem(feedItem, disabledInteractions);
+      return this.renderResponseItem(feedItem);
     }
 
     return (
@@ -748,72 +748,44 @@ export class Card extends React.Component {
     );
   };
 
-  renderResponseItem = (feedItem, disabledInteractions) => {
+  renderResponseItem = (feedItem) => {
     const reply = feedItem.reply_to;
+    const entityInfo = feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info;
+    const from = feedItem.isFromAddress ? feedItem.author : feedItem.context;
     return (
       <React.Fragment>
         <article className="media">
           <div className="media-left" style={{ width: '64px' }}>
-            <LinkedEntityAvatar
-              size="medium"
-              id={feedItem.isFromAddress ? feedItem.author : feedItem.context}
-              entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
-            />
+            <LinkedEntityAvatar size="medium" id={from} entityInfo={entityInfo} />
           </div>
           <div className="media-content">
             <CardTitle
               id={reply.id}
-              from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
-              entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
+              from={from}
+              entityInfo={entityInfo}
               createdAt={feedItem.created_at}
               family={feedItem.family}
               suffix={
                 <span>
-                  responded to <b>Post</b>
+                  replied to{' '}
+                  <LinkedEntityAvatar
+                    size="verySmall"
+                    style={{ marginLeft: '0.325em', display: 'inline-block' }}
+                    id={feedItem.id}
+                    entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
+                  />
+                  <Link to={`/${feedItem.id}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
+                    <b>{(reply.isFromAddress ? reply.author_info : reply.context_info).name}</b>
+                  </Link>
                 </span>
               }
               onVerify={() => this.onVerify(feedItem)}
             />
           </div>
         </article>
-        <Post
-          style={{
-            borderTop: '0',
-            borderRadius: '12px',
-            backgroundColor: '#04f8fd',
-            marginLeft: '80px',
-            paddingLeft: '15px',
-            paddingBottom: '5px',
-            paddingRight: '15px',
-          }}
-          from={reply.isFromAddress ? reply.author : reply.context}
-          entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
-          createdAt={reply.created_at}
-          message={reply.target}
-          family={reply.family}
-          suffix={this.getSuffix(reply.target)}
-          disabledInteractions={disabledInteractions}
-          onVerify={() => this.onVerify(reply)}
-        />
-        <Post
-          style={{
-            borderTop: '0',
-            borderRadius: '12px',
-            backgroundColor: '#f4f8fd',
-            marginLeft: '80px',
-            paddingLeft: '15px',
-            paddingBottom: '5px',
-            paddingRight: '15px',
-          }}
-          from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
-          entityInfo={feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info}
-          createdAt={feedItem.created_at}
-          message={feedItem.target}
-          family={feedItem.family}
-          suffix={this.getSuffix(feedItem.target)}
-          disabledInteractions={disabledInteractions}
-          onVerify={() => this.onVerify(feedItem)}
-        />
+        <StartingMessage style={{ marginLeft: '80px' }}>
+          <CollapsableText text={feedItem.target} />
+        </StartingMessage>
       </React.Fragment>
     );
   };
