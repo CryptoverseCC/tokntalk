@@ -147,15 +147,6 @@ class Index extends Component {
     currentTab: Index.TAB.MOST_ACTIVE,
   };
 
-  renderEntityTokens = (entity) => {
-    const clubs = entity.tokens.map((asset) => {
-      const [network, address] = asset.split(':');
-      return findClub(network, address);
-    });
-    const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
-    return <div className="columns is-multiline">{this.renderTiles(sortedClubs)}</div>;
-  };
-
   componentWillReceiveProps(newProps) {
     if (this.props.activeEntity !== newProps.activeEntity) {
       this.setState({ currentTab: newProps.activeEntity !== null ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
@@ -282,7 +273,7 @@ const discoveryYours = async (entity) => {
     const [network, address] = asset.split(':');
     return findClub(network, address);
   });
-  return clubs;
+  return sortBy((club) => (club.isCustom ? 1 : 0), clubs);
 };
 
 const discoveryMostActive = async (entity) => {
