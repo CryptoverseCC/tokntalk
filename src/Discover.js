@@ -16,9 +16,9 @@ import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
 import { Storage, validateParams, rewriteCmp } from './utils';
-import clubs, { TokenImage, getCustomClub, findClub } from './clubs';
+import clubs, { TokenImage, findClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
-import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
+import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem, getAssetsInfo } from './api';
 import AddToken from './AddToken';
 import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
 import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
@@ -277,11 +277,7 @@ class DiscoveryTabContent extends Component {
 
 const discoveryYours = async (entity) => {
   if (entity) {
-    const tokens = await getEntityTokens(entity.id);
-    const clubs = tokens.map((asset) => {
-      const [network, address] = asset.split(':');
-      return findClub(network, address);
-    });
+    const clubs = await getEntityTokens(entity.id);
     return sortBy((club) => (club.isCustom ? 1 : 0), clubs);
   } else {
     return [];
@@ -289,7 +285,7 @@ const discoveryYours = async (entity) => {
 };
 
 const discoveryMostActive = async () => {
-  let assets = clubs.map((club) => `${club.network}:${club.address}`);
+  let assets = clubs.map((club) => club.asset);
   const { items } = await getRanking([
     {
       algorithm: 'cryptoverse_clubs_sorted',
@@ -300,7 +296,7 @@ const discoveryMostActive = async () => {
 };
 
 const discoveryNewest = async () => {
-  let assets = clubs.map((club) => `${club.network}:${club.address}`);
+  let assets = clubs.map((club) => club.asset);
   const { items } = await getRanking([
     {
       algorithm: 'cryptoverse_clubs_sorted_newest',
@@ -887,23 +883,41 @@ const validateTokenParam = validateParams(
   '/404',
 );
 
-const mapTokenUrlParam = (Cmp) => (props) => {
-  const { token } = props.match.params;
+const mapTokenUrlParam = (Cmp) =>
+  class extends Component {
+    constructor(props) {
+      super(props);
 
-  let club;
-  if (token.indexOf(':') === -1) {
-    club = find({ symbol: token })(clubs);
-  } else {
-    const [network, address] = token.split(':');
-    club = find({ network, address })(clubs);
-    if (!club) {
-      const options = qs.parse(props.location.search.replace('?', ''));
-      club = getCustomClub(network, address, options);
+      const { token } = props.match.params;
+      let club;
+      if (token.indexOf(':') === -1) {
+        club = find({ symbol: token })(clubs);
+      } else {
+        const [network, address] = token.split(':');
+        club = findClub(network, address);
+      }
+      this.state = { club };
     }
-  }
 
-  return <Cmp token={club} {...props} />;
-};
+    componentDidMount() {
+      if (this.state.club.isCustom) {
+        this.getCustomClubInfo(this.state.club);
+      }
+    }
+
+    getCustomClubInfo = async (club) => {
+      const info = await getAssetsInfo([club.asset]);
+      if (info[club.asset]) {
+        const { name, symbol } = info[club.asset];
+        const enhancedClub = club.extend({ name, symbol });
+        this.setState({ club: enhancedClub });
+      }
+    };
+
+    render() {
+      return <Cmp token={this.state.club} {...this.props} />;
+    }
+  };
 
 const decoratedByTokenIndex = validateTokenParam(mapTokenUrlParam(ByTokenIndex));
 

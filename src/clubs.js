@@ -156,6 +156,25 @@ import unknowClubCover from './img/tokens/percent.png';
 
 import * as mapping from 'contract-mapping/mapping.json';
 
+class Token {
+  constructor(options) {
+    Object.assign(this, options);
+  }
+
+  get asset() {
+    return `${this.network}:${this.address}`;
+  }
+
+  extend(by) {
+    return new Token({
+      ...this,
+      ...Object.entries(by)
+        .filter(([, v]) => !!v)
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}),
+    });
+  }
+}
+
 const clubs = [
   {
     ...mapping.CRYPTOKITTIES,
@@ -790,7 +809,9 @@ const clubs = [
       },
     },
   },
-].map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }));
+]
+  .map(({ address, ...rest }) => ({ ...rest, address: address.toLowerCase() }))
+  .map((token) => new Token(token));
 
 const sizes = {
   verySmall: { width: '24px', height: '24px' },
@@ -805,7 +826,7 @@ export const findClub = (network, address) => {
 // ToDo take only valid options
 export const getCustomClub = (network, address, options) => {
   const shortName = `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`;
-  return {
+  return new Token({
     symbol: shortName,
     name: shortName,
     primaryColor: '#4000e4',
@@ -819,7 +840,7 @@ export const getCustomClub = (network, address, options) => {
     address: address.toLowerCase(),
     logo: unknowClub,
     coverImage: unknowClubCover,
-  };
+  });
 };
 
 export const TokenImage = ({ token, size = 'small', ...restProps }) => {

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import Dropdown from './Dropdown';
-import { findClub } from './clubs';
 import { withActiveEntity } from './Entity';
 import { transferErc20, transferEth } from './api';
 import { toWei } from './balance';
@@ -182,24 +181,18 @@ class SendTokens extends Component {
       token: { name: 'Ethereum', symbol: 'ETH' },
       value: 0,
       txHash: '',
-      tokens: this.mapAssetsToTokens(this.props.activeEntity.tokens),
+      tokens: this.filterTokens(this.props.activeEntity.tokens),
     };
   }
 
   componentWillReceiveProps(newProps) {
     if (this.props.activeEntity.tokens !== newProps.activeEntity.tokens) {
-      this.setState({ tokens: this.mapAssetsToTokens(newProps.activeEntity.tokens) });
+      this.setState({ tokens: this.filterTokens(newProps.activeEntity.tokens) });
     }
   }
 
-  mapAssetsToTokens = (assets = []) => {
-    return [
-      { name: 'Ethereum', symbol: 'ETH' },
-      ...assets
-        .map((token) => token.split(':'))
-        .map(([network, address]) => findClub(network, address))
-        .filter((token) => !token.is721 && !token.isCustom),
-    ];
+  filterTokens = (tokens = []) => {
+    return [{ name: 'Ethereum', symbol: 'ETH' }, ...tokens.filter((token) => !token.is721 && !token.isCustom)];
   };
 
   onTokenChange = (token) => this.setState({ token });

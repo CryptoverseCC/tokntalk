@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid/v4';
+import partition from 'lodash/partition';
 import find from 'lodash/fp/find';
 import last from 'lodash/fp/last';
 import { isAddress, BN } from 'web3-utils';
@@ -16,7 +17,7 @@ import {
   erc20ContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
-import clubs, { findClub } from './clubs';
+import { findClub } from './clubs';
 import ercs721 from './erc721';
 
 const {
@@ -220,7 +221,7 @@ export const getLabels = async (entityId) => {
   }
 };
 
-export const getEntityTokens = async (entityId, tokens = clubs) => {
+export const getEntityTokens = async (entityId) => {
   const entityTokens = await getRanking([
     {
       algorithm: 'cryptoverse_balances',
@@ -230,7 +231,29 @@ export const getEntityTokens = async (entityId, tokens = clubs) => {
     },
   ]);
 
-  return Object.entries(entityTokens).map(([token]) => token);
+  const tokens = Object.entries(entityTokens)
+    .map(([token]) => token.split(':'))
+    .map(([network, address]) => findClub(network, address));
+
+  const [customTokens, supportedTokens] = partition(tokens, 'isCustom');
+  const customTokensInfo = await getAssetsInfo(customTokens.map(({ network, address }) => `${network}:${address}`));
+  const enhancedCustomClubs = customTokens.map((token) => {
+    if (!customTokensInfo[token.asset]) {
+      return token;
+    }
+    const { name, symbol } = customTokensInfo[token.asset];
+    return token.extend({ name, symbol });
+  });
+
+  return [...supportedTokens, ...enhancedCustomClubs];
+};
+
+export const getAssetsInfo = async (assets) => {
+  const assetsInfo = await fetch(`${USERFEEDS_API_ADDRESS}/api/token_info?ids=${assets.join('&ids=')}`).then((res) =>
+    res.json(),
+  );
+
+  return assetsInfo;
 };
 
 export const getBoosts = async (token, asset) => {

@@ -5,8 +5,6 @@ import { getEntityPrefix, getEntityId } from './entityApi';
 import Context from './Context';
 import IdentityAvatar, { AvatarPlaceholder } from './Avatar';
 import StyledLink from './Link';
-import { getEntityTokens } from './api';
-import { findClub } from './clubs';
 
 export const IfOnMainnet = ({ children, then, other }) => (
   <Context.Consumer>
@@ -58,17 +56,7 @@ export const Entity = ({ id, children }) => (
   <Context.Consumer>{({ entityStore: { getEntity } }) => children(getEntity(id))}</Context.Consumer>
 );
 
-export const EntityClubs = ({ id, children }) => (
-  <Entity id={id}>
-    {(entity) => {
-      const clubs = entity.tokens
-        .map((asset) => asset.split(':'))
-        .map(([network, address]) => findClub(network, address));
-      const sortedClubs = sortBy((club) => (club.isCustom ? 1 : 0), clubs);
-      return children(sortedClubs);
-    }}
-  </Entity>
-);
+export const EntityClubs = ({ id, children }) => <Entity id={id}>{(entity) => children(entity.tokens)}</Entity>;
 
 export const EntityName = ({ id }) => {
   return (
@@ -191,94 +179,25 @@ export const IfActiveEntityLiked = ({ reactions, children, liked, notLiked, unAc
   </Context.Consumer>
 );
 
-class DoesEntityHasCustomToken extends Component {
-  static balanceRequests = {};
-  state = { loading: true, hasToken: undefined };
+export const DoesActiveEntityHasToken = ({ token, children }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity, getEntity } }) => {
+      if (!activeEntity) return children(false);
+      const hasToken = !!getEntity(activeEntity.id).tokens.find((t) => t.asset === token.asset);
+      return children(hasToken);
+    }}
+  </Context.Consumer>
+);
 
-  componentDidMount() {
-    this.fetchBalance(this.props.entityId, this.props.token);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.entityId !== this.props.entityId) {
-      this.fetchBalance(newProps.entityId, newProps.token);
-    }
-  }
-
-  fetchBalance = async (entityId, token) => {
-    const asset = `${token.network}:${token.address}`;
-    const cacheKey = `${entityId}:${asset}`;
-    if (!DoesEntityHasCustomToken.balanceRequests[cacheKey]) {
-      this.setState({ loading: true });
-      DoesEntityHasCustomToken.balanceRequests[cacheKey] = getEntityTokens(entityId, [token]).then(
-        (tokens) => tokens.indexOf(asset) !== -1,
-      );
-    }
-
-    const hasToken = await DoesEntityHasCustomToken.balanceRequests[cacheKey];
-    this.setState({ loading: false, hasToken });
-  };
-
-  render() {
-    return this.props.children(this.state);
-  }
-}
-
-export const DoesActiveEntityHasToken = ({ token, children }) => {
-  if (token.isCustom) {
-    return (
-      <Context.Consumer>
-        {({ entityStore: { activeEntity } }) => {
-          if (!activeEntity) return children(false);
-          return (
-            <DoesEntityHasCustomToken entityId={activeEntity.id} token={token}>
-              {({ loading, hasToken }) => children(loading ? false : hasToken)}
-            </DoesEntityHasCustomToken>
-          );
-        }}
-      </Context.Consumer>
-    );
-  }
-
-  return (
-    <Context.Consumer>
-      {({ entityStore: { activeEntity, getEntity } }) => {
-        if (!activeEntity) return children(false);
-        const asset = `${token.network}:${token.address}`;
-        const hasToken = getEntity(activeEntity.id).tokens.indexOf(asset) !== -1;
-        return children(hasToken);
-      }}
-    </Context.Consumer>
-  );
-};
-
-export const IfActiveEntityHasToken = ({ token, children, then, other }) => {
-  if (token.isCustom) {
-    return (
-      <Context.Consumer>
-        {({ entityStore: { activeEntity } }) => {
-          if (!activeEntity) return other;
-          return (
-            <DoesEntityHasCustomToken entityId={activeEntity.id} token={token}>
-              {({ loading, hasToken }) => (loading ? other : hasToken ? then || children : other)}
-            </DoesEntityHasCustomToken>
-          );
-        }}
-      </Context.Consumer>
-    );
-  }
-
-  return (
-    <Context.Consumer>
-      {({ entityStore: { activeEntity, getEntity } }) => {
-        if (!activeEntity) return other;
-        const asset = `${token.network}:${token.address}`;
-        const hasToken = getEntity(activeEntity.id).tokens.indexOf(asset) !== -1;
-        return hasToken ? then || children : other;
-      }}
-    </Context.Consumer>
-  );
-};
+export const IfActiveEntityHasToken = ({ token, children, then, other }) => (
+  <Context.Consumer>
+    {({ entityStore: { activeEntity, getEntity } }) => {
+      if (!activeEntity) return other;
+      const hasToken = !!getEntity(activeEntity.id).tokens.find((t) => t.asset === token.asset);
+      return hasToken ? then || children : other;
+    }}
+  </Context.Consumer>
+);
 
 export const IfActiveEntityIs = ({ asset, children, then, other }) => (
   <Context.Consumer>
