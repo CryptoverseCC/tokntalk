@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 
-import { getRanking, feedItemValidator, enhanceFeedItem } from './api';
+import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
 import {
@@ -64,7 +64,7 @@ const getSingleFeed = async ({ entityId }) => {
     'api/decorate-with-opensea',
   );
 
-  return items.filter(feedItemValidator).map(enhanceFeedItem);
+  return items.filter(isValidFeedItem).map(enhanceFeedItem);
 };
 
 const filterTemporaryItemsNotForEntity = ({ entityId }) => ({ context, about }) =>

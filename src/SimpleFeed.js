@@ -4,7 +4,7 @@ import uniqBy from 'lodash/fp/uniqBy';
 
 import Feed from './Feed';
 import AppContext from './Context';
-import { feedItemValidator, enhanceFeedItem, getRanking } from './api';
+import { isValidFeedItem, enhanceFeedItem, getRanking } from './api';
 
 export default class SimpleFeed extends Component {
   state = {
@@ -30,7 +30,7 @@ export default class SimpleFeed extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
+      let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
 
       this.setState({ loading: false, feedItems, visibleItemsCount: feedItems.length > 10 ? 10 : feedItems.length });
     } catch (e) {

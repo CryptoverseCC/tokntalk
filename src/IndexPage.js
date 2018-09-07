@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { getFeedItemsFromCache, getRanking, feedItemValidator, enhanceFeedItem, SUPPORTED_FEED_TYPES } from './api';
+import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem, SUPPORTED_FEED_TYPES } from './api';
 import AppContext from './Context';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
@@ -23,7 +23,7 @@ const fetchPopularFeed = async () => {
     ],
     'api/decorate-with-opensea',
   );
-  let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
+  let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
   return feedItems;
 };
 
@@ -37,7 +37,7 @@ const fetchNotificationsFeed = async ({ tokens }) => {
     ],
     'api/decorate-with-opensea',
   );
-  let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
+  let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
   return feedItems;
 };
 

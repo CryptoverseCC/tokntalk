@@ -18,7 +18,7 @@ import { HeaderSpacer } from './Header';
 import { Storage, validateParams, rewriteCmp } from './utils';
 import clubs, { TokenImage, getCustomClub, findClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
-import { hasValidContext, getRanking, feedItemValidator, enhanceFeedItem } from './api';
+import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
 import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
 import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
@@ -930,7 +930,7 @@ export class FeedForToken extends Component {
         ],
         'api/decorate-with-opensea',
       );
-      let feedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
+      let feedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
       if (feedType === 'new') {
         feedItems = feedItems.sort((a, b) => b.created_at - a.created_at);
       }

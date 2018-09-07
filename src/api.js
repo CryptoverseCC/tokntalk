@@ -44,7 +44,7 @@ const SUPPORTED_FEED_TYPES = [
   'boost',
   'response',
 ];
-export const feedItemValidator = (feedItem) => {
+export const isValidFeedItem = (feedItem) => {
   if (!SUPPORTED_FEED_TYPES.includes(feedItem.type)) {
     return false;
   }
@@ -127,7 +127,7 @@ export const getFeedItem = async ({ claimId }) => {
     'api/decorate-with-opensea',
   );
 
-  feedItems = feedItems.filter(feedItemValidator).map(enhanceFeedItem);
+  feedItems = feedItems.filter(isValidFeedItem).map(enhanceFeedItem);
 
   return feedItems[0];
 };
@@ -146,7 +146,7 @@ export const getFeedItemsFromCache = (algorithm = 'cache-cryptoverse-feed') => a
   ).then((r) => r.json());
 
   const { items, total, version } = response;
-  const validFeedItems = items.filter(feedItemValidator).map(enhanceFeedItem);
+  const validFeedItems = items.filter(isValidFeedItem).map(enhanceFeedItem);
   const lastItem = last(items);
 
   return { feedItems: validFeedItems, total, version, lastItemId: lastItem ? lastItem.id : undefined };
