@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem, SUPPORTED_FEED_TYPES } from './api';
+import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AppContext from './Context';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
@@ -10,7 +10,7 @@ import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import ActiveEntityTokens from './ActiveEntityTokens';
-import { IfActiveEntity, Entity, Entities, WithActiveEntity } from './Entity';
+import { Entities, WithActiveEntity } from './Entity';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
