@@ -147,6 +147,10 @@ class Index extends Component {
     currentTab: Index.TAB.MOST_ACTIVE,
   };
 
+  componentDidMount() {
+    this.setState({ currentTab: this.props.activeEntity !== null ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
+  }
+
   componentWillReceiveProps(newProps) {
     if (this.props.activeEntity !== newProps.activeEntity) {
       this.setState({ currentTab: newProps.activeEntity !== null ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
@@ -220,16 +224,16 @@ class DiscoveryTabContent extends Component {
     score: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.entity) {
-      this.updateItems(this.props.entity);
+      await this.updateItems(this.props.entity);
     }
   }
 
-  componentWillReceiveProps(newProps) {
+  async componentWillReceiveProps(newProps) {
     const entityHasChanged = this.props.entity !== newProps.entity;
     if ((!this.state.initialized || entityHasChanged) && newProps.isActive) {
-      this.updateItems(newProps.entity);
+      await this.updateItems(newProps.entity);
     }
   }
 
@@ -274,6 +278,7 @@ class DiscoveryTabContent extends Component {
 }
 
 const discoveryYours = async (entity) => {
+  console.log('yours');
   const tokens = await getEntityTokens(entity.id);
   const clubs = tokens.map((asset) => {
     const [network, address] = asset.split(':');
@@ -283,6 +288,7 @@ const discoveryYours = async (entity) => {
 };
 
 const discoveryMostActive = async (entity) => {
+  console.log('discover');
   let assets = clubs.map((club) => `${club.network}:${club.address}`);
   const { items } = await getRanking([
     {
@@ -290,10 +296,12 @@ const discoveryMostActive = async (entity) => {
       params: { clubs: assets },
     },
   ]);
+  console.log(items);
   return sortByScore(items).slice(0, 20);
 };
 
 const discoveryNewest = async (entity) => {
+  console.log('newest');
   let assets = clubs.map((club) => `${club.network}:${club.address}`);
   const { items } = await getRanking([
     {
