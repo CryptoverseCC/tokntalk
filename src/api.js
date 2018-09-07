@@ -127,13 +127,17 @@ export const enhanceFeedItem = (feedItem) => {
 
 export const getFeedItem = async ({ claimId }) => {
   let { items: feedItems } = await getRanking(
-    [{ algorithm: 'cryptoverse_thread_feed', params: { id: claimId } }],
+    [{ algorithm: 'cryptoverse_thread_root_feed', params: { id: claimId } }],
     'api/decorate-with-opensea',
   );
 
   feedItems = feedItems.filter(isValidFeedItem).map(enhanceFeedItem);
 
-  return feedItems[0];
+  const item = feedItems[0];
+  const repliesToAdd = [];
+  item.replies.forEach((element) => repliesToAdd.push(element, ...element.replies));
+  item.replies = repliesToAdd;
+  return item;
 };
 
 export const getFeedItemsFromCache = (algorithm = 'cache-cryptoverse-feed') => async ({
