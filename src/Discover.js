@@ -267,7 +267,7 @@ class DiscoveryTabContent extends Component {
             linkTo={token.isCustom ? `${match.url}/${token.network}:${token.address}` : `${match.url}/${token.symbol}`}
             key={token.address}
             token={token}
-            className={`column ${index < 20 ? 'is-one-quarter' : index < 40 ? 'is-one-fifth' : 'is-2'}`}
+            className={`column ${index < 15 ? 'is-one-quarter' : index <= 34 ? 'is-one-fifth' : 'is-2'}`}
           />
         ))}
       </React.Fragment>
