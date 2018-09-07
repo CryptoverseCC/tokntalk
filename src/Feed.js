@@ -776,10 +776,14 @@ export class Card extends React.Component {
                   <LinkedEntityAvatar
                     size="verySmall"
                     style={{ marginLeft: '0.325em', display: 'inline-block' }}
-                    id={feedItem.id}
+                    id={reply.isFromAddress ? reply.author : reply.context}
                     entityInfo={reply.isFromAddress ? reply.author_info : reply.context_info}
                   />
-                  <Link to={`/${feedItem.id}`} style={{ marginLeft: '0.325em' }} className="is-hidden-mobile">
+                  <Link
+                    to={`/${reply.isFromAddress ? reply.author : reply.context}`}
+                    style={{ marginLeft: '0.325em' }}
+                    className="is-hidden-mobile"
+                  >
                     <b>{(reply.isFromAddress ? reply.author_info : reply.context_info).name}</b>
                   </Link>
                 </span>
