@@ -1045,10 +1045,14 @@ export class FeedForToken extends Component {
             algorithm: feedType === 'popular' ? 'cryptoverse_club_last_week_popular_feed' : 'cryptoverse_club_feed',
             params: { id: asset },
           },
-          {
-            algorithm: token.is721 ? 'experimental_filter_origin' : 'experimental_author_balance',
-            params: { asset },
-          },
+          ...(token.isCustom
+            ? []
+            : [
+                {
+                  algorithm: token.is721 ? 'experimental_filter_origin' : 'experimental_author_balance',
+                  params: { asset },
+                },
+              ]),
         ],
         'api/decorate-with-opensea',
       );
