@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import jazzicon from 'jazzicon';
 
+import { getAssetsInfo } from './api';
+
 const { REACT_APP_NAME: APP_NAME } = process.env;
 
 export const Storage = (storage = localStorage) => ({
@@ -55,6 +57,30 @@ export const validateParams = (validators, redirectTo) => (Cmp) => {
     }
   };
 };
+
+export const enhanceCustomClubProp = (inPropName, ourPropName) => (Cmp) =>
+  class extends Component {
+    state = { club: this.props[inPropName] };
+
+    componentDidMount() {
+      if (this.state.club.isCustom) {
+        this.getCustomClubInfo(this.state.club);
+      }
+    }
+
+    getCustomClubInfo = async (club) => {
+      const info = await getAssetsInfo([club.asset]);
+      if (info[club.asset]) {
+        const { name, symbol } = info[club.asset];
+        const enhancedClub = club.extend({ name, symbol });
+        this.setState({ club: enhancedClub });
+      }
+    };
+
+    render() {
+      return <Cmp {...{ ...this.props, [ourPropName]: this.state.club }} />;
+    }
+  };
 
 export const rewriteCmp = (from, to) => ({ location }) => {
   return <Redirect to={{ ...location, pathname: location.pathname.replace(from, to) }} />;

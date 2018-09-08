@@ -26,7 +26,7 @@ import Loader from './Loader';
 import { CollapsableText, ShowMore } from './CollapsableText';
 import { VerifyModal } from './VerifyModal';
 import LikersModal from './LikersModal';
-import { createEtherscanUrl } from './utils';
+import { createEtherscanUrl, enhanceCustomClubProp } from './utils';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -440,7 +440,17 @@ const ClubStip = styled.div`
   }
 `;
 
-const ClubLink = styled(Link)`
+const ClubLink = styled(
+  enhanceCustomClubProp('club', 'club')(({ club, className, style }) => {
+    const to = `/clubs/${club.isCustom ? `${club.network}:${club.address}` : club.symbol}`;
+    return (
+      <Link className={className} style={style} to={to}>
+        <img src={club.logo} style={{ height: '0.8rem', marginRight: '5px' }} />
+        {club.name}
+      </Link>
+    );
+  }),
+)`
   position: absolute;
   display: flex;
   align-items: center
@@ -449,9 +459,9 @@ const ClubLink = styled(Link)`
   border-radius: 5px;
   padding: 5px;
   font-size: 0.8rem;
-  color: ${({ secondaryColor }) => secondaryColor}!important;
-  background: ${({ primaryColor }) => primaryColor};
-  box-shadow: ${({ shadowColor }) => `0 1rem 1rem -0.5rem ${shadowColor}`};
+  color: ${({ club }) => club.secondaryColor}!important;
+  background: ${({ club }) => club.primaryColor};
+  box-shadow: ${({ club }) => `0 1rem 1rem -0.5rem ${club.shadowColor}`};
   transition: all 0.15s ease;
 
   ::after {
@@ -461,12 +471,12 @@ const ClubLink = styled(Link)`
 
   :hover {
     transform: translateY(-2px);
-    box-shadow: ${({ shadowColor }) => `0 1rem 1.5rem -0.5rem ${shadowColor}`};
+    box-shadow: ${({ club }) => `0 1rem 1.5rem -0.5rem ${club.shadowColor}`};
   }
 
   :active {
     transform: scale(0.98);
-    box-shadow: ${({ shadowColor }) => `0 1rem 0.9rem -0.5rem ${shadowColor}`};
+    box-shadow: ${({ club }) => `0 1rem 0.9rem -0.5rem ${club.shadowColor}`};
   }
 `;
 
@@ -481,17 +491,7 @@ const CardBox = styled(({ children, club, className, style }) => {
   return (
     <div className={className} style={style}>
       {club && <ClubStip color={club.primaryColor} />}
-      {club && (
-        <ClubLink
-          to={`/clubs/${club.isCustom ? `${club.network}:${club.address}` : club.symbol}`}
-          primaryColor={club.primaryColor}
-          secondaryColor={club.secondaryColor}
-          shadowColor={club.shadowColor}
-        >
-          <img src={club.logo} style={{ height: '0.8rem', marginRight: '5px' }} />
-          {club.name}
-        </ClubLink>
-      )}
+      {club && <ClubLink club={club} />}
       <CardBoxContent>{children}</CardBoxContent>
     </div>
   );

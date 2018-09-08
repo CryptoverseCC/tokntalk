@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import qs from 'qs';
 import { Switch, Route } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import timeago from 'timeago.js';
 import { isAddress } from 'web3-utils';
-import pipe from 'lodash/fp/pipe';
+import flow from 'lodash/flowRight';
 import uniqBy from 'lodash/fp/uniqBy';
 import find from 'lodash/fp/find';
 import sortBy from 'lodash/fp/sortBy';
@@ -15,10 +14,10 @@ import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
 import { HeaderSpacer } from './Header';
-import { Storage, validateParams, rewriteCmp } from './utils';
+import { Storage, validateParams, rewriteCmp, enhanceCustomClubProp } from './utils';
 import clubs, { TokenImage, findClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
-import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem, getAssetsInfo } from './api';
+import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AddToken from './AddToken';
 import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
 import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
@@ -883,43 +882,24 @@ const validateTokenParam = validateParams(
   '/404',
 );
 
-const mapTokenUrlParam = (Cmp) =>
-  class extends Component {
-    constructor(props) {
-      super(props);
+const mapTokenUrlParam = (Cmp) => (props) => {
+  const { token } = props.match.params;
+  let club;
+  if (token.indexOf(':') === -1) {
+    club = find({ symbol: token })(clubs);
+  } else {
+    const [network, address] = token.split(':');
+    club = findClub(network, address);
+  }
 
-      const { token } = props.match.params;
-      let club;
-      if (token.indexOf(':') === -1) {
-        club = find({ symbol: token })(clubs);
-      } else {
-        const [network, address] = token.split(':');
-        club = findClub(network, address);
-      }
-      this.state = { club };
-    }
+  return <Cmp token={club} {...props} />;
+};
 
-    componentDidMount() {
-      if (this.state.club.isCustom) {
-        this.getCustomClubInfo(this.state.club);
-      }
-    }
-
-    getCustomClubInfo = async (club) => {
-      const info = await getAssetsInfo([club.asset]);
-      if (info[club.asset]) {
-        const { name, symbol } = info[club.asset];
-        const enhancedClub = club.extend({ name, symbol });
-        this.setState({ club: enhancedClub });
-      }
-    };
-
-    render() {
-      return <Cmp token={this.state.club} {...this.props} />;
-    }
-  };
-
-const decoratedByTokenIndex = validateTokenParam(mapTokenUrlParam(ByTokenIndex));
+const decoratedByTokenIndex = flow(
+  validateTokenParam,
+  mapTokenUrlParam,
+  enhanceCustomClubProp('token', 'token'),
+)(ByTokenIndex);
 
 export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
   return (
@@ -1094,7 +1074,7 @@ export class FeedForToken extends Component {
               .map((item) => ({ ...item, type: 'regular' }));
 
             // ToDo insert temporary between feedItems if needed
-            const allFeedItems = pipe(uniqBy('id'))([
+            const allFeedItems = uniqBy('id')([
               ...(feedType === 'popular' ? [] : filteredTemporaryFeedItems),
               ...feedItems.slice(0, visibleItemsCount),
             ]);
