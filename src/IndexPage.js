@@ -9,6 +9,7 @@ import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
+import Investors from './Investors';
 import ActiveEntityTokens from './ActiveEntityTokens';
 import { Entities, WithActiveEntity } from './Entity';
 
@@ -63,6 +64,7 @@ export default class IndexPage extends Component {
         <HeaderSpacer style={{ marginBottom: '60px' }} />
         <div className="columns">
           <div className="column is-3-widescreen is-4">
+            <Investors />
             <ActiveEntityTokens />
             <FlatContainer>
               <AppContext.Consumer>
