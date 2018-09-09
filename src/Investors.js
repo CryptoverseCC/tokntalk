@@ -7,7 +7,7 @@ const { NODE_ENV, REACT_APP_INTERCOM_APP_ID } = process.env;
 const IntercomIcon = styled((props) => (
   <svg viewBox="0 0 100 100" version="1.1" {...props}>
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-      <text x="-50" y="60" fill="white" font-size="35" font-weight="bold">
+      <text x="-50" y="60" fill="white" fontSize="35" fontWeight="bold">
         Get in touch
       </text>
     </g>
@@ -31,11 +31,6 @@ const IntercomIconContainer = styled.div`
 
   :hover {
     box-shadow: 0 3px 32px 0 rgba(0, 0, 0, 0.14);
-  }
-
-  @media (max-width: 770px) {
-    width: 35px;
-    height: 35px;
   }
 `;
 
