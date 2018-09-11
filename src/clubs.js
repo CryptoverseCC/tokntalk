@@ -645,7 +645,7 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://hyperdragons.alfakingdom.com/' },
       { name: 'Discord', url: 'https://discord.gg/MxrBAD5' },
-      { name: 'Telegram', url: 'https://t.me/HyperDragons' }
+      { name: 'Telegram', url: 'https://t.me/HyperDragons' },
     ],
   },
   {
