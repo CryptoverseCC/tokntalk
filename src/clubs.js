@@ -642,7 +642,11 @@ const clubs = [
     primaryColor: '#303caf',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(48,60,175,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://hyperdragons.alfakingdom.com/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://hyperdragons.alfakingdom.com/' },
+      { name: 'Discord', url: 'https://discord.gg/MxrBAD5' },
+      { name: 'Telegram', url: 'https://t.me/HyperDragons' }
+    ],
   },
   {
     ...mapping.DASABI,
