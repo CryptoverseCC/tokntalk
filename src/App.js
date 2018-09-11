@@ -31,6 +31,7 @@ import Discover from './Discover';
 import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
+import { metamaskStatusChanged } from './Analytics';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
@@ -75,6 +76,12 @@ export default class App extends Component {
     setInterval(this.refreshWeb3State, 2000);
     this.refreshMyEntities();
     setInterval(this.refreshMyEntities, 15000);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.from !== this.state.from || prevState.provider !== this.state.provider) {
+      metamaskStatusChanged(this.state.provider, this.state.from);
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

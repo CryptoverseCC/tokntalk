@@ -11,3 +11,16 @@ export const pageView = () => {
     );
   }
 };
+
+export const metamaskStatusChanged = (providerName, accounts) => {
+  if (NODE_ENV === 'production' && REACT_APP_GOOGLE_ANALYTICS_ID) {
+    import('react-ga').then(({ default: ReactGA }) =>
+      ReactGA.event({
+        category: 'web3provider',
+        action: 'statusChanged',
+        label: providerName,
+        value: accounts ? 1 : 0,
+      }),
+    );
+  }
+};
