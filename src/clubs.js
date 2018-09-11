@@ -37,7 +37,7 @@ import nftyCover from './img/tokens/nfty.png';
 import coinbase from './img/tokens/coinbasewalletcryptoswag-icon.svg';
 import coinbaseCover from './img/tokens/coinbasewalletcryptoswag.png';
 
-import tokenville from './img/tokens/tokenville-icon.png';
+import tokenville from './img/tokens/tokenville-icon.svg';
 import tokenvilleCover from './img/tokens/tokenville.jpg';
 
 import ethmoji from './img/tokens/ethmoji-icon.png';
@@ -598,9 +598,9 @@ const clubs = [
     decimals: 18,
     logo: tokenville,
     coverImage: tokenvilleCover,
-    primaryColor: '#171A4C',
-    secondaryColor: '#FFC626',
-    shadowColor: 'rgba(23,26,76,0.3)',
+    primaryColor: '#fef0d4',
+    secondaryColor: '#4d3733',
+    shadowColor: 'rgba(77,55,51,0.25)',
     externalLinks: [
       { name: 'Project page', url: 'https://tokenville.tv/' },
       { name: 'Exchange', url: 'https://tokenville.tv/token' },
