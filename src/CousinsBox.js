@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import List from 'react-virtualized/dist/commonjs/List';
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 
 import { getEntities } from './api';
 import { LinkedEntityAvatar } from './Entity';
@@ -41,13 +42,17 @@ export class CousinsBox extends Component {
       <FlatContainer style={{ marginTop: '2rem' }}>
         <H4 style={{ marginTop: '10px' }}>Cousins</H4>
         <p style={{ fontSize: '0.8rem', color: '#928f9b' }}>Other tokens from this address</p>
-        <CousinsList
-          height={300}
-          width={232.33}
-          rowHeight={74}
-          rowRenderer={this.renderRow}
-          rowCount={activeEntity.isAddress ? this.state.entities.length : this.state.entities.length - 1}
-        />
+        <AutoSizer disableHeight>
+          {({ width }) => (
+            <CousinsList
+              height={300}
+              width={width}
+              rowHeight={74}
+              rowRenderer={this.renderRow}
+              rowCount={activeEntity.isAddress ? this.state.entities.length : this.state.entities.length - 1}
+            />
+          )}
+        </AutoSizer>
       </FlatContainer>
     ) : null;
   }
