@@ -405,38 +405,34 @@ const ByToken = ({ token }) => (
             </FlatContainer>
           )}
         </div>
-        <DiscoveryContext.Consumer>
-          {({ latest }) => (
-            <div className="column is-6">
-              {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
-              <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
-                {token.is721 ? (
-                  <IfActiveEntityIs
-                    asset={`${token.network}:${token.address}`}
-                    other={<ActiveEntityIsNotFromFamily token={token} />}
-                  >
-                    <ClubForm token={token} />
-                  </IfActiveEntityIs>
-                ) : (
-                  <ClubForm token={token} />
+        <div className="column is-6">
+          {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
+          <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
+            {token.is721 ? (
+              <IfActiveEntityIs
+                asset={`${token.network}:${token.address}`}
+                other={<ActiveEntityIsNotFromFamily token={token} />}
+              >
+                <ClubForm token={token} />
+              </IfActiveEntityIs>
+            ) : (
+              <ClubForm token={token} />
+            )}
+          </IfActiveEntityHasToken>
+          <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
+            {(isActiveEntityFromFamily) => (
+              <DoesActiveEntityHasToken token={token}>
+                {(hasToken) => (
+                  <FeedForToken
+                    disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
+                    className="feed-for-token"
+                    token={token}
+                  />
                 )}
-              </IfActiveEntityHasToken>
-              <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
-                {(isActiveEntityFromFamily) => (
-                  <DoesActiveEntityHasToken token={token}>
-                    {(hasToken) => (
-                      <FeedForToken
-                        disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
-                        className="feed-for-token"
-                        token={token}
-                      />
-                    )}
-                  </DoesActiveEntityHasToken>
-                )}
-              </IsActiveEntityFromFamily>
-            </div>
-          )}
-        </DiscoveryContext.Consumer>
+              </DoesActiveEntityHasToken>
+            )}
+          </IsActiveEntityFromFamily>
+        </div>
         <div className="column is-3">
           <FlatContainer>
             <Members token={token} />
@@ -495,7 +491,7 @@ const MembersTab = styled.div`
 
 const Members = ({ token }) => (
   <DiscoveryContext>
-    {({ latest, facebook, instagram, github, twitter }) => (
+    {({ loading, latest, facebook, instagram, github, twitter }) => (
       <React.Fragment>
         <H4>Members</H4>
         <Tabs>
@@ -509,8 +505,14 @@ const Members = ({ token }) => (
           </TabList>
           <TabPanel>
             <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
+            {!loading && !latest.length && <NoActiveMembers />}
           </TabPanel>
           <TabPanel>
+            {!loading &&
+              !facebook.length &&
+              !instagram.length &&
+              !github.length &&
+              !twitter.length && <NoActiveMembers />}
             <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
             <Social asset={`${token.network}:${token.address}`} social="twitter" limit={2} />
             <Social asset={`${token.network}:${token.address}`} social="instagram" limit={2} />
@@ -522,45 +524,9 @@ const Members = ({ token }) => (
   </DiscoveryContext>
 );
 
-const Hero = styled.div`
-  background: ${({ primaryColor }) => primaryColor};
-  color: ${({ secondaryColor }) => secondaryColor};
-  padding-top: 65px;
-  height: calc(15rem + 65px);
-  margin-bottom: 68px;
-  @media (max-width: 770px) {
-    height: calc(20rem + 65px);
-  }
-`;
-
-const Back = Link.withComponent('div');
-
-const BackArrow = styled.div`
-  transition: transform 0.3s;
-
-  ${Back}:hover & {
-    transform: translateX(-3px);
-  }
-`;
-
-const SeeMore = styled.span`
-  display: block;
-  font-size: 1rem;
+const NoActiveMembers = styled.div.attrs({ children: () => 'No Active Members' })`
+  margin-top: 15px;
   font-weight: 600;
-  color: #264dd9;
-
-  &::after {
-    margin-left: 10px;
-    display: inline-block;
-    transition: transform 0.3s;
-    content: '→';
-  }
-
-  :hover {
-    &::after {
-      transform: translateX(3px);
-    }
-  }
 `;
 
 const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
