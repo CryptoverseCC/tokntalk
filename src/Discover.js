@@ -455,6 +455,9 @@ const Members = ({ token }) => (
     {({ loading, latest, facebook, instagram, github, twitter }) => (
       <React.Fragment>
         <H4>Members</H4>
+        <IsLoading>
+          <Loader />
+        </IsLoading>
         <Tabs>
           <TabList className="columns is-mobile is-marginless">
             <Tab className="column is-half is-paddingless">
@@ -492,9 +495,6 @@ const NoActiveMembers = styled.div.attrs({ children: () => 'No Active Members' }
 
 const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
   <div style={{ marginTop: '15px' }}>
-    <IsLoading>
-      <Loader />
-    </IsLoading>
     <DiscoveryContext.Consumer>
       {({ latest }) => (
         <div className="columns is-multiline is-mobile">
@@ -540,22 +540,23 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
   const Icon = socialIcons[social];
 
   return (
-    <React.Fragment>
-      <SocialHeader style={{ marginBottom: '15px', marginTop: '15px' }}>
-        <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
-        {social}
-      </SocialHeader>
-      <IsLoading>
-        <Loader />
-      </IsLoading>
-      <div className="columns is-multiline">
-        <DiscoveryContext.Consumer>
-          {(data) =>
-            data[social]
-              .filter(hasValidContext)
-              .map(enhanceFeedItem)
-              .slice(0, limit)
-              .map(({ context, context_info, target, isFromAddress, author, author_info }) => (
+    <DiscoveryContext.Consumer>
+      {(data) => {
+        const items = data[social]
+          .filter(hasValidContext)
+          .map(enhanceFeedItem)
+          .slice(0, limit);
+
+        return (
+          <React.Fragment>
+            {!data.loading && items.length ? (
+              <SocialHeader style={{ marginBottom: '15px', marginTop: '15px' }}>
+                <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
+                {social}
+              </SocialHeader>
+            ) : null}
+            <div className="columns is-multiline">
+              {items.map(({ context, context_info, target, isFromAddress, author, author_info }) => (
                 <EntityContainer key={isFromAddress ? author : context} className="column is-12">
                   <LinkedEntityAvatar
                     id={isFromAddress ? author : context}
@@ -579,13 +580,15 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
                     </a>
                   </EntityInfo>
                 </EntityContainer>
-              ))
-          }
-        </DiscoveryContext.Consumer>
-      </div>
-    </React.Fragment>
+              ))}
+            </div>
+          </React.Fragment>
+        );
+      }}
+    </DiscoveryContext.Consumer>
   );
 };
+
 const SocialHeader = styled.p`
   font-size: 1rem;
   text-transform: capitalize;
