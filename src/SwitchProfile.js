@@ -7,7 +7,7 @@ import { HeaderSpacer } from './Header';
 import { Entities, EntityAvatar, WithActiveEntity } from './Entity';
 
 const H1ChooseProfile = styled.h1`
-  margin: 60px 0;
+  margin: 40px 0;
   font-size: 3rem;
   font-weight: bold;
   line-height: 1;
@@ -36,7 +36,7 @@ export class SwitchProfile extends Component {
                         entities.filter((e) => e.isAddress)[0].id === activeEntity.id,
                       )}
                     </ul>
-                    <H3>or use one of your NFTs ({entities.length})</H3>
+                    <H3 style={{ marginTop: '20px' }}>or use one of your NFTs ({entities.length})</H3>
                     {this.renderEntitiesWithClubs(entities, changeActiveEntityTo, activeEntity)}
                   </div>
                 ) : null
@@ -63,7 +63,7 @@ export class SwitchProfile extends Component {
 
   renderEntitiesWithinClub = (club, clubTokens, changeActiveEntityTo, activeEntity) => {
     return (
-      <div key={club.address}>
+      <div key={club.address} style={{ marginTop: '20px' }}>
         <H4>{club.name}</H4>
         <p>{this.shortAddress(club.address)}</p>
         <p>
@@ -93,7 +93,7 @@ export class SwitchProfile extends Component {
   };
 
   shortAddress = (address) => {
-    return address.slice(0, 8) + '...' + address.slice(address.length - 8, address.length);
+    return `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`;
   };
 }
 
