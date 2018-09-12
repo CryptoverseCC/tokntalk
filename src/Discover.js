@@ -350,76 +350,42 @@ class ByTokenIndex extends Component {
       <DiscoveryContext.Provider value={{ loading, ...data }}>
         <Switch>
           <Route exact path={`${match.url}/`} render={(props) => <ByToken token={token} {...props} />} />
-          <Route
-            exact
-            path={`${match.url}/recentlyActive`}
-            render={(props) => <RecentlyActivePage token={token} {...props} />}
-          />
-          <Route exact path={`${match.url}/social`} render={(props) => <SocialPage token={token} {...props} />} />
-          <Route exact path={`${match.url}/feed`} render={(props) => <FeedPage token={token} {...props} />} />
+          <Route exact path={`${match.url}/recentlyActive`} component={rewriteCmp('/recentlyActive', '')} />
+          <Route exact path={`${match.url}/social`} component={rewriteCmp('/social', '')} />
+          <Route exact path={`${match.url}/feed`} component={rewriteCmp('/feed', '')} />
         </Switch>
       </DiscoveryContext.Provider>
     );
   }
 }
 
-const ByToken = ({ location, match, token }) => (
+const ByToken = ({ token }) => (
   <React.Fragment>
-    {/* <Hero
-      primaryColor={token.primaryColor}
-      secondaryColor={token.secondaryColor}
-      className="is-flex"
-      style={{ alignItems: 'center' }}
-    >
-      <ContentContainer style={{ flex: 1 }}>
-        <Link to="/clubs">
-          <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
-              <BackArrow>
-                <H2 className="is-pulled-right">←</H2>
-              </BackArrow>
-            </div>
-            <div className="column">
-              <H2>Communities</H2>
-            </div>
-          </Back>
-        </Link>
-        <div className="columns is-mobile">
-          <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                height: '100%',
-                justifyContent: 'flex-end',
-              }}
-            />
-          </div>
-          <div className="column">
-            <H1>{token.name}</H1>
-          </div>
-        </div>
-      </ContentContainer> 
-    </Hero>*/}
     <HeaderSpacer style={{ marginBottom: '30px' }} />
     <ContentContainer>
       <div className="columns">
         <div className="column is-3">
           <TokenHero token={token} />
-          <FlatContainer style={{ marginBottom: '30px', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
+          <FlatContainer
+            style={{
+              paddingTop: '60px',
+              marginBottom: '30px',
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+              position: 'relative',
+            }}
+          >
+            <TokenAvatar token={token} />
             <H2>{token.name}</H2>
             <ul style={{ fontWeight: '600' }}>
               <li style={{ marginBottom: '7px' }}>
                 <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
               </li>
-              {token.externalLinks.map((entry) => {
-                return (
-                  <li key={entry.name} style={{ marginBottom: '7px' }}>
-                    <a href={entry.url}>{entry.name}</a>
-                  </li>
-                );
-              })}
+              {token.externalLinks.map((entry) => (
+                <li key={entry.name} style={{ marginBottom: '7px' }}>
+                  <a href={entry.url}>{entry.name}</a>
+                </li>
+              ))}
             </ul>
           </FlatContainer>
           {token.promotionBox && (
@@ -492,6 +458,31 @@ const TokenHero = styled.div`
   background-size: 50%;
   background-position: 100% 50%;
   width: 100%;
+`;
+
+const TokenAvatar = styled(({ className, style, token }) => (
+  <div className={className} style={style}>
+    <TokenImage token={token} />
+  </div>
+))`
+  position: absolute;
+  top: -32px;
+  left: 10px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px #ffffff solid;
+  border-radius: 12px;
+  background-color: ${({ token }) => token.primaryColor};
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  & > img {
+    max-width: 44px;
+    max-height: 44px;
+  }
 `;
 
 const MembersTab = styled.div`
@@ -618,53 +609,6 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
   </div>
 );
 
-const RecentlyActivePage = ({ token, location }) => (
-  <React.Fragment>
-    <Hero
-      primaryColor={token.primaryColor}
-      secondaryColor={token.secondaryColor}
-      className="is-flex"
-      style={{ alignItems: 'center' }}
-    >
-      <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
-          <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
-              <BackArrow>
-                <H2 className="is-pulled-right">←</H2>
-              </BackArrow>
-            </div>
-            <div className="column">
-              <H2>
-                <TokenImage
-                  token={token}
-                  style={{
-                    width: '23px',
-                    height: '23px',
-                    marginRight: '10px',
-                    marginBottom: '-3px',
-                  }}
-                />
-                {token.name}
-              </H2>
-            </div>
-          </Back>
-        </Link>
-        <div className="columns is-mobile">
-          <div className="column" style={{ marginLeft: '80px' }}>
-            <H1 style={{ lineHeight: '1.1' }}>Recently active</H1>
-          </div>
-        </div>
-      </ContentContainer>
-    </Hero>
-    <ContentContainer>
-      <FlatContainer>
-        <RecentlyActive asset={`${token.network}:${token.address}`} />
-      </FlatContainer>
-    </ContentContainer>
-  </React.Fragment>
-);
-
 const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
   const Icon = socialIcons[social];
 
@@ -721,72 +665,6 @@ const SocialHeader = styled.p`
   font-weight: 600;
 `;
 
-const SocialPage = ({ token, location }) => (
-  <React.Fragment>
-    <Hero
-      primaryColor={token.primaryColor}
-      secondaryColor={token.secondaryColor}
-      className="is-flex"
-      style={{ alignItems: 'center' }}
-    >
-      <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
-          <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
-              <BackArrow>
-                <H2 className="is-pulled-right">←</H2>
-              </BackArrow>
-            </div>
-            <div className="column">
-              <H2>
-                <TokenImage
-                  token={token}
-                  style={{
-                    width: '23px',
-                    height: '23px',
-                    marginRight: '10px',
-                    marginBottom: '-3px',
-                  }}
-                />
-                {token.name}
-              </H2>
-            </div>
-          </Back>
-        </Link>
-        <div className="columns is-mobile">
-          <div className="column" style={{ marginLeft: '80px' }}>
-            <H1>In Media</H1>
-          </div>
-        </div>
-      </ContentContainer>
-    </Hero>
-    <ContentContainer>
-      <div className="columns">
-        <div className="column is-one-fourth">
-          <FlatContainer>
-            <Social asset={`${token.network}:${token.address}`} social="github" />
-          </FlatContainer>
-        </div>
-        <div className="column is-one-fourth">
-          <FlatContainer>
-            <Social asset={`${token.network}:${token.address}`} social="twitter" />
-          </FlatContainer>
-        </div>
-        <div className="column is-one-fourth">
-          <FlatContainer>
-            <Social asset={`${token.network}:${token.address}`} social="instagram" />
-          </FlatContainer>
-        </div>
-        <div className="column is-one-fourth">
-          <FlatContainer>
-            <Social asset={`${token.network}:${token.address}`} social="facebook" />
-          </FlatContainer>
-        </div>
-      </div>
-    </ContentContainer>
-  </React.Fragment>
-);
-
 const ClubForm = ({ token }) => (
   <IfActiveEntity>
     {(entityId) => (
@@ -816,75 +694,6 @@ const ClubForm = ({ token }) => (
       </FormContainer>
     )}
   </IfActiveEntity>
-);
-
-const FeedPage = ({ token, location }) => (
-  <React.Fragment>
-    <Hero
-      primaryColor={token.primaryColor}
-      secondaryColor={token.secondaryColor}
-      className="is-flex"
-      style={{ alignItems: 'center' }}
-    >
-      <ContentContainer style={{ flex: 1 }}>
-        <Link to={`/clubs/${token.isCustom ? `${token.network}:${token.address}${location.search}` : token.symbol}`}>
-          <Back className="columns is-mobile" style={{ color: token.secondaryColor, opacity: 0.6 }}>
-            <div className="column is-1" style={{ width: '60px', marginLeft: '20px' }}>
-              <BackArrow>
-                <H2 className="is-pulled-right">←</H2>
-              </BackArrow>
-            </div>
-            <div className="column">
-              <H2>
-                <TokenImage
-                  token={token}
-                  style={{
-                    width: '23px',
-                    height: '23px',
-                    marginRight: '10px',
-                    marginBottom: '-3px',
-                  }}
-                />
-                {token.name}
-              </H2>
-            </div>
-          </Back>
-        </Link>
-        <div className="columns is-mobile">
-          <div className="column is-offset-1">
-            <H1>Feed</H1>
-          </div>
-        </div>
-      </ContentContainer>
-    </Hero>
-    <ContentContainer>
-      <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
-        {token.is721 ? (
-          <IfActiveEntityIs
-            asset={`${token.network}:${token.address}`}
-            other={<ActiveEntityIsNotFromFamily token={token} />}
-          >
-            <ClubForm token={token} />
-          </IfActiveEntityIs>
-        ) : (
-          <ClubForm token={token} />
-        )}
-      </IfActiveEntityHasToken>
-      <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
-        {(isActiveEntityFromFamily) => (
-          <DoesActiveEntityHasToken token={token}>
-            {(hasToken) => (
-              <FeedForToken
-                disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
-                className="feed-for-token"
-                token={token}
-              />
-            )}
-          </DoesActiveEntityHasToken>
-        )}
-      </IsActiveEntityFromFamily>
-    </ContentContainer>
-  </React.Fragment>
 );
 
 const isTokenValid = (token) => {
