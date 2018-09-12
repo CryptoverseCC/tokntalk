@@ -10,6 +10,7 @@ import { FlatContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import Investors from './Investors';
 import { Entities, WithActiveEntity } from './Entity';
+import { ChangellyFastBuy } from './Changelly';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -52,6 +53,17 @@ export default class IndexPage extends Component {
 
   changeFeedType = (feedType) => {
     this.setState({ feedType });
+  };
+
+  openWidged = (a, e) => {
+    e.preventDefault();
+    var link = a.href;
+    window.open(
+      link,
+      'Changelly',
+      'width=600,height=470,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0',
+    );
+    return false;
   };
 
   render() {
