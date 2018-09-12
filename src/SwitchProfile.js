@@ -23,7 +23,7 @@ export class SwitchProfile extends Component {
                     )}
                   </ul>
                   <p>or use one of your NFTs ({entities.length})</p>
-                  {this.renderEntities(entities, changeActiveEntityTo, activeEntity)}
+                  {this.renderEntitiesWithClubs(entities, changeActiveEntityTo, activeEntity)}
                 </div>
               ) : null
             }
@@ -33,7 +33,7 @@ export class SwitchProfile extends Component {
     );
   }
 
-  renderEntities = (entities, changeActiveEntityTo, activeEntity) => {
+  renderEntitiesWithClubs = (entities, changeActiveEntityTo, activeEntity) => {
     const tokensInThaClubs = groupBy((e) => {
       const [network, address] = e.id.split(':');
       return network + ':' + address;
@@ -42,11 +42,11 @@ export class SwitchProfile extends Component {
       const [network, address] = e.split(':');
       const clubTokens = tokensInThaClubs[e];
       const club = findClub(network, address);
-      return this.renderClubTokens(club, clubTokens, changeActiveEntityTo, activeEntity);
+      return this.renderEntitiesWithinClub(club, clubTokens, changeActiveEntityTo, activeEntity);
     });
   };
 
-  renderClubTokens = (club, clubTokens, changeActiveEntityTo, activeEntity) => {
+  renderEntitiesWithinClub = (club, clubTokens, changeActiveEntityTo, activeEntity) => {
     return (
       <div key={club.address}>
         <p>{club.name}</p>
