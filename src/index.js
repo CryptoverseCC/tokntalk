@@ -13,7 +13,6 @@ import { Storage, ScrollTop, rewriteCmp, validateParams } from './utils';
 import { runInContext, Sentry } from './Sentry';
 
 import registerServiceWorker from './registerServiceWorker';
-import { SwitchProfile } from './SwitchProfile';
 
 const runMigrations = (storage) => {
   let version = parseInt(storage.getItem('version'), 10);
@@ -80,7 +79,7 @@ const TokNTalk = withRouter(
             <Route exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
 
-            <Route exact path="/switch_profile" component={SwitchProfile} />
+            <Route exact path="/switch_profile" component={App.SwitchProfile} />
             <Route exact path="/" component={App.Index} />
             <Route path="/clubs" component={App.Discover} />
             <Route path="/discover" component={rewriteCmp('/discover', '/clubs')} />

@@ -198,6 +198,7 @@ const clubs = [
       small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%', imgLeftOffset: '55%' },
       medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%', imgLeftOffset: '55%' },
       large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%', imgLeftOffset: '55%' },
+      veryLarge: { containerSize: '128px', imgSize: '260px', imgTopOffset: '70%', imgLeftOffset: '55%' },
     },
   },
   {

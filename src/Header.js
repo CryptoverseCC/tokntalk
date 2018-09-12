@@ -224,24 +224,27 @@ const CatDropdown = () => {
       >
         {({ closeDropdown }) => (
           <Entities>
-            {({ entities, changeActiveEntityTo }) =>
-              entities.map((entity) => {
-                const { id, ...entityInfo } = entity;
-                return (
-                  <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
-                    <PickEntity
-                      onClick={() => {
-                        changeActiveEntityTo(entity);
-                        closeDropdown();
-                      }}
-                    >
-                      <EntityAvatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
-                      <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
-                    </PickEntity>
-                  </li>
-                );
-              })
-            }
+            {({ entities, changeActiveEntityTo }) => (
+              <div>
+                {entities.slice(0, 6).map((entity) => {
+                  const { id, ...entityInfo } = entity;
+                  return (
+                    <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
+                      <PickEntity
+                        onClick={() => {
+                          changeActiveEntityTo(entity);
+                          closeDropdown();
+                        }}
+                      >
+                        <EntityAvatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
+                        <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
+                      </PickEntity>
+                    </li>
+                  );
+                })}
+                <Link to="/switch_profile">See more</Link>
+              </div>
+            )}
           </Entities>
         )}
       </Dropdown>

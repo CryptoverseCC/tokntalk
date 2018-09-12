@@ -32,6 +32,7 @@ import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 import { metamaskStatusChanged } from './Analytics';
+import { SwitchProfile } from './SwitchProfile';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
@@ -446,5 +447,13 @@ export default class App extends Component {
     <Context.Consumer>
       {({ feedStore }) => <ModalThread {...props} getFeedItem={feedStore.getFeedItem} />}
     </Context.Consumer>
+  );
+
+  static SwitchProfile = (props) => (
+    <React.Fragment>
+      <Header />
+      <SwitchProfile {...props} />
+      <PositionedFooter />
+    </React.Fragment>
   );
 }

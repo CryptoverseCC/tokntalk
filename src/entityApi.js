@@ -8,6 +8,7 @@ export const defaultAvatarSizes = {
   small: { containerSize: '44px', imgSize: '44px', imgTopOffset: '50%', imgLeftOffset: '50%' },
   medium: { containerSize: '54px', imgSize: '54px', imgTopOffset: '50%', imgLeftOffset: '50%' },
   large: { containerSize: '64px', imgSize: '64px', imgTopOffset: '50%', imgLeftOffset: '50%' },
+  veryLarge: { containerSize: '128px', imgSize: '128px', imgTopOffset: '50%', imgLeftOffset: '50%' },
 };
 
 export const getEntityData = async (entity) => {
