@@ -38,6 +38,7 @@ import exportIcon from './img/export.svg';
 import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import { PromotionBox } from './promotion/PromotionBox';
+import ProfileBox from './ProfileBox';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -365,17 +366,15 @@ const ByToken = ({ token }) => (
     <ContentContainer>
       <div className="columns">
         <div className="column is-3">
-          <TokenHero token={token} />
-          <FlatContainer
-            style={{
-              paddingTop: '60px',
-              marginBottom: '30px',
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-              position: 'relative',
+          <ProfileBox
+            primaryColor={token.primaryColor}
+            avatar={token.logo}
+            coverImage={token.coverImage}
+            coverImageStyle={{
+              backgroundSize: '50%',
+              backgroundPosition: '100% 50%',
             }}
           >
-            <TokenAvatar token={token} />
             <H2>{token.name}</H2>
             <ul style={{ fontWeight: '600' }}>
               <li style={{ marginBottom: '7px' }}>
@@ -387,7 +386,7 @@ const ByToken = ({ token }) => (
                 </li>
               ))}
             </ul>
-          </FlatContainer>
+          </ProfileBox>
           {token.promotionBox && (
             <FlatContainer style={{ marginBottom: '30px' }}>
               <AppContext.Consumer>
@@ -442,44 +441,6 @@ const ByToken = ({ token }) => (
     </ContentContainer>
   </React.Fragment>
 );
-
-const TokenHero = styled.div`
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  background-image: ${({ token }) => `url(${token.coverImage})`};
-  background-color: ${({ token }) => token.primaryColor};
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding-top: 50%;
-  background-size: 50%;
-  background-position: 100% 50%;
-  width: 100%;
-`;
-
-const TokenAvatar = styled(({ className, style, token }) => (
-  <div className={className} style={style}>
-    <TokenImage token={token} />
-  </div>
-))`
-  position: absolute;
-  top: -32px;
-  left: 10px;
-  width: 64px;
-  height: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 3px #ffffff solid;
-  border-radius: 12px;
-  background-color: ${({ token }) => token.primaryColor};
-  background-repeat: no-repeat;
-  background-size: contain;
-
-  & > img {
-    max-width: 44px;
-    max-height: 44px;
-  }
-`;
 
 const MembersTab = styled.div`
   ${tabCss};
