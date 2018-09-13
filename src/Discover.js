@@ -266,17 +266,22 @@ class DiscoveryTabContent extends Component {
     return (
       <React.Fragment>
         {tokens.map((token, index) => (
-          <TokenTile
-            linkTo={token.isCustom ? `${match.url}/${token.network}:${token.address}` : `${match.url}/${token.symbol}`}
-            key={token.address}
-            token={token}
-            className={`column ${index < 15 ? 'is-one-quarter' : index <= 34 ? 'is-one-fifth' : 'is-2'}`}
-          />
+          <EnhancedTokenTile club={token} index={index} match={match} key={token.address} />
         ))}
       </React.Fragment>
     );
   };
 }
+
+const EnhancedTokenTile = enhanceCustomClubProp('club', 'club')(({ club, index, match }) => {
+  return (
+    <TokenTile
+      linkTo={club.isCustom ? `${match.url}/${club.network}:${club.address}` : `${match.url}/${club.symbol}`}
+      token={club}
+      className={`column ${index < 15 ? 'is-one-quarter' : index <= 34 ? 'is-one-fifth' : 'is-2'}`}
+    />
+  );
+});
 
 const discoveryYours = async (entity) => {
   if (entity) {
@@ -310,8 +315,7 @@ const discoveryNewest = async () => {
 };
 
 const sortByScore = (score) => {
-  const tokensMap = clubs.reduce((acc, item) => ({ ...acc, [`${item.network}:${item.address}`]: item }), {});
-  return score.filter((item) => tokensMap[item.id]).map((item) => tokensMap[item.id]);
+  return score.map((item) => findClub(item.id.split(':')[0], item.id.split(':')[1]));
 };
 
 class ByTokenIndex extends Component {
