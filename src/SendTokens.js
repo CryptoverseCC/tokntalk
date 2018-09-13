@@ -203,7 +203,7 @@ class SendTokens extends Component {
     e.preventDefault();
     const { to } = this.props;
     const { token, value } = this.state;
-    const recipient = to.owner;
+    const recipient = to.isAddress ? to.id : to.owner;
     this.setState({ step: 'sending' });
 
     try {
