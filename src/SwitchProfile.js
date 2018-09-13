@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { findClub } from './clubs';
-import groupBy from 'lodash/fp/groupBy';
 import styled from 'styled-components';
 import { ContentContainer, H3, H4 } from './Components';
 import { HeaderSpacer } from './Header';
@@ -11,93 +9,99 @@ const H1ChooseProfile = styled.h1`
   font-size: 3rem;
   font-weight: bold;
   line-height: 1;
+
   @media (max-width: 770px) {
     margin-left: 2%;
   }
 `;
 
-export class SwitchProfile extends Component {
+const Entity = ({ entity, changeActiveEntityTo, isActive }) => {
+  const { id, ...entityInfo } = entity;
+  return (
+    <PickEntity
+      onClick={() => {
+        changeActiveEntityTo(entity);
+      }}
+    >
+      <EntityAvatar id={id} entityInfo={entityInfo} size="veryLarge" lazy={false} />
+      <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
+      {isActive && 'selected'}
+    </PickEntity>
+  );
+};
+
+class SwitchProfile extends Component {
   render() {
+    const { addressEntity, notAddressEntities } = this;
+    const { changeActiveEntityTo, entities } = this.props;
+
     return (
       <ContentContainer>
         <HeaderSpacer />
         <H1ChooseProfile>Choose your profile</H1ChooseProfile>
-        <Entities>
-          {({ entities, changeActiveEntityTo }) => (
-            <WithActiveEntity>
-              {(activeEntity) =>
-                entities.length ? (
-                  <div>
-                    <H3>Be yourself</H3>
-                    <ul>
-                      {this.renderEntity(
-                        entities.filter((e) => e.isAddress)[0],
-                        changeActiveEntityTo,
-                        entities.filter((e) => e.isAddress)[0].id === activeEntity.id,
-                      )}
-                    </ul>
-                    <H3 style={{ marginTop: '20px' }}>or use one of your NFTs ({entities.length})</H3>
-                    {this.renderEntitiesWithClubs(entities, changeActiveEntityTo, activeEntity)}
+        <div className="columns">
+          <WithActiveEntity>
+            {(activeEntity) =>
+              entities.length ? (
+                <React.Fragment>
+                  <div className="column is-one-fifth">
+                    <H3>Act as your address</H3>
+                    <Entity
+                      entity={addressEntity}
+                      isActive={addressEntity.id === activeEntity.id}
+                      changeActiveEntityTo={changeActiveEntityTo}
+                    />
                   </div>
-                ) : null
-              }
-            </WithActiveEntity>
-          )}
-        </Entities>
+                  <div className="column">
+                    {notAddressEntities.length ? (
+                      <React.Fragment>
+                        <H3>Act as one of your NFTs ({notAddressEntities.length})</H3>
+                        <div className="columns is-multiline is-mobile">
+                          {notAddressEntities.map((entity) => (
+                            <div key={entity.id} className="column is-one-quarter-tablet is-half-mobile">
+                              <Entity
+                                entity={entity}
+                                isActive={entity.id === activeEntity.id}
+                                changeActiveEntityTo={changeActiveEntityTo}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </React.Fragment>
+                    ) : null}
+                  </div>
+                </React.Fragment>
+              ) : null
+            }
+          </WithActiveEntity>
+        </div>
       </ContentContainer>
     );
   }
 
-  renderEntitiesWithClubs = (entities, changeActiveEntityTo, activeEntity) => {
-    const tokensInThaClubs = groupBy((e) => {
-      const [network, address] = e.id.split(':');
-      return network + ':' + address;
-    }, entities.filter((e) => !e.isAddress));
-    return Object.keys(tokensInThaClubs).map((e) => {
-      const [network, address] = e.split(':');
-      const clubTokens = tokensInThaClubs[e];
-      const club = findClub(network, address);
-      return this.renderEntitiesWithinClub(club, clubTokens, changeActiveEntityTo, activeEntity);
-    });
-  };
+  get addressEntity() {
+    return this.props.entities.filter((e) => e.isAddress)[0];
+  }
 
-  renderEntitiesWithinClub = (club, clubTokens, changeActiveEntityTo, activeEntity) => {
-    return (
-      <div key={club.address} style={{ marginTop: '20px' }}>
-        <H4>{club.name}</H4>
-        <p>{this.shortAddress(club.address)}</p>
-        <p>
-          <ul>{clubTokens.map((e) => this.renderEntity(e, changeActiveEntityTo, activeEntity.id === e.id))}</ul>
-        </p>
-      </div>
-    );
-  };
-
-  renderEntity = (entity, changeActiveEntityTo, isActive) => {
-    const { id, ...entityInfo } = entity;
-    return (
-      <li key={entity.id} style={{ display: 'inline-block' }}>
-        <PickEntity
-          onClick={() => {
-            changeActiveEntityTo(entity);
-          }}
-        >
-          <EntityAvatar id={id} entityInfo={entityInfo} size="veryLarge" lazy={false} />
-          <p>
-            <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
-            {isActive && 'selected'}
-          </p>
-        </PickEntity>
-      </li>
-    );
-  };
-
-  shortAddress = (address) => {
-    return `${address.substr(0, 7).toLowerCase()}...${address.substring(37).toLowerCase()}`;
-  };
+  get notAddressEntities() {
+    return this.props.entities.filter((e) => !e.isAddress);
+  }
 }
 
+const withEntities = (Cmp) => (props) => (
+  <Entities>
+    {({ entities, changeActiveEntityTo }) => (
+      <Cmp {...props} entities={entities} changeActiveEntityTo={changeActiveEntityTo} />
+    )}
+  </Entities>
+);
+
+export default withEntities(SwitchProfile);
+
 const PickEntity = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: none;
   background: none;
   outline: none;
@@ -106,7 +110,6 @@ const PickEntity = styled.button`
   width: 100%;
   border-radius: 6px;
   cursor: pointer;
-  align-items: center;
 
   &:hover {
     background-color: #ebefff;

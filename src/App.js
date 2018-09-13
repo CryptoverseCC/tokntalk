@@ -32,7 +32,7 @@ import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 import { metamaskStatusChanged } from './Analytics';
-import { SwitchProfile } from './SwitchProfile';
+import SwitchProfile from './SwitchProfile';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
