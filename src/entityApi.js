@@ -47,7 +47,7 @@ export const getEntityPrefix = (entity) => {
 };
 
 export const entityTranslations = {
-  commentPlaceholder: 'Write your story',
+  commentPlaceholder: 'Ask your question',
   replyPlaceholder: 'Write your reply',
   noEntitiesError: 'No tokens found',
   emptyFeed: 'No messages yet. Be the first one!',
