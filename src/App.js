@@ -117,7 +117,7 @@ export default class App extends Component {
   };
 
   refreshWeb3State = async () => {
-    const { from, isListening, provider, networkName } = await getWeb3State();
+    const { from, isListening, provider, networkName } = await getWeb3State(this.storage);
     if (this.state.from !== from) this.refreshMyEntities();
     this.setState({ from, isListening, provider, networkName });
   };

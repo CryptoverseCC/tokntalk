@@ -16,17 +16,27 @@ const onReadyState = () => {
   });
 };
 
-const setupWeb3 = async () => {
+const setupWeb3 = async (storage) => {
   const Web3 = await import('web3');
   await onReadyState();
   try {
     const web3 = new Web3(window.web3.currentProvider);
     return web3;
   } catch (e) {
+    if (!storage) {
+      throw 'Storage is not a function nor undefined';
+    }
+    const savedMnemonic = storage.getItem('mnemonic');
+    let mnemonic;
     var bip39 = require('bip39');
     var hdkey = require('hdkey');
     var ethUtil = require('ethereumjs-util');
-    var mnemonic = bip39.generateMnemonic();
+    if (!savedMnemonic) {
+      mnemonic = bip39.generateMnemonic();
+      storage.setItem('mnemonic', mnemonic);
+    } else {
+      mnemonic = savedMnemonic;
+    }
     console.log(mnemonic);
     var seed = bip39.mnemonicToSeed(mnemonic);
     var root = hdkey.fromMasterSeed(seed);
@@ -57,9 +67,9 @@ const setupWeb3 = async () => {
   }
 };
 
-export default () => {
+export default (storage) => {
   if (!web3Promise) {
-    web3Promise = new Promise((resolve) => resolve(setupWeb3()));
+    web3Promise = new Promise((resolve) => resolve(setupWeb3(storage)));
   }
 
   return web3Promise;
