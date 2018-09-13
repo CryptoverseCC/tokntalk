@@ -6,7 +6,7 @@ export const ChangellyFastBuy = () => {
     <AppContext>
       {({ web3Store }) => (
         <div>
-          <link rel="stylesheet" href="https://changelly.com/widget.css" />{' '}
+          <link rel="stylesheet" href="https://changelly.com/widget.css" />
           <a
             onClick={(e, a) => {
               e.preventDefault();
@@ -18,13 +18,10 @@ export const ChangellyFastBuy = () => {
             }&amount=1&ref_id=wqqgw7k9zlo98t0v&color=00cf70`}
             target="_blank"
           >
-            {' '}
-            <img src="https://changelly.com/pay_button_buy_sell.png" />{' '}
-          </a>{' '}
+            <img src="https://changelly.com/pay_button_buy_sell.png" />
+          </a>
           <div id="changellyModal">
-            {' '}
             <div class="changellyModal-content">
-              {' '}
               <span
                 onClick={() => {
                   document.getElementById('changellyModal').style.display = 'none';
@@ -32,7 +29,7 @@ export const ChangellyFastBuy = () => {
                 class="changellyModal-close"
               >
                 x
-              </span>{' '}
+              </span>
               <iframe
                 src={`https://changelly.com/widget/v1?auth=email&from=USD&to=ETH&merchant_id=wqqgw7k9zlo98t0v&address=${
                   web3Store.from
@@ -43,9 +40,8 @@ export const ChangellyFastBuy = () => {
                 scrolling="no"
                 style={{ overflowY: 'hidden', border: 'none' }}
               >
-                {' '}
-                Can't load widget{' '}
-              </iframe>{' '}
+                Can't load widget
+              </iframe>
             </div>
           </div>
         </div>
