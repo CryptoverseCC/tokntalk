@@ -13,6 +13,7 @@ import {
   LinkedActiveEntityAvatar,
   ActiveEntityName,
   EntityClubs,
+  EntityAvatar,
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
@@ -30,6 +31,7 @@ import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
 import { niceScroll } from './cssUtils';
 import SendTokens from './SendTokens';
+import ProfileBox from './ProfileBox';
 
 const CommunitiesListContainer = styled.div`
   position: relative;
@@ -115,14 +117,38 @@ export default class ShowPage extends Component {
   static FeedContainer = styled.div``;
 
   render() {
+    const { EntityInfo } = this;
     const { entityId } = this.props.match.params;
+    const tokenClub = this.getCommunityToken(entityId);
+
     return (
       <Entity id={entityId}>
         {(entity) => (
           <ContentContainer>
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
-              <div className="column is-3-widescreen is-4">{this.renderProfileInfo(entity)}</div>
+              <div className="column is-3-widescreen is-4">
+                <ProfileBox
+                  coverImage={entity.image_preview_url}
+                  coverImageStyle={{
+                    backgroundSize: entity.isAddress ? 'cover' : 'contain',
+                    backgroundPositionX: '100%',
+                  }}
+                  avatar={
+                    <IdentityAvatar
+                      backgroundColor="transparent"
+                      entity={entityId}
+                      src={entity.image_preview_url}
+                      size="medium"
+                      style={{ alignSelf: 'flex-end' }}
+                    />
+                  }
+                  primaryColor={entity.background_color ? `#${entity.background_color}` : tokenClub.primaryColor}
+                >
+                  <EntityInfo entity={entity} />
+                </ProfileBox>
+                {this.renderProfileInfo(entity)}
+              </div>
               <div className="column is-8 is-offset-1-widescreen">
                 {this.renderCommunities(entity)}
                 {this.renderFeedContainer(entity)}
@@ -137,38 +163,26 @@ export default class ShowPage extends Component {
   renderProfileInfo = (entity) => {
     return (
       <React.Fragment>
-        {this.renderProfileAvatar(entity)}
-        {this.renderEntityInfo(entity)}
         {this.renderPromotionBox(entity)}
         {this.renderCousins(entity)}
       </React.Fragment>
     );
   };
 
-  renderProfileAvatar = (entity) => {
-    return (
-      <ShowPage.ProfileImageContainer backgroundColor={entity.background_color}>
-        <ShowPage.ProfileImage src={entity.image_preview_url} alt={entity.id} />
-      </ShowPage.ProfileImageContainer>
-    );
-  };
-
-  renderEntityInfo = (entity) => {
-    return (
-      <FlatContainer style={{ borderTopLeftRadius: 'unset', borderTopRightRadius: 'unset' }}>
-        <H2 style={{ wordBreak: 'break-word' }}>
-          <EntityName id={entity.id} />
-        </H2>
-        <AppContext>{({ web3Store }) => web3Store.networkName === 'ethereum' && <SendTokens to={entity} />}</AppContext>
-        <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
-        <IfIsOwnedByCurrentUser
-          entity={entity}
-          then={<SocialList editable {...entity} />}
-          other={<SocialList {...entity} />}
-        />
-      </FlatContainer>
-    );
-  };
+  EntityInfo = ({ entity }) => (
+    <React.Fragment>
+      <H2 style={{ wordBreak: 'break-word' }}>
+        <EntityName id={entity.id} />
+      </H2>
+      <AppContext>{({ web3Store }) => web3Store.networkName === 'ethereum' && <SendTokens to={entity} />}</AppContext>
+      <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
+      <IfIsOwnedByCurrentUser
+        entity={entity}
+        then={<SocialList editable {...entity} />}
+        other={<SocialList {...entity} />}
+      />
+    </React.Fragment>
+  );
 
   renderPromotionBox = (entity) => {
     return (
@@ -267,6 +281,14 @@ export default class ShowPage extends Component {
         <Feed options={{ entityId: entity.id }} />
       </ShowPage.FeedContainer>
     );
+  };
+
+  getCommunityToken = (id) => {
+    if (id.indexOf(':') === -1) {
+      return {};
+    }
+    const [network, address] = id.split(':');
+    return findClub(network, address);
   };
 }
 

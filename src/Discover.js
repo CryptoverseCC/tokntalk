@@ -372,7 +372,7 @@ const ByToken = ({ token }) => (
         <div className="column is-3">
           <ProfileBox
             primaryColor={token.primaryColor}
-            avatar={token.logo}
+            avatar={<TokenImage token={token} style={{ margin: '5px', width: '44px', height: '44px' }} />}
             coverImage={token.coverImage}
             coverImageStyle={{
               backgroundSize: '50%',
@@ -392,7 +392,7 @@ const ByToken = ({ token }) => (
             </ul>
           </ProfileBox>
           {token.promotionBox && (
-            <FlatContainer style={{ marginBottom: '30px' }}>
+            <FlatContainer style={{ marginTop: '30px' }}>
               <AppContext.Consumer>
                 {({ boostStore: { getBoosts, getSupportings } }) => (
                   <PromotionBox

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import sortBy from 'lodash/fp/sortBy';
 
 import { getEntityPrefix, getEntityId } from './entityApi';
 import Context from './Context';

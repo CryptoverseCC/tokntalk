@@ -79,9 +79,17 @@ export const isValidFeedItem = (feedItem) => {
   return true;
 };
 
+const enhanceContextInfo = (context, context_info) => {
+  if (!context_info.name) {
+    context_info.name = `${getEntityPrefix(context)}${getEntityId(context)}`;
+  }
+
+  return context_info;
+};
+
 export const enhanceFeedItem = (feedItem) => {
-  if (!!feedItem.context_info && !feedItem.context_info.name) {
-    feedItem.context_info.name = `${getEntityPrefix(feedItem.context)}${getEntityId(feedItem.context)}`;
+  if (!!feedItem.context_info) {
+    feedItem.context_info = enhanceContextInfo(feedItem.context, feedItem.context_info);
   }
 
   if (feedItem.type === 'post_to_simple') {
