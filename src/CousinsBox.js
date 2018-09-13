@@ -37,9 +37,10 @@ export class CousinsBox extends Component {
   };
 
   render() {
-    const activeEntity = this.props.entity;
+    const { entity: activeEntity, style } = this.props;
+
     return this.state.entities.length ? (
-      <FlatContainer style={{ marginTop: '2rem' }}>
+      <FlatContainer style={style}>
         <H4 style={{ marginTop: '10px' }}>Cousins</H4>
         <p style={{ fontSize: '0.8rem', color: '#928f9b' }}>Other tokens from this address</p>
         <AutoSizer disableHeight>

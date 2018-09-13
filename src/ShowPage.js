@@ -32,33 +32,18 @@ import { CousinsBox } from './CousinsBox';
 import { niceScroll } from './cssUtils';
 import SendTokens from './SendTokens';
 import ProfileBox from './ProfileBox';
-
-const CommunitiesListContainer = styled.div`
-  position: relative;
-  min-width: 100%;
-  overflow: hidden;
-
-  &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    right: 0;
-    width: 80px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
-    z-index: 1;
-  }
-`;
-
-const CommunitiesList = styled.div`
-  overflow-x: scroll;
-  ${niceScroll};
-`;
+import { Token } from './ActiveEntityTokens';
 
 const StyledTokenTile = styled(TokenTile)`
   :last-child {
     z-index: 2;
   }
+`;
+
+const ScrollableContainer = styled.div`
+  ${niceScroll};
+  overflow-y: scroll;
+  max-height: 300px;
 `;
 
 const getSingleFeed = async ({ entityId }) => {
@@ -114,10 +99,8 @@ export default class ShowPage extends Component {
     object-fit: contain;
   `;
 
-  static FeedContainer = styled.div``;
-
   render() {
-    const { EntityInfo } = this;
+    const { EntityInfo, PromotionBox, Cousins, Communities, FeedContainer } = this;
     const { entityId } = this.props.match.params;
     const tokenClub = this.getCommunityToken(entityId);
 
@@ -127,7 +110,7 @@ export default class ShowPage extends Component {
           <ContentContainer>
             <HeaderSpacer style={{ marginBottom: '60px' }} />
             <div className="columns">
-              <div className="column is-3-widescreen is-4">
+              <div className="column is-3">
                 <ProfileBox
                   coverImage={entity.image_preview_url}
                   coverImageStyle={{
@@ -147,11 +130,14 @@ export default class ShowPage extends Component {
                 >
                   <EntityInfo entity={entity} />
                 </ProfileBox>
-                {this.renderProfileInfo(entity)}
+                <PromotionBox entity={entity} />
               </div>
-              <div className="column is-8 is-offset-1-widescreen">
-                {this.renderCommunities(entity)}
-                {this.renderFeedContainer(entity)}
+              <div className="column is-6">
+                <FeedContainer entity={entity} />
+              </div>
+              <div className="column is-3">
+                <Communities entity={entity} />
+                <Cousins entity={entity} style={{ marginTop: '2rem' }} />
               </div>
             </div>
           </ContentContainer>
@@ -159,15 +145,6 @@ export default class ShowPage extends Component {
       </Entity>
     );
   }
-
-  renderProfileInfo = (entity) => {
-    return (
-      <React.Fragment>
-        {this.renderPromotionBox(entity)}
-        {this.renderCousins(entity)}
-      </React.Fragment>
-    );
-  };
 
   EntityInfo = ({ entity }) => (
     <React.Fragment>
@@ -184,104 +161,73 @@ export default class ShowPage extends Component {
     </React.Fragment>
   );
 
-  renderPromotionBox = (entity) => {
-    return (
-      <FlatContainer style={{ marginTop: '30px' }}>
-        <AppContext.Consumer>
-          {({ boostStore: { getBoosts, getSupportings } }) => (
-            <PromotionBox
-              getBoosts={getBoosts}
-              getSupportings={getSupportings}
-              token={entity.id}
-              showPurrmoter={false}
-            />
-          )}
-        </AppContext.Consumer>
-      </FlatContainer>
-    );
-  };
-
-  renderCousins = (entity) => {
-    return (
+  PromotionBox = ({ entity }) => (
+    <FlatContainer style={{ marginTop: '30px' }}>
       <AppContext.Consumer>
-        {({ entityStore: { entityInfo } }) => {
-          if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
-            const owner = entity.isAddress ? entity.id : entity.owner;
-            return <CousinsBox entity={entity} owner={owner} />;
-          }
-        }}
+        {({ boostStore: { getBoosts, getSupportings } }) => (
+          <PromotionBox getBoosts={getBoosts} getSupportings={getSupportings} token={entity.id} showPurrmoter={false} />
+        )}
       </AppContext.Consumer>
-    );
-  };
+    </FlatContainer>
+  );
 
-  renderCommunities = (entity) => {
-    return (
-      <EntityClubs id={entity.id}>
-        {(clubs) =>
-          clubs.length ? (
-            <FlatContainer style={{ marginBottom: '2rem' }}>
-              <H4 style={{ marginBottom: '15px' }}>
-                <EntityName id={entity.id} /> Communities
-              </H4>
-              <CommunitiesListContainer>
-                <CommunitiesList className="columns is-mobile">{clubs.map(this.renderSingleCommunity)}</CommunitiesList>
-              </CommunitiesListContainer>
-            </FlatContainer>
-          ) : null
+  Cousins = ({ entity, style }) => (
+    <AppContext.Consumer>
+      {({ entityStore: { entityInfo } }) => {
+        if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
+          const owner = entity.isAddress ? entity.id : entity.owner;
+          return <CousinsBox entity={entity} owner={owner} style={style} />;
         }
-      </EntityClubs>
-    );
-  };
+      }}
+    </AppContext.Consumer>
+  );
 
-  renderSingleCommunity = (club) => {
-    return (
-      <StyledTokenTile
-        key={club.address}
-        small
-        linkTo={club.isCustom ? `/clubs/${club.network}:${club.address}` : `/clubs/${club.symbol}`}
-        token={club}
-        className="column is-one-fifth-desktop is-one-third-mobile"
-      />
-    );
-  };
+  Communities = ({ entity }) => (
+    <FlatContainer>
+      <H4>Clubs</H4>
+      <ScrollableContainer>
+        {entity.tokens.map((token) => (
+          <Token key={token.address} token={token} />
+        ))}
+      </ScrollableContainer>
+    </FlatContainer>
+  );
 
-  renderFeedContainer = (entity) => {
-    return (
-      <ShowPage.FeedContainer>
-        <IfActiveEntity>
-          {(token) => (
-            <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}>
-              <article className="media">
-                <div className="media-left">
-                  <LinkedActiveEntityAvatar size="large" />
+  FeedContainer = ({ entity }) => (
+    <div>
+      <IfActiveEntity>
+        {(token) => (
+          <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}>
+            <article className="media">
+              <div className="media-left">
+                <LinkedActiveEntityAvatar size="large" />
+              </div>
+              <div className="media-content">
+                <div className="content">
+                  <Link
+                    to={`/${token}`}
+                    style={{
+                      fontFamily: 'AvenirNext',
+                      fontSize: '1rem',
+                      fontWeight: '700',
+                    }}
+                  >
+                    <ActiveEntityName />
+                  </Link>
+                  <IfIsActiveEntity
+                    id={entity.id.toString()}
+                    then={<ConnectedCommentForm Form={CommentForm} />}
+                    other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
+                  />
                 </div>
-                <div className="media-content">
-                  <div className="content">
-                    <Link
-                      to={`/${token}`}
-                      style={{
-                        fontFamily: 'AvenirNext',
-                        fontSize: '1rem',
-                        fontWeight: '700',
-                      }}
-                    >
-                      <ActiveEntityName />
-                    </Link>
-                    <IfIsActiveEntity
-                      id={entity.id.toString()}
-                      then={<ConnectedCommentForm Form={CommentForm} />}
-                      other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
-                    />
-                  </div>
-                </div>
-              </article>
-            </div>
-          )}
-        </IfActiveEntity>
-        <Feed options={{ entityId: entity.id }} />
-      </ShowPage.FeedContainer>
-    );
-  };
+              </div>
+            </article>
+          </div>
+        )}
+      </IfActiveEntity>
+      <Feed options={{ entityId: entity.id }} />
+    </div>
+  );
 
   getCommunityToken = (id) => {
     if (id.indexOf(':') === -1) {

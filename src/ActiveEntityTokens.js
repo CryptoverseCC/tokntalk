@@ -36,7 +36,7 @@ const ActiveEntityTokens = () => (
                   <YourCommunitiesContainer>
                     <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
                     {clubs.map((club) => (
-                      <Token key={club.address} token={club} />
+                      <Token key={club.address} token={club} withCounter />
                     ))}
                     <DiscoverMore>{!clubs.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
                   </YourCommunitiesContainer>
@@ -207,12 +207,12 @@ const StyledUnreadedMessages = styled(UnreadedCount)`
   background: white;
 `;
 
-const Token = ({ token }) => {
+export const Token = ({ token, withCounter = false }) => {
   return (
     <YourCommunitiesLink to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}>
       <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
       {token.name}
-      <StyledUnreadedMessages token={token} />
+      {withCounter && <StyledUnreadedMessages token={token} />}
     </YourCommunitiesLink>
   );
 };
