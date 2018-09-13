@@ -12,6 +12,7 @@ import FeedTypeSwitcher from './FeedTypeSwitcher';
 import Investors from './Investors';
 import ActiveEntityTokens from './ActiveEntityTokens';
 import { Entities, WithActiveEntity } from './Entity';
+import { CoinbaseWidget } from './CoinbaseWidget';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -77,6 +78,7 @@ export default class IndexPage extends Component {
                   />
                 )}
               </AppContext.Consumer>
+              <CoinbaseWidget />
             </FlatContainer>
           </div>
           <div className="column is-8 is-offset-1-widescreen">
