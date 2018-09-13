@@ -33,6 +33,8 @@ export function getCurrentProviderName() {
     if (window.web3.currentProvider.constructor.name === 'EthereumProvider') return 'mist';
 
     if (window.web3.currentProvider.constructor.name === 'Web3FrameProvider') return 'parity';
+
+    if (window.web3.currentProvider.isToknTalkEmbedded) return 'ToknTalkEmbedded';
   } catch (e) {}
 
   return 'unknown';
