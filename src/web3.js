@@ -23,10 +23,22 @@ const setupWeb3 = async () => {
     const web3 = new Web3(window.web3.currentProvider);
     return web3;
   } catch (e) {
-    var keyd = '0xprivatekey';
+    var bip39 = require('bip39');
+    var hdkey = require('hdkey');
+    var ethUtil = require('ethereumjs-util');
+    var mnemonic = bip39.generateMnemonic();
+    console.log(mnemonic);
+    var seed = bip39.mnemonicToSeed(mnemonic);
+    var root = hdkey.fromMasterSeed(seed);
+    const addrNode = root.derive("m/44'/60'/0'/0/0");
+    var keyd = '0x' + addrNode._privateKey.toString('hex');
+    const pubKey = ethUtil.privateToPublic(addrNode._privateKey);
+    const addr = ethUtil.publicToAddress(pubKey).toString('hex');
+    const address = ethUtil.toChecksumAddress(addr);
+    console.log(addr, address);
     const toknTalkEmbeddedWeb3 = {
       eth: {
-        getAccounts: () => new Promise((resolve) => resolve(['0xaDa109225A4A073bAF547fd65c7655c03616A48C'])),
+        getAccounts: () => new Promise((resolve) => resolve([address])),
         net: {
           isListening: () => new Promise((resolve) => resolve(true)),
           getId: () => new Promise((resolve) => resolve(1)),
