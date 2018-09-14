@@ -8,13 +8,11 @@ export const ContentContainer = styled.div`
 `;
 
 export const FlatContainer = styled.div`
+  width: 96%;
+  margin-left: 2%;
   border-radius: 12px;
   padding: 30px;
   background-color: white;
-  @media (max-width: 770px) {
-    width: 96%;
-    margin-left: 2%;
-  }
 `;
 
 export const WarningContainer = FlatContainer.extend`
@@ -51,7 +49,7 @@ export const H3 = styled.p`
 
 export const H4 = styled.p`
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 export const SocialUsername = ({ link, ...restProps }) => {

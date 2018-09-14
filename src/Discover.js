@@ -67,6 +67,18 @@ const WelcomeMessage = styled.div`
   }
 `;
 
+const WiderColumns = styled.div`
+  border-radius: 12px;
+  padding: 30px;
+  background-color: #ecf1f9;
+  display: flex;
+  align-items: center;
+  @media (max-width: 770px) {
+    width: 96%;
+    margin-left: 2%;
+  }
+`;
+
 const DisoveryTab = FeedTypeButton;
 
 const DiscoveryContext = React.createContext();
@@ -113,19 +125,19 @@ class Index extends Component {
         <HeaderSpacer style={{ marginBottom: '30px' }} />
         <div className="columns">
           <div className="column is-5">
-            <H3 style={{ marginBottom: '0.8rem' }}>Token Clubs</H3>
+            <H2 style={{ marginBottom: '15px', marginTop: '30px' }}>Token Clubs</H2>
             <p>Everything to keep up what’s happening around your tokens and to explore new opportunities.</p>
           </div>
           <div className="column is-5">
-            <H4>Custom club</H4>
-            <H4 style={{ fontSize: '0.8rem' }}>Paste ERC20 contract address</H4>
+            <H4 style={{ marginTop: '30px' }}>Custom club</H4>
+            <p style={{ fontSize: '0.8rem' }}>Paste ERC20 contract address</p>
             <GenerateClub style={{ marginTop: '10px', height: '64px' }} />
           </div>
           <div className="column is-2">
-            <H4>Add a club</H4>
-            <H4 style={{ fontSize: '0.8rem' }}>Make it visible on Tok'n'Talk</H4>
+            <H4 style={{ marginTop: '30px' }}>Add a club</H4>
+            <p style={{ fontSize: '0.8rem' }}>Make it visible here</p>
             <Intercom>
-              <AddToken style={{ marginTop: '10px', height: '64px' }}>Add a club</AddToken>
+              <AddToken style={{ marginTop: '10px', height: '60px' }}>Add a club</AddToken>
             </Intercom>
           </div>
         </div>
@@ -309,7 +321,7 @@ const ByToken = ({ token }) => (
     <HeaderSpacer style={{ marginBottom: '30px' }} />
     <ContentContainer>
       <div className="columns ordered-mobile">
-        <div className="column is-3">
+        <div className="column is-3 columnOverwrite">
           <ProfileBox
             primaryColor={token.primaryColor}
             avatar={<TokenImage token={token} style={{ margin: '5px', width: '44px', height: '44px' }} />}
@@ -393,6 +405,7 @@ const tabCss = css`
   outline: none;
   font-weight: 600;
   padding-left: 0;
+  text-align: center;
 `;
 
 const selectedTabCss = css`
@@ -413,12 +426,12 @@ const Members = ({ token }) => (
   <DiscoveryContext>
     {({ loading, latest, facebook, instagram, github, twitter }) => (
       <React.Fragment>
-        <H4>Members</H4>
+        <H4 style={{ marginBottom: '30px' }}>Members</H4>
         <IsLoading>
           <Loader />
         </IsLoading>
         <Tabs>
-          <TabList className="columns is-mobile is-marginless">
+          <TabList className="columns is-mobile is-marginless" style={{ marginBottom: '15px' }}>
             <Tab className="column is-half is-paddingless">
               <MembersTab>Active</MembersTab>
             </Tab>
@@ -834,21 +847,54 @@ const AddToken = styled.div`
   justify-content: center;
   border-radius: 8px;
   background-color: #ffffff;
+  box-shadow: 0 1.2rem 3rem -0.8rem rgba(132, 128, 173, 0.2);
+  transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+  :hover {
+    box-shadow: 0 1.2rem 4rem -0.8rem rgba(132, 128, 173, 0.25);
+    transform: translateY(-2px);
+    transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+  }
+  :active {
+    transform: scale(0.98);
+    transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+  }
 `;
 
 const GenerateContainer = styled.div`
-  display: flex;
-  border-radius: 8px;
-  padding: 5px;
-  background-color: #ffffff;
+  width: 440px;
+  font-size: 1rem;
+  font-weight: 600;
 `;
 
 const GenerateInput = styled.input`
   width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  font-family: 'AvenirNext';
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 1.2rem 3rem -0.8rem rgba(132, 128, 173, 0.2);
+  border-radius: 8px;
   height: 100%;
-  background: none;
   outline: none;
-  border: none;
+  border: 1px solid #e4e6ea;
+  padding-left: 15px;
+  padding-bottom: calc(0.375em - 10px);
+  transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+  :focus {
+    box-shadow: 0 1.2rem 4rem -0.8rem rgba(132, 128, 173, 0.25);
+    border: 1px solid #a37fff;
+    transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+  }
+`;
+
+const GenerateInputContainer = styled.div`
+  width: 440px;
+  height: 60px;
+  position: relative;
+  @media (max-width: 770px) {
+    width: 100%;
+  }
 `;
 
 const GenerateClub = withRouter(
@@ -870,12 +916,16 @@ const GenerateClub = withRouter(
 
       return (
         <GenerateContainer style={style}>
-          <div style={{ position: 'relative', flexGrow: 1 }}>
+          <GenerateInputContainer>
             <GenerateInput placeholder="0xAddress" value={contractAddress} onChange={this.onChange} />
-          </div>
-          <StyledButton disabled={!isValid} onClick={this.onGenerate} style={{ width: 'unset' }}>
-            Generate
-          </StyledButton>
+            <StyledButton
+              disabled={!isValid}
+              onClick={this.onGenerate}
+              style={{ width: 'unset', position: 'absolute', right: '7px', top: '7px' }}
+            >
+              Generate
+            </StyledButton>
+          </GenerateInputContainer>
         </GenerateContainer>
       );
     }
