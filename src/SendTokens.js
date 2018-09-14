@@ -112,7 +112,6 @@ export const StyledButton = styled.button`
   font-size: 0.8rem;
   font-weight: 600;
   width: 100%;
-  margin-top: 10px;
   outline: none;
   border: none;
   border-radius: 6px;
@@ -224,7 +223,11 @@ class SendTokens extends Component {
   render() {
     const { step, tokens, token, value, txHash } = this.state;
     if (step === 'initial') {
-      return <StyledButton onClick={() => this.setState({ step: 'send' })}>Send tokens</StyledButton>;
+      return (
+        <StyledButton style={{ marginTop: '10px' }} onClick={() => this.setState({ step: 'send' })}>
+          Send tokens
+        </StyledButton>
+      );
     }
 
     if (step === 'sending') {

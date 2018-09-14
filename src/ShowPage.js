@@ -100,7 +100,7 @@ export default class ShowPage extends Component {
         {(entity) => (
           <ContentContainer>
             <HeaderSpacer style={{ marginBottom: '60px' }} />
-            <div className="columns">
+            <div className="columns ordered-mobile">
               <div className="column is-3">
                 <ProfileBox
                   coverImage={entity.image_preview_url}
@@ -123,7 +123,7 @@ export default class ShowPage extends Component {
                 </ProfileBox>
                 <PromotionBox entity={entity} />
               </div>
-              <div className="column is-6">
+              <div className="column is-6 fl-1">
                 <FeedContainer entity={entity} />
               </div>
               <div className="column is-3">
@@ -173,16 +173,17 @@ export default class ShowPage extends Component {
     </AppContext.Consumer>
   );
 
-  Communities = ({ entity }) => (
-    <FlatContainer>
-      <H4>Clubs</H4>
-      <ScrollableContainer>
-        {entity.tokens.map((token) => (
-          <Token key={token.address} token={token} />
-        ))}
-      </ScrollableContainer>
-    </FlatContainer>
-  );
+  Communities = ({ entity }) =>
+    entity.tokens.length ? (
+      <FlatContainer>
+        <H4>Clubs</H4>
+        <ScrollableContainer>
+          {entity.tokens.map((token) => (
+            <Token key={token.address} token={token} />
+          ))}
+        </ScrollableContainer>
+      </FlatContainer>
+    ) : null;
 
   FeedContainer = ({ entity }) => (
     <div>

@@ -308,7 +308,7 @@ const ByToken = ({ token }) => (
   <React.Fragment>
     <HeaderSpacer style={{ marginBottom: '30px' }} />
     <ContentContainer>
-      <div className="columns">
+      <div className="columns ordered-mobile">
         <div className="column is-3">
           <ProfileBox
             primaryColor={token.primaryColor}
@@ -348,7 +348,7 @@ const ByToken = ({ token }) => (
             </FlatContainer>
           )}
         </div>
-        <div className="column is-6">
+        <div className="column is-6 fl-1">
           {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
           <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
             {token.is721 ? (
@@ -873,7 +873,7 @@ const GenerateClub = withRouter(
           <div style={{ position: 'relative', flexGrow: 1 }}>
             <GenerateInput placeholder="0xAddress" value={contractAddress} onChange={this.onChange} />
           </div>
-          <StyledButton disabled={!isValid} onClick={this.onGenerate} style={{ width: 'unset', marginTop: 0 }}>
+          <StyledButton disabled={!isValid} onClick={this.onGenerate} style={{ width: 'unset' }}>
             Generate
           </StyledButton>
         </GenerateContainer>
