@@ -72,7 +72,7 @@ export const TokenTile = ({ linkTo, token, ...restProps }) => {
             <UnreadedCount token={token} />
           </div>
           <div>
-            <p style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#78818c' }}>{token.symbol}</p>
+            <p style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{token.symbol}</p>
             <H4>{token.name}</H4>
           </div>
         </TokenTileWrapper>
