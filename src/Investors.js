@@ -4,33 +4,28 @@ import styled from 'styled-components';
 
 const { NODE_ENV, REACT_APP_INTERCOM_APP_ID } = process.env;
 
-const IntercomIcon = styled((props) => (
-  <svg viewBox="0 0 100 100" version="1.1" {...props}>
-    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-      <text x="-50" y="60" fill="white" fontSize="35" fontWeight="bold">
-        Get in touch
-      </text>
-    </g>
-  </svg>
-))`
+const IntercomIcon = styled.div`
   width: 200px;
   height: 50px;
+  border-radius: 8px;
 `;
 
 const IntercomIconContainer = styled.div`
   cursor: pointer;
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
-  background: rgb(0, 113, 178);
-  border: 2px solid #0071b2;
-  border-radius: 5%;
-  width: 200px;
-  height: 40px;
-  margin-left: 10px;
+  background: #264dd9;
+  border-radius: 8px
+  width: 100%;
+  height: 50px;
+  transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
+  box-shadow: 0 1.2rem 3rem -0.8rem rgba(132, 128, 173, 0.2);
 
   :hover {
-    box-shadow: 0 3px 32px 0 rgba(0, 0, 0, 0.14);
+    box-shadow: 0 1.2rem 4rem -0.8rem rgba(132, 128, 173, 0.25);
+    transform: translateY(-2px);
+    transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
   }
 `;
 
@@ -91,7 +86,9 @@ const DefaultIntercom = () => (
     <InvestorsContainer>
       <H4 style={{ marginBottom: '15px' }}>We're looking for investors.</H4>
       <IntercomIconContainer>
-        <IntercomIcon />
+        <IntercomIcon>
+          <p style={{ textAlign: 'center', paddingTop: '14px', fontWeight: '600', color: 'white' }}>Contact us</p>
+        </IntercomIcon>
       </IntercomIconContainer>
     </InvestorsContainer>
   </Intercom>
