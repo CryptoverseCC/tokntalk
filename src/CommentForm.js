@@ -48,7 +48,7 @@ export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea inner
   }
 
   &:focus::-webkit-input-placeholder {
-    color: #928f9b;
+    color: #78818c;
   }
 `;
 

@@ -14,17 +14,16 @@ import Dropdown from './Dropdown';
 import { niceScroll } from './cssUtils';
 
 export const HeaderSpacer = styled.div`
-  height: 65px;
+  height: 60px;
   width: 100vw;
 `;
 
 const StyledHeader = styled.div`
-  height: 65px;
+  height: 60px;
   display: flex;
   align-items: center;
   background-color: white;
-  border-radius: 0 0 30px 30px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   padding: 0 2rem;
   box-shadow: 0 0.6rem 1rem -0.3rem rgba(27, 36, 55, 0.04);
@@ -32,7 +31,7 @@ const StyledHeader = styled.div`
 
 const HeaderContainer = styled.div`
   position: fixed;
-  width: 1280px;
+  width: 100%;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -48,7 +47,7 @@ const HeaderContainer = styled.div`
 `;
 
 const TitleLink = styled(Link)`
-  margin-left: 1rem;
+  margin-left: 5px;
   color: #1b2437;
   @media (max-width: 770px) {
     display: none;
@@ -58,9 +57,8 @@ const TitleLink = styled(Link)`
 const CrossLink = styled(Link)`
   margin-left: 10px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   padding-left: 10px;
-  border-left: 1px solid #dce0eb;
 `;
 
 const LinkContainer = styled.ul`
@@ -94,9 +92,13 @@ const Header = () => {
         </Link>
         <LinkDropdown />
         <LinkContainer>
-          <TitleLink to="/">{process.env.REACT_APP_NAME}</TitleLink>
+          <TitleLink to="/">
+            Tok
+            <span style={{ color: '#78818c' }}>n</span>
+            talk
+          </TitleLink>
           <CrossLink to="/about">About</CrossLink>
-          <CrossLink to="/clubs">Token Communities</CrossLink>
+          <CrossLink to="/clubs">Explore clubs</CrossLink>
         </LinkContainer>
         <Context.Consumer>
           {({ appStore: { http, toggleHttpClaims } }) => (
@@ -156,11 +158,11 @@ const CatDropdownToggle = ({ openDropdown }) => {
   return (
     <ToggleButton className="level" onClick={openDropdown}>
       <span onClick={stopPropagation}>
-        <LinkedActiveEntityAvatar size="small" />
+        <LinkedActiveEntityAvatar size="verySmall" />
       </span>
-      <DropdownEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }}>
+      <DropdownEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }}>
         <span onClick={stopPropagation}>
-          <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.9rem', fontWeight: '600' }} />
+          <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
         </span>
         <span
           style={{
@@ -176,7 +178,7 @@ const CatDropdownToggle = ({ openDropdown }) => {
             marginLeft: '7px',
           }}
         >
-          Switch 🔽
+          Switch ▾
         </span>
       </DropdownEntityName>
     </ToggleButton>

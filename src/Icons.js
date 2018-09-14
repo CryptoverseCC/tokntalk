@@ -125,7 +125,7 @@ export const AddIcon = styled.svg.attrs({
   version: '1.1',
   viewBox: '0 0 32 32',
   children: (
-    <g fill="#928f9b" fill-rule="nonzero">
+    <g fill="#78818c" fill-rule="nonzero">
       <g id="circle-add">
         <path d="M16,0 C7.2,0 0,7.2 0,16 C0,24.8 7.2,32 16,32 C24.8,32 32,24.8 32,16 C32,7.2 24.8,0 16,0 Z M24,18 L18,18 L18,24 L14,24 L14,18 L8,18 L8,14 L14,14 L14,8 L18,8 L18,14 L24,14 L24,18 Z" />
       </g>

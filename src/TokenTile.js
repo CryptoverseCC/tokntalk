@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Link from './Link';
 import { TokenImage } from './clubs';
-import { H3 } from './Components';
+import { H4 } from './Components';
 import { UnreadedCount } from './UnreadedMessages';
 
 const TokenTileCotainer = styled.div`
@@ -21,6 +21,7 @@ const TokenTileCotainer = styled.div`
   overflow: hidden;
   transition: transform 0.3s;
   transition: all 0.15s ease;
+  margin-bottom: 40px;
 
   :hover {
     transform: translateY(-3px);
@@ -71,8 +72,8 @@ export const TokenTile = ({ linkTo, token, ...restProps }) => {
             <UnreadedCount token={token} />
           </div>
           <div>
-            <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
-            <H3>{token.name}</H3>
+            <p style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#78818c' }}>{token.symbol}</p>
+            <H4>{token.name}</H4>
           </div>
         </TokenTileWrapper>
       </TokenTileCotainer>
@@ -84,6 +85,7 @@ const SmallTokenTileContainer = styled.div`
   position: relative;
   background: white;
   margin-top: 40px;
+  margin-bottom: 20px;
   padding-top: 50px;
   padding-bottom: 10px;
   border-radius: 12px;
@@ -109,7 +111,7 @@ const TokenLogo = styled.div`
   left: 50%;
   transform: translateX(-50%);
   background-color: ${({ primaryColor }) => primaryColor};
-  box-shadow: 0 3px 10px 0 ${({ shadowColor }) => shadowColor};
+  box-shadow: 0 0rem 1.4rem -0.3rem ${({ shadowColor }) => shadowColor};
   width: 80px;
   height: 80px;
   border-radius: 100%;
@@ -126,8 +128,8 @@ export const SmallTokenTile = ({ linkTo, token, ...restProps }) => {
           <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
         </TokenLogo>
         <div>
-          <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
-          <H3>{token.name}</H3>
+          <p style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#78818c' }}>{token.symbol}</p>
+          <H4>{token.name}</H4>
         </div>
       </SmallTokenTileContainer>
     </Link>

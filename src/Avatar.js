@@ -12,7 +12,7 @@ const AvatarContainer = styled.div`
   font-family: 'AvenirNext';
   border-radius: 16%;
   ${({ backgroundColor, containerSize }) => css`
-    background-color: ${backgroundColor ? `#${backgroundColor}` : 'white'};
+    background-color: ${backgroundColor ? `#${backgroundColor}` : '#f5f8fd'};
     width: ${containerSize};
     height: ${containerSize};
   `};

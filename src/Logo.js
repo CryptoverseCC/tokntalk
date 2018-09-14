@@ -14,10 +14,10 @@ const rainbow = keyframes`
 `;
 
 const white = keyframes`
-  0% {transform:scaleX(1.2) scaleY(1.3);}
-  20% {transform:scaleX(1.28) scaleY(1.30)}
+  0% {transform:scaleX(1.1) scaleY(1.2);}
+  20% {transform:scaleX(1.18) scaleY(1.2)}
   80% {transform:scaleX(1.16) scaleY(1.14)}
-  100% {transform:scaleX(1.2) scaleY(1.2);}
+  100% {transform:scaleX(1.1) scaleY(1.2);}
 `;
 
 const Eye = styled.div`
@@ -25,8 +25,8 @@ const Eye = styled.div`
   display: inline-block;
   background-color: white;
   border: 2px solid #4001e4;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   position: relative;
   border-radius: 30px;
   cursor: pointer;
@@ -36,10 +36,10 @@ const Eye = styled.div`
 `;
 
 const Inside = styled.div`
-  width: 30px;
-  height: 30px;
-  margin-left: 3px;
-  margin-top: 3px;
+  width: 26px;
+  height: 26px;
+  margin-left: 2px;
+  margin-top: 2px;
   background-color: #264dd9;
   display: block;
   position: absolute;
@@ -65,8 +65,8 @@ const Dot = styled.div`
   background-color: white;
   position: absolute;
   z-index: 1;
-  right: 6px;
-  bottom: 6px;
+  right: 4px;
+  bottom: 4px;
 
   ${Eye}:hover & {
     animation: ${dot} 0.4s 0.15s infinite;
@@ -86,12 +86,12 @@ const White = styled.div`
   border-radius: 15px;
   background-color: white;
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 3px;
+  top: 3px;
   transition: all 0.2s ease;
 
   ${Eye}:hover & {
-    transform: scale(1.2);
+    transform: scale(1.1);
     transition: all 0.15s ease-in;
     animation: ${white} 0.2s 0.15s infinite;
   }

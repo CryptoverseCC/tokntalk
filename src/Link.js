@@ -25,12 +25,12 @@ const StyledLink = styled(Link)`
   ${({ href, to }) =>
     !(href || to) &&
     css`
-      color: #928f9b;
+      color: #78818c;
     `} &:hover {
     ${({ href, to }) =>
       !(href || to) &&
       css`
-        color: #928f9b;
+        color: #78818c;
       `};
   }
 `;

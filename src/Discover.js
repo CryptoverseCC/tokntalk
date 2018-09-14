@@ -873,7 +873,7 @@ const GenerateClub = withRouter(
           <div style={{ position: 'relative', flexGrow: 1 }}>
             <GenerateInput placeholder="0xAddress" value={contractAddress} onChange={this.onChange} />
           </div>
-          <StyledButton disabled={!isValid} onClick={this.onGenerate}>
+          <StyledButton disabled={!isValid} onClick={this.onGenerate} style={{ width: 'unset', marginTop: 0 }}>
             Generate
           </StyledButton>
         </GenerateContainer>

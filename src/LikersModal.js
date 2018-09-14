@@ -55,7 +55,7 @@ export default class LikersModal extends Component {
                     <Link to={`/${isFromAddress ? author : context}`}>
                       <b onClick={onClose}>{(isFromAddress ? author_info : context_info).name}</b>
                     </Link>
-                    <span style={{ color: '#928F9B', fontSize: '0.8rem' }}>
+                    <span style={{ color: '#78818c', fontSize: '0.8rem' }}>
                       {timeago().format(created_at)}
                       <Verify
                         onClick={() => {

@@ -8,7 +8,7 @@ export const FeedTypeButton = styled.div`
   cursor: pointer;
   font-size: 1rem;
   padding: 5px;
-  color: #928f9b;
+  color: #78818c;
 
   ${({ selected }) =>
     selected &&

@@ -34,7 +34,7 @@ const Avatar = styled(({ children, className, style }) => (
 const ProfileBox = ({ avatar, coverImage, coverImageStyle, primaryColor, children }) => (
   <FlatContainer style={{ padding: 0 }}>
     <CoverImage src={coverImage} primaryColor={primaryColor} style={coverImageStyle} />
-    <div style={{ padding: '30px', paddingTop: '45px', position: 'relative' }}>
+    <div style={{ padding: '15px', paddingTop: '45px', position: 'relative' }}>
       <Avatar primaryColor={primaryColor}>{avatar}</Avatar>
       {children}
     </div>
