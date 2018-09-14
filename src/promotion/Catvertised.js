@@ -52,7 +52,7 @@ const StyledInput = styled.div.attrs({
 
 const Position = styled.div`
   font-size: 0.8em;
-  color: #928f9b;
+  color: #78818c;
   margin-top: 6px;
 `;
 

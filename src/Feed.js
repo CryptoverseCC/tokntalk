@@ -44,7 +44,7 @@ const StartingMessage = styled.p`
   white-space: pre-wrap;
   overflow-wrap: break-word;
   @media (max-width: 770px) {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
 `;
 
@@ -67,7 +67,7 @@ const LabelCounter = styled.span`
   line-height: 1.25em;
   border-radius: 1.25em;
   background: ${({ unActive, background }) => (!unActive ? background : '#e8eaf3')};
-  color: ${({ unActive }) => unActive && '#928f9b'};
+  color: ${({ unActive }) => unActive && '#78818c'};
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   transition: transform 0.15s ease-in-out;
 
@@ -268,7 +268,7 @@ const Reply = ({
           <CollapsableText text={message} />
         </div>
         <div>
-          <small style={{ color: '#928F9B', display: 'flex', alignItems: 'center' }}>
+          <small style={{ color: '#78818c', display: 'flex', alignItems: 'center' }}>
             {disabledInteractions ? (
               <InlineLikeLabel count={reactions.length} unActive onShowLikers={onShowLikers} />
             ) : (
@@ -334,7 +334,7 @@ const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onV
       <div>
         <SenderName to={`/${from}`}>{entityInfo.name}</SenderName> {suffix}
       </div>
-      <div style={{ color: '#928F9B', fontSize: '0.8rem' }}>
+      <div style={{ color: '#78818c', fontSize: '0.8rem' }}>
         {timeago().format(createdAt)}
         <Verify onClick={onVerify} style={{ marginLeft: '15px' }}>
           Verify

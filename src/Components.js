@@ -36,7 +36,7 @@ export const H2 = styled.p`
   font-weight: 600;
   line-height: 1.2;
   @media (max-width: 770px) {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 `;
 

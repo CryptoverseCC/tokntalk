@@ -13,7 +13,7 @@ const ShareContainer = styled.div`
 
 const StyledExternalLink = styled(ExternalLink)`
   cursor: pointer;
-  color: #928f9b;
+  color: #78818c;
 
   ${ShareContainer}:hover > & {
     color: #000;

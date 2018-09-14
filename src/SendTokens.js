@@ -107,13 +107,15 @@ const TokenSelector = ({ tokens, value, onChange }) => (
 export const StyledButton = styled.button`
   cursor: pointer;
   background-color: #264dd9;
-  padding: 10px;
+  padding: 16px 10px 15px 10px;
   color: white;
   font-size: 0.8rem;
   font-weight: 600;
+  width: 100%;
+  margin-top: 10px;
   outline: none;
   border: none;
-  border-radius: 12px;
+  border-radius: 6px;
   transition: all 0.2s ease;
 
   &:disabled {
