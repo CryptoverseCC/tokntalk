@@ -39,7 +39,7 @@ import { FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import { PromotionBox } from './promotion/PromotionBox';
 import ProfileBox from './ProfileBox';
-import { TokenTile } from './TokenTile';
+import { TokenTile, SmallTokenTile } from './TokenTile';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -254,7 +254,7 @@ class DiscoveryTabContent extends Component {
       this.state.loading ? (
         <Loader />
       ) : (
-        <div className="columns is-multiline">
+        <div className="columns is-multiline is-mobile">
           <AddToken className="column is-one-quarter" />
           {this.renderTiles(this.state.loading ? [] : this.state.score)}
         </div>
@@ -274,13 +274,22 @@ class DiscoveryTabContent extends Component {
   };
 }
 
-const EnhancedTokenTile = enhanceCustomClubProp('club', 'club')(({ club, index, match }) => (
-  <TokenTile
-    linkTo={club.isCustom ? `${match.url}/${club.network}:${club.address}` : `${match.url}/${club.symbol}`}
-    token={club}
-    className={`column ${index < 15 ? 'is-one-quarter' : index <= 34 ? 'is-one-fifth' : 'is-2'}`}
-  />
-));
+const EnhancedTokenTile = enhanceCustomClubProp('club', 'club')(
+  ({ club, index, match }) =>
+    index < 4 ? (
+      <TokenTile
+        linkTo={club.isCustom ? `${match.url}/${club.network}:${club.address}` : `${match.url}/${club.symbol}`}
+        token={club}
+        className="column is-one-quarter-tablet is-12-mobile"
+      />
+    ) : (
+      <SmallTokenTile
+        linkTo={club.isCustom ? `${match.url}/${club.network}:${club.address}` : `${match.url}/${club.symbol}`}
+        token={club}
+        className="column is-one-fifth-tablet is-half-mobile"
+      />
+    ),
+);
 
 const discoveryYours = async (entity) => {
   if (entity) {

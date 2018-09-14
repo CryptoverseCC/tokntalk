@@ -6,38 +6,13 @@ import { TokenImage } from './clubs';
 import { H3 } from './Components';
 import { UnreadedCount } from './UnreadedMessages';
 
-export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
-  return (
-    <Link to={linkTo} {...restProps}>
-      <TokenTileCotainer
-        small={small}
-        primaryColor={token.primaryColor}
-        secondaryColor={token.secondaryColor}
-        coverImage={token.coverImage}
-        shadowColor={token.shadowColor}
-      >
-        <TokenTileWrapper>
-          <div className="is-flex">
-            <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
-            {!small && <UnreadedCount token={token} />}
-          </div>
-          <div>
-            <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
-            {!small && <H3>{token.name}</H3>}
-          </div>
-        </TokenTileWrapper>
-      </TokenTileCotainer>
-    </Link>
-  );
-};
-
 const TokenTileCotainer = styled.div`
   background-color: ${({ primaryColor }) => primaryColor};
-  background-image: ${({ coverImage, small }) => !small && `url(${coverImage})`};
+  background-image: ${({ coverImage }) => `url(${coverImage})`};
   background-repeat: no-repeat;
   background-size: cover;
   color: ${({ secondaryColor }) => secondaryColor};
-  box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 5rem -2rem ${shadowColor}`};
+  box-shadow: ${({ shadowColor }) => `0 3rem 5rem -2rem ${shadowColor}`};
   cursor: pointer;
   position: relative;
   width: 100%;
@@ -49,20 +24,20 @@ const TokenTileCotainer = styled.div`
 
   :hover {
     transform: translateY(-3px);
-    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 6rem -2rem  ${shadowColor}`};
+    box-shadow: ${({ shadowColor }) => `0 3rem 6rem -2rem  ${shadowColor}`};
     transition: all 0.15s ease;
   }
 
   :active {
     transform: scale(0.98);
-    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 4rem -2rem  ${shadowColor}`};
+    box-shadow: ${({ shadowColor }) => `0 3rem 4rem -2rem  ${shadowColor}`};
     transitionn: all 0.15s ease;
   }
 
   @media (max-width: 770px) {
     width: 96%;
     margin-left: 2%;
-    padding-top: ${({ small }) => !small && '50%'};
+    padding-top: 50%;
 
     background-size: 50%;
     background-position: 100% 50%;
@@ -80,3 +55,81 @@ const TokenTileWrapper = styled.div`
   bottom: 0;
   padding: 15px;
 `;
+
+export const TokenTile = ({ linkTo, token, ...restProps }) => {
+  return (
+    <Link to={linkTo} {...restProps}>
+      <TokenTileCotainer
+        primaryColor={token.primaryColor}
+        secondaryColor={token.secondaryColor}
+        coverImage={token.coverImage}
+        shadowColor={token.shadowColor}
+      >
+        <TokenTileWrapper>
+          <div className="is-flex">
+            <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
+            <UnreadedCount token={token} />
+          </div>
+          <div>
+            <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
+            <H3>{token.name}</H3>
+          </div>
+        </TokenTileWrapper>
+      </TokenTileCotainer>
+    </Link>
+  );
+};
+
+const SmallTokenTileContainer = styled.div`
+  position: relative;
+  background: white;
+  margin-top: 40px;
+  padding-top: 50px;
+  padding-bottom: 10px;
+  border-radius: 12px;
+  color: #000000;
+  text-align: center;
+
+  :hover {
+    transform: translateY(-3px);
+    box-shadow: ${({ shadowColor }) => `0 3rem 6rem -2rem  ${shadowColor}`};
+    transition: all 0.15s ease;
+  }
+
+  :active {
+    transform: scale(0.98);
+    box-shadow: ${({ shadowColor }) => `0 3rem 4rem -2rem  ${shadowColor}`};
+    transitionn: all 0.15s ease;
+  }
+`;
+
+const TokenLogo = styled.div`
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: ${({ primaryColor }) => primaryColor};
+  box-shadow: 0 3px 10px 0 ${({ shadowColor }) => shadowColor};
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const SmallTokenTile = ({ linkTo, token, ...restProps }) => {
+  return (
+    <Link to={linkTo} {...restProps}>
+      <SmallTokenTileContainer shadowColor={token.shadowColor}>
+        <TokenLogo primaryColor={token.primaryColor} shadowColor={token.shadowColor}>
+          <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
+        </TokenLogo>
+        <div>
+          <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
+          <H3>{token.name}</H3>
+        </div>
+      </SmallTokenTileContainer>
+    </Link>
+  );
+};
