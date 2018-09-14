@@ -91,6 +91,7 @@ const SmallTokenTileContainer = styled.div`
   border-radius: 12px;
   color: #000000;
   text-align: center;
+  transition: all 0.15s ease;
 
   :hover {
     transform: translateY(-3px);
