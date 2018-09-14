@@ -12,8 +12,6 @@ import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
-  EntityClubs,
-  EntityAvatar,
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
@@ -25,7 +23,6 @@ import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
 import { HeaderSpacer } from './Header';
 import { FlatContainer, ContentContainer, H2, H4, SocialUsername } from './Components';
-import { TokenTile } from './Discover'; // ToDo extract it from Discovery
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
@@ -33,12 +30,6 @@ import { niceScroll } from './cssUtils';
 import SendTokens from './SendTokens';
 import ProfileBox from './ProfileBox';
 import { Token } from './ActiveEntityTokens';
-
-const StyledTokenTile = styled(TokenTile)`
-  :last-child {
-    z-index: 2;
-  }
-`;
 
 const ScrollableContainer = styled.div`
   ${niceScroll};

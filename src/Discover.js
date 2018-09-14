@@ -35,10 +35,11 @@ import {
 } from './Entity';
 import { getEntityTokens } from './api';
 import exportIcon from './img/export.svg';
-import { UnreadedCount, FEED_VERSION_KEY } from './UnreadedMessages';
+import { FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import { PromotionBox } from './promotion/PromotionBox';
 import ProfileBox from './ProfileBox';
+import { TokenTile } from './TokenTile';
 
 const H1Discover = styled.h1`
   margin: 60px 0;
@@ -273,15 +274,13 @@ class DiscoveryTabContent extends Component {
   };
 }
 
-const EnhancedTokenTile = enhanceCustomClubProp('club', 'club')(({ club, index, match }) => {
-  return (
-    <TokenTile
-      linkTo={club.isCustom ? `${match.url}/${club.network}:${club.address}` : `${match.url}/${club.symbol}`}
-      token={club}
-      className={`column ${index < 15 ? 'is-one-quarter' : index <= 34 ? 'is-one-fifth' : 'is-2'}`}
-    />
-  );
-});
+const EnhancedTokenTile = enhanceCustomClubProp('club', 'club')(({ club, index, match }) => (
+  <TokenTile
+    linkTo={club.isCustom ? `${match.url}/${club.network}:${club.address}` : `${match.url}/${club.symbol}`}
+    token={club}
+    className={`column ${index < 15 ? 'is-one-quarter' : index <= 34 ? 'is-one-fifth' : 'is-2'}`}
+  />
+));
 
 const discoveryYours = async (entity) => {
   if (entity) {
@@ -669,31 +668,6 @@ const decoratedByTokenIndex = flow(
   enhanceCustomClubProp('token', 'token'),
 )(ByTokenIndex);
 
-export const TokenTile = ({ linkTo, token, small, ...restProps }) => {
-  return (
-    <Link to={linkTo} {...restProps}>
-      <TokenTileCotainer
-        small={small}
-        primaryColor={token.primaryColor}
-        secondaryColor={token.secondaryColor}
-        coverImage={token.coverImage}
-        shadowColor={token.shadowColor}
-      >
-        <TokenTileWrapper>
-          <div className="is-flex">
-            <TokenImage token={token} style={{ width: '40px', height: '40px' }} />
-            {!small && <UnreadedCount token={token} />}
-          </div>
-          <div>
-            <p style={{ fontSize: '13px', fontWeight: 'bold' }}>{token.symbol}</p>
-            {!small && <H3>{token.name}</H3>}
-          </div>
-        </TokenTileWrapper>
-      </TokenTileCotainer>
-    </Link>
-  );
-};
-
 const IsLoading = ({ children }) => (
   <DiscoveryContext.Consumer>{({ loading }) => loading && children}</DiscoveryContext.Consumer>
 );
@@ -867,56 +841,6 @@ export class FeedForToken extends Component {
     );
   }
 }
-
-const TokenTileCotainer = styled.div`
-  background-color: ${({ primaryColor }) => primaryColor};
-  background-image: ${({ coverImage, small }) => !small && `url(${coverImage})`};
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: ${({ secondaryColor }) => secondaryColor};
-  box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 5rem -2rem ${shadowColor}`};
-  cursor: pointer;
-  position: relative;
-  width: 100%;
-  padding-top: 105%;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.3s;
-  transition: all 0.15s ease;
-
-  :hover {
-    transform: translateY(-3px);
-    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 6rem -2rem  ${shadowColor}`};
-    transition: all 0.15s ease;
-  }
-
-  :active {
-    transform: scale(0.98);
-    box-shadow: ${({ shadowColor, small }) => !small && `0 3rem 4rem -2rem  ${shadowColor}`};
-    transitionn: all 0.15s ease;
-  }
-
-  @media (max-width: 770px) {
-    width: 96%;
-    margin-left: 2%;
-    padding-top: ${({ small }) => !small && '50%'};
-
-    background-size: 50%;
-    background-position: 100% 50%;
-  }
-`;
-
-const TokenTileWrapper = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 15px;
-`;
 
 const FormContainer = styled.div`
   box-shadow: rgba(118, 103, 170, 0.12) 0px 2rem 3rem -1.5rem;
