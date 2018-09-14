@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import capitalize from 'lodash/capitalize';
 
-const FeedTypeButton = styled.div`
+export const FeedTypeButton = styled.div`
   display: inline;
   font-weight: 600;
   cursor: pointer;

@@ -34,7 +34,7 @@ import {
 import { getEntityTokens } from './api';
 import exportIcon from './img/export.svg';
 import { FEED_VERSION_KEY } from './UnreadedMessages';
-import FeedTypeSwitcher from './FeedTypeSwitcher';
+import FeedTypeSwitcher, { FeedTypeButton } from './FeedTypeSwitcher';
 import { PromotionBox } from './promotion/PromotionBox';
 import ProfileBox from './ProfileBox';
 import { TokenTile, SmallTokenTile } from './TokenTile';
@@ -67,28 +67,7 @@ const WelcomeMessage = styled.div`
   }
 `;
 
-const tabCss = css`
-  border-bottom: 2px #f0f1f6 solid;
-  font-size: 1rem;
-  cursor: pointer;
-  outline: none;
-  font-weight: 600;
-  padding-left: 0;
-`;
-
-const selectedTabCss = css`
-  cursor: unset;
-  color: #264dd9;
-  border-bottom: 2px #264dd9 solid;
-`;
-
-const DisoveryTab = styled(({ children, ...props }) => (
-  <div {...props}>
-    <span style={{ fontSize: '1rem' }}>{children}</span>
-  </div>
-))`
-  ${tabCss} ${({ selected }) => selected && selectedTabCss};
-`;
+const DisoveryTab = FeedTypeButton;
 
 const DiscoveryContext = React.createContext();
 
@@ -150,16 +129,14 @@ class Index extends Component {
             </Intercom>
           </div>
         </div>
-        <div className="columns is-mobile is-marginless">
+        <div style={{ margin: '15px 0' }}>
           <DisoveryTab
-            className="column is-1"
             selected={this.state.currentTab === Index.TAB.MOST_ACTIVE}
             onClick={() => this.setState({ currentTab: Index.TAB.MOST_ACTIVE })}
           >
             Most active
           </DisoveryTab>
           <DisoveryTab
-            className="column is-1"
             selected={this.state.currentTab === Index.TAB.NEWEST}
             onClick={() => this.setState({ currentTab: Index.TAB.NEWEST })}
           >
@@ -254,15 +231,6 @@ const EnhancedTokenTile = enhanceCustomClubProp('club', 'club')(
       />
     ),
 );
-
-const discoveryYours = async (entity) => {
-  if (entity) {
-    const clubs = await getEntityTokens(entity.id);
-    return sortBy((club) => (club.isCustom ? 1 : 0), clubs);
-  } else {
-    return [];
-  }
-};
 
 const discoveryMostActive = async () => {
   let assets = clubs.map((club) => club.asset);
@@ -417,6 +385,21 @@ const ByToken = ({ token }) => (
     </ContentContainer>
   </React.Fragment>
 );
+
+const tabCss = css`
+  border-bottom: 2px #f0f1f6 solid;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  font-weight: 600;
+  padding-left: 0;
+`;
+
+const selectedTabCss = css`
+  cursor: unset;
+  color: #264dd9;
+  border-bottom: 2px #264dd9 solid;
+`;
 
 const MembersTab = styled.div`
   ${tabCss};
