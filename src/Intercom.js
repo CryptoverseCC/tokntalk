@@ -50,11 +50,11 @@ export class Intercom extends Component {
   };
 
   componentDidMount() {
-    if (NODE_ENV === 'production' && REACT_APP_INTERCOM_APP_ID) {
-      import('react-intercom')
-        .then((intercomModule) => this.setState({ IntercomComponent: intercomModule.default }))
-        .catch(() => {});
-    }
+    // if (NODE_ENV === 'production' && REACT_APP_INTERCOM_APP_ID) {
+    import('react-intercom')
+      .then((intercomModule) => this.setState({ IntercomComponent: intercomModule.default }))
+      .catch(() => {});
+    // }
   }
 
   render() {

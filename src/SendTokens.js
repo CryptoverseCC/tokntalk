@@ -104,7 +104,7 @@ const TokenSelector = ({ tokens, value, onChange }) => (
   </Dropdown>
 );
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   cursor: pointer;
   background-color: #264dd9;
   padding: 10px;

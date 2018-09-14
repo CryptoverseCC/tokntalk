@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import timeago from 'timeago.js';
 import { isAddress } from 'web3-utils';
@@ -10,7 +10,7 @@ import sortBy from 'lodash/fp/sortBy';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { pageView } from './Analytics';
-import Link, { A } from './Link';
+import Link, { A, defaultLinkCss } from './Link';
 import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
@@ -19,7 +19,6 @@ import { Storage, validateParams, rewriteCmp, enhanceCustomClubProp } from './ut
 import clubs, { TokenImage, findClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
-import AddToken from './AddToken';
 import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
 import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
 import {
@@ -31,7 +30,6 @@ import {
   ActiveEntityName,
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
-  WithActiveEntity,
 } from './Entity';
 import { getEntityTokens } from './api';
 import exportIcon from './img/export.svg';
@@ -40,26 +38,8 @@ import FeedTypeSwitcher from './FeedTypeSwitcher';
 import { PromotionBox } from './promotion/PromotionBox';
 import ProfileBox from './ProfileBox';
 import { TokenTile, SmallTokenTile } from './TokenTile';
-
-const H1Discover = styled.h1`
-  margin: 60px 0;
-  font-size: 4rem;
-  font-weight: bold;
-  line-height: 1.1;
-  @media (max-width: 770px) {
-    margin-left: 2%;
-  }
-`;
-
-const H3Discover = styled.h3`
-  margin-top: 30px;
-  margin-bottom: 30px;
-  font-size: 1.5rem;
-  font-weight: 600;
-  @media (max-width: 770px) {
-    margin-left: 2%;
-  }
-`;
+import { Intercom } from './Intercom';
+import { StyledButton } from './SendTokens';
 
 const WarningContainerColored = styled.div`
   background: ${({ primaryColor }) => primaryColor};
@@ -136,13 +116,10 @@ export default class Discover extends Component {
   }
 }
 
-const IndexWithActiveEntity = ({ ...props }) => (
-  <WithActiveEntity>{(entity) => <Index {...props} activeEntity={entity} />}</WithActiveEntity>
-);
+const IndexWithActiveEntity = ({ ...props }) => <Index {...props} />;
 
 class Index extends Component {
   static TAB = {
-    YOURS: 0,
     MOST_ACTIVE: 1,
     NEWEST: 2,
   };
@@ -151,35 +128,29 @@ class Index extends Component {
     currentTab: Index.TAB.MOST_ACTIVE,
   };
 
-  componentDidMount() {
-    this.setState({ currentTab: this.props.activeEntity ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (this.props.activeEntity !== newProps.activeEntity) {
-      this.setState({ currentTab: newProps.activeEntity ? Index.TAB.YOURS : Index.TAB.MOST_ACTIVE });
-    }
-  }
-
   render() {
     return (
       <ContentContainer>
-        <HeaderSpacer />
-        <H1Discover>
-          Token
-          <br />
-          Communities
-        </H1Discover>
+        <HeaderSpacer style={{ marginBottom: '30px' }} />
+        <div className="columns">
+          <div className="column is-5">
+            <H3 style={{ marginBottom: '0.8rem' }}>Token Clubs</H3>
+            <p>Everything to keep up what’s happening around your tokens and to explore new opportunities.</p>
+          </div>
+          <div className="column is-5">
+            <H4>Custom club</H4>
+            <H4 style={{ fontSize: '0.8rem' }}>Paste ERC20 contract address</H4>
+            <GenerateClub style={{ marginTop: '10px', height: '64px' }} />
+          </div>
+          <div className="column is-2">
+            <H4>Add a club</H4>
+            <H4 style={{ fontSize: '0.8rem' }}>Make it visible on Tok'n'Talk</H4>
+            <Intercom>
+              <AddToken style={{ marginTop: '10px', height: '64px' }}>Add a club</AddToken>
+            </Intercom>
+          </div>
+        </div>
         <div className="columns is-mobile is-marginless">
-          {this.props.activeEntity && (
-            <DisoveryTab
-              className="column is-1"
-              selected={this.state.currentTab === Index.TAB.YOURS}
-              onClick={() => this.setState({ currentTab: Index.TAB.YOURS })}
-            >
-              Yours
-            </DisoveryTab>
-          )}
           <DisoveryTab
             className="column is-1"
             selected={this.state.currentTab === Index.TAB.MOST_ACTIVE}
@@ -197,12 +168,6 @@ class Index extends Component {
         </div>
         <div className="columns">
           <div className="column is-12">
-            <DiscoveryTabContent
-              {...this.props}
-              getSortedClubs={discoveryYours}
-              entity={this.props.activeEntity}
-              isActive={this.props.activeEntity && this.state.currentTab === Index.TAB.YOURS}
-            />
             <DiscoveryTabContent
               {...this.props}
               getSortedClubs={discoveryMostActive}
@@ -255,7 +220,6 @@ class DiscoveryTabContent extends Component {
         <Loader />
       ) : (
         <div className="columns is-multiline is-mobile">
-          <AddToken className="column is-one-quarter" />
           {this.renderTiles(this.state.loading ? [] : this.state.score)}
         </div>
       )
@@ -879,3 +843,58 @@ const EntityInfo = styled.div`
 const Timeago = styled.p`
   color: rgb(146, 143, 155);
 `;
+
+const AddToken = styled.div`
+  ${defaultLinkCss};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #ffffff;
+`;
+
+const GenerateContainer = styled.div`
+  display: flex;
+  border-radius: 8px;
+  padding: 5px;
+  background-color: #ffffff;
+`;
+
+const GenerateInput = styled.input`
+  width: 100%;
+  height: 100%;
+  background: none;
+  outline: none;
+  border: none;
+`;
+
+const GenerateClub = withRouter(
+  class extends Component {
+    state = { isValid: false, contractAddress: '' };
+
+    onChange = (e) => {
+      const contractAddress = e.target.value;
+      this.setState({ isValid: isAddress(contractAddress), contractAddress });
+    };
+
+    onGenerate = () => {
+      this.props.history.push(`/clubs/ethereum:${this.state.contractAddress}`);
+    };
+
+    render() {
+      const { style } = this.props;
+      const { isValid, contractAddress } = this.state;
+
+      return (
+        <GenerateContainer style={style}>
+          <div style={{ position: 'relative', flexGrow: 1 }}>
+            <GenerateInput placeholder="0xAddress" value={contractAddress} onChange={this.onChange} />
+          </div>
+          <StyledButton disabled={!isValid} onClick={this.onGenerate}>
+            Generate
+          </StyledButton>
+        </GenerateContainer>
+      );
+    }
+  },
+);

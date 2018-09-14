@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link as RawLink } from 'react-router-dom';
 
-const defaultLink = css`
+export const defaultLinkCss = css`
   color: #264dd9;
   font-weight: 600;
   cursor: default;
@@ -20,7 +20,7 @@ const Link = ({ children, className, style, to }) => (
 );
 
 const StyledLink = styled(Link)`
-  ${defaultLink};
+  ${defaultLinkCss};
 
   ${({ href, to }) =>
     !(href || to) &&
