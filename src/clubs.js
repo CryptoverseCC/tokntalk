@@ -152,7 +152,7 @@ import cryptoarte from './img/tokens/cryptoarte-icon.svg';
 import cryptoarteCover from './img/tokens/cryptoarte.png';
 
 import unknowClub from './img/tokens/unknown-icon.svg';
-import unknowClubCover from './img/tokens/percent.png';
+import unknowClubCover from './img/tokens/unknown.png';
 
 import * as mapping from 'contract-mapping/mapping.json';
 
@@ -833,9 +833,9 @@ export const getCustomClub = (network, address, options) => {
   return new Token({
     symbol: shortName,
     name: shortName,
-    primaryColor: '#4000e4',
-    secondaryColor: 'white',
-    shadowColor: 'rgba(64,0,228,0.25)',
+    primaryColor: '#EDF1F8',
+    secondaryColor: '#1b2438',
+    shadowColor: 'rgba(27,36,56,0.09)',
     externalLinks: [],
     ...options,
     isCustom: true,

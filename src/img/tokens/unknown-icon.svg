@@ -1,1 +1,17 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 32 32" xml:space="preserve" width="32" height="32"><title>alert circle que</title><g class="nc-icon-wrapper" fill="#ffffff"><path fill="#ffffff" d="M16,0C7.178,0,0,7.178,0,16s7.178,16,16,16s16-7.178,16-16S24.822,0,16,0z M16,26c-1.105,0-2-0.895-2-2 s0.895-2,2-2s2,0.895,2,2S17.105,26,16,26z M20.926,14.355c-0.958,1.142-2.715,2.138-3.374,3.144 c-0.385,0.586-0.382,1.267-0.382,1.908H14.79c0-0.736-0.051-1.814,0.486-2.794c0.323-0.591,0.89-1.202,1.699-1.833 c1.605-1.267,2.282-1.926,2.282-3.277c0-1.504-1.123-2.112-2.634-2.112c-0.996,0-2.099,0.152-4.054,1.117l-1.02-2.136 C13.192,7.457,14.952,7,16.829,7c1.586,0,2.844,0.388,3.775,1.165S22,10.014,22,11.382C22,12.531,21.688,13.448,20.926,14.355z"/></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard 14</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Initial" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-14" stroke="#97959F" stroke-width="6">
+            <g id="noun_coin_763670" transform="translate(11.000000, 11.000000)">
+                <g id="Group">
+                    <path d="M49.4913,7.5 C59.3103,17.319 57.8673,34.68 46.2693,46.278 C34.6713,57.876 17.3103,59.319 7.4913,49.5 C-2.3277,39.681 -0.8847,22.32 10.7133,10.722 C22.3113,-0.876 39.6723,-2.319 49.4913,7.5 Z" id="Shape"></path>
+                    <path d="M58.4913,16.5 L49.4913,7.5 C59.3103,17.319 57.8673,34.68 46.2693,46.278 C34.6713,57.876 17.3103,59.319 7.4913,49.5 L16.4913,58.5 C26.7423,67.374 44.0493,66.501 55.2693,55.278 C66.4923,44.058 67.4283,26.124 58.4913,16.5 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
