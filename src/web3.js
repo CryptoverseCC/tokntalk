@@ -37,7 +37,6 @@ const setupWeb3 = async (storage) => {
     } else {
       mnemonic = savedMnemonic;
     }
-    console.log(mnemonic);
     var seed = bip39.mnemonicToSeed(mnemonic);
     var root = hdkey.fromMasterSeed(seed);
     const addrNode = root.derive("m/44'/60'/0'/0/0");
@@ -45,7 +44,6 @@ const setupWeb3 = async (storage) => {
     const pubKey = ethUtil.privateToPublic(addrNode._privateKey);
     const addr = ethUtil.publicToAddress(pubKey).toString('hex');
     const address = ethUtil.toChecksumAddress(addr);
-    console.log(addr, address);
     const toknTalkEmbeddedWeb3 = {
       eth: {
         getAccounts: () => new Promise((resolve) => resolve([address])),
