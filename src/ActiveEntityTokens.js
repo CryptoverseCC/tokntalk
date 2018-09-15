@@ -133,24 +133,11 @@ const NoMetamask = () => (
 );
 
 const NoActiveEntity = () => (
-  <YourCommunitiesContainer
-    style={{
-      backgroundImage: `url(${unlockBackground})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100%',
-      backgroundPosition: 'bottom center',
-      minHeight: '300px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-    }}
-  >
+  <div>
     <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Unlock your wallet</p>
     <span>To connect with token owners alike</span>
-    <img style={{ width: '208px', height: 'auto', marginTop: '20px' }} alt="" src={mouse} />
-  </YourCommunitiesContainer>
+    <img style={{ width: '208px', height: 'auto', marginTop: '20px', textAlign: 'center' }} alt="" src={mouse} />
+  </div>
 );
 
 const DiscoverMore = ({ children, props }) => (
