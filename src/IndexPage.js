@@ -61,7 +61,7 @@ export default class IndexPage extends Component {
     const defaultUnloggedFeeds = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE];
     return (
       <ContentContainer>
-        <HeaderSpacer style={{ marginBottom: '60px' }} />
+        <HeaderSpacer />
         <div className="columns">
           <div className="column is-3-widescreen is-4">
             <Investors />
@@ -79,7 +79,7 @@ export default class IndexPage extends Component {
               </AppContext.Consumer>
             </FlatContainer>
           </div>
-          <div className="column is-8 is-offset-1-widescreen">
+          <div className="column is-7 is-offset-1-widescreen">
             <Hero style={{ marginBottom: '30px' }} />
             <WithActiveEntity>
               {(activeEntity) => (

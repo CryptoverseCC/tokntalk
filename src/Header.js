@@ -16,6 +16,10 @@ import { niceScroll } from './cssUtils';
 export const HeaderSpacer = styled.div`
   height: 60px;
   width: 100vw;
+  margin-bottom: 60px;
+  @media (max-width: 1280px) {
+    margin-bottom: 30px;
+  }
 `;
 
 const StyledHeader = styled.div`
@@ -36,10 +40,6 @@ const HeaderContainer = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-
-  @media (max-width: 770px) {
-    padding: 0 0.75rem;
-  }
 
   @media (max-width: 1280px) {
     width: 100%;
