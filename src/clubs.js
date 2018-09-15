@@ -4,6 +4,9 @@ import find from 'lodash/fp/find';
 import cryptokitties from './img/tokens/cryptokitties-icon.svg';
 import cryptokittiesCover from './img/tokens/cryptokitties.png';
 
+import zerouniverse from './img/tokens/0xuniverse-icon.png';
+import zerouniverseCover from './img/tokens/0xuniverse.jpg';
+
 import axie from './img/tokens/axie-icon.png';
 import axieCover from './img/tokens/axie.png';
 
@@ -210,6 +213,20 @@ const clubs = [
       { name: 'Marketplace', url: 'https://axieinfinity.com/marketplace' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/axie' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/AxieInfinity/' },
+    ],
+  },
+  {
+    ...mapping.ZEROXUNIVERSE,
+    entityPrefix: 'Planet #',
+    logo: zerouniverse,
+    coverImage: zerouniverseCover,
+    primaryColor: '#040316',
+    secondaryColor: '#ff5347',
+    shadowColor: 'rgba(4,3,22,0.2)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://0xuniverse.com/' },
+      { name: 'Discord', url: 'https://discord.gg/R8fwEPC' },
+      { name: 'Telegram', url: 'https://t.me/OxUniverse' },
     ],
   },
   {
