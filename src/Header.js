@@ -12,7 +12,19 @@ import Context from './Context';
 import Logo from './Logo';
 import Dropdown from './Dropdown';
 import { niceScroll } from './cssUtils';
+<<<<<<< HEAD
 import { SidebarToggler } from './Sidebar';
+=======
+
+export const HeaderSpacer = styled.div`
+  height: 60px;
+  width: 100vw;
+  margin-bottom: 60px;
+  @media (max-width: 1280px) {
+    margin-bottom: 30px;
+  }
+`;
+>>>>>>> Prettier
 
 const StyledHeader = styled.div`
   height: 60px;
@@ -31,6 +43,13 @@ const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   z-index: 999;
+<<<<<<< HEAD
+=======
+
+  @media (max-width: 1280px) {
+    width: 100%;
+  }
+>>>>>>> Prettier
 `;
 
 const TitleLink = styled(Link)`

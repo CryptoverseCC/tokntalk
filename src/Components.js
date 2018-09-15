@@ -1,12 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
+<<<<<<< HEAD
+=======
+export const ContentContainer = styled.div`
+  max-width: 94%;
+  margin: 0 auto;
+`;
+
+>>>>>>> Prettier
 export const FlatContainer = styled.div`
   width: 96%;
-  margin-left: 2%;
+  max-width: 300px;
+  margin: 0 auto;
   border-radius: 12px;
   padding: 30px;
   background-color: white;
+  @media (max-width: 770px) {
+    max-width: 98%;
+  }
 `;
 
 export const WarningContainer = FlatContainer.extend`
@@ -25,7 +37,7 @@ export const H1 = styled.p`
 
 export const H2 = styled.p`
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   @media (max-width: 770px) {
     font-size: 1.5rem;

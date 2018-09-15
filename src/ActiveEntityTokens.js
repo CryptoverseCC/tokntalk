@@ -36,9 +36,54 @@ const ActiveEntityTokens = () => (
 
 export default ActiveEntityTokens;
 
+<<<<<<< HEAD
 const YourCommunitiesContainer = styled.div``;
 
 const YourCommunitiesLink = styled(NavLink)`
+=======
+const YourCommunitiesContainer = styled.div`
+  margin-bottom: 1rem;
+  background-color: 'transparent';
+  padding: 0;
+  border-radius: 0;
+  background-color: #ecf1f9;
+  position: relative;
+  padding: 30px;
+  border-radius: 12px;
+  @media (max-width: 770px) {
+    width: 96%;
+    margin-left: 2%;
+  }
+`;
+
+const YourCommunitiesContainerNoActiveEntity = styled.div`
+  background: url('./img/unlock_bg.png');
+  background-color: #ecf1f9;
+  position: relative;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 1rem;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: bottom center;
+  max-height: 260px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  @media (max-width: 770px) {
+    width: 96%;
+    max-width: 96%;
+    margin-left: 2%;
+  }
+}}
+
+`;
+const YourCommunitiesLink = styled(Link)`
+>>>>>>> Prettier
   display: flex;
   align-items: center;
   padding: 7px 0;
@@ -133,24 +178,11 @@ const NoMetamask = () => (
 );
 
 const NoActiveEntity = () => (
-  <YourCommunitiesContainer
-    style={{
-      backgroundImage: `url(${unlockBackground})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100%',
-      backgroundPosition: 'bottom center',
-      minHeight: '300px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-    }}
-  >
+  <YourCommunitiesContainerNoActiveEntity>
     <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Unlock your wallet</p>
     <span>To connect with token owners alike</span>
-    <img style={{ width: '208px', height: 'auto', marginTop: '20px' }} alt="" src={mouse} />
-  </YourCommunitiesContainer>
+    <img style={{ width: '208px', height: 'auto', marginTop: '20px', textAlign: 'center' }} alt="" src={mouse} />
+  </YourCommunitiesContainerNoActiveEntity>
 );
 
 const DiscoverMore = ({ children, props }) => (

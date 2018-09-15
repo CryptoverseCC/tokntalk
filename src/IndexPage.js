@@ -58,12 +58,23 @@ export default class IndexPage extends Component {
     const { feedType } = this.state;
     const defaultUnloggedFeeds = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE];
     return (
+<<<<<<< HEAD
       <React.Fragment>
         <div className="columns ordered-mobile">
           <div className="column is-3">
+=======
+      <ContentContainer>
+        <HeaderSpacer />
+        <div className="columns">
+          <div className="column is-3-widescreen is-4">
+>>>>>>> Prettier
             <Investors />
           </div>
+<<<<<<< HEAD
           <div className="column is-6 fl-1">
+=======
+          <div className="column is-7 is-offset-1-widescreen">
+>>>>>>> Prettier
             <Hero style={{ marginBottom: '30px' }} />
             <WithActiveEntity>
               {(activeEntity) => (

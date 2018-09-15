@@ -74,10 +74,14 @@ const InvestorsContainer = styled.div`
   background-color: #ecf1f9;
   position: relative;
   padding: 30px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 12px;
   @media (max-width: 770px) {
     width: 96%;
     margin-left: 2%;
+    max-width: 96%;
   }
 `;
 
