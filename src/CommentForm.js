@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import Context from './Context';
 import Paw from './img/paw.svg';
 import TranslationsContext from './Translations';
+import { messageInput, messageSign, messageSent } from './Analytics';
 
 export const CommentForm = styled.form`
   position: relative;
@@ -135,7 +136,11 @@ export class TextAreaForm extends React.Component {
 
   submitForm = async () => {
     this.setState({ submitting: true });
+    messageSign(this.props.entity.id, this.state.comment);
     await this.props.sendMessage(this.state.comment);
+    // This is not working properly, messageSent would be invoked even if user rejects the message
+    // TODO: refactor, low priority
+    // messageSent(this.props.entity.id, this.state.comment);
     this.setState({ comment: '', submitting: false });
     this.props.onSubmit && this.props.onSubmit();
   };
@@ -155,7 +160,10 @@ export class TextAreaForm extends React.Component {
           inputRef={inputRef}
           placeholder={placeholder}
           value={this.state.comment}
-          onChange={(e) => this.setState({ comment: e.target.value })}
+          onChange={(e) => {
+            this.setState({ comment: e.target.value });
+            messageInput(this.props.entity.id, e.target.value);
+          }}
           onKeyPress={(e) => e.key === 'Enter' && e.ctrlKey && this.submitForm()}
         />
         <MetamaskButton disabled={!this.state.submitting && !this.validate()} type="submit" />
@@ -178,10 +186,10 @@ export const ConnectedClubForm = ({ token, ...props }) => (
 
 export const ConnectedCommentForm = ({ ...props }) => (
   <Context.Consumer>
-    {({ feedStore: { sendMessage } }) => (
+    {({ feedStore: { sendMessage }, entityStore: { activeEntity } }) => (
       <TranslationsContext.Consumer>
         {({ commentPlaceholder }) => (
-          <TextAreaForm sendMessage={sendMessage} placeholder={commentPlaceholder} {...props} />
+          <TextAreaForm sendMessage={sendMessage} placeholder={commentPlaceholder} entity={activeEntity} {...props} />
         )}
       </TranslationsContext.Consumer>
     )}
@@ -190,10 +198,15 @@ export const ConnectedCommentForm = ({ ...props }) => (
 
 export const ConnectedReplyForm = ({ about, ...props }) => (
   <Context.Consumer>
-    {({ feedStore: { reply } }) => (
+    {({ feedStore: { reply }, entityStore: { activeEntity } }) => (
       <TranslationsContext.Consumer>
         {({ replyPlaceholder }) => (
-          <TextAreaForm sendMessage={(message) => reply(message, about)} placeholder={replyPlaceholder} {...props} />
+          <TextAreaForm
+            sendMessage={(message) => reply(message, about)}
+            placeholder={replyPlaceholder}
+            entity={activeEntity}
+            {...props}
+          />
         )}
       </TranslationsContext.Consumer>
     )}
@@ -202,10 +215,11 @@ export const ConnectedReplyForm = ({ about, ...props }) => (
 
 export const ConnectedLabelForm = ({ labelType, ...props }) => (
   <Context.Consumer>
-    {({ feedStore: { label } }) => (
+    {({ feedStore: { label }, entityStore: { activeEntity } }) => (
       <TextAreaForm
         sendMessage={(message) => label(message, labelType)}
         placeholder={`Set your ${labelType}`}
+        entity={activeEntity}
         {...props}
       />
     )}
@@ -214,8 +228,13 @@ export const ConnectedLabelForm = ({ labelType, ...props }) => (
 
 export const ConnectedWriteToForm = ({ to, ...props }) => (
   <Context.Consumer>
-    {({ feedStore: { writeTo } }) => (
-      <TextAreaForm placeholder={`Write to ${to.name}`} sendMessage={(message) => writeTo(message, to)} {...props} />
+    {({ feedStore: { writeTo }, entityStore: { activeEntity } }) => (
+      <TextAreaForm
+        placeholder={`Write to ${to.name}`}
+        sendMessage={(message) => writeTo(message, to)}
+        entity={activeEntity}
+        {...props}
+      />
     )}
   </Context.Consumer>
 );
