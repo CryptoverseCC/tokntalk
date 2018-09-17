@@ -25,7 +25,6 @@ import {
 } from './api';
 import { getEntityData } from './entityApi';
 import Header from './Header';
-import { PositionedFooter } from './Footer';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
 import { Storage, getEntityInfoForAddress } from './utils';
@@ -414,7 +413,6 @@ export default class App extends Component {
           </Context.Consumer>
         </SidebarRight>
       </Sidebar>
-      <PositionedFooter />
     </SidebarProvider>
   );
 
@@ -427,7 +425,6 @@ export default class App extends Component {
           <Discover {...props} />
         </SidebarRight>
       </Sidebar>
-      <PositionedFooter />
     </SidebarProvider>
   );
 
@@ -444,7 +441,6 @@ export default class App extends Component {
           </Context.Consumer>
         </SidebarRight>
       </Sidebar>
-      <PositionedFooter />
     </SidebarProvider>
   );
 
@@ -459,7 +455,6 @@ export default class App extends Component {
           </Context.Consumer>
         </SidebarRight>
       </Sidebar>
-      <PositionedFooter />
     </SidebarProvider>
   );
 

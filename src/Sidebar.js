@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+import { A } from './Link';
+import Intercom from './Intercom';
 import { H4 } from './Components';
 import { IfActiveEntity, EntityClubs } from './Entity';
 import { DiscoverIcon } from './Icons';
@@ -9,6 +11,7 @@ import { TokenImage } from './clubs';
 import { UnreadedCount } from './UnreadedMessages';
 
 import menuIcon from './img/menu.png';
+import { niceScroll } from './cssUtils';
 
 const SidebarContext = React.createContext();
 
@@ -45,14 +48,19 @@ export const SidebarLeft = () => (
         <LinkItem to="/clubs" icon={<DiscoverIcon />}>
           Clubs
         </LinkItem>
-        <H4 style={{ padding: '5px 10px' }}>Your Clubs</H4>
         <IfActiveEntity>
           {(entityId) => (
-            <EntityClubs id={entityId}>
-              {(clubs) => clubs.map((club) => <Token key={club.address} token={club} />)}
-            </EntityClubs>
+            <React.Fragment>
+              <H4 style={{ padding: '5px 10px' }}>Your Clubs</H4>
+              <ClubContainer>
+                <EntityClubs id={entityId}>
+                  {(clubs) => clubs.map((club) => <Club key={club.address} token={club} />)}
+                </EntityClubs>
+              </ClubContainer>
+            </React.Fragment>
           )}
         </IfActiveEntity>
+        <SidebarFooter />
       </SidebarLeftContainer>
     )}
   </SidebarContext.Consumer>
@@ -78,7 +86,12 @@ const StyledUnreadedMessages = styled(UnreadedCount)`
   background: white;
 `;
 
-const Token = ({ token }) => (
+const ClubContainer = styled.div`
+  overflow-y: scroll;
+  ${niceScroll};
+`;
+
+const Club = ({ token }) => (
   <LinkItem
     to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}
     icon={<TokenImage token={token} />}
@@ -87,6 +100,21 @@ const Token = ({ token }) => (
     <StyledUnreadedMessages token={token} />
   </LinkItem>
 );
+
+const SidebarFooter = styled(({ className }) => (
+  <div className={className}>
+    <div>
+      <A href="https://t.me/userfeeds" style={{ marginRight: '8px' }}>
+        Telegram
+      </A>
+      <A href="https://twitter.com/tokntalkclub">Twitter</A>
+    </div>
+    <Intercom />
+  </div>
+))`
+  margin-top: auto;
+  padding: 10px;
+`;
 
 const LinkItem = styled(({ children, icon, ...props }) => (
   <NavLink {...props} exact activeClassName="selected">
@@ -114,7 +142,8 @@ const LinkItem = styled(({ children, icon, ...props }) => (
 
 const SidebarLeftContainer = styled.div`
   padding: 15px 0;
-  display: ${({ open }) => (open ? 'block' : 'none')};
+  display: ${({ open }) => (open ? 'flex' : 'none')};
+  flex-direction: column;
   background-color: #edf1f8;
   position: sticky;
   top: 60px;
