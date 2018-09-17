@@ -695,6 +695,12 @@ export class FeedForToken extends Component {
     this.fetchFeed();
   }
 
+  componentDidUpdate(oldProps) {
+    if (oldProps.token !== this.props.token) {
+      this.fetchFeed();
+    }
+  }
+
   setFeedVersion = async (version) => {
     const { token } = this.props;
     const latestVersions = JSON.parse(this.storage.getItem(FEED_VERSION_KEY));
@@ -703,7 +709,7 @@ export class FeedForToken extends Component {
       FEED_VERSION_KEY,
       JSON.stringify({
         ...latestVersions,
-        [`${token.network}:${token.address}`]: version,
+        [token.asset]: version,
       }),
     );
   };
@@ -712,7 +718,6 @@ export class FeedForToken extends Component {
     this.setState({ loading: true });
     const { token } = this.props;
     const { feedType } = this.state;
-    const asset = `${token.network}:${token.address}`;
     const version = Date.now();
 
     try {
@@ -720,11 +725,11 @@ export class FeedForToken extends Component {
         [
           {
             algorithm: feedType === 'popular' ? 'cryptoverse_club_last_week_popular_feed' : 'cryptoverse_club_feed',
-            params: { id: asset },
+            params: { id: token.asset },
           },
           {
             algorithm: token.is721 ? 'experimental_filter_origin' : 'experimental_author_balance',
-            params: { asset },
+            params: { asset: token.asset },
           },
         ],
         'api/decorate-with-opensea',

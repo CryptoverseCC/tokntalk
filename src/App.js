@@ -31,7 +31,7 @@ import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 import { metamaskStatusChanged } from './Analytics';
-import { SidebarProvider, Sidebar, SidebarLeft, SidebarRight } from './Sidebar';
+import { SidebarProvider, SidebarContainer, SidebarLeft, SidebarRight } from './Sidebar';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
@@ -396,9 +396,9 @@ export default class App extends Component {
   }
 
   static ShowPage = (props) => (
-    <SidebarProvider>
+    <SidebarProvider overlay>
       <Header />
-      <Sidebar>
+      <SidebarContainer>
         <SidebarLeft />
         <SidebarRight>
           <Context.Consumer>
@@ -412,26 +412,26 @@ export default class App extends Component {
             )}
           </Context.Consumer>
         </SidebarRight>
-      </Sidebar>
+      </SidebarContainer>
     </SidebarProvider>
   );
 
   static Discover = (props) => (
-    <SidebarProvider>
+    <SidebarProvider overlay>
       <Header />
-      <Sidebar>
+      <SidebarContainer>
         <SidebarLeft />
         <SidebarRight>
           <Discover {...props} />
         </SidebarRight>
-      </Sidebar>
+      </SidebarContainer>
     </SidebarProvider>
   );
 
   static Index = (props) => (
     <SidebarProvider>
       <Header />
-      <Sidebar>
+      <SidebarContainer>
         <SidebarLeft />
         <SidebarRight>
           <Context.Consumer>
@@ -440,21 +440,21 @@ export default class App extends Component {
             )}
           </Context.Consumer>
         </SidebarRight>
-      </Sidebar>
+      </SidebarContainer>
     </SidebarProvider>
   );
 
   static Thread = (props) => (
     <SidebarProvider>
       <Header />
-      <Sidebar>
+      <SidebarContainer>
         <SidebarLeft />
         <SidebarRight>
           <Context.Consumer>
             {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
           </Context.Consumer>
         </SidebarRight>
-      </Sidebar>
+      </SidebarContainer>
     </SidebarProvider>
   );
 

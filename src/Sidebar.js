@@ -9,22 +9,21 @@ import { IfActiveEntity, EntityClubs } from './Entity';
 import { DiscoverIcon } from './Icons';
 import { TokenImage } from './clubs';
 import { UnreadedCount } from './UnreadedMessages';
-
-import menuIcon from './img/menu.png';
 import { niceScroll } from './cssUtils';
+import menuIcon from './img/menu.png';
 
 const SidebarContext = React.createContext();
 
 export class SidebarProvider extends Component {
-  state = { open: true }; // Read from LS
+  state = { open: !this.props.overlay };
 
   toogle = () => this.setState(({ open }) => ({ open: !open }));
 
   render() {
-    const { children } = this.props;
+    const { children, overlay } = this.props;
     const { open } = this.state;
 
-    return <SidebarContext.Provider value={{ open, toogle: this.toogle }}>{children}</SidebarContext.Provider>;
+    return <SidebarContext.Provider value={{ open, overlay, toogle: this.toogle }}>{children}</SidebarContext.Provider>;
   }
 }
 
@@ -34,14 +33,15 @@ export const SidebarToggler = () => (
   </SidebarContext.Consumer>
 );
 
-export const Sidebar = styled.div`
+export const SidebarContainer = styled.div`
   display: flex;
+  position: relative;
 `;
 
 export const SidebarLeft = () => (
   <SidebarContext.Consumer>
-    {({ open }) => (
-      <SidebarLeftContainer open={open}>
+    {({ open, overlay }) => (
+      <SidebarLeftContainer open={open} overlay={overlay}>
         <LinkItem to="/" icon={<img src={menuIcon} />}>
           Feed
         </LinkItem>
@@ -66,18 +66,36 @@ export const SidebarLeft = () => (
   </SidebarContext.Consumer>
 );
 
-export const SidebarRight = styled(({ className, children }) => (
-  <div className={className}>
-    <div className="inner">{children}</div>
-  </div>
-))`
+export const SidebarRight = ({ children }) => (
+  <SidebarContext.Consumer>
+    {({ open, overlay }) => (
+      <SidebarRightContainer open={open} overlay={overlay}>
+        <div className="inner">{children}</div>
+        {overlay && open && <div className="overlay" />}
+      </SidebarRightContainer>
+    )}
+  </SidebarContext.Consumer>
+);
+
+const SidebarRightContainer = styled.div`
   flex: 1;
-  margin-top: 30px;
+  position: relative;
+  padding-left: 1.5rem;
+  padding-top: 30px;
 
   .inner {
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
   }
 `;
 
@@ -145,9 +163,9 @@ const SidebarLeftContainer = styled.div`
   display: ${({ open }) => (open ? 'flex' : 'none')};
   flex-direction: column;
   background-color: #edf1f8;
-  position: sticky;
+  position: ${({ overlay }) => (overlay ? 'fixed' : 'sticky')};
   top: 60px;
+  z-index: 999;
   height: calc(100vh - 60px);
   min-width: 200px;
-  margin-right: 1.5rem;
 `;
