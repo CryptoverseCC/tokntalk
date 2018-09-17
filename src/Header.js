@@ -12,11 +12,7 @@ import Context from './Context';
 import Logo from './Logo';
 import Dropdown from './Dropdown';
 import { niceScroll } from './cssUtils';
-
-export const HeaderSpacer = styled.div`
-  height: 60px;
-  width: 100vw;
-`;
+import { SidebarToggler } from './Sidebar';
 
 const StyledHeader = styled.div`
   height: 60px;
@@ -30,19 +26,14 @@ const StyledHeader = styled.div`
 `;
 
 const HeaderContainer = styled.div`
-  position: fixed;
+  position: sticky;
   width: 100%;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   z-index: 999;
 
   @media (max-width: 770px) {
     padding: 0 0.75rem;
-  }
-
-  @media (max-width: 1280px) {
-    width: 100%;
   }
 `;
 
@@ -87,6 +78,7 @@ const Header = () => {
     <HeaderContainer>
       <NetworkWarning />
       <StyledHeader>
+        <SidebarToggler />
         <Link to="/">
           <Logo />
         </Link>

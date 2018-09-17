@@ -1,12 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const ContentContainer = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
 export const FlatContainer = styled.div`
   border-radius: 12px;
   padding: 30px;

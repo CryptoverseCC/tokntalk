@@ -32,6 +32,7 @@ import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 import { metamaskStatusChanged } from './Analytics';
+import { SidebarProvider, Sidebar, SidebarLeft, SidebarRight } from './Sidebar';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
@@ -396,50 +397,70 @@ export default class App extends Component {
   }
 
   static ShowPage = (props) => (
-    <React.Fragment>
+    <SidebarProvider>
       <Header />
-      <Context.Consumer>
-        {({ feedStore, entityStore }) => (
-          <ShowPage
-            {...props}
-            getFeedItems={feedStore.getFeedItems}
-            getNewFeedItems={feedStore.getNewFeedItems}
-            getEntityInfo={entityStore.getEntityInfo}
-          />
-        )}
-      </Context.Consumer>
+      <Sidebar>
+        <SidebarLeft />
+        <SidebarRight>
+          <Context.Consumer>
+            {({ feedStore, entityStore }) => (
+              <ShowPage
+                {...props}
+                getFeedItems={feedStore.getFeedItems}
+                getNewFeedItems={feedStore.getNewFeedItems}
+                getEntityInfo={entityStore.getEntityInfo}
+              />
+            )}
+          </Context.Consumer>
+        </SidebarRight>
+      </Sidebar>
       <PositionedFooter />
-    </React.Fragment>
+    </SidebarProvider>
   );
 
   static Discover = (props) => (
-    <React.Fragment>
+    <SidebarProvider>
       <Header />
-      <Discover {...props} />
+      <Sidebar>
+        <SidebarLeft />
+        <SidebarRight>
+          <Discover {...props} />
+        </SidebarRight>
+      </Sidebar>
       <PositionedFooter />
-    </React.Fragment>
+    </SidebarProvider>
   );
 
   static Index = (props) => (
-    <React.Fragment>
+    <SidebarProvider>
       <Header />
-      <Context.Consumer>
-        {({ feedStore }) => (
-          <IndexPage {...props} getFeedItems={feedStore.getFeedItems} getNewFeedItems={feedStore.getNewFeedItems} />
-        )}
-      </Context.Consumer>
+      <Sidebar>
+        <SidebarLeft />
+        <SidebarRight>
+          <Context.Consumer>
+            {({ feedStore }) => (
+              <IndexPage {...props} getFeedItems={feedStore.getFeedItems} getNewFeedItems={feedStore.getNewFeedItems} />
+            )}
+          </Context.Consumer>
+        </SidebarRight>
+      </Sidebar>
       <PositionedFooter />
-    </React.Fragment>
+    </SidebarProvider>
   );
 
   static Thread = (props) => (
-    <React.Fragment>
+    <SidebarProvider>
       <Header />
-      <Context.Consumer>
-        {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
-      </Context.Consumer>
+      <Sidebar>
+        <SidebarLeft />
+        <SidebarRight>
+          <Context.Consumer>
+            {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
+          </Context.Consumer>
+        </SidebarRight>
+      </Sidebar>
       <PositionedFooter />
-    </React.Fragment>
+    </SidebarProvider>
   );
 
   static ModalThread = (props) => (

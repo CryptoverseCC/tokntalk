@@ -21,8 +21,7 @@ import Link from './Link';
 import { findClub } from './clubs';
 import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
-import { HeaderSpacer } from './Header';
-import { FlatContainer, ContentContainer, H2, H4, SocialUsername } from './Components';
+import { FlatContainer, H2, H4, SocialUsername } from './Components';
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
@@ -34,6 +33,7 @@ import { Token } from './ActiveEntityTokens';
 const ScrollableContainer = styled.div`
   ${niceScroll};
   overflow-y: scroll;
+  overflow-x: hidden;
   max-height: 300px;
 `;
 
@@ -98,8 +98,7 @@ export default class ShowPage extends Component {
     return (
       <Entity id={entityId}>
         {(entity) => (
-          <ContentContainer>
-            <HeaderSpacer style={{ marginBottom: '60px' }} />
+          <React.Fragment>
             <div className="columns ordered-mobile">
               <div className="column is-3">
                 <ProfileBox
@@ -131,7 +130,7 @@ export default class ShowPage extends Component {
                 <Cousins entity={entity} style={{ marginTop: '2rem' }} />
               </div>
             </div>
-          </ContentContainer>
+          </React.Fragment>
         )}
       </Entity>
     );

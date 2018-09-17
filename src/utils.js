@@ -46,12 +46,22 @@ export const validateParams = (validators, redirectTo) => (Cmp) => {
 
     constructor(props) {
       super(props);
+      this.state = { isParamasValid: this.validate(props) };
+    }
+
+    componentWillReceiveProps(newProps) {
+      if (this.props.match !== newProps.match) {
+        this.setState({ isParamasValid: this.validate(newProps) });
+      }
+    }
+
+    validate(props) {
       const { params } = props.match;
       const isParamasValid = Object.entries(validators).reduce(
         (acc, [key, validator]) => acc && validator(params[key]),
         true,
       );
-      this.state = { isParamasValid };
+      return isParamasValid;
     }
 
     render() {
@@ -67,6 +77,17 @@ export const enhanceCustomClubProp = (inPropName, ourPropName) => (Cmp) =>
     componentDidMount() {
       if (this.state.club.isCustom) {
         this.getCustomClubInfo(this.state.club);
+      }
+    }
+
+    componentWillReceiveProps(newProps) {
+      if (newProps[inPropName] !== this.props[inPropName]) {
+        const club = newProps[inPropName];
+        this.setState({ club }, () => {
+          if (club.isCustom) {
+            this.getCustomClubInfo(club);
+          }
+        });
       }
     }
 

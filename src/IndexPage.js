@@ -6,11 +6,9 @@ import { pageView } from './Analytics';
 import { getFeed } from './Feed';
 import Hero from './Hero';
 import { PromotionBox } from './promotion/PromotionBox';
-import { HeaderSpacer } from './Header';
-import { FlatContainer, ContentContainer } from './Components';
+import { FlatContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import Investors from './Investors';
-import ActiveEntityTokens from './ActiveEntityTokens';
 import { Entities, WithActiveEntity } from './Entity';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
@@ -60,26 +58,12 @@ export default class IndexPage extends Component {
     const { feedType } = this.state;
     const defaultUnloggedFeeds = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE];
     return (
-      <ContentContainer>
-        <HeaderSpacer style={{ marginBottom: '60px' }} />
-        <div className="columns">
-          <div className="column is-3-widescreen is-4">
+      <React.Fragment>
+        <div className="columns ordered-mobile">
+          <div className="column is-3">
             <Investors />
-            <ActiveEntityTokens />
-            <FlatContainer>
-              <AppContext.Consumer>
-                {({ boostStore: { getBoosts, getSupportings } }) => (
-                  <PromotionBox
-                    getBoosts={getBoosts}
-                    getSupportings={getSupportings}
-                    token={DEFAULT_TOKEN_ID}
-                    showPurrmoter={true}
-                  />
-                )}
-              </AppContext.Consumer>
-            </FlatContainer>
           </div>
-          <div className="column is-8 is-offset-1-widescreen">
+          <div className="column is-6 fl-1">
             <Hero style={{ marginBottom: '30px' }} />
             <WithActiveEntity>
               {(activeEntity) => (
@@ -102,8 +86,22 @@ export default class IndexPage extends Component {
               </Entities>
             )}
           </div>
+          <div className="column is-3">
+            <FlatContainer>
+              <AppContext.Consumer>
+                {({ boostStore: { getBoosts, getSupportings } }) => (
+                  <PromotionBox
+                    getBoosts={getBoosts}
+                    getSupportings={getSupportings}
+                    token={DEFAULT_TOKEN_ID}
+                    showPurrmoter={true}
+                  />
+                )}
+              </AppContext.Consumer>
+            </FlatContainer>
+          </div>
         </div>
-      </ContentContainer>
+      </React.Fragment>
     );
   }
 }

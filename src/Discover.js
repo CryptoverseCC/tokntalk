@@ -6,7 +6,6 @@ import { isAddress } from 'web3-utils';
 import flow from 'lodash/flowRight';
 import uniqBy from 'lodash/fp/uniqBy';
 import find from 'lodash/fp/find';
-import sortBy from 'lodash/fp/sortBy';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { pageView } from './Analytics';
@@ -14,13 +13,12 @@ import Link, { A, defaultLinkCss } from './Link';
 import Feed from './Feed';
 import Loader from './Loader';
 import AppContext from './Context';
-import { HeaderSpacer } from './Header';
 import { Storage, validateParams, rewriteCmp, enhanceCustomClubProp } from './utils';
 import clubs, { TokenImage, findClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
-import { FlatContainer, H1, H2, H3, H4, SocialUsername, ContentContainer } from './Components';
+import { FlatContainer, H1, H2, H3, H4, SocialUsername } from './Components';
 import {
   LinkedEntityAvatar,
   IfActiveEntity,
@@ -31,7 +29,6 @@ import {
   IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
 } from './Entity';
-import { getEntityTokens } from './api';
 import exportIcon from './img/export.svg';
 import { FEED_VERSION_KEY } from './UnreadedMessages';
 import FeedTypeSwitcher, { FeedTypeButton } from './FeedTypeSwitcher';
@@ -109,8 +106,7 @@ class Index extends Component {
 
   render() {
     return (
-      <ContentContainer>
-        <HeaderSpacer style={{ marginBottom: '30px' }} />
+      <React.Fragment>
         <div className="columns">
           <div className="column is-5">
             <H3 style={{ marginBottom: '0.8rem' }}>Token Clubs</H3>
@@ -158,7 +154,7 @@ class Index extends Component {
           </div>
           <div className="column is-3 is-offset-1" />
         </div>
-      </ContentContainer>
+      </React.Fragment>
     );
   }
 }
@@ -274,6 +270,12 @@ class ByTokenIndex extends Component {
     this.fetchRanking();
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.token !== this.props.token) {
+      this.fetchRanking();
+    }
+  }
+
   fetchRanking = async () => {
     const { token } = this.props;
     this.setState({ loading: true });
@@ -306,83 +308,80 @@ class ByTokenIndex extends Component {
 
 const ByToken = ({ token }) => (
   <React.Fragment>
-    <HeaderSpacer style={{ marginBottom: '30px' }} />
-    <ContentContainer>
-      <div className="columns ordered-mobile">
-        <div className="column is-3">
-          <ProfileBox
-            primaryColor={token.primaryColor}
-            avatar={<TokenImage token={token} style={{ margin: '5px', width: '44px', height: '44px' }} />}
-            coverImage={token.coverImage}
-            coverImageStyle={{
-              backgroundSize: '50%',
-              backgroundPosition: '100% 50%',
-            }}
-          >
-            <H2>{token.name}</H2>
-            <ul style={{ fontWeight: '600' }}>
-              <li style={{ marginBottom: '7px' }}>
-                <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
+    <div className="columns ordered-mobile">
+      <div className="column is-3">
+        <ProfileBox
+          primaryColor={token.primaryColor}
+          avatar={<TokenImage token={token} style={{ margin: '5px', width: '44px', height: '44px' }} />}
+          coverImage={token.coverImage}
+          coverImageStyle={{
+            backgroundSize: '50%',
+            backgroundPosition: '100% 50%',
+          }}
+        >
+          <H2>{token.name}</H2>
+          <ul style={{ fontWeight: '600' }}>
+            <li style={{ marginBottom: '7px' }}>
+              <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
+            </li>
+            {token.externalLinks.map((entry) => (
+              <li key={entry.name} style={{ marginBottom: '7px' }}>
+                <a href={entry.url}>{entry.name}</a>
               </li>
-              {token.externalLinks.map((entry) => (
-                <li key={entry.name} style={{ marginBottom: '7px' }}>
-                  <a href={entry.url}>{entry.name}</a>
-                </li>
-              ))}
-            </ul>
-          </ProfileBox>
-          {token.promotionBox && (
-            <FlatContainer style={{ marginTop: '30px' }}>
-              <AppContext.Consumer>
-                {({ boostStore: { getBoosts, getSupportings } }) => (
-                  <PromotionBox
-                    getBoosts={getBoosts}
-                    getSupportings={getSupportings}
-                    asset={token.promotionBox.asset}
-                    assetInfo={token.promotionBox.assetInfo}
-                    token={token.promotionBox.recipient}
-                    showPurrmoter={true}
-                  />
-                )}
-              </AppContext.Consumer>
-            </FlatContainer>
-          )}
-        </div>
-        <div className="column is-6 fl-1">
-          {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
-          <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
-            {token.is721 ? (
-              <IfActiveEntityIs
-                asset={`${token.network}:${token.address}`}
-                other={<ActiveEntityIsNotFromFamily token={token} />}
-              >
-                <ClubForm token={token} />
-              </IfActiveEntityIs>
-            ) : (
-              <ClubForm token={token} />
-            )}
-          </IfActiveEntityHasToken>
-          <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
-            {(isActiveEntityFromFamily) => (
-              <DoesActiveEntityHasToken token={token}>
-                {(hasToken) => (
-                  <FeedForToken
-                    disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
-                    className="feed-for-token"
-                    token={token}
-                  />
-                )}
-              </DoesActiveEntityHasToken>
-            )}
-          </IsActiveEntityFromFamily>
-        </div>
-        <div className="column is-3">
-          <FlatContainer>
-            <Members token={token} />
+            ))}
+          </ul>
+        </ProfileBox>
+        {token.promotionBox && (
+          <FlatContainer style={{ marginTop: '30px' }}>
+            <AppContext.Consumer>
+              {({ boostStore: { getBoosts, getSupportings } }) => (
+                <PromotionBox
+                  getBoosts={getBoosts}
+                  getSupportings={getSupportings}
+                  asset={token.promotionBox.asset}
+                  assetInfo={token.promotionBox.assetInfo}
+                  token={token.promotionBox.recipient}
+                  showPurrmoter={true}
+                />
+              )}
+            </AppContext.Consumer>
           </FlatContainer>
-        </div>
+        )}
       </div>
-    </ContentContainer>
+      <div className="column is-6 fl-1">
+        {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
+        <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
+          {token.is721 ? (
+            <IfActiveEntityIs
+              asset={`${token.network}:${token.address}`}
+              other={<ActiveEntityIsNotFromFamily token={token} />}
+            >
+              <ClubForm token={token} />
+            </IfActiveEntityIs>
+          ) : (
+            <ClubForm token={token} />
+          )}
+        </IfActiveEntityHasToken>
+        <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
+          {(isActiveEntityFromFamily) => (
+            <DoesActiveEntityHasToken token={token}>
+              {(hasToken) => (
+                <FeedForToken
+                  disabledInteractions={!hasToken || (token.is721 && !isActiveEntityFromFamily)}
+                  className="feed-for-token"
+                  token={token}
+                />
+              )}
+            </DoesActiveEntityHasToken>
+          )}
+        </IsActiveEntityFromFamily>
+      </div>
+      <div className="column is-3">
+        <FlatContainer>
+          <Members token={token} />
+        </FlatContainer>
+      </div>
+    </div>
   </React.Fragment>
 );
 
