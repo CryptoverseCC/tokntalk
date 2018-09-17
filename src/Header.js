@@ -31,10 +31,6 @@ const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   z-index: 999;
-
-  @media (max-width: 770px) {
-    padding: 0 0.75rem;
-  }
 `;
 
 const TitleLink = styled(Link)`

@@ -11,11 +11,12 @@ import { TokenImage } from './clubs';
 import { UnreadedCount } from './UnreadedMessages';
 import { niceScroll } from './cssUtils';
 import menuIcon from './img/menu.png';
+import { mobileOrTablet } from './utils';
 
 const SidebarContext = React.createContext();
 
 export class SidebarProvider extends Component {
-  state = { open: !this.props.overlay };
+  state = { open: !this.props.overlay && !mobileOrTablet() };
 
   toogle = () => this.setState(({ open }) => ({ open: !open }));
 
@@ -97,6 +98,14 @@ const SidebarRightContainer = styled.div`
     left: 0;
     background: rgba(0, 0, 0, 0.5);
   }
+
+  @media (max-width: 770px) {
+    padding-left: unset;
+
+    .inner {
+      width: 100vw;
+    }
+  }
 `;
 
 const StyledUnreadedMessages = styled(UnreadedCount)`
@@ -159,13 +168,18 @@ const LinkItem = styled(({ children, icon, ...props }) => (
 `;
 
 const SidebarLeftContainer = styled.div`
-  padding: 15px 0;
   display: ${({ open }) => (open ? 'flex' : 'none')};
+  position: ${({ overlay }) => (overlay ? 'fixed' : 'sticky')};
+  padding: 15px 0;
   flex-direction: column;
   background-color: #edf1f8;
-  position: ${({ overlay }) => (overlay ? 'fixed' : 'sticky')};
   top: 60px;
   z-index: 999;
-  height: calc(100vh - 60px);
   min-width: 200px;
+  height: calc(100vh - 60px);
+
+  @media (max-width: 770px) {
+    position: fixed;
+    width: 100vw;
+  }
 `;
