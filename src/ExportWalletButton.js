@@ -35,7 +35,7 @@ export class ExportWalletButton extends React.Component {
   }
 }
 
-const ExportWalletModal = (onClose) => {
+const ExportWalletModal = ({ onClose }) => {
   return (
     <AppContext>
       {({ web3Store: { exportWallet, from } }) => (
@@ -43,7 +43,7 @@ const ExportWalletModal = (onClose) => {
           <ModalContainer>
             {from && (
               <div>
-                <div className="column is-tw-quarters">
+                <div className="column is-two-quarters">
                   <p>Your public key</p>
                 </div>
                 <div className="column is-four-quarters">

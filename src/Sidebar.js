@@ -12,6 +12,8 @@ import { UnreadedCount } from './UnreadedMessages';
 import { niceScroll } from './cssUtils';
 import menuIcon from './img/menu.png';
 import { mobileOrTablet } from './utils';
+import AppContext from './Context';
+import { ExportWalletButton } from './ExportWalletButton';
 
 const SidebarContext = React.createContext();
 
@@ -61,6 +63,9 @@ export const SidebarLeft = () => (
             </React.Fragment>
           )}
         </IfActiveEntity>
+        <AppContext>
+          {({ web3Store: { provider } }) => (provider === 'ToknTalkEmbedded' ? <ExportWalletButton /> : null)}
+        </AppContext>
         <SidebarFooter />
       </SidebarLeftContainer>
     )}
