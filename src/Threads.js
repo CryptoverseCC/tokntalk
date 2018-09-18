@@ -72,7 +72,10 @@ class Threads extends Component {
             <div className="container" style={{ zIndex: '1' }}>
               <div className="columns">
                 <div className="column is-12 has-text-centered">
-                  <h2 style={{ maxWidth: '1000px' }}>Receive Ether* for relevant answers.</h2>
+                  <h2 style={{ maxWidth: '1000px' }}>
+                    Receive Ether
+                    <span style={{ color: '#848da5' }}>*</span> for relevant answers.
+                  </h2>
                   <p className="subtitle-communities" style={{ maxWidth: '760px', margin: '0 auto' }}>
                     Share your knowledge or post a meme. Better the thread, higher the reward.
                   </p>
@@ -120,12 +123,7 @@ class Threads extends Component {
                   <p className="landing-paragraph">
                     People keep bidding for the sponsored place and you keep receiving the passive income.
                   </p>
-                  <figure className="landing-feature pink">
-                    <img
-                      src={ThreadsFourth}
-                      style={{ width: '100%', height: '100%', marginTop: '0', borderRadius: '20px' }}
-                    />
-                  </figure>
+                  <figure className="landing-feature pink" id="threads-fourth" />
                 </div>
               </div>
             </div>
