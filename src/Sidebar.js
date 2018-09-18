@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { A } from './Link';
 import Intercom from './Intercom';
@@ -18,14 +18,8 @@ import { MintTokensButton } from './MintTokensButton';
 
 const SidebarContext = React.createContext();
 
-class SidebarProviderCmp extends Component {
+export class SidebarProvider extends Component {
   state = { open: !this.props.overlay && !mobileOrTablet() };
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.location.pathname !== this.props.location.pathname && this.props.overlay && mobileOrTablet()) {
-      this.setState({ open: false });
-    }
-  }
 
   toggle = () => this.setState(({ open }) => ({ open: !open }));
 
@@ -36,8 +30,6 @@ class SidebarProviderCmp extends Component {
     return <SidebarContext.Provider value={{ open, overlay, toggle: this.toggle }}>{children}</SidebarContext.Provider>;
   }
 }
-
-export const SidebarProvider = withRouter(SidebarProviderCmp);
 
 export const SidebarToggler = () => (
   <SidebarContext.Consumer>
@@ -75,7 +67,7 @@ export const SidebarLeft = () => (
         <AppContext>
           {({ web3Store: { provider } }) => (provider === 'ToknTalkEmbedded' ? <ExportWalletButton /> : null)}
         </AppContext>
-        {/* <AppContext>{({ web3Store: { from } }) => (from ? <MintTokensButton /> : null)}</AppContext> */}
+        <AppContext>{({ web3Store: { from } }) => (from ? <MintTokensButton /> : null)}</AppContext>
         <SidebarFooter />
       </SidebarLeftContainer>
     )}
@@ -100,7 +92,7 @@ const SidebarRightContainer = styled.div`
   padding-top: 30px;
 
   .inner {
-    max-width: 1280px;
+    max-width: 96%;
     margin-left: auto;
     margin-right: auto;
   }
@@ -165,11 +157,11 @@ const LinkItem = styled(({ children, icon, ...props }) => (
   </NavLink>
 ))`
   display: block;
-  flex-shrink: 0;
   padding: 8px 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 200px;
   color: #1b2437;
   border-radius: 6px;
   &.selected {
