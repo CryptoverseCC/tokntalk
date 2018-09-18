@@ -125,3 +125,32 @@ export const erc20ContractAbi = [
     stateMutability: 'nonpayable',
   },
 ];
+
+export const mintTokensContractAbi = [
+  {
+    constant: false,
+    inputs: [
+      {
+        name: 'max',
+        type: 'uint256',
+      },
+      {
+        name: 'v',
+        type: 'uint8',
+      },
+      {
+        name: 'r',
+        type: 'bytes32',
+      },
+      {
+        name: 's',
+        type: 'bytes32',
+      },
+    ],
+    name: 'mintUsingSignature',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
