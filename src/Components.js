@@ -1,11 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const ContentContainer = styled.div`
-  max-width: 94%;
-  margin: 0 auto;
-`;
-
 export const FlatContainer = styled.div`
   width: 96%;
   max-width: 300px;

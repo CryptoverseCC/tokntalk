@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 import Link from './Link';
-import { H4 } from './Components';
-import AppContext from './Context';
 import { IfActiveEntity, EntityClubs } from './Entity';
 import { TokenImage } from './clubs';
 import { DiscoverIcon } from './Icons';
@@ -19,81 +18,27 @@ import mouse from './img/mouse_click.png';
 const { REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE } = process.env;
 
 const ActiveEntityTokens = () => (
-  <AppContext.Consumer>
-    {({ web3Store: { provider } }) => {
-      if (typeof provider === 'undefined') {
-        return null;
-      }
-      if (typeof provider === 'boolean' && !provider) {
-        return <NoMetamask />;
-      }
-      return (
-        <IfActiveEntity other={<NoActiveEntity />}>
-          {(activeEntityId) => (
-            <EntityClubs id={activeEntityId}>
-              {(clubs) => {
-                return (
-                  <YourCommunitiesContainer>
-                    <H4 style={{ marginBottom: '15px' }}>Your communities</H4>
-                    {clubs.map((club) => (
-                      <Token key={club.address} token={club} withCounter />
-                    ))}
-                    <DiscoverMore>{!clubs.length ? 'Join your first community' : 'Discover more'}</DiscoverMore>
-                  </YourCommunitiesContainer>
-                );
-              }}
-            </EntityClubs>
-          )}
-        </IfActiveEntity>
-      );
-    }}
-  </AppContext.Consumer>
+  <IfActiveEntity>
+    {(activeEntityId) => (
+      <EntityClubs id={activeEntityId}>
+        {(clubs) => (
+          <React.Fragment>
+            {clubs.map((club) => (
+              <Token key={club.address} token={club} withCounter />
+            ))}
+            {/* <DiscoverMore>{!clubs.length ? 'Join your first community' : 'Discover more'}</DiscoverMore> */}
+          </React.Fragment>
+        )}
+      </EntityClubs>
+    )}
+  </IfActiveEntity>
 );
 
 export default ActiveEntityTokens;
 
-const YourCommunitiesContainer = styled.div`
-  margin-bottom: 1rem;
-  background-color: 'transparent';
-  padding: 0;
-  border-radius: 0;
-  background-color: #ecf1f9;
-  position: relative;
-  padding: 30px;
-  border-radius: 12px;
-  @media (max-width: 770px) {
-    width: 96%;
-    margin-left: 2%;
-  }
-`;
+const YourCommunitiesContainer = styled.div``;
 
-const YourCommunitiesContainerNoActiveEntity = styled.div`
-  background: url('./img/unlock_bg.png');
-  background-color: #ecf1f9;
-  position: relative;
-  border-radius: 12px;
-  padding: 30px;
-  margin-bottom: 1rem;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: bottom center;
-  max-height: 260px;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-  @media (max-width: 770px) {
-    width: 96%;
-    max-width: 96%;
-    margin-left: 2%;
-  }
-}}
-
-`;
-const YourCommunitiesLink = styled(Link)`
+const YourCommunitiesLink = styled(NavLink)`
   display: flex;
   align-items: center;
   padding: 7px 0;
@@ -104,6 +49,10 @@ const YourCommunitiesLink = styled(Link)`
   :hover {
     color: #264dd9;
     transition: all 0.15s ease;
+  }
+
+  &.selected {
+    background: #f5f8fd;
   }
 `;
 
@@ -184,11 +133,11 @@ const NoMetamask = () => (
 );
 
 const NoActiveEntity = () => (
-  <YourCommunitiesContainerNoActiveEntity>
+  <div>
     <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Unlock your wallet</p>
     <span>To connect with token owners alike</span>
     <img style={{ width: '208px', height: 'auto', marginTop: '20px', textAlign: 'center' }} alt="" src={mouse} />
-  </YourCommunitiesContainerNoActiveEntity>
+  </div>
 );
 
 const DiscoverMore = ({ children, props }) => (
@@ -220,12 +169,10 @@ const StyledUnreadedMessages = styled(UnreadedCount)`
   background: white;
 `;
 
-export const Token = ({ token, withCounter = false }) => {
-  return (
-    <YourCommunitiesLink to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}>
-      <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
-      {token.name}
-      {withCounter && <StyledUnreadedMessages token={token} />}
-    </YourCommunitiesLink>
-  );
-};
+export const Token = ({ token, withCounter = false }) => (
+  <YourCommunitiesLink to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}>
+    <TokenImage token={token} style={{ width: '22px', height: '22px', marginRight: '15px' }} />
+    {token.name}
+    {withCounter && <StyledUnreadedMessages token={token} />}
+  </YourCommunitiesLink>
+);

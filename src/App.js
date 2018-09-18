@@ -25,13 +25,13 @@ import {
 } from './api';
 import { getEntityData } from './entityApi';
 import Header from './Header';
-import { PositionedFooter } from './Footer';
 import { Thread, ModalThread } from './Thread';
 import Discover from './Discover';
 import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 import { metamaskStatusChanged } from './Analytics';
+import { SidebarProvider, SidebarContainer, SidebarLeft, SidebarRight } from './Sidebar';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
@@ -307,6 +307,12 @@ export default class App extends Component {
     }
   };
 
+  exportWallet = () => {
+    const mnemonic = this.storage.getItem('mnemonic');
+    const privateKey = this.storage.getItem('privateKey');
+    return { privateKey, mnemonic };
+  };
+
   render() {
     const {
       changeActiveEntityTo,
@@ -323,6 +329,7 @@ export default class App extends Component {
       getBoosts,
       getSupportings,
       toggleHttpClaims,
+      exportWallet,
     } = this;
     const {
       activeEntity,
@@ -386,6 +393,7 @@ export default class App extends Component {
             from,
             networkName,
             waitingForConfirm,
+            exportWallet,
           },
         }}
       >
@@ -396,50 +404,66 @@ export default class App extends Component {
   }
 
   static ShowPage = (props) => (
-    <React.Fragment>
+    <SidebarProvider overlay>
       <Header />
-      <Context.Consumer>
-        {({ feedStore, entityStore }) => (
-          <ShowPage
-            {...props}
-            getFeedItems={feedStore.getFeedItems}
-            getNewFeedItems={feedStore.getNewFeedItems}
-            getEntityInfo={entityStore.getEntityInfo}
-          />
-        )}
-      </Context.Consumer>
-      <PositionedFooter />
-    </React.Fragment>
+      <SidebarContainer>
+        <SidebarLeft />
+        <SidebarRight>
+          <Context.Consumer>
+            {({ feedStore, entityStore }) => (
+              <ShowPage
+                {...props}
+                getFeedItems={feedStore.getFeedItems}
+                getNewFeedItems={feedStore.getNewFeedItems}
+                getEntityInfo={entityStore.getEntityInfo}
+              />
+            )}
+          </Context.Consumer>
+        </SidebarRight>
+      </SidebarContainer>
+    </SidebarProvider>
   );
 
   static Discover = (props) => (
-    <React.Fragment>
+    <SidebarProvider overlay>
       <Header />
-      <Discover {...props} />
-      <PositionedFooter />
-    </React.Fragment>
+      <SidebarContainer>
+        <SidebarLeft />
+        <SidebarRight>
+          <Discover {...props} />
+        </SidebarRight>
+      </SidebarContainer>
+    </SidebarProvider>
   );
 
   static Index = (props) => (
-    <React.Fragment>
+    <SidebarProvider>
       <Header />
-      <Context.Consumer>
-        {({ feedStore }) => (
-          <IndexPage {...props} getFeedItems={feedStore.getFeedItems} getNewFeedItems={feedStore.getNewFeedItems} />
-        )}
-      </Context.Consumer>
-      <PositionedFooter />
-    </React.Fragment>
+      <SidebarContainer>
+        <SidebarLeft />
+        <SidebarRight>
+          <Context.Consumer>
+            {({ feedStore }) => (
+              <IndexPage {...props} getFeedItems={feedStore.getFeedItems} getNewFeedItems={feedStore.getNewFeedItems} />
+            )}
+          </Context.Consumer>
+        </SidebarRight>
+      </SidebarContainer>
+    </SidebarProvider>
   );
 
   static Thread = (props) => (
-    <React.Fragment>
+    <SidebarProvider>
       <Header />
-      <Context.Consumer>
-        {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
-      </Context.Consumer>
-      <PositionedFooter />
-    </React.Fragment>
+      <SidebarContainer>
+        <SidebarLeft />
+        <SidebarRight>
+          <Context.Consumer>
+            {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
+          </Context.Consumer>
+        </SidebarRight>
+      </SidebarContainer>
+    </SidebarProvider>
   );
 
   static ModalThread = (props) => (

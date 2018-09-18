@@ -1,3 +1,5 @@
+import bip39 from 'bip39';
+
 let web3Promise;
 
 const onReadyState = () => {
@@ -28,22 +30,14 @@ const setupWeb3 = async (storage) => {
     }
     const savedMnemonic = storage.getItem('mnemonic');
     let mnemonic;
-    var bip39 = require('bip39');
-    var hdkey = require('hdkey');
-    var ethUtil = require('ethereumjs-util');
     if (!savedMnemonic) {
       mnemonic = bip39.generateMnemonic();
       storage.setItem('mnemonic', mnemonic);
     } else {
       mnemonic = savedMnemonic;
     }
-    var seed = bip39.mnemonicToSeed(mnemonic);
-    var root = hdkey.fromMasterSeed(seed);
-    const addrNode = root.derive("m/44'/60'/0'/0/0");
-    var keyd = '0x' + addrNode._privateKey.toString('hex');
-    const pubKey = ethUtil.privateToPublic(addrNode._privateKey);
-    const addr = ethUtil.publicToAddress(pubKey).toString('hex');
-    const address = ethUtil.toChecksumAddress(addr);
+    const { address, privateKey } = extractKeysFromMnemonic(mnemonic);
+    storage.setItem('privateKey', privateKey);
     const toknTalkEmbeddedWeb3 = {
       eth: {
         getAccounts: () => new Promise((resolve) => resolve([address])),
@@ -53,7 +47,7 @@ const setupWeb3 = async (storage) => {
         },
         getBlockNumber: () => new Promise((resolve) => resolve(0)),
         personal: {
-          sign: (message, from) => new Web3().eth.accounts.sign(message, keyd).signature,
+          sign: (message, from) => new Web3().eth.accounts.sign(message, privateKey).signature,
         },
       },
       currentProvider: {
@@ -63,6 +57,22 @@ const setupWeb3 = async (storage) => {
     window.web3 = toknTalkEmbeddedWeb3;
     return toknTalkEmbeddedWeb3;
   }
+};
+
+const extractKeysFromMnemonic = (mnemonic) => {
+  const hdkey = require('hdkey');
+  const ethUtil = require('ethereumjs-util');
+  const seed = bip39.mnemonicToSeed(mnemonic);
+  const root = hdkey.fromMasterSeed(seed);
+  const addrNode = root.derive("m/44'/60'/0'/0/0");
+  const privateKey = '0x' + addrNode._privateKey.toString('hex');
+  const pubKey = ethUtil.privateToPublic(addrNode._privateKey);
+  const addr = ethUtil.publicToAddress(pubKey).toString('hex');
+  const address = ethUtil.toChecksumAddress(addr);
+  return {
+    privateKey,
+    address,
+  };
 };
 
 export default (storage) => {

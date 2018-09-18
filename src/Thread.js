@@ -7,8 +7,6 @@ import LikersModal from './LikersModal';
 import { VerifyModal } from './VerifyModal';
 import Loader from './Loader';
 import Context from './Context';
-import { HeaderSpacer } from './Header';
-import { ContentContainer } from './Components';
 
 class ThreadCmp extends Component {
   state = {
@@ -77,10 +75,7 @@ class ThreadCmp extends Component {
 
 export const Thread = (props) => (
   <React.Fragment>
-    <HeaderSpacer style={{ marginBottom: '60px' }} />
-    <ContentContainer>
-      <ThreadCmp {...props} />
-    </ContentContainer>
+    <ThreadCmp {...props} />
   </React.Fragment>
 );
 

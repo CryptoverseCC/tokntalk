@@ -15,6 +15,7 @@ import {
   claimWithValueTransferContractAbi,
   claimWithTokenValueTransferContractAbi,
   erc20ContractAbi,
+  mintTokensContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
 import { findClub } from './clubs';
@@ -635,4 +636,40 @@ export const getHttpClaimDetails = async ({ id }) => {
   return fetch(`${USERFEEDS_API_ADDRESS}/api/verify-claim?signatureValue=${id.split(':')[1]}`).then((res) =>
     res.json(),
   );
+};
+
+export const mintTokens = async (signature) => {
+  const { from } = await getWeb3State();
+  await mintTokensInContract(signature, from);
+};
+
+const getTransactionSignature = async (from) => {
+  return fetch(`https://mint-signature-signer.herokuapp.com/get-mint-signature?address=${from}`).then((res) =>
+    res.json(),
+  );
+};
+
+export const getAvailableTokensWithSignature = async () => {
+  const { from } = await getWeb3State();
+  const { max, v, r, s } = await getTransactionSignature(from);
+  const mintedAmount = await getMintedTokens(from);
+  return { max: max - mintedAmount, v, r, s };
+};
+
+const mintTokensInContract = async ({ max, v, r, s }, from) => {
+  const contract = await getMintTokensContract();
+  await contract.methods.mintUsingSignature(max, v, r, s).send({ from });
+};
+
+const getMintTokensContract = async () => {
+  const web3 = await getWeb3();
+  const contractAddress = '0x6f3b2f2100875409c5c011bc3bb97ea6e0f671db';
+  const contract = new web3.eth.Contract(mintTokensContractAbi, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  return contract;
+};
+
+const getMintedTokens = async (from) => {
+  const contract = await getMintTokensContract();
+  return await contract.methods.mintedBy(from).call();
 };
