@@ -307,6 +307,12 @@ export default class App extends Component {
     }
   };
 
+  exportWallet = () => {
+    const mnemonic = this.storage.getItem('mnemonic');
+    const privateKey = this.storage.getItem('privateKey');
+    return { privateKey, mnemonic };
+  };
+
   render() {
     const {
       changeActiveEntityTo,
@@ -323,6 +329,7 @@ export default class App extends Component {
       getBoosts,
       getSupportings,
       toggleHttpClaims,
+      exportWallet,
     } = this;
     const {
       activeEntity,
@@ -386,6 +393,7 @@ export default class App extends Component {
             from,
             networkName,
             waitingForConfirm,
+            exportWallet,
           },
         }}
       >

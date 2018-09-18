@@ -75,7 +75,7 @@ const Copy = styled.div`
   transition: background 0.3s;
 `;
 
-const CopyableHash = styled(
+export const CopyableHash = styled(
   class extends Component {
     state = { copied: false };
 
