@@ -27,7 +27,7 @@ export class MintTokensButton extends React.Component {
   render() {
     const { max } = this.state.signature;
     return (
-      <StyledButton disabled={max === 0} onClick={() => this.mintTokens()}>
+      <StyledButton disabled={max === 0} onClick={this.mintTokens}>
         Mint {max} tokens
       </StyledButton>
     );
