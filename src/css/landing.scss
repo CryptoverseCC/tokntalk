@@ -62,6 +62,15 @@
     padding-bottom: 20px;
   }
 
+  .landing-steps {
+    margin-top: 0;
+  }
+
+  .landing-steps-counter {
+    margin-top: 60px;
+    color: #828da7;
+  }
+
   .landing-logo-typo {
     display: inline-block;
     margin-top: 10px;
@@ -351,6 +360,12 @@
 
   #usershere {
     background-image: url('../img/landing/usershere-bg.png');
+  }
+
+  #threads-fourth {
+    background-image: url('../img/landing/threads-4.png');
+    background-position: 50%;
+    background-size: cover;
   }
 
   #startearning {

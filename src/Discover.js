@@ -64,6 +64,18 @@ const WelcomeMessage = styled.div`
   }
 `;
 
+const WiderColumns = styled.div`
+  border-radius: 12px;
+  padding: 30px;
+  background-color: #ecf1f9;
+  display: flex;
+  align-items: center;
+  @media (max-width: 770px) {
+    width: 96%;
+    margin-left: 2%;
+  }
+`;
+
 const DisoveryTab = FeedTypeButton;
 
 const DiscoveryContext = React.createContext();

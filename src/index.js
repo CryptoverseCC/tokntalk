@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import About from './Landing';
 import Communities from './Communities';
+import Threads from './Threads';
 import NotFound from './NotFound';
 import FAQ from './FAQPage';
 import { Storage, ScrollTop, rewriteCmp, validateParams } from './utils';
@@ -76,6 +77,7 @@ const TokNTalk = withRouter(
           <Switch location={isModal ? this.previousLocation : location}>
             <Route exact path="/about" component={About} />
             <Route exact path="/communities" component={Communities} />
+            <Route exact path="/threads" component={Threads} />
             <Route exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
 
