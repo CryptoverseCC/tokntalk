@@ -14,6 +14,7 @@ import menuIcon from './img/menu.png';
 import { mobileOrTablet } from './utils';
 import AppContext from './Context';
 import { ExportWalletButton } from './ExportWalletButton';
+import { MintTokensButton } from './MintTokensButton';
 
 const SidebarContext = React.createContext();
 
@@ -66,6 +67,7 @@ export const SidebarLeft = () => (
         <AppContext>
           {({ web3Store: { provider } }) => (provider === 'ToknTalkEmbedded' ? <ExportWalletButton /> : null)}
         </AppContext>
+        <AppContext>{({ web3Store: { from } }) => (from ? <MintTokensButton /> : null)}</AppContext>
         <SidebarFooter />
       </SidebarLeftContainer>
     )}

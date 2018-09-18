@@ -9,15 +9,19 @@ export class MintTokensButton extends React.Component {
   };
 
   async componentDidMount() {
-    const signature = await getAvailableTokensWithSignature();
-    this.setState({ signature, isLoading: false });
+    await this.refreshSignature();
   }
 
   mintTokens = () => {
     this.setState({ isLoading: true });
     mintTokens(this.state.signature).then(() => {
-      this.setState({ isLoading: false });
+      this.refreshSignature();
     });
+  };
+
+  refreshSignature = async () => {
+    const signature = await getAvailableTokensWithSignature();
+    this.setState({ signature, isLoading: false });
   };
 
   render() {
