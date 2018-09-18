@@ -153,4 +153,23 @@ export const mintTokensContractAbi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: 'addr',
+        type: 'address',
+      },
+    ],
+    name: 'mintedBy',
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];

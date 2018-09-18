@@ -1,20 +1,31 @@
 import React from 'react';
 import { StyledButton } from './SendTokens';
-import { mintTokens } from './api';
+import { mintTokens, getAvailableTokensWithSignature } from './api';
 
 export class MintTokensButton extends React.Component {
   state = {
-    isLoading: false,
+    isLoading: true,
+    signature: {},
   };
+
+  async componentDidMount() {
+    const signature = await getAvailableTokensWithSignature();
+    this.setState({ signature, isLoading: false });
+  }
 
   mintTokens = () => {
     this.setState({ isLoading: true });
-    mintTokens().then(() => {
+    mintTokens(this.state.signature).then(() => {
       this.setState({ isLoading: false });
     });
   };
 
   render() {
-    return <StyledButton onClick={() => this.mintTokens()}>Mint token</StyledButton>;
+    const { max } = this.state.signature;
+    return (
+      <StyledButton disabled={max === 0} onClick={() => this.mintTokens()}>
+        Mint {max} tokens
+      </StyledButton>
+    );
   }
 }

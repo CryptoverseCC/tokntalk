@@ -638,9 +638,8 @@ export const getHttpClaimDetails = async ({ id }) => {
   );
 };
 
-export const mintTokens = async () => {
+export const mintTokens = async (signature) => {
   const { from } = await getWeb3State();
-  const signature = await getTransactionSignature(from);
   await mintTokensInContract(signature, from);
 };
 
@@ -650,6 +649,13 @@ const getTransactionSignature = async (from) => {
   );
 };
 
+export const getAvailableTokensWithSignature = async () => {
+  const { from } = await getWeb3State();
+  const { max, v, r, s } = await getTransactionSignature(from);
+  const mintedAmount = await getMintedTokens(from);
+  return { max: max - mintedAmount, v, r, s };
+};
+
 const mintTokensInContract = async ({ max, v, r, s }, from) => {
   const contract = await getMintTokensContract();
   await contract.methods.mintUsingSignature(max, v, r, s).send({ from });
@@ -657,8 +663,13 @@ const mintTokensInContract = async ({ max, v, r, s }, from) => {
 
 const getMintTokensContract = async () => {
   const web3 = await getWeb3();
-  const contractAddress = '0x2612bb62eaa42991d12be0892c27040d4143e037';
+  const contractAddress = '0x6f3b2f2100875409c5c011bc3bb97ea6e0f671db';
   const contract = new web3.eth.Contract(mintTokensContractAbi, contractAddress);
   contract.setProvider(web3.currentProvider);
   return contract;
+};
+
+const getMintedTokens = async (from) => {
+  const contract = await getMintTokensContract();
+  return await contract.methods.mintedBy(from).call();
 };
