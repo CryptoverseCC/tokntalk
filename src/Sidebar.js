@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 import { A } from './Link';
@@ -21,19 +21,19 @@ const SidebarContext = React.createContext();
 export class SidebarProvider extends Component {
   state = { open: !this.props.overlay && !mobileOrTablet() };
 
-  toogle = () => this.setState(({ open }) => ({ open: !open }));
+  toggle = () => this.setState(({ open }) => ({ open: !open }));
 
   render() {
     const { children, overlay } = this.props;
     const { open } = this.state;
 
-    return <SidebarContext.Provider value={{ open, overlay, toogle: this.toogle }}>{children}</SidebarContext.Provider>;
+    return <SidebarContext.Provider value={{ open, overlay, toggle: this.toggle }}>{children}</SidebarContext.Provider>;
   }
 }
 
 export const SidebarToggler = () => (
   <SidebarContext.Consumer>
-    {({ toogle }) => <img src={menuIcon} onClick={toogle} style={{ width: '25px', marginRight: '15px' }} />}
+    {({ toggle, open }) => <Burger onClick={toggle} open={open} style={{ marginRight: '15px' }} />}
   </SidebarContext.Consumer>
 );
 
@@ -76,10 +76,10 @@ export const SidebarLeft = () => (
 
 export const SidebarRight = ({ children }) => (
   <SidebarContext.Consumer>
-    {({ open, overlay }) => (
+    {({ open, overlay, toggle }) => (
       <SidebarRightContainer open={open} overlay={overlay}>
         <div className="inner">{children}</div>
-        {overlay && open && <div className="overlay" />}
+        {overlay && open && <div className="overlay" onClick={toggle} />}
       </SidebarRightContainer>
     )}
   </SidebarContext.Consumer>
@@ -189,4 +189,72 @@ const SidebarLeftContainer = styled.div`
     position: fixed;
     width: 100vw;
   }
+`;
+
+const BurgerBarWidth = '25px';
+const BurgerBarHeight = '2.5px';
+const BurgerBarSpacing = '6.75px';
+
+const activeBurgerCss = css`
+  .hamburger-menu {
+    background: rgba(0, 0, 0, 0);
+
+    &:after {
+      top: 0;
+      transform: rotate(45deg);
+      transition: top 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms 300ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    &:before {
+      bottom: 0;
+      transform: rotate(-45deg);
+      transition: bottom 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms 300ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+`;
+
+const Burger = styled((props) => (
+  <div {...props}>
+    <div className="hamburger-menu" />
+  </div>
+))`
+  & {
+    width: ${BurgerBarWidth};
+    height: calc(${BurgerBarHeight} + ${BurgerBarSpacing} * 2);
+    cursor: pointer;
+  }
+
+  .hamburger-menu,
+  .hamburger-menu:after,
+  .hamburger-menu:before {
+    width: ${BurgerBarWidth};
+    height: ${BurgerBarHeight};
+  }
+
+  .hamburger-menu {
+    position: relative;
+    transform: translateY(${BurgerBarSpacing});
+    background: rgba(0, 0, 0, 1);
+    transition: all 0ms 300ms;
+  }
+
+  .hamburger-menu:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: ${BurgerBarSpacing};
+    background: rgba(0, 0, 0, 1);
+    transition: bottom 300ms 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .hamburger-menu:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: ${BurgerBarSpacing};
+    background: rgba(0, 0, 0, 1);
+    transition: top 300ms 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  ${({ open }) => open && activeBurgerCss};
 `;
