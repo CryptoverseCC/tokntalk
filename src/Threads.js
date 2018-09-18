@@ -72,7 +72,7 @@ class Threads extends Component {
             <div className="container" style={{ zIndex: '1' }}>
               <div className="columns">
                 <div className="column is-12 has-text-centered">
-                  <h2 style={{ maxWidth: '1000px' }}>Receive Ethereum* for relevant answers.</h2>
+                  <h2 style={{ maxWidth: '1000px' }}>Receive Ether* for relevant answers.</h2>
                   <p className="subtitle-communities" style={{ maxWidth: '760px', margin: '0 auto' }}>
                     Share your knowledge or post a meme. Better the thread, higher the reward.
                   </p>
@@ -105,7 +105,7 @@ class Threads extends Component {
                 </div>
                 <div className="column is-half">
                   <h4 className="landing-steps-counter">3.</h4>
-                  <h3 className="landing-steps">Receive Ethereum</h3>
+                  <h3 className="landing-steps">Receive Ether or a particular token</h3>
                   <p className="landing-paragraph">
                     As soon as the sponsored place is bought, <br />
                     everyone receives a share!
