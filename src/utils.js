@@ -155,7 +155,7 @@ class ScrollToTopCmp extends Component {
 
 export const ScrollTop = withRouter(ScrollToTopCmp);
 
-/* eslint:disable */
+/* eslint-disable */
 export const mobileOrTablet = () => {
   var check = false;
   (function(a) {
