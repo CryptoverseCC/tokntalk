@@ -91,6 +91,9 @@ export const UnreadedCountContainer = styled.div`
   align-self: center;
   border-radius: 20px;
   height: 25px;
+  float: right;
+  max-width: 60px;
+  margin-top: 3px;
   font-size: 12px;
   text-align: center;
   font-weight: 600;

@@ -55,7 +55,7 @@ export const SidebarLeft = () => (
         <IfActiveEntity>
           {(entityId) => (
             <React.Fragment>
-              <H4 style={{ padding: '5px 10px' }}>Your Clubs</H4>
+              <H4 style={{ padding: '30px 10px' }}>Your Clubs</H4>
               <ClubContainer>
                 <EntityClubs id={entityId}>
                   {(clubs) => clubs.map((club) => <Club key={club.address} token={club} />)}
@@ -152,13 +152,18 @@ const SidebarFooter = styled(({ className }) => (
 
 const LinkItem = styled(({ children, icon, ...props }) => (
   <NavLink {...props} exact activeClassName="selected">
-    <span style={{ marginRight: '15px' }}>{icon}</span>
+    <IconContainer>{icon}</IconContainer>
     {children}
   </NavLink>
 ))`
   display: block;
-  padding: 5px 10px;
-
+  padding: 8px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  color: #1b2437;
+  border-radius: 6px;
   &.selected {
     background: #f5f8fd;
   }
@@ -170,19 +175,31 @@ const LinkItem = styled(({ children, icon, ...props }) => (
   & img,
   & svg {
     width: 22px;
-    height: 22px;
+    height: auto;
+    max-height: 22px;
   }
+`;
+
+const IconContainer = styled.div`
+  margin-right: 10px;
+  width: 34px;
+  height: 34px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SidebarLeftContainer = styled.div`
   display: ${({ open }) => (open ? 'flex' : 'none')};
   position: ${({ overlay }) => (overlay ? 'fixed' : 'sticky')};
-  padding: 15px 0;
+  padding: 30px 10px;
   flex-direction: column;
   background-color: #edf1f8;
   top: 60px;
   z-index: 999;
-  min-width: 200px;
+  min-width: 240px;
   height: calc(100vh - 60px);
 
   @media (max-width: 770px) {
@@ -191,9 +208,9 @@ const SidebarLeftContainer = styled.div`
   }
 `;
 
-const BurgerBarWidth = '25px';
-const BurgerBarHeight = '2.5px';
-const BurgerBarSpacing = '6.75px';
+const BurgerBarWidth = '20px';
+const BurgerBarHeight = '2px';
+const BurgerBarSpacing = '6px';
 
 const activeBurgerCss = css`
   .hamburger-menu {
