@@ -76,12 +76,64 @@ class Threads extends Component {
                     Receive Ether
                     <span style={{ color: '#848da5' }}>*</span> for relevant answers.
                   </h2>
+                  <p style={{ color: '#848da5', marginBottom: '0.5rem', marginTop: '1rem' }} className="landing-paste">
+                    *or any ERC20 token
+                  </p>
                   <p className="subtitle-communities" style={{ maxWidth: '760px', margin: '0 auto' }}>
                     Share your knowledge or post a meme. Better the thread, higher the reward.
                   </p>
-                  <p style={{ color: '#848da5', marginBottom: '0.5rem', marginTop: '2rem' }} className="landing-paste">
-                    *or any ERC20 token
+                  <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }} className="landing-paste">
+                    Provide your e-mail address and help us test it!
                   </p>
+                  <form
+                    action="https://cryptoverse.us17.list-manage.com/subscribe/post?u=9cf96f96e2410ddcc7ccd1577&amp;id=633a1dbfd2"
+                    method="post"
+                    id="mc-embedded-subscribe-form"
+                    name="mc-embedded-subscribe-form"
+                    class="validate"
+                    target="_blank"
+                    novalidate
+                    className="control"
+                    style={{ margin: '0 auto' }}
+                  >
+                    <input
+                      className="input is-large"
+                      type="email"
+                      placeholder="Your email address"
+                      id="mce-EMAIL"
+                      name="EMAIL"
+                    />
+                    <input
+                      type="submit"
+                      style={{ height: '80%', outline: 'none' }}
+                      value="Join beta"
+                      name="subscribe"
+                      id="mc-embedded-subscribe"
+                      class="landing-button button-inside-input"
+                    />
+                  </form>
+                  <div className="column is-twelve">
+                    <a
+                      href="https://twitter.com/tokntalkclub"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="landing-footer-intouch"
+                    >
+                      <img src={twitterColor} />
+                      <span>Twitter</span>
+                    </a>
+                    <Link
+                      to="/thread/claim:0x3336c309406810ec4c4b8906d79e79a8cb7102e9a5384cd913094c65df41dc636d639bfac03881780e4289b5828c310ac9e49385d0a89d5b726c535cad85662b1c?backUrl=%2Fclubs%2F%25EF%25BC%2585"
+                      className="landing-footer-intouch"
+                    >
+                      <img src={tokntalkColor} />
+                      <span>Tok n talk</span>
+                    </Link>
+                    <a href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA" className="landing-footer-intouch">
+                      <img src={telegramColor} />
+                      <span>Telegram</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -89,6 +141,7 @@ class Threads extends Component {
 
           <section className="section has-text-centered" style={{ marginTop: '0', borderBottom: '0' }}>
             <div className="container">
+              <h3 style={{ textAlign: 'center' }}>How does it work?</h3>
               <div className="columns is-multiline">
                 <div className="column is-half">
                   <h4 className="landing-steps-counter">1.</h4>
@@ -136,6 +189,33 @@ class Threads extends Component {
                 <p className="subtitle">We want to test this feature and we need your feedback.</p>
                 <div className="columns">
                   <div className="column is-twelve">
+                    <form
+                      action="https://cryptoverse.us17.list-manage.com/subscribe/post?u=9cf96f96e2410ddcc7ccd1577&amp;id=633a1dbfd2"
+                      method="post"
+                      id="mc-embedded-subscribe-form"
+                      name="mc-embedded-subscribe-form"
+                      class="validate"
+                      target="_blank"
+                      novalidate
+                      className="control"
+                      style={{ margin: '0 auto' }}
+                    >
+                      <input
+                        className="input is-large"
+                        type="email"
+                        placeholder="Your email address"
+                        id="mce-EMAIL"
+                        name="EMAIL"
+                      />
+                      <input
+                        type="submit"
+                        style={{ height: '80%', outline: 'none' }}
+                        value="Join beta"
+                        name="subscribe"
+                        id="mc-embedded-subscribe"
+                        class="landing-button button-inside-input"
+                      />
+                    </form>
                     <a
                       href="https://twitter.com/tokntalkclub"
                       rel="noopener noreferrer"
