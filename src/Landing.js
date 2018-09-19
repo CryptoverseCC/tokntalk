@@ -92,7 +92,7 @@ class Landing extends Component {
 
           <section
             className="section landing-hero landing-hero-communities"
-            style={{ borderBottom: 'none' }}
+            style={{ borderBottom: 'none', position: 'relative' }}
             id="first-section"
           >
             <div className="container" style={{ zIndex: '1' }}>
@@ -136,11 +136,9 @@ class Landing extends Component {
                 </div>
               </div>
             </div>
-            {/*
             <div className="columns">
               <div id="landing-hero-background-main" className="column is-5" />
             </div>
-            */}
           </section>
 
           <section className="section has-text-centered">
