@@ -223,8 +223,8 @@ const clubs = [
     decimals: 18,
     logo: airswap,
     coverImage: airswapCover,
-    primaryColor: '#204edc',
-    secondaryColor: '#ffffff',
+    primaryColor: '#ffffff',
+    secondaryColor: '#204edc',
     shadowColor: 'rgba(32,78,220,0.2)',
     externalLinks: [
       { name: 'Project page', url: 'https://www.airswap.io/' },
