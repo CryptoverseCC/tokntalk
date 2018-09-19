@@ -83,9 +83,19 @@ class Threads extends Component {
                     Share your knowledge or post a meme. Better the thread, higher the reward.
                   </p>
                   <p style={{ fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' }} className="landing-paste">
-                    Your e-mail
+                    Provide your e-mail address and help us test it!
                   </p>
-                  <div className="control" style={{ margin: '0 auto' }}>
+                  <form
+                    action="https://cryptoverse.us17.list-manage.com/subscribe/post?u=9cf96f96e2410ddcc7ccd1577&amp;id=633a1dbfd2"
+                    method="post"
+                    id="mc-embedded-subscribe-form"
+                    name="mc-embedded-subscribe-form"
+                    class="validate"
+                    target="_blank"
+                    novalidate
+                    className="control"
+                    style={{ margin: '0 auto' }}
+                  >
                     <input
                       className="input is-large"
                       type="email"
@@ -93,18 +103,15 @@ class Threads extends Component {
                       id="mce-EMAIL"
                       name="EMAIL"
                     />
-                    <a
-                      className="landing-button button-inside-input"
-                      action="https://userfeeds.us17.list-manage.com/subscribe/post?u=9cf96f96e2410ddcc7ccd1577&amp;id=0317d71772"
-                      method="post"
-                      id="mc-embedded-subscribe-form"
-                      name="mc-embedded-subscribe-form"
-                      target="_blank"
-                      novalidate="novalidate"
-                    >
-                      Join beta
-                    </a>
-                  </div>
+                    <input
+                      type="submit"
+                      style={{ height: '80%', outline: 'none' }}
+                      value="Join beta"
+                      name="subscribe"
+                      id="mc-embedded-subscribe"
+                      class="landing-button button-inside-input"
+                    />
+                  </form>
                   <div className="column is-twelve">
                     <a
                       href="https://twitter.com/tokntalkclub"
@@ -182,6 +189,33 @@ class Threads extends Component {
                 <p className="subtitle">We want to test this feature and we need your feedback.</p>
                 <div className="columns">
                   <div className="column is-twelve">
+                    <form
+                      action="https://cryptoverse.us17.list-manage.com/subscribe/post?u=9cf96f96e2410ddcc7ccd1577&amp;id=633a1dbfd2"
+                      method="post"
+                      id="mc-embedded-subscribe-form"
+                      name="mc-embedded-subscribe-form"
+                      class="validate"
+                      target="_blank"
+                      novalidate
+                      className="control"
+                      style={{ margin: '0 auto' }}
+                    >
+                      <input
+                        className="input is-large"
+                        type="email"
+                        placeholder="Your email address"
+                        id="mce-EMAIL"
+                        name="EMAIL"
+                      />
+                      <input
+                        type="submit"
+                        style={{ height: '80%', outline: 'none' }}
+                        value="Join beta"
+                        name="subscribe"
+                        id="mc-embedded-subscribe"
+                        class="landing-button button-inside-input"
+                      />
+                    </form>
                     <a
                       href="https://twitter.com/tokntalkclub"
                       rel="noopener noreferrer"
