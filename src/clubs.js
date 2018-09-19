@@ -10,6 +10,9 @@ import zerouniverseCover from './img/tokens/0xuniverse.jpg';
 import axie from './img/tokens/axie-icon.png';
 import axieCover from './img/tokens/axie.png';
 
+import airswap from './img/tokens/airswap-icon.png';
+import airswapCover from './img/tokens/airswap.png';
+
 import bbsc from './img/tokens/bbsc-icon.png';
 import bbscCover from './img/tokens/bbsc.png';
 
@@ -213,6 +216,21 @@ const clubs = [
       { name: 'Marketplace', url: 'https://axieinfinity.com/marketplace' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/axie' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/AxieInfinity/' },
+    ],
+  },
+  {
+    ...mapping.AIRSWAP,
+    decimals: 18,
+    logo: airswap,
+    coverImage: airswapCover,
+    primaryColor: '#204edc',
+    secondaryColor: '#ffffff',
+    shadowColor: 'rgba(32,78,220,0.2)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.airswap.io/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/AirSwap/' },
+      { name: 'Telegram', url: 'https://t.me/airswap' },
+      { name: 'Twitter', url: 'https://twitter.com/airswap' },
     ],
   },
   {
