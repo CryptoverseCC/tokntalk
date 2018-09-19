@@ -131,6 +131,7 @@ const ClubContainer = styled.div`
 const Club = ({ token }) => (
   <LinkItem
     to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}
+    primaryColor={token.primaryColor}
     icon={<TokenImage token={token} />}
   >
     {token.name}
@@ -153,9 +154,9 @@ const SidebarFooter = styled(({ className }) => (
   padding: 10px;
 `;
 
-const LinkItem = styled(({ children, icon, ...props }) => (
+const LinkItem = styled(({ children, icon, primaryColor, ...props }) => (
   <NavLink {...props} exact activeClassName="selected">
-    <IconContainer>{icon}</IconContainer>
+    <IconContainer primaryColor={primaryColor}>{icon}</IconContainer>
     {children}
   </NavLink>
 ))`
@@ -192,7 +193,7 @@ const IconContainer = styled.div`
   margin-right: 10px;
   width: 34px;
   height: 34px;
-  background-color: white;
+  background-color: ${({ primaryColor }) => primaryColor || 'white'};
   border-radius: 50%;
   display: inline-flex;
   justify-content: center;
