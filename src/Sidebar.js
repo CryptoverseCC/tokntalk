@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
 import { A } from './Link';
 import Intercom from './Intercom';
@@ -17,8 +17,14 @@ import { ExportWalletButton } from './ExportWalletButton';
 
 const SidebarContext = React.createContext();
 
-export class SidebarProvider extends Component {
+class SidebarProviderCmp extends Component {
   state = { open: !this.props.overlay && !mobileOrTablet() };
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.location.pathname !== this.props.location.pathname && this.props.overlay && mobileOrTablet()) {
+      this.setState({ open: false });
+    }
+  }
 
   toggle = () => this.setState(({ open }) => ({ open: !open }));
 
@@ -29,6 +35,8 @@ export class SidebarProvider extends Component {
     return <SidebarContext.Provider value={{ open, overlay, toggle: this.toggle }}>{children}</SidebarContext.Provider>;
   }
 }
+
+export const SidebarProvider = withRouter(SidebarProviderCmp);
 
 export const SidebarToggler = () => (
   <SidebarContext.Consumer>
@@ -153,6 +161,7 @@ const LinkItem = styled(({ children, icon, ...props }) => (
 ))`
   display: block;
   padding: 8px 15px;
+  flex-shrink: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -172,6 +181,10 @@ const LinkItem = styled(({ children, icon, ...props }) => (
     width: 22px;
     height: auto;
     max-height: 22px;
+  }
+
+  @media (max-width: 770px) {
+    max-width: unset;
   }
 `;
 
