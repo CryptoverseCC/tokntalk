@@ -6,11 +6,11 @@ import { A } from './Link';
 import Intercom from './Intercom';
 import { H4 } from './Components';
 import { IfActiveEntity, EntityClubs } from './Entity';
-import { DiscoverIcon } from './Icons';
 import { TokenImage } from './clubs';
 import { UnreadedCount } from './UnreadedMessages';
 import { niceScroll } from './cssUtils';
-import menuIcon from './img/menu.png';
+import feedIcon from './img/feeds.svg';
+import discoverIcon from './img/discover.svg';
 import { mobileOrTablet } from './utils';
 import AppContext from './Context';
 import { ExportWalletButton } from './ExportWalletButton';
@@ -53,16 +53,16 @@ export const SidebarLeft = () => (
   <SidebarContext.Consumer>
     {({ open, overlay }) => (
       <SidebarLeftContainer open={open} overlay={overlay}>
-        <LinkItem to="/" icon={<img src={menuIcon} />}>
+        <LinkItem to="/" icon={<img style={{ width: '16px' }} src={feedIcon} />}>
           Feed
         </LinkItem>
-        <LinkItem to="/clubs" icon={<DiscoverIcon />}>
+        <LinkItem to="/clubs" icon={<img style={{ width: '16px' }} src={discoverIcon} />}>
           Clubs
         </LinkItem>
         <IfActiveEntity>
           {(entityId) => (
             <React.Fragment>
-              <H4 style={{ padding: '30px 10px' }}>Your Clubs</H4>
+              <H4 style={{ padding: '30px 10px 10px 15px' }}>Your Clubs</H4>
               <ClubContainer>
                 <EntityClubs id={entityId}>
                   {(clubs) => clubs.map((club) => <Club key={club.address} token={club} />)}
@@ -141,15 +141,29 @@ const Club = ({ token }) => (
 
 const SidebarFooter = styled(({ className }) => (
   <div className={className}>
-    <div>
-      <A href="https://t.me/userfeeds" style={{ marginRight: '8px' }}>
-        Telegram
-      </A>
-      <A href="https://twitter.com/tokntalkclub">Twitter</A>
+    <div style={{ width: '75%', display: 'inline-block' }}>
+      <div style={{ display: 'block' }}>
+        <A href="https://t.me/userfeeds" style={{ marginRight: '8px', fontSize: '0.8rem' }}>
+          About
+        </A>
+        <A href="https://t.me/userfeeds" style={{ fontSize: '0.8rem' }}>
+          Create your club
+        </A>
+      </div>
+      <div>
+        <A href="https://t.me/userfeeds" style={{ marginRight: '8px', fontSize: '0.8rem' }}>
+          Telegram
+        </A>
+        <A href="https://twitter.com/tokntalkclub" style={{ fontSize: '0.8rem' }}>
+          Twitter
+        </A>
+      </div>
     </div>
     <Intercom />
   </div>
 ))`
+  padding-top: 15px;
+  border-top: 1px solid #dae1ec;
   margin-top: auto;
   padding: 10px;
 `;
@@ -162,11 +176,13 @@ const LinkItem = styled(({ children, icon, primaryColor, ...props }) => (
 ))`
   display: block;
   padding: 8px 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
   flex-shrink: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
+  max-width: 240px;
   color: #1b2437;
   border-radius: 6px;
   &.selected {
@@ -181,7 +197,6 @@ const LinkItem = styled(({ children, icon, primaryColor, ...props }) => (
   & svg {
     width: 22px;
     height: auto;
-    max-height: 22px;
   }
 
   @media (max-width: 770px) {
@@ -190,9 +205,9 @@ const LinkItem = styled(({ children, icon, primaryColor, ...props }) => (
 `;
 
 const IconContainer = styled.div`
-  margin-right: 10px;
-  width: 34px;
-  height: 34px;
+  margin-right: 15px;
+  width: 33px;
+  height: 33px;
   background-color: ${({ primaryColor }) => primaryColor || 'white'};
   border-radius: 50%;
   display: inline-flex;
@@ -203,7 +218,7 @@ const IconContainer = styled.div`
 const SidebarLeftContainer = styled.div`
   display: ${({ open }) => (open ? 'flex' : 'none')};
   position: ${({ overlay }) => (overlay ? 'fixed' : 'sticky')};
-  padding: 30px 10px;
+  padding: 30px 10px 10px 15px;
   flex-direction: column;
   background-color: #edf1f8;
   top: 60px;

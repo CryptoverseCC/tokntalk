@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="12px" viewBox="0 0 14 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="notifications" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-30.000000, -155.000000)">
+        <g id="Group-24" transform="translate(30.000000, 151.000000)" fill="#1B2437" fill-rule="nonzero">
+            <g id="Group-4" transform="translate(0.000000, 4.000000)">
+                <path d="M13.125,3.5 L0.875,3.5 C0.392,3.5 0,3.108 0,2.625 L0,0.875 C0,0.392 0.392,0 0.875,0 L13.125,0 C13.608,0 14,0.392 14,0.875 L14,2.625 C14,3.108 13.608,3.5 13.125,3.5 Z" id="Shape"></path>
+                <path d="M13.125,7.75 L0.875,7.75 C0.392,7.75 0,7.358 0,6.875 C0,6.392 0.392,6 0.875,6 L13.125,6 C13.608,6 14,6.392 14,6.875 C14,7.358 13.608,7.75 13.125,7.75 Z" id="Shape"></path>
+                <path d="M13.125,11.75 L0.875,11.75 C0.392,11.75 0,11.358 0,10.875 C0,10.392 0.392,10 0.875,10 L13.125,10 C13.608,10 14,10.392 14,10.875 C14,11.358 13.608,11.75 13.125,11.75 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

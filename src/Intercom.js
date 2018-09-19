@@ -24,7 +24,8 @@ const IntercomIcon = styled((props) => (
 
 const IntercomIconContainer = styled.div`
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
+  float: right;
   justify-content: center;
   align-items: center;
   background: rgb(0, 113, 178);
@@ -40,6 +41,8 @@ const IntercomIconContainer = styled.div`
 
   @media (max-width: 770px) {
     width: 35px;
+    margin: 0 auto;
+    float: none;
     height: 35px;
   }
 `;

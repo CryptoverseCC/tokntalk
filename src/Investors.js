@@ -12,15 +12,21 @@ const IntercomIcon = styled.div`
 
 const IntercomIconContainer = styled.div`
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #264dd9;
+  display: inline-block;
+  float: right;
+  margin-top: -13px;
+  background: white;
   border-radius: 8px
-  width: 100%;
+  width: 200px;
   height: 50px;
   transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
   box-shadow: 0 1.2rem 3rem -0.8rem rgba(132, 128, 173, 0.2);
+
+  @media (max-width: 770px) {
+    margin: 0 auto;
+    display: block;
+    float: none;
+  }
 
   :hover {
     box-shadow: 0 1.2rem 4rem -0.8rem rgba(132, 128, 173, 0.25);
@@ -74,7 +80,7 @@ const InvestorsContainer = styled.div`
   background-color: #ecf1f9;
   position: relative;
   padding: 30px;
-  max-width: 300px;
+  max-height: 80px;
   margin-left: auto;
   margin-right: auto;
   border-radius: 12px;
@@ -82,16 +88,29 @@ const InvestorsContainer = styled.div`
     width: 96%;
     margin-left: 2%;
     max-width: 96%;
+    max-height: 120px;
+  }
+`;
+
+const InvestorsText = styled.h4`
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  display: inline-block;
+  @media (max-width: 770px) {
+    display: block;
+    text-align: center;
+    display: block;
   }
 `;
 
 const DefaultIntercom = () => (
   <Intercom>
     <InvestorsContainer>
-      <H4 style={{ marginBottom: '15px' }}>We're looking for investors.</H4>
+      <InvestorsText>We're looking for investors.</InvestorsText>
       <IntercomIconContainer>
         <IntercomIcon>
-          <p style={{ textAlign: 'center', paddingTop: '14px', fontWeight: '600', color: 'white' }}>Contact us</p>
+          <p style={{ textAlign: 'center', paddingTop: '14px', fontWeight: '600', color: '#2547e1' }}>Contact us</p>
         </IntercomIcon>
       </IntercomIconContainer>
     </InvestorsContainer>

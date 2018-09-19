@@ -60,10 +60,8 @@ export default class IndexPage extends Component {
     return (
       <React.Fragment>
         <div className="columns ordered-mobile">
-          <div className="column is-3">
+          <div className="column is-7 fl-1 is-offset-1">
             <Investors />
-          </div>
-          <div className="column is-6 fl-1">
             <Hero style={{ marginBottom: '30px' }} />
             <WithActiveEntity>
               {(activeEntity) => (

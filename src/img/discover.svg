@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
     <title>compass-05</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="MainDefault" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-220.000000, -410.000000)">
-        <g id="compass-05" transform="translate(220.000000, 410.000000)" fill="#264DD9" fill-rule="nonzero">
-            <path d="M12,0 C5.4,0 0,5.4 0,12 C0,18.6 5.4,24 12,24 C18.6,24 24,18.6 24,12 C24,5.4 18.6,0 12,0 Z M12,21 C7.05,21 3,16.95 3,12 C3,7.05 7.05,3 12,3 C16.95,3 21,7.05 21,12 C21,16.95 16.95,21 12,21 Z" id="Shape"></path>
-            <path d="M15.3,7.2 L10.8,9.3 C10.2,9.75 9.75,10.2 9.45,10.8 L7.35,15.3 C6.9,16.2 7.8,17.1 8.7,16.65 L13.2,14.55 C13.8,14.25 14.4,13.8 14.55,13.2 L16.65,8.7 C17.1,7.8 16.2,6.9 15.3,7.2 Z" id="Shape"></path>
+    <g id="notifications" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-30.000000, -193.000000)">
+        <g id="Group-7-Copy-2" transform="translate(30.000000, 191.000000)" fill="#111111" fill-rule="nonzero">
+            <g id="compass-05" transform="translate(0.000000, 2.000000)">
+                <path d="M7,0 C3.15,0 0,3.15 0,7 C0,10.85 3.15,14 7,14 C10.85,14 14,10.85 14,7 C14,3.15 10.85,0 7,0 Z M7,12.25 C4.1125,12.25 1.75,9.8875 1.75,7 C1.75,4.1125 4.1125,1.75 7,1.75 C9.8875,1.75 12.25,4.1125 12.25,7 C12.25,9.8875 9.8875,12.25 7,12.25 Z" id="Shape"></path>
+                <path d="M8.72967076,4.53055797 L6.37102881,5.62106603 C6.05654322,5.85474633 5.82067902,6.08842663 5.66343623,6.40000036 L4.56273665,8.73680334 C4.32687246,9.20416394 4.79860085,9.67152453 5.27032924,9.43784424 L7.62897119,8.34733618 C7.94345678,8.19154931 8.25794237,7.95786901 8.33656377,7.64629528 L9.43726335,5.3094923 C9.67312754,4.8421317 9.20139915,4.37477111 8.72967076,4.53055797 Z" id="Shape"></path>
+            </g>
         </g>
     </g>
 </svg>
