@@ -11,12 +11,14 @@ export default class InfiniteScroll extends React.Component {
     this.scrollHandler = throttle(this.checkWindowScroll, this.props.throttle);
     this.resizeHandler = throttle(this.checkWindowScroll, this.props.throttle);
 
-    window.addEventListener('scroll', this.scrollHandler);
+    const root = document.querySelector('#root');
+    root.addEventListener('scroll', this.scrollHandler);
     window.addEventListener('resize', this.resizeHandler);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.scrollHandler);
+    const root = document.querySelector('#root');
+    root.removeEventListener('scroll', this.scrollHandler);
     window.removeEventListener('resize', this.resizeHandler);
   }
 
