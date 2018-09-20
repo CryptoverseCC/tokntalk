@@ -14,6 +14,7 @@ import { Storage, ScrollTop, rewriteCmp, validateParams } from './utils';
 import { runInContext, Sentry } from './Sentry';
 
 import registerServiceWorker from './registerServiceWorker';
+import { ChangellyFastBuy } from './Changelly';
 
 const runMigrations = (storage) => {
   let version = parseInt(storage.getItem('version'), 10);
@@ -80,6 +81,7 @@ const TokNTalk = withRouter(
             <Route exact path="/threads" component={Threads} />
             <Route exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
+            <Route exact path="/widgets" component={Widgets} />
 
             <Route exact path="/" component={App.Index} />
             <Route path="/clubs" component={App.Discover} />
@@ -93,6 +95,14 @@ const TokNTalk = withRouter(
     }
   },
 );
+
+const Widgets = () => {
+  return (
+    <div>
+      <ChangellyFastBuy />
+    </div>
+  );
+};
 
 const startApp = () => {
   ReactDOM.render(
