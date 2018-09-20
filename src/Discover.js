@@ -17,16 +17,14 @@ import { Storage, validateParams, rewriteCmp, enhanceCustomClubProp } from './ut
 import clubs, { TokenImage, findClub } from './clubs';
 import { ConnectedClubForm, CommentForm } from './CommentForm';
 import { hasValidContext, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
-import { SwitcherIcon, socialIcons, ExclamationMark } from './Icons';
+import { socialIcons } from './Icons';
 import { FlatContainer, H1, H2, H3, H4, SocialUsername } from './Components';
 import {
   LinkedEntityAvatar,
   IfActiveEntity,
-  IfActiveEntityIs,
   IsActiveEntityFromFamily,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
-  IfActiveEntityHasToken,
   DoesActiveEntityHasToken,
 } from './Entity';
 import exportIcon from './img/export.svg';
@@ -37,34 +35,9 @@ import ProfileBox from './ProfileBox';
 import { TokenTile, SmallTokenTile } from './TokenTile';
 import { Intercom } from './Intercom';
 import { StyledButton } from './SendTokens';
-
-const WarningContainerColored = styled.div`
-  background: ${({ primaryColor }) => primaryColor};
-  color: ${({ secondaryColor }) => secondaryColor};
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  border-radius: 12px;
-  padding: 30px;
-  @media (max-width: 770px) {
-    width: 96%;
-    margin-left: 2%;
-  }
-`;
+import StatusBox from './StatusBox';
 
 const WelcomeMessage = styled.div`
-  border-radius: 12px;
-  padding: 30px;
-  background-color: #ecf1f9;
-  display: flex;
-  align-items: center;
-  @media (max-width: 770px) {
-    width: 96%;
-    margin-left: 2%;
-  }
-`;
-
-const WiderColumns = styled.div`
   border-radius: 12px;
   padding: 30px;
   background-color: #ecf1f9;
@@ -362,18 +335,15 @@ const ByToken = ({ token }) => (
       </div>
       <div className="column is-6 fl-1">
         {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
-        <IfActiveEntityHasToken token={token} other={<NoTokensWarning token={token} />}>
-          {token.is721 ? (
-            <IfActiveEntityIs
-              asset={`${token.network}:${token.address}`}
-              other={<ActiveEntityIsNotFromFamily token={token} />}
-            >
-              <ClubForm token={token} />
-            </IfActiveEntityIs>
-          ) : (
-            <ClubForm token={token} />
-          )}
-        </IfActiveEntityHasToken>
+        <StatusBox
+          check={[
+            StatusBox.Web3Locked,
+            StatusBox.HasToken(token),
+            ...(token.is721 ? [StatusBox.IsFromFamily(token)] : []),
+          ]}
+        >
+          <ClubForm token={token} />
+        </StatusBox>
         <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>
           {(isActiveEntityFromFamily) => (
             <DoesActiveEntityHasToken token={token}>
@@ -659,40 +629,6 @@ const CustomClubInfo = styled((props) => (
     </div>
   </WelcomeMessage>
 ))``;
-
-const NoTokensWarning = ({ token }) => (
-  <WarningContainerColored
-    primaryColor={token.primaryColor}
-    secondaryColor={token.secondaryColor}
-    className="is-flex"
-    style={{ alignItems: 'center' }}
-  >
-    <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
-    <div>
-      <p style={{ fontSize: '1.5rem', color: token.secondaryColor, lineHeight: '1.2' }}>
-        Acquire {token.name} to participate!
-      </p>
-      <p style={{ fontSize: '1rem', color: token.secondaryColor, opacity: '0.6' }}>
-        Then you'll be able to join the conversation.
-      </p>
-    </div>
-  </WarningContainerColored>
-);
-
-const ActiveEntityIsNotFromFamily = ({ token }) => (
-  <WarningContainerColored
-    primaryColor={token.primaryColor}
-    secondaryColor={token.secondaryColor}
-    className="is-flex"
-    style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
-  >
-    <SwitcherIcon style={{ marginRight: '30px', fill: token.secondaryColor }} />
-    <div>
-      <p style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>Switch your avatar!</p>
-      <p style={{ fontSize: '14px' }}>Change your character to {token.name} in the upper right corner</p>
-    </div>
-  </WarningContainerColored>
-);
 
 export class FeedForToken extends Component {
   storage = Storage();

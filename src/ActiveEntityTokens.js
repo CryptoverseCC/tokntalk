@@ -14,7 +14,6 @@ import cipher from './img/wallets/cipher.svg';
 import metamask from './img/wallets/metamask.svg';
 import tokenpocket from './img/wallets/tokenpocket.png';
 import unlockBackground from './img/unlock_bg.png';
-import mouse from './img/mouse_click.png';
 const { REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE } = process.env;
 
 const ActiveEntityTokens = () => (
@@ -130,14 +129,6 @@ const NoMetamask = () => (
       </div>
     </div>
   </YourCommunitiesContainer>
-);
-
-const NoActiveEntity = () => (
-  <div>
-    <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Unlock your wallet</p>
-    <span>To connect with token owners alike</span>
-    <img style={{ width: '208px', height: 'auto', marginTop: '20px', textAlign: 'center' }} alt="" src={mouse} />
-  </div>
 );
 
 const DiscoverMore = ({ children, props }) => (

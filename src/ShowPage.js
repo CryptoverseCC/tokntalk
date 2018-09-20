@@ -29,6 +29,7 @@ import { niceScroll } from './cssUtils';
 import SendTokens from './SendTokens';
 import ProfileBox from './ProfileBox';
 import { Token } from './ActiveEntityTokens';
+import StatusBox from './StatusBox';
 
 const ScrollableContainer = styled.div`
   ${niceScroll};
@@ -185,39 +186,44 @@ export default class ShowPage extends Component {
     ) : null;
 
   FeedContainer = ({ entity }) => (
-    <div>
-      <IfActiveEntity>
-        {(token) => (
-          <div className="box cp-box" style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px' }}>
-            <article className="media">
-              <div className="media-left">
-                <LinkedActiveEntityAvatar size="large" />
-              </div>
-              <div className="media-content">
-                <div className="content">
-                  <Link
-                    to={`/${token}`}
-                    style={{
-                      fontFamily: 'AvenirNext',
-                      fontSize: '1rem',
-                      fontWeight: '700',
-                    }}
-                  >
-                    <ActiveEntityName />
-                  </Link>
-                  <IfIsActiveEntity
-                    id={entity.id.toString()}
-                    then={<ConnectedCommentForm Form={CommentForm} />}
-                    other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
-                  />
+    <React.Fragment>
+      <StatusBox check={[StatusBox.Web3Locked]} style={{ marginBottom: '1.5rem' }}>
+        <IfActiveEntity>
+          {(token) => (
+            <div
+              className="box cp-box"
+              style={{ boxShadow: '0 4px 10px rgba(98,60,234,0.07)', borderRadius: '12px', marginBottom: 0 }}
+            >
+              <article className="media">
+                <div className="media-left">
+                  <LinkedActiveEntityAvatar size="large" />
                 </div>
-              </div>
-            </article>
-          </div>
-        )}
-      </IfActiveEntity>
+                <div className="media-content">
+                  <div className="content">
+                    <Link
+                      to={`/${token}`}
+                      style={{
+                        fontFamily: 'AvenirNext',
+                        fontSize: '1rem',
+                        fontWeight: '700',
+                      }}
+                    >
+                      <ActiveEntityName />
+                    </Link>
+                    <IfIsActiveEntity
+                      id={entity.id.toString()}
+                      then={<ConnectedCommentForm Form={CommentForm} />}
+                      other={<ConnectedWriteToForm to={entity} Form={CommentForm} />}
+                    />
+                  </div>
+                </div>
+              </article>
+            </div>
+          )}
+        </IfActiveEntity>
+      </StatusBox>
       <Feed options={{ entityId: entity.id }} />
-    </div>
+    </React.Fragment>
   );
 
   getCommunityToken = (id) => {

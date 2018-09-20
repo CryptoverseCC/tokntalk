@@ -12,8 +12,6 @@ import { niceScroll } from './cssUtils';
 import feedIcon from './img/feeds.svg';
 import discoverIcon from './img/discover.svg';
 import { mobileOrTablet } from './utils';
-import AppContext from './Context';
-import { ExportWalletButton } from './ExportWalletButton';
 
 const SidebarContext = React.createContext();
 

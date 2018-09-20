@@ -10,6 +10,7 @@ import { FlatContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import Investors from './Investors';
 import { Entities, WithActiveEntity } from './Entity';
+import StatusBox from './StatusBox';
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -62,7 +63,9 @@ export default class IndexPage extends Component {
         <div className="columns ordered-mobile">
           <div className="column is-7 fl-1 is-offset-1">
             <Investors />
-            <Hero style={{ marginBottom: '30px' }} />
+            <StatusBox check={[StatusBox.Web3Locked]} style={{ marginBottom: '30px' }}>
+              <Hero />
+            </StatusBox>
             <WithActiveEntity>
               {(activeEntity) => (
                 <FeedTypeSwitcher
