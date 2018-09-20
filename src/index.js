@@ -82,7 +82,7 @@ const TokNTalk = withRouter(
             <Route exact path="/threads" component={Threads} />
             <Route exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
-            <Route exact path="/widgets" component={Widgets} />
+            <Route exact path="/how-to-get-tokens" component={Widgets} />
 
             <Route exact path="/" component={App.Index} />
             <Route path="/clubs" component={App.Discover} />
