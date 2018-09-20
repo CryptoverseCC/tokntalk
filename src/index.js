@@ -15,6 +15,7 @@ import { runInContext, Sentry } from './Sentry';
 
 import registerServiceWorker from './registerServiceWorker';
 import { ChangellyFastBuy } from './Changelly';
+import { CoinbaseWidget } from './CoinbaseWidget';
 
 const runMigrations = (storage) => {
   let version = parseInt(storage.getItem('version'), 10);
@@ -100,6 +101,7 @@ const Widgets = () => {
   return (
     <div>
       <ChangellyFastBuy />
+      <CoinbaseWidget />
     </div>
   );
 };
