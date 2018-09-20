@@ -21,12 +21,12 @@ export const ChangellyFastBuy = () => {
             <img src="https://changelly.com/pay_button_buy_sell.png" />
           </a>
           <div id="changellyModal">
-            <div class="changellyModal-content">
+            <div className="changellyModal-content">
               <span
                 onClick={() => {
                   document.getElementById('changellyModal').style.display = 'none';
                 }}
-                class="changellyModal-close"
+                className="changellyModal-close"
               >
                 x
               </span>
@@ -36,7 +36,7 @@ export const ChangellyFastBuy = () => {
                 }&amount=1&ref_id=wqqgw7k9zlo98t0v&color=00cf70`}
                 width="600"
                 height="500"
-                class="changelly"
+                className="changelly"
                 scrolling="no"
                 style={{ overflowY: 'hidden', border: 'none' }}
               >

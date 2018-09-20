@@ -18,7 +18,7 @@ export class CoinbaseWidget extends Component {
         {({ web3Store }) => (
           <div>
             <a
-              class="coinbase-widget"
+              className="coinbase-widget"
               id="coinbase_widget"
               data-address={web3Store.from}
               data-amount="100"
@@ -29,7 +29,7 @@ export class CoinbaseWidget extends Component {
             >
               Buy eth using Coinbase
             </a>
-            <script type="text/javascript" id="coinbase_widget_loader" class="coinbase-widget-async-loader" />
+            <script type="text/javascript" id="coinbase_widget_loader" className="coinbase-widget-async-loader" />
           </div>
         )}
       </AppContext>
