@@ -633,7 +633,7 @@ const CustomClubInfo = styled((props) => (
 
 class RedditFeed extends React.Component {
   render() {
-    const url = this.props.url.replace(/\/$/, '.embed');
+    const url = this.props.url + '.embed';
     return (
       <iframe
         title="reddit"
