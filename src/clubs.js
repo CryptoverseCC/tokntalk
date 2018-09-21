@@ -195,6 +195,11 @@ const clubs = [
       { name: 'Marketplace', url: 'https://www.cryptokitties.co/search' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptokitties' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoKitties/' },
+      { name: 'Twitter', url: 'https://twitter.com/CryptoKitties' },
+      { name: 'YouTube', url: 'https://www.youtube.com/channel/UClUgQBJcxAmHjOQgV4QgVXg' },
+      { name: 'Instagram', url: 'https://www.instagram.com/cryptokitties/' },
+      { name: 'Discord', url: 'https://discord.gg/cryptokitties' },
+      { name: 'Twitch', url: 'https://www.twitch.tv/directory/game/CryptoKitties' },
     ],
     avatarSizes: {
       verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%', imgLeftOffset: '55%' },
@@ -216,6 +221,13 @@ const clubs = [
       { name: 'Marketplace', url: 'https://axieinfinity.com/marketplace' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/axie' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/AxieInfinity/' },
+      { name: 'Facebook', url: 'https://www.facebook.com/AxieInfinity' },
+      { name: 'Twitter', url: 'https://twitter.com/AxieInfinity' },
+      { name: 'Instagram', url: 'https://www.instagram.com/axieinfinity' },
+      { name: 'GitHub', url: 'https://github.com/axieinfinity' },
+      { name: 'Medium', url: 'https://medium.com/@AxieInfinity' },
+      { name: 'Discord', url: 'https://discord.gg/68DeTqc' },
+      { name: 'Telegram', url: 'https://t.me/axieinfinity' },
     ],
   },
   {
@@ -231,6 +243,9 @@ const clubs = [
       { name: 'Reddit', url: 'https://www.reddit.com/r/AirSwap/' },
       { name: 'Telegram', url: 'https://t.me/airswap' },
       { name: 'Twitter', url: 'https://twitter.com/airswap' },
+      { name: 'Facebook', url: 'https://www.facebook.com/airswapio/' },
+      { name: 'LinkedIn', url: 'https://www.linkedin.com/company/airswap/' },
+      { name: 'Medium', url: 'https://medium.com/fluidity' },
     ],
   },
   {
@@ -245,6 +260,9 @@ const clubs = [
       { name: 'Project page', url: 'https://0xuniverse.com/' },
       { name: 'Discord', url: 'https://discord.gg/R8fwEPC' },
       { name: 'Telegram', url: 'https://t.me/OxUniverse' },
+      { name: 'Facebook', url: 'https://www.facebook.com/0xUniverse' },
+      { name: 'Twitter', url: 'https://twitter.com/0xUniverse' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/0xUniverse' },
     ],
   },
   {
@@ -256,10 +274,14 @@ const clubs = [
     secondaryColor: '#1D132D',
     shadowColor: 'rgba(193,205,109,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'http://cryptobots.me/' },
+      { name: 'Project page', url: 'https://cryptobots.me/' },
       { name: 'Marketplace', url: 'https://cryptobots.me/auction/1#sale' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptobots' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/cryptobots_game/' },
+      { name: 'Discord', url: 'https://discord.gg/WSpru9T' },
+      { name: 'Telegram', url: 'http://t.me/cryptobotsgame' },
+      { name: 'Facebook', url: 'http://facebook.com/cryptobotsgame' },
+      { name: 'Medium', url: 'https://medium.com/@cryptobots' },
     ],
   },
   {
@@ -275,6 +297,7 @@ const clubs = [
       { name: 'Marketplace', url: 'https://ethmoji.io/compose/base' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethmoji' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/ethmoji/' },
+      { name: 'Twitter', url: 'https://twitter.com/ethmoji' },
     ],
   },
   {
@@ -286,8 +309,8 @@ const clubs = [
     secondaryColor: '#F05E40',
     shadowColor: 'rgba(247,165,148,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'http://digitalartchain.com/' },
-      { name: 'Marketplace', url: 'http://digitalartchain.com/publish.html' },
+      { name: 'Project page', url: 'https://digitalartchain.com/' },
+      { name: 'Marketplace', url: 'https://digitalartchain.com/publish.html' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/digitalartchain' },
     ],
     promotionBox: {
@@ -305,6 +328,9 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://knownorigin.io' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/knownorigin' },
+      { name: 'Twitter', url: 'https://twitter.com/knownorigin_io' },
+      { name: 'Telegram', url: 'https://t.me/knownorigin_io' },
+      { name: 'Medium', url: 'https://medium.com/knownorigin' },
     ],
   },
   {
@@ -319,6 +345,8 @@ const clubs = [
       { name: 'Project page', url: 'https://www.cryptostrikers.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptostrikers' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/cryptostrikers/' },
+      { name: 'Twitter', url: 'https://twitter.com/cryptostrikers' },
+      { name: 'Discord', url: 'https://discord.gg/6jE8hMV' },
     ],
   },
   {
@@ -333,6 +361,12 @@ const clubs = [
       { name: 'Project page', url: 'https://eth.town/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/ethtown' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/EtherTown/' },
+      { name: 'Twitter', url: 'https://twitter.com/eth_town' },
+      { name: 'Facebook', url: 'https://facebook.com/eth.town' },
+      { name: 'Discord', url: 'https://discord.gg/vzZjpFV' },
+      { name: 'Telegram', url: 'https://t.me/Ethertown' },
+      { name: 'Instagram', url: 'http://instagram.com/eth.town' },
+      { name: 'BitcoinTalk', url: 'https://bitcointalk.org/index.php?topic=3062760' },
     ],
   },
   {
@@ -347,6 +381,7 @@ const clubs = [
       { name: 'Project page', url: 'https://chibifighters.io/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/chibifighters' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/ChibiFighters/' },
+      { name: 'Twitter', url: 'https://twitter.com/chibifighters' },
     ],
   },
   {
@@ -361,6 +396,9 @@ const clubs = [
       { name: 'Project page', url: 'https://cryptofighters.io' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptofighters' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/CryptoFighters/' },
+      { name: 'Facebook', url: 'https://www.facebook.com/CryptoFighters' },
+      { name: 'Telegram', url: 'https://t.me/CryptoFighters' },
+      { name: 'Twitter', url: 'https://twitter.com/CryptoFighters' },
     ],
   },
   {
@@ -374,6 +412,8 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://cryptosaga.io/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptosaga' },
+      { name: 'Twitter', url: 'https://twitter.com/CryptoSagaDev' },
+      { name: 'Medium', url: 'https://medium.com/@cryptosaga' },
     ],
   },
   {
@@ -388,6 +428,13 @@ const clubs = [
       { name: 'Project page', url: 'https://www.etheremon.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/etheremon' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/etheremon/' },
+      { name: 'Discord', url: 'https://discord.gg/xgJpuzc' },
+      { name: 'Telegram', url: 'https://t.me/myetheremon' },
+      { name: 'Facebook', url: 'https://www.facebook.com/etheremon' },
+      { name: 'Twitter', url: 'https://twitter.com/myetheremon' },
+      { name: 'Instagram', url: 'https://www.instagram.com/etheremon_official/' },
+      { name: 'Medium', url: 'https://medium.com/etheremon' },
+      { name: 'Youtube', url: 'https://www.youtube.com/channel/UCofiBCZvWbHFJRzKZixGfVw' },
     ],
   },
   {
@@ -402,6 +449,8 @@ const clubs = [
       { name: 'Project page', url: 'https://www.mythereum.io/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/mythereum' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/mythereum/' },
+      { name: 'Medium', url: 'https://medium.com/mythereum' },
+      { name: 'Twitter', url: 'https://twitter.com/mythereum' },
     ],
   },
   {
@@ -415,6 +464,11 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://panda.earth' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/pandaearth' },
+      { name: 'Twitter', url: 'https://twitter.com/panda__earth' },
+      { name: 'Facebook', url: 'https://facebook.com/PandaEarth.Official' },
+      { name: 'Telegram', url: 'https://t.me/pandaearth' },
+      { name: 'Dribbble', url: 'https://dribbble.com/pandaearth' },
+      { name: 'GitHub', url: 'https://github.com/pandaearth' },
     ],
   },
   {
@@ -425,7 +479,13 @@ const clubs = [
     primaryColor: '#f5cd4a',
     secondaryColor: '#221f20',
     shadowColor: 'rgba(245,205,74,0.4)',
-    externalLinks: [{ name: 'Project page', url: 'https://www.cryptotoons.io/toons/cryptocows' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.cryptotoons.io/toons/cryptocows' },
+      { name: 'Discord', url: 'https://discord.gg/3VgNJW' },
+      { name: 'Facebook', url: 'https://www.facebook.com/cryptotoons/' },
+      { name: 'Instagram', url: 'https://www.instagram.com/cryptotoons/' },
+      { name: 'Twitter', url: 'https://twitter.com/toontoken' },
+    ],
   },
   {
     ...mapping.CRYPTO_VOXELS,
@@ -438,6 +498,8 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://www.cryptovoxels.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/cryptovoxels' },
+      { name: 'Twitter', url: 'https://twitter.com/cryptovoxels' },
+      { name: 'Discord', url: 'https://discord.gg/Bv68xT4' },
     ],
     promotionBox: {
       recipient: `${mapping.CRYPTO_VOXELS.network}:${mapping.CRYPTO_VOXELS.address}:2`,
@@ -461,7 +523,12 @@ const clubs = [
     primaryColor: '#818181',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(75,75,75,0.4)',
-    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://basicattentiontoken.org/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/BATProject' },
+      { name: 'Telegram', url: 'https://t.me/batproject' },
+      { name: 'Twitter', url: 'https://twitter.com/BAT_Community' },
+    ],
   },
   {
     ...mapping.BENTYN,
@@ -488,6 +555,11 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://decentraland.org/' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/decentraland/' },
+      { name: 'Twitter', url: 'https://twitter.com/decentraland' },
+      { name: 'Discord', url: 'https://discordapp.com/invite/9EcuFgC' },
+      { name: 'GitHub', url: 'https://github.com/decentraland' },
+      { name: 'Docs', url: 'https://docs.decentraland.org/' },
+      { name: 'Facebook', url: 'https://www.facebook.com/decentraland/' },
     ],
   },
   {
@@ -501,6 +573,11 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://makerdao.com/' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/MakerDAO/' },
+      { name: 'Twitter', url: 'https://twitter.com/MakerDAO' },
+      { name: 'Telegram', url: 'https://t.me/MakerdaoMKR' },
+      { name: 'Rocket.chat', url: 'https://chat.makerdao.com/' },
+      { name: 'Medium', url: 'https://medium.com/makerdao/' },
+      { name: 'YouTube', url: 'https://www.youtube.com/channel/UC4jqZlzQHUhzqf5rMd5ywTw' },
     ],
   },
   {
@@ -511,7 +588,11 @@ const clubs = [
     primaryColor: '#68625d',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(104,98,93,0.25)',
-    externalLinks: [{ name: 'Project page', url: 'https://golem.network/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://golem.network/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/GolemProject/' },
+      { name: 'Twitter', url: 'https://twitter.com/golemproject' },
+    ],
   },
   {
     ...mapping.OMNISE_GO,
@@ -524,6 +605,10 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://omisego.network/' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/omise_go/' },
+      { name: 'Twitter', url: 'https://twitter.com/omise_go' },
+      { name: 'Medium', url: 'https://blog.omisego.network/' },
+      { name: 'Chat', url: 'https://chat.omisego.network/home' },
+      { name: 'Facebook', url: 'https://www.facebook.com/OmiseGO/' },
     ],
   },
   {
@@ -547,7 +632,14 @@ const clubs = [
     primaryColor: '#5B6CEE',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(91,108,238,0.5)',
-    externalLinks: [{ name: 'Project page', url: 'https://status.im' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://status.im' },
+      { name: 'Facebook', url: 'https://www.facebook.com/ethstatus' },
+      { name: 'Twitter', url: 'https://twitter.com/ethstatus' },
+      { name: 'Rocket.chat', url: 'https://chat.status.im/#/register' },
+      { name: 'Github', url: 'https://github.com/status-im' },
+      { name: 'Blog', url: 'https://our.status.im/' },
+    ],
   },
   {
     ...mapping.ZRX,
@@ -557,7 +649,14 @@ const clubs = [
     primaryColor: '#3C3C3C',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(60,60,60,0.25)',
-    externalLinks: [{ name: 'Project page', url: 'https://0xproject.com' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://0xproject.com' },
+      { name: 'Rocket.chat', url: 'https://chat.0xproject.com/' },
+      { name: 'Medium', url: 'https://blog.0xproject.com/latest' },
+      { name: 'Twitter', url: 'https://twitter.com/0xproject' },
+      { name: 'Reddit', url: 'https://reddit.com/r/0xproject' },
+      { name: 'Forum', url: 'https://forum.0xproject.com/' },
+    ],
   },
   {
     ...mapping.SANMARICOIN,
@@ -567,7 +666,7 @@ const clubs = [
     primaryColor: '#C8D5FF',
     secondaryColor: '#1639AA',
     shadowColor: 'rgba(22,57,170,0.2)',
-    externalLinks: [{ name: 'Project page', url: 'https://twitter.com/sanmaricoin' }],
+    externalLinks: [{ name: 'Twitter', url: 'https://twitter.com/sanmaricoin' }],
     promotionBox: {
       recipient: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:839415', // Sanmari CK
     },
@@ -590,7 +689,7 @@ const clubs = [
     primaryColor: '#122d4b',
     secondaryColor: '#65d9ff',
     shadowColor: 'rgba(18,45,75,0.25)',
-    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
+    externalLinks: [{ name: 'Project page', url: 'https://digitalartchain.com/' }],
   },
   {
     ...mapping.TOKEN_X,
@@ -601,7 +700,6 @@ const clubs = [
     secondaryColor: '#5E22AE',
     shadowColor: 'rgba(3,255,255,0.5)',
     externalLinks: [
-      { name: 'Project page', url: 'https://???.??' },
       { name: 'ForkDelta', url: 'https://forkdelta.app/#!/trade/0xb7fc08177bcba924255132f361084d7994eafcf0-ETH' },
     ],
   },
@@ -613,7 +711,12 @@ const clubs = [
     primaryColor: '#F0EAF6',
     secondaryColor: '#67616E',
     shadowColor: 'rgba(188,175,202,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://cryptocrystal.io/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://cryptocrystal.io/' },
+      { name: 'Twitter', url: 'https://twitter.com/_cryptocrystal' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/cryptocrystal/' },
+      { name: 'Telegram', url: 'https://t.me/cryptocrystal_official' },
+    ],
   },
   {
     ...mapping.BAOBOSHICOIN,
@@ -624,8 +727,8 @@ const clubs = [
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(230,3,0,0.3)',
     externalLinks: [
-      { name: 'Project page', url: 'http://bbsc.rocks/' },
-      { name: 'Exchange', url: 'http://bbsc.rocks/' },
+      { name: 'Project page', url: 'https://bbsc.rocks/' },
+      { name: 'Exchange', url: 'https://bbsc.rocks/' },
     ],
   },
   {
@@ -639,6 +742,12 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://tokenville.tv/' },
       { name: 'Exchange', url: 'https://tokenville.tv/token' },
+      { name: 'Twitter', url: 'https://twitter.com/Tokenville_TV' },
+      { name: 'Facebook', url: 'https://www.facebook.com/tokenville/' },
+      { name: 'Medium', url: 'https://medium.com/@tokenville_tv' },
+      { name: 'Discord', url: 'https://discord.me/tokenville' },
+      { name: 'Youtube', url: 'https://www.youtube.com/channel/UCKR2sO-XnYWApkUWkVtl2-Q' },
+      { name: 'GitHub', url: 'https://github.com/tokenville' },
     ],
   },
   {
@@ -648,7 +757,14 @@ const clubs = [
     primaryColor: '#010d21',
     secondaryColor: '#f3f3f7',
     shadowColor: 'rgba(1,13,33,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://www.mlbcryptobaseball.com/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.mlbcryptobaseball.com/' },
+      { name: 'Twitter', url: 'https://twitter.com/mlbcrypto' },
+      { name: 'Instagram', url: 'https://www.instagram.com/mlbcrypto/' },
+      { name: 'Facebook', url: 'https://www.facebook.com/MLBCrypto/' },
+      { name: 'Telegram', url: 'https://t.me/MLBCrypto' },
+      { name: 'Discord', url: 'https://discord.gg/sXqsB9b' },
+    ],
   },
   {
     ...mapping.PLAYERTOKENS,
@@ -657,7 +773,13 @@ const clubs = [
     primaryColor: '#111111',
     secondaryColor: '#ffb41f',
     shadowColor: 'rgba(17,17,17,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://playertokens.co/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://playertokens.co/' },
+      { name: 'Twitter', url: 'https://twitter.com/PlayerTokens' },
+      { name: 'Facebook', url: 'https://www.facebook.com/playertokens/' },
+      { name: 'Instagram', url: 'https://www.instagram.com/playertokens/' },
+      { name: 'Discord', url: 'https://discord.gg/7ySCT8Y' },
+    ],
   },
   {
     ...mapping.DOMRAIDER,
@@ -667,7 +789,15 @@ const clubs = [
     primaryColor: '#212a4b',
     secondaryColor: '#f4ca55',
     shadowColor: 'rgba(33,42,75,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://www.domraider.com/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://www.domraider.com/' },
+      { name: 'Twitter', url: 'https://twitter.com/domraider' },
+      { name: 'Medium', url: 'https://medium.com/domraider' },
+      { name: 'Telegram', url: 'https://t.me/domraider_ICO' },
+      { name: 'Facebook', url: 'https://www.facebook.com/Domraider-1432606216988548/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/DomRaider/' },
+      { name: 'BitcoinTalk', url: 'https://bitcointalk.org/index.php?topic=2132588.0' },
+    ],
   },
   {
     ...mapping.HYPERDRAGONS,
@@ -681,6 +811,7 @@ const clubs = [
       { name: 'Project page', url: 'https://hyperdragons.alfakingdom.com/' },
       { name: 'Discord', url: 'https://discord.gg/MxrBAD5' },
       { name: 'Telegram', url: 'https://t.me/HyperDragons' },
+      { name: 'Twitter', url: 'https://twitter.com/MixHyperDragons' },
     ],
   },
   {
@@ -704,8 +835,10 @@ const clubs = [
     shadowColor: 'rgba(26,24,64,0.3)',
     externalLinks: [
       { name: 'Project page', url: 'https://godsunchained.com/' },
-      { name: 'Exchange', url: 'https://opensea.io/assets/godsunchained' },
+      { name: 'OpenSea', url: 'https://opensea.io/assets/godsunchained' },
       { name: 'Discord', url: 'https://discord.gg/DKGr2pW' },
+      { name: 'Twitter', url: 'https://twitter.com/GodsUnchained' },
+      { name: 'Reddit', url: 'https://reddit.com/r/godsunchained' },
     ],
   },
   {
@@ -717,6 +850,11 @@ const clubs = [
     shadowColor: 'rgba(116,110,255,0.3)',
     externalLinks: [
       { name: 'Project page', url: 'https://cryptogirl.game' },
+      { name: 'Discord', url: 'https://discordapp.com/invite/PNZF7Fq' },
+      { name: 'Twitter', url: 'https://twitter.com/cryptogirlgame' },
+      { name: 'Facebook', url: 'https://www.facebook.com/cryptogirl.game/' },
+      { name: 'Reddit', url: 'https://www.reddit.com/user/cryptogirlgame/' },
+      { name: 'Medium', url: 'https://medium.com/@cryptogirlgame' },
       { name: 'Discord', url: 'https://discordapp.com/invite/PNZF7Fq' },
     ],
   },
@@ -732,6 +870,8 @@ const clubs = [
       { name: 'Project page', url: 'https://blockchaincuties.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/category/blockchaincuties' },
       { name: 'Reddit', url: 'https://www.reddit.com/r/blockchaincuties/' },
+      { name: 'Twitter', url: 'https://twitter.com/BlockchainCutie' },
+      { name: 'Telegram', url: 'https://t.me/blockchaincuties_en' },
     ],
   },
   {
@@ -744,6 +884,9 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://www.cryptoarte.io/' },
       { name: 'OpenSea', url: 'https://opensea.io/category/cryptoarte' },
+      { name: 'Twitter', url: 'https://twitter.com/CryptoArte' },
+      { name: 'Facebook', url: 'https://fb.me/cryptoarte' },
+      { name: 'Discord', url: 'https://discord.gg/kwbRuwf' },
     ],
   },
   {
@@ -763,7 +906,17 @@ const clubs = [
     primaryColor: '#0b0d23',
     secondaryColor: '#ffffff',
     shadowColor: 'rgba(11,13,35,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://warriders.com/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://warriders.com/' },
+      { name: 'Twitter', url: 'https://twitter.com/warriders' },
+      { name: 'BitcoinTalk', url: 'https://bitcointalk.org/index.php?topic=4912728' },
+      { name: 'Youtube', url: 'https://www.youtube.com/warridersgame' },
+      { name: 'Medium', url: 'https://medium.com/warriders' },
+      { name: 'Reddit', url: 'http://reddit.com/r/Warriders' },
+      { name: 'Instagram', url: 'https://www.instagram.com/warriders/' },
+      { name: 'Facebook', url: 'https://www.facebook.com/warridersofficial' },
+      { name: 'GitHub', url: 'https://github.com/warriders' },
+    ],
   },
   {
     ...mapping.DIGIX_GLOBAL,
@@ -773,7 +926,17 @@ const clubs = [
     primaryColor: '#273144',
     secondaryColor: '#e0d46e',
     shadowColor: 'rgba(39,49,68,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://digix.global/dgd/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://digix.global/dgd/' },
+      { name: 'Twitter', url: 'https://twitter.com/DigixGlobal' },
+      { name: 'Medium', url: 'https://medium.com/@Digix' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/digix/' },
+      { name: 'LinkedIn', url: 'https://www.linkedin.com/company/digixglobal/' },
+      { name: 'Youtube', url: 'https://www.youtube.com/watch?v=mu2bOXt34K8' },
+      { name: 'Instagram', url: 'https://www.instagram.com/digix.global/' },
+      { name: 'GitHub', url: 'https://github.com/digixglobal' },
+      { name: 'Discord', url: 'https://discord.gg/CCDBJJC' },
+    ],
   },
   {
     ...mapping.DUMMY_COIN,
@@ -783,7 +946,16 @@ const clubs = [
     primaryColor: '#ffff00',
     secondaryColor: '#000000',
     shadowColor: 'rgba(255,255,0,0.4)',
-    externalLinks: [{ name: 'Project page', url: 'http://dummycoin.lol/' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://dummycoin.lol/' },
+      { name: 'Twitter', url: 'https://twitter.com/Dummy_Coin' },
+      { name: 'Youtube', url: 'https://www.youtube.com/channel/UCbKj1W_oi9IWFhCJYsgko4w' },
+      { name: 'Reddit', url: 'https://www.reddit.com/user/DummyCoin' },
+      { name: 'Medium', url: 'https://medium.com/@dummycoinproject' },
+      { name: 'Telegram', url: 'https://t.me/DummyCoin_Official_Chat' },
+      { name: 'SteemIt', url: 'https://steemit.com/@dummycoin' },
+      { name: 'Discord', url: 'https://discord.gg/eTT5gRs' },
+    ],
   },
   {
     ...mapping.NFTY_TOKEN,
@@ -793,7 +965,10 @@ const clubs = [
     primaryColor: '#f1e2ff',
     secondaryColor: '#9b51e0',
     shadowColor: 'rgba(155,81,224,0.3)',
-    externalLinks: [{ name: 'Project page', url: 'https://medium.com/nfty-news' }],
+    externalLinks: [
+      { name: 'Medium', url: 'https://medium.com/nfty-news' },
+      { name: 'Twitter', url: 'https://twitter.com/Flynnjamm' },
+    ],
     promotionBox: {
       recipient: 'ethereum:0xa6d954d08877f8ce1224f6bfb83484c7d3abf8e9:497', // Flynn
       asset: `${mapping.NFTY_TOKEN.network}:${mapping.NFTY_TOKEN.address}`,
@@ -813,6 +988,9 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://johnorionyoung.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/johnorionyoung' },
+      { name: 'Twitter', url: 'https://twitter.com/JohnOrionYoung' },
+      { name: 'Instagram', url: 'http://instagram.com/johnorionyoung' },
+      { name: 'Discord', url: 'https://discord.gg/hBv9BDD' },
     ],
     promotionBox: {
       recipient: 'ethereum:0x96313f2c374f901e3831ea6de67b1165c4f39a54:0', // Original Joy
@@ -828,6 +1006,8 @@ const clubs = [
     externalLinks: [
       { name: 'Project page', url: 'https://wallet.coinbase.com/' },
       { name: 'OpenSea', url: 'https://opensea.io/assets/coinbasewalletcryptoswag' },
+      { name: 'Twitter', url: 'https://twitter.com/coinbase' },
+      { name: 'Reddit', url: 'https://www.reddit.com/r/CoinBase/' },
     ],
   },
   {
@@ -838,7 +1018,12 @@ const clubs = [
     primaryColor: '#C8F9FF',
     secondaryColor: '#5B3D9D',
     shadowColor: 'rgba(200,249,255,0.6)',
-    externalLinks: [{ name: 'Project page', url: 'https://???.??' }],
+    externalLinks: [
+      { name: 'Project page', url: 'https://tokntalk.club' },
+      { name: 'Twitter', url: 'https://twitter.com/tokntalkclub' },
+      { name: 'Medium', url: 'https://medium.com/tokntalk-club' },
+      { name: 'Youtube', url: 'https://www.youtube.com/channel/UCkAsTIBretuwq3PZWfh9Gpg' },
+    ],
     promotionBox: {
       recipient: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330', // Barbossa
       asset: `${mapping.PERCENT.network}:${mapping.PERCENT.address}`,
