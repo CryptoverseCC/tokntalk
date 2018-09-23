@@ -6,8 +6,10 @@ import { withActiveEntity } from './Entity';
 import { transferErc20, transferEth } from './api';
 import { toWei } from './balance';
 import { A } from './Link';
+import closeIcon from './img/small-remove.svg';
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   border-radius: 6px;
   background-color: #f3f6ff;
@@ -174,6 +176,19 @@ const Pulsar = styled((props) => (
   }
 `;
 
+const ExitIcon = styled.img.attrs({ src: closeIcon })`
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  right: -12px;
+  top: calc(50% - 5px);
+  transition: transform 0.2s ease-in;
+
+  :hover {
+    transform: translateY(-2px);
+  }
+`;
+
 class SendTokens extends Component {
   constructor(props) {
     super(props);
@@ -289,6 +304,7 @@ class SendTokens extends Component {
           >
             Send
           </StyledButton>
+          <ExitIcon onClick={() => this.setState({ step: 'initial' })} />
         </form>
       </Container>
     );
