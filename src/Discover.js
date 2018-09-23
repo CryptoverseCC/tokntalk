@@ -36,6 +36,7 @@ import { TokenTile, SmallTokenTile } from './TokenTile';
 import { Intercom } from './Intercom';
 import { StyledButton } from './SendTokens';
 import StatusBox from './StatusBox';
+import { TwitterTimelineEmbed } from 'react-twitter-embed';
 
 const WelcomeMessage = styled.div`
   border-radius: 12px;
@@ -630,6 +631,22 @@ const CustomClubInfo = styled((props) => (
   </WelcomeMessage>
 ))``;
 
+const RedditFeed = (props) => {
+  const url = props.url + '.embed';
+  return (
+    <iframe
+      title="reddit"
+      style={{ width: '100%', height: 1500 }}
+      srcDoc={`<html><body><script src=${url}></script></body></html>`}
+    />
+  );
+};
+
+const TwitterFeed = (props) => {
+  const profile = props.url.replace(/https:\/\/twitter.com\//, '');
+  return <TwitterTimelineEmbed sourceType="profile" screenName={profile} options={{ height: 1500 }} />;
+};
+
 export class FeedForToken extends Component {
   storage = Storage();
   state = {
@@ -711,37 +728,58 @@ export class FeedForToken extends Component {
     const { loading, feedLoadingMore, feedItems, visibleItemsCount, feedType } = this.state;
     const asset = `${token.network}:${token.address}`;
 
+    const switcherOptions = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR];
+    const redditURL = (token.externalLinks.find((item) => item.name === 'Reddit') || {}).url;
+    const twitterURL = (token.externalLinks.find((item) => item.name === 'Twitter') || {}).url;
+
+    if (redditURL) {
+      switcherOptions.push(FeedTypeSwitcher.REDDIT);
+    }
+    if (twitterURL) {
+      switcherOptions.push(FeedTypeSwitcher.TWITTER);
+    }
+
     return (
       <React.Fragment>
-        <FeedTypeSwitcher type={feedType} onChange={this.changeFeedType} style={{ margin: '2em 0' }} />
-        <AppContext.Consumer>
-          {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
-            const filteredTemporaryFeedItems = temporaryFeedItems
-              .filter(({ type, about }) => type === 'post_club' && about === asset)
-              .map((item) => ({ ...item, type: 'regular' }));
+        <FeedTypeSwitcher
+          type={feedType}
+          onChange={this.changeFeedType}
+          options={switcherOptions}
+          style={{ margin: '2em 0' }}
+        />
+        {feedType === FeedTypeSwitcher.REDDIT && <RedditFeed url={redditURL} />}
+        {feedType === FeedTypeSwitcher.TWITTER && <TwitterFeed url={twitterURL} />}
+        {feedType !== FeedTypeSwitcher.REDDIT &&
+          feedType !== FeedTypeSwitcher.TWITTER && (
+            <AppContext.Consumer>
+              {({ feedStore: { temporaryFeedItems, temporaryReplies, temporaryReactions } }) => {
+                const filteredTemporaryFeedItems = temporaryFeedItems
+                  .filter(({ type, about }) => type === 'post_club' && about === asset)
+                  .map((item) => ({ ...item, type: 'regular' }));
 
-            // ToDo insert temporary between feedItems if needed
-            const allFeedItems = uniqBy('id')([
-              ...(feedType === 'popular' ? [] : filteredTemporaryFeedItems),
-              ...feedItems.slice(0, visibleItemsCount),
-            ]);
+                // ToDo insert temporary between feedItems if needed
+                const allFeedItems = uniqBy('id')([
+                  ...(feedType === 'popular' ? [] : filteredTemporaryFeedItems),
+                  ...feedItems.slice(0, visibleItemsCount),
+                ]);
 
-            return (
-              <Feed
-                isClubFeed
-                disabledInteractions={disabledInteractions}
-                className={className}
-                style={style}
-                feedItems={allFeedItems}
-                feedLoading={loading}
-                temporaryReplies={temporaryReplies}
-                temporaryReactions={temporaryReactions}
-                getMoreFeedItems={this.getMoreItems}
-                feedLoadingMore={feedLoadingMore}
-              />
-            );
-          }}
-        </AppContext.Consumer>
+                return (
+                  <Feed
+                    isClubFeed
+                    disabledInteractions={disabledInteractions}
+                    className={className}
+                    style={style}
+                    feedItems={allFeedItems}
+                    feedLoading={loading}
+                    temporaryReplies={temporaryReplies}
+                    temporaryReactions={temporaryReactions}
+                    getMoreFeedItems={this.getMoreItems}
+                    feedLoadingMore={feedLoadingMore}
+                  />
+                );
+              }}
+            </AppContext.Consumer>
+          )}
       </React.Fragment>
     );
   }
