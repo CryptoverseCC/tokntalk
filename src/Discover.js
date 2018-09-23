@@ -631,25 +631,21 @@ const CustomClubInfo = styled((props) => (
   </WelcomeMessage>
 ))``;
 
-class RedditFeed extends React.Component {
-  render() {
-    const url = this.props.url + '.embed';
-    return (
-      <iframe
-        title="reddit"
-        style={{ width: '100%', height: 1500 }}
-        srcDoc={`<html><body><script src=${url}></script></body></html>`}
-      />
-    );
-  }
-}
+const RedditFeed = (props) => {
+  const url = props.url + '.embed';
+  return (
+    <iframe
+      title="reddit"
+      style={{ width: '100%', height: 1500 }}
+      srcDoc={`<html><body><script src=${url}></script></body></html>`}
+    />
+  );
+};
 
-class TwitterFeed extends React.Component {
-  render() {
-    const profile = this.props.url.replace(/https:\/\/twitter.com\//, '');
-    return <TwitterTimelineEmbed sourceType="profile" screenName={profile} options={{ height: 1500 }} />;
-  }
-}
+const TwitterFeed = (props) => {
+  const profile = props.url.replace(/https:\/\/twitter.com\//, '');
+  return <TwitterTimelineEmbed sourceType="profile" screenName={profile} options={{ height: 1500 }} />;
+};
 
 export class FeedForToken extends Component {
   storage = Storage();
