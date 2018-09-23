@@ -727,7 +727,8 @@ export class FeedForToken extends Component {
     const { className, style, token, disabledInteractions } = this.props;
     const { loading, feedLoadingMore, feedItems, visibleItemsCount, feedType } = this.state;
     const asset = `${token.network}:${token.address}`;
-    const switcherOptions = [FeedTypeSwitcher.NEW, (FeedTypeSwitcher.POPULAR = 'popular')];
+
+    const switcherOptions = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR];
     const redditURL = (token.externalLinks.find((item) => item.name === 'Reddit') || {}).url;
     const twitterURL = (token.externalLinks.find((item) => item.name === 'Twitter') || {}).url;
 
