@@ -39,6 +39,7 @@ class ThreadCmp extends Component {
 
             return !!feedItem || (!feedItemLoading && !!feedItem) ? (
               <Card
+                hidePermalink
                 feedItem={feedItem}
                 replies={feedItem.replies}
                 reactions={feedItem.likes}

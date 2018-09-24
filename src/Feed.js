@@ -208,7 +208,19 @@ const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, 
   </ArticleReactions>
 );
 
-const Post = ({ id, from, entityInfo, createdAt, family, message, reaction, suffix, style = {}, onVerify }) => {
+const Post = ({
+  id,
+  from,
+  entityInfo,
+  createdAt,
+  family,
+  message,
+  reaction,
+  suffix,
+  style = {},
+  onVerify,
+  hidePermalink,
+}) => {
   return (
     <article className="media" style={style}>
       <div className="media-left" style={{ width: '64px' }}>
@@ -223,6 +235,7 @@ const Post = ({ id, from, entityInfo, createdAt, family, message, reaction, suff
           family={family}
           suffix={suffix}
           onVerify={onVerify}
+          hidePermalink={hidePermalink}
         />
         <StartingMessage>
           <CollapsableText text={message} />
@@ -328,7 +341,7 @@ const Verify = styled.span`
   }
 `;
 
-const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onVerify }) => {
+const CardTitle = ({ id, from, entityInfo, createdAt, suffix, onVerify, hidePermalink }) => {
   return (
     <React.Fragment>
       <div>
@@ -339,7 +352,7 @@ const CardTitle = ({ id, from, entityInfo, createdAt, family, suffix, share, onV
         <Verify onClick={onVerify} style={{ marginLeft: '15px' }}>
           Verify
         </Verify>
-        {id ? (
+        {id && !hidePermalink ? (
           <Link
             style={{ color: '#1b2437', marginLeft: '15px' }}
             to={{
@@ -595,7 +608,7 @@ export class Card extends React.Component {
 
   renderItem = () => {
     const { areRepliesCollapsed } = this.state;
-    const { feedItem, replies, reactions, disabledInteractions, isClubFeed } = this.props;
+    const { feedItem, replies, reactions, disabledInteractions, isClubFeed, hidePermalink } = this.props;
 
     if (feedItem.type === 'like') {
       return this.renderLikeItem(feedItem, disabledInteractions);
@@ -617,6 +630,7 @@ export class Card extends React.Component {
             createdAt={feedItem.created_at}
             message={feedItem.target}
             family={feedItem.family}
+            hidePermalink={hidePermalink}
             suffix={this.getSuffix(feedItem)}
             reaction={
               (feedItem.type === 'response' && <ReplyReaction />) ||
