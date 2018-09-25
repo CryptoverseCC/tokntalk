@@ -3,21 +3,20 @@ import styled, { css } from 'styled-components';
 import capitalize from 'lodash/capitalize';
 
 export const FeedTypeButton = styled.div`
-  display: inline;
+  display: inline-block;
   font-weight: 600;
   cursor: pointer;
   font-size: 1rem;
   padding: 5px;
   color: #78818c;
+  text-align: center;
 
   ${({ selected }) =>
     selected &&
     css`
       color: #1a52ef;
-      text-align: center;
       cursor: default;
-      display: inline-block;
-      :before {
+      :after {
         content: '';
         display: block;
         width: 6px;
@@ -25,7 +24,6 @@ export const FeedTypeButton = styled.div`
         border-radius: 3px;
         background-color: #1a52ef;
         position: relative;
-        bottom: -30px;
         margin: auto;
       }
     `};

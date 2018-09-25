@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { fromWeiToString } from '../balance';
 import { Purrmoter } from './Purrmoter';
@@ -8,6 +8,7 @@ import Link from '../Link';
 import { EntityAvatar } from '../Entity';
 import Catvertised from './Catvertised';
 import { Web3ProviderStatus } from '../Providers';
+import { FeedTypeButton } from '../FeedTypeSwitcher';
 import {
   EntityNameWrapper,
   CatvertisedName,
@@ -60,30 +61,12 @@ const PAGE = {
   CATVERTISING: 2,
 };
 
-const PromotionTab = styled(({ count, children, ...props }) => (
-  <div {...props}>
+const PromotionTab = ({ count, children, ...props }) => (
+  <FeedTypeButton {...props} style={{ display: 'flex', flexDirection: 'column' }}>
     <span style={{ fontSize: '2rem' }}>{count}</span>
     <span style={{ fontSize: '1rem' }}>{children}</span>
-  </div>
-))`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-bottom: 2px #f0f1f6 solid;
-  font-size: 1rem;
-  cursor: pointer;
-  outline: none;
-  font-weight: 600;
-  padding-left: 0;
-
-  ${({ selected }) =>
-    selected &&
-    css`
-      cursor: unset;
-      color: #264dd9;
-      border-bottom: 2px #264dd9 solid;
-    `};
-`;
+  </FeedTypeButton>
+);
 
 export class PromotionBox extends Component {
   static defaultProps = {
