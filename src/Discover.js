@@ -335,7 +335,7 @@ const ByToken = ({ token }) => (
         )}
       </div>
       <div className="column is-6 fl-1">
-        {token.isCustom && <CustomClubInfo style={{ marginBottom: '30px' }} />}
+        {token.isCustom && <CustomClubInfo style={{ marginBottom: '-20px' }} />}
         <StatusBox
           check={[
             StatusBox.Web3Locked,
@@ -615,18 +615,27 @@ const CustomClubInfo = styled((props) => (
   <WelcomeMessage {...props}>
     <H1 style={{ fontSize: '3rem' }}>🎨</H1>
     <div style={{ marginLeft: '30px' }}>
-      <H3>Let’s customize! </H3>
+      <H3>Be the first one, our Hero!!!</H3>
       <p style={{ fontSize: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-        Add an icon, a name and list the project here. We can also help with a custom interface, ranking algorithms and
-        anything you’d like!
+        Post as first person in this club.
+        <br />
+        Be <strong>Forever Famous</strong> as the one who discovered this token and made it popular. It's your time!
+        <br />
+        <br />
+        And when your're at it, tell us more about this token.
+        <br />
+        It's social media: <b>Reddit</b>, <b>Twitter</b>, <b>Discord</b>, <b>Telegram</b>, etc., which artwork we should
+        use to list this club in our `Newest clubs` tab, and any other information that you deem important.
       </p>
       <p>
-        Contact us at{' '}
+        You can always contact us at{' '}
         <Link to="/thread/claim:0x35df61fa026498b5254b9dcf669b1f7baef9e09767de2f10c347f3e83e910b7869dae53cd906ee6e78b179053b2e9797eb2bc64fe1f1d0841a27aef222ade2681c">
           Tokntalk
         </Link>{' '}
-        or on <A href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram.</A>
+        or on <A href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram</A> if you have any questions.
       </p>
+      <br />
+      <b>This is the moment Hero is born! It's your time!</b>
     </div>
   </WelcomeMessage>
 ))``;
