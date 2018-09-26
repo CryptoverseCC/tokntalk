@@ -907,7 +907,7 @@ const GenerateClub = withRouter(
               onClick={this.onGenerate}
               style={{ width: 'unset', position: 'absolute', right: '7px', top: '7px' }}
             >
-              Generate
+              Go
             </StyledButton>
           </GenerateInputContainer>
         </GenerateContainer>
