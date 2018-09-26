@@ -318,12 +318,16 @@ class EditableLabel extends Component {
     twitter: /^(?:(?:https?:\/\/)?(?:www\.)?twitter\.com\/)?([\w]+)$/,
     github: /^(?:(?:https?:\/\/)?(?:www\.)?github\.com\/)?([\w-+@]+)$/,
     instagram: /^(?:(?:https?:\/\/)?(?:www\.)?instagram\.com\/)?([\w.-]+)$/,
+    discord: /^(.+#\d{4})$/,
+    telegram: /^([0-9A-Za-z_]+)$/,
   };
   static DOMAINS = {
     facebook: 'https://facebook.com/',
     twitter: 'https://twitter.com/',
     github: 'https://github.com/',
     instagram: 'https://instagram.com/',
+    discord: '',
+    telegram: '',
   };
 
   static extractUsername = (text, type) => {
@@ -349,6 +353,7 @@ class EditableLabel extends Component {
 
   validate = (label) => {
     const { type } = this.props;
+    debugger;
     return label === '' || EditableLabel.DOMAIN_REGEX[type].test(label);
   };
 
@@ -363,6 +368,7 @@ class EditableLabel extends Component {
   };
 
   submitLabel = (label) => {
+    debugger;
     label(this.createFullSocialUrl(), this.props.type);
     this.setState({ editing: false });
   };
@@ -447,7 +453,7 @@ export class SocialList extends React.Component {
 
   render() {
     const { normalizeHref, getDomain } = this;
-    const { facebook, twitter, instagram, github, id, editable } = this.props;
+    const { facebook, twitter, instagram, github, discord, telegram, id, editable } = this.props;
 
     return (
       <SocialList.Container>
@@ -489,6 +495,18 @@ export class SocialList extends React.Component {
           <SocialBadge href={normalizeHref(github)}>
             <SocialIcon type="github" />
             <EditableLabel value={github} type="github" editable={editable} />
+          </SocialBadge>
+        )}
+        {(discord || editable) && (
+          <SocialBadge href={normalizeHref(discord)}>
+            <SocialIcon type="discord" />
+            <EditableLabel value={discord} type="discord" editable={editable} />
+          </SocialBadge>
+        )}
+        {(telegram || editable) && (
+          <SocialBadge href={normalizeHref(telegram)}>
+            <SocialIcon type="telegram" />
+            <EditableLabel value={telegram} type="telegram" editable={editable} />
           </SocialBadge>
         )}
       </SocialList.Container>
