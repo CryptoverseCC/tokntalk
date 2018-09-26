@@ -615,17 +615,13 @@ const CustomClubInfo = styled((props) => (
   <WelcomeMessage {...props}>
     <H1 style={{ fontSize: '3rem' }}>🎨</H1>
     <div style={{ marginLeft: '30px' }}>
-      <H3>Be the first one, our Hero!!!</H3>
+      <H3>Make this token more visible!</H3>
       <p style={{ fontSize: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-        Post as first person in this club.
-        <br />
-        Be <strong>Forever Famous</strong> as the one who discovered this token and made it popular. It's your time!
+        Help to list it officially on Tokntalk: send us relevant links and artworks.
         <br />
         <br />
-        And when your're at it, tell us more about this token.
-        <br />
-        It's social media: <b>Reddit</b>, <b>Twitter</b>, <b>Discord</b>, <b>Telegram</b>, etc., which artwork we should
-        use to list this club in our `Newest clubs` tab, and any other information that you deem important.
+        We would love to know: <b>Reddit</b>, <b>Twitter</b>, <b>Discord</b>, <b>Telegram</b>, etc., and artwork we
+        should use to list this club in our `Newest clubs` tab and any other information that you think relevant.
       </p>
       <p>
         You can always contact us at{' '}
@@ -635,7 +631,8 @@ const CustomClubInfo = styled((props) => (
         or on <A href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram</A> if you have any questions.
       </p>
       <br />
-      <b>This is the moment Hero is born! It's your time!</b>
+      <br />
+      You are <b>The Hero</b> this community deserves. <b>It's your time!</b>
     </div>
   </WelcomeMessage>
 ))``;
