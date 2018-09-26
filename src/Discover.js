@@ -99,7 +99,7 @@ class Index extends Component {
             <p>Everything to keep up what’s happening around your tokens and to explore new opportunities.</p>
           </div>
           <div className="column is-5">
-            <H4 style={{ marginTop: '30px' }}>Custom club</H4>
+            <H4 style={{ marginTop: '30px' }}>Go to club</H4>
             <p style={{ fontSize: '0.8rem' }}>Paste ERC20 contract address</p>
             <GenerateClub style={{ marginTop: '10px', height: '64px' }} />
           </div>
