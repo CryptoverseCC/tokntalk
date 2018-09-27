@@ -138,7 +138,6 @@ class Index extends Component {
               isActive={this.state.currentTab === Index.TAB.NEWEST}
             />
           </div>
-          <div className="column is-3 is-offset-1" />
         </div>
       </React.Fragment>
     );
