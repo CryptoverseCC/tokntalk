@@ -321,6 +321,7 @@ class EditableLabel extends Component {
     discord: /^(.+#\d{4})$/,
     telegram: /^([0-9A-Za-z_]+)$/,
   };
+
   static DOMAINS = {
     facebook: 'https://facebook.com/',
     twitter: 'https://twitter.com/',
@@ -353,7 +354,6 @@ class EditableLabel extends Component {
 
   validate = (label) => {
     const { type } = this.props;
-    debugger;
     return label === '' || EditableLabel.DOMAIN_REGEX[type].test(label);
   };
 
@@ -368,7 +368,6 @@ class EditableLabel extends Component {
   };
 
   submitLabel = (label) => {
-    debugger;
     label(this.createFullSocialUrl(), this.props.type);
     this.setState({ editing: false });
   };
