@@ -23,7 +23,11 @@ export const IfActiveEntity = ({ children, then, other }) => (
 
 export const IfIsOwnedByCurrentUser = ({ entity, children, then, other }) => (
   <Context.Consumer>
-    {({ web3Store: { from } }) => (from && from.toLowerCase() === entity.owner ? then || children : other || null)}
+    {({ web3Store: { from } }) =>
+      from && (from.toLowerCase() === entity.owner || from.toLowerCase() === entity.id)
+        ? then || children
+        : other || null
+    }
   </Context.Consumer>
 );
 
