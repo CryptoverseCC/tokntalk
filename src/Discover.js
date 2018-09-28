@@ -283,7 +283,7 @@ class ByTokenIndex extends Component {
         <Switch>
           <Route exact path={`${match.url}/`} render={(props) => <ByToken token={token} {...props} />} />
           <Route exact path={`${match.url}/recentlyActive`} component={rewriteCmp('/recentlyActive', '')} />
-          <Route exact path={`${match.url}/social`} component={rewriteCmp('/social', '')} />
+          <Route exact path={`${match.url}/social/:type`} render={(props) => <SocialPage {...props} token={token} />} />
           <Route exact path={`${match.url}/feed`} component={rewriteCmp('/feed', '')} />
         </Switch>
       </DiscoveryContext.Provider>
@@ -409,7 +409,7 @@ const Members = ({ token }) => (
             </Tab>
           </TabList>
           <TabPanel>
-            <RecentlyActive asset={`${token.network}:${token.address}`} limit={9} />
+            <RecentlyActive limit={9} />
             {!loading && !latest.length && <NoActiveMembers />}
           </TabPanel>
           <TabPanel>
@@ -418,10 +418,10 @@ const Members = ({ token }) => (
               !instagram.length &&
               !github.length &&
               !twitter.length && <NoActiveMembers />}
-            <Social asset={`${token.network}:${token.address}`} social="github" limit={2} />
-            <Social asset={`${token.network}:${token.address}`} social="twitter" limit={2} />
-            <Social asset={`${token.network}:${token.address}`} social="instagram" limit={2} />
-            <Social asset={`${token.network}:${token.address}`} social="facebook" limit={2} />
+            <Social social="github" limit={2} token={token} />
+            <Social social="twitter" limit={2} token={token} />
+            <Social social="instagram" limit={2} token={token} />
+            <Social social="facebook" limit={2} token={token} />
           </TabPanel>
         </Tabs>
       </React.Fragment>
@@ -477,7 +477,7 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
   </div>
 );
 
-const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
+const Social = ({ token, social, limit = Number.MAX_SAFE_INTEGER }) => {
   const Icon = socialIcons[social];
 
   return (
@@ -492,8 +492,17 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
           <React.Fragment>
             {!data.loading && items.length ? (
               <SocialHeader style={{ marginBottom: '15px', marginTop: '15px' }}>
-                <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
-                {social}
+                {limit !== Number.MAX_SAFE_INTEGER ? (
+                  <Link to={`${token.isCustom ? token.asset : token.symbol}/social/${social}`}>
+                    <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
+                    {social}
+                  </Link>
+                ) : (
+                  <React.Fragment>
+                    <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
+                    {social}
+                  </React.Fragment>
+                )}
               </SocialHeader>
             ) : null}
             <div className="columns is-multiline">
@@ -527,6 +536,59 @@ const Social = ({ social, limit = Number.MAX_SAFE_INTEGER }) => {
         );
       }}
     </DiscoveryContext.Consumer>
+  );
+};
+
+const SocialPage = ({ token, match }) => {
+  const socialType = match.params.type;
+
+  return (
+    <div className="columns">
+      <div className="column is-3">
+        <ProfileBox
+          primaryColor={token.primaryColor}
+          avatar={<TokenImage token={token} style={{ margin: '5px', width: '44px', height: '44px' }} />}
+          coverImage={token.coverImage}
+          coverImageStyle={{
+            backgroundSize: '50%',
+            backgroundPosition: '100% 50%',
+          }}
+        >
+          <H2>{token.name}</H2>
+          <ul style={{ fontWeight: '600' }}>
+            <li style={{ marginBottom: '7px' }}>
+              <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
+            </li>
+            {token.externalLinks.map((entry) => (
+              <li key={entry.name} style={{ marginBottom: '7px' }}>
+                <a href={entry.url}>{entry.name}</a>
+              </li>
+            ))}
+          </ul>
+        </ProfileBox>
+        {token.promotionBox && (
+          <FlatContainer style={{ marginTop: '30px' }}>
+            <AppContext.Consumer>
+              {({ boostStore: { getBoosts, getSupportings } }) => (
+                <PromotionBox
+                  getBoosts={getBoosts}
+                  getSupportings={getSupportings}
+                  asset={token.promotionBox.asset}
+                  assetInfo={token.promotionBox.assetInfo}
+                  token={token.promotionBox.recipient}
+                  showPurrmoter={true}
+                />
+              )}
+            </AppContext.Consumer>
+          </FlatContainer>
+        )}
+      </div>
+      <div className="column is-6">
+        <FlatContainer style={{ maxWidth: 'unset' }}>
+          <Social social={socialType} token={token} />
+        </FlatContainer>
+      </div>
+    </div>
   );
 };
 
