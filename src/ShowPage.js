@@ -30,6 +30,7 @@ import SendTokens from './SendTokens';
 import ProfileBox from './ProfileBox';
 import { Token } from './ActiveEntityTokens';
 import StatusBox from './StatusBox';
+import { getEntityInfoForAddress } from './utils';
 
 const ScrollableContainer = styled.div`
   ${niceScroll};
@@ -142,8 +143,10 @@ export default class ShowPage extends Component {
       <H2 style={{ wordBreak: 'break-word' }}>
         <EntityName id={entity.id} />
       </H2>
-      <AppContext>{({ web3Store }) => web3Store.networkName === 'ethereum' && <SendTokens to={entity} />}</AppContext>
-      <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Seen In</H4>
+      <AppContext>
+        {({ web3Store }) => web3Store.networkName === 'ethereum' && entity.isAddress && <SendTokens to={entity} />}
+      </AppContext>
+      <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Personal links:</H4>
       <IfIsOwnedByCurrentUser
         entity={entity}
         then={<SocialList editable {...entity} />}
@@ -457,20 +460,31 @@ export class SocialList extends React.Component {
     return (
       <SocialList.Container>
         <Entity id={id}>
-          {({ external_link, background_color, image_preview_url }) => (
-            <SocialBadge href={external_link}>
-              {this.isAddress(id) && (
-                <IdentityAvatar
-                  entity={id}
-                  backgroundColor={background_color}
-                  size="verySmall"
-                  src={image_preview_url}
-                />
-              )}
-              {!this.isAddress(id) && <TokenImage token={this.getCommunityToken(id)} size="verySmall" />}
-              <span style={{ marginLeft: '15px' }}>{getDomain(external_link)}</span>
-            </SocialBadge>
-          )}
+          {({ owner, external_link, background_color, image_preview_url }) => {
+            const ownerEntity = !this.isAddress(id) && getEntityInfoForAddress(owner);
+            return (
+              <div>
+                {!this.isAddress(id) && (
+                  <SocialBadge href={`/${ownerEntity.id}`}>
+                    <IdentityAvatar entity={ownerEntity.id} size="verySmall" src={ownerEntity.image_preview_url} />
+                    <span style={{ marginLeft: '15px' }}>Owner profile ({ownerEntity.name})</span>
+                  </SocialBadge>
+                )}
+                <SocialBadge href={external_link}>
+                  {this.isAddress(id) && (
+                    <IdentityAvatar
+                      entity={id}
+                      backgroundColor={background_color}
+                      size="verySmall"
+                      src={image_preview_url}
+                    />
+                  )}
+                  {!this.isAddress(id) && <TokenImage token={this.getCommunityToken(id)} size="verySmall" />}
+                  <span style={{ marginLeft: '15px' }}>{getDomain(external_link)}</span>
+                </SocialBadge>
+              </div>
+            );
+          }}
         </Entity>
         {(facebook || editable) && (
           <SocialBadge href={normalizeHref(facebook)}>
