@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import jazzicon from 'jazzicon';
-
 import { getAssetsInfo } from './api';
 
 const { REACT_APP_NAME: APP_NAME } = process.env;

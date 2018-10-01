@@ -14,7 +14,7 @@ export const CommentForm = styled.form`
 export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea innerRef={inputRef} {...props} />)`
   background: transparent;
   font-family: 'AvenirNext';
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #1b2437;
   margin-top: 5px;

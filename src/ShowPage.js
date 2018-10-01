@@ -21,7 +21,7 @@ import Link from './Link';
 import { findClub } from './clubs';
 import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
-import { FlatContainer, H2, H4, SocialUsername } from './Components';
+import { FlatContainer, H2, H3, H4, SocialUsername, CopyButton } from './Components';
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
@@ -93,7 +93,7 @@ export default class ShowPage extends Component {
   `;
 
   render() {
-    const { EntityInfo, PromotionBox, Cousins, Communities, FeedContainer } = this;
+    const { EntityInfo, PromotionBox, Cousins, Communities, FeedContainer, ExternalLinks } = this;
     const { entityId } = this.props.match.params;
     const tokenClub = this.getCommunityToken(entityId);
 
@@ -121,6 +121,7 @@ export default class ShowPage extends Component {
                   primaryColor={entity.background_color ? `#${entity.background_color}` : tokenClub.primaryColor}
                 >
                   <EntityInfo entity={entity} />
+                  <ExternalLinks entity={entity} />
                 </ProfileBox>
                 <PromotionBox entity={entity} />
               </div>
@@ -128,8 +129,8 @@ export default class ShowPage extends Component {
                 <FeedContainer entity={entity} />
               </div>
               <div className="column is-3">
-                <Communities entity={entity} />
-                <Cousins entity={entity} style={{ marginTop: '2rem' }} />
+                {entity.isAddress && <Communities entity={entity} />}
+                <Cousins entity={entity} style={{ marginTop: entity.isAddress ? '20px' : '0px' }} />
               </div>
             </div>
           </React.Fragment>
@@ -140,13 +141,19 @@ export default class ShowPage extends Component {
 
   EntityInfo = ({ entity }) => (
     <React.Fragment>
-      <H2 style={{ wordBreak: 'break-word' }}>
+      <H3 style={{ wordBreak: 'break-word' }}>
         <EntityName id={entity.id} />
-      </H2>
+      </H3>
+      {entity.isAddress && <CopyButton value={entity.id} name="address" />}
       <AppContext>
         {({ web3Store }) => web3Store.networkName === 'ethereum' && entity.isAddress && <SendTokens to={entity} />}
       </AppContext>
-      <H4 style={{ marginTop: '10px', marginBottom: '10px' }}>Personal links:</H4>
+    </React.Fragment>
+  );
+
+  ExternalLinks = ({ entity }) => (
+    <React.Fragment>
+      <H4 style={{ marginTop: '20px', marginBottom: '10px' }}>Personal links:</H4>
       <IfIsOwnedByCurrentUser
         entity={entity}
         then={<SocialList editable {...entity} />}
@@ -156,7 +163,7 @@ export default class ShowPage extends Component {
   );
 
   PromotionBox = ({ entity }) => (
-    <FlatContainer style={{ marginTop: '30px' }}>
+    <FlatContainer style={{ marginTop: '20px' }}>
       <AppContext.Consumer>
         {({ boostStore: { getBoosts, getSupportings } }) => (
           <PromotionBox getBoosts={getBoosts} getSupportings={getSupportings} token={entity.id} showPurrmoter={false} />
@@ -170,7 +177,8 @@ export default class ShowPage extends Component {
       {({ entityStore: { entityInfo } }) => {
         if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
           const owner = entity.isAddress ? entity.id : entity.owner;
-          return <CousinsBox entity={entity} owner={owner} style={style} />;
+          const title = entity.isAddress ? 'Avatars' : 'Other avatars of this owner';
+          return <CousinsBox entity={entity} owner={owner} title={title} style={style} />;
         }
       }}
     </AppContext.Consumer>
@@ -461,15 +469,16 @@ export class SocialList extends React.Component {
       <SocialList.Container>
         <Entity id={id}>
           {({ owner, external_link, background_color, image_preview_url }) => {
-            const ownerEntity = !this.isAddress(id) && getEntityInfoForAddress(owner);
+            const ownerEntity = owner && getEntityInfoForAddress(owner);
             return (
               <div>
-                {!this.isAddress(id) && (
-                  <SocialBadge href={`/${ownerEntity.id}`}>
-                    <IdentityAvatar entity={ownerEntity.id} size="verySmall" src={ownerEntity.image_preview_url} />
-                    <span style={{ marginLeft: '15px' }}>Owner profile ({ownerEntity.name})</span>
-                  </SocialBadge>
-                )}
+                {!this.isAddress(id) &&
+                  ownerEntity && (
+                    <SocialBadge href={`/${ownerEntity.id}`}>
+                      <IdentityAvatar entity={ownerEntity.id} size="verySmall" src={ownerEntity.image_preview_url} />
+                      <span style={{ marginLeft: '15px' }}>Owner ({ownerEntity.name})</span>
+                    </SocialBadge>
+                  )}
                 <SocialBadge href={external_link}>
                   {this.isAddress(id) && (
                     <IdentityAvatar

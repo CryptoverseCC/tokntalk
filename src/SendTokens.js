@@ -106,6 +106,17 @@ const TokenSelector = ({ tokens, value, onChange }) => (
   </Dropdown>
 );
 
+export const InitialButton = styled.span`
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    cursor: not-allowed;
+    background: #e4dcfb;
+    transition: all 0.2s ease;
+  }
+`;
+
 export const StyledButton = styled.button`
   cursor: pointer;
   background-color: #264dd9;
@@ -239,9 +250,9 @@ class SendTokens extends Component {
     const { step, tokens, token, value, txHash } = this.state;
     if (step === 'initial') {
       return (
-        <StyledButton style={{ marginTop: '10px' }} onClick={() => this.setState({ step: 'send' })}>
-          Send tokens
-        </StyledButton>
+        <InitialButton style={{ marginTop: '10px' }} onClick={() => this.setState({ step: 'send' })}>
+          💸 send tokens
+        </InitialButton>
       );
     }
 
@@ -302,7 +313,7 @@ class SendTokens extends Component {
             style={{ marginLeft: 'auto', borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
             disabled={value <= 0}
           >
-            Send
+            💸 send
           </StyledButton>
           <ExitIcon onClick={() => this.setState({ step: 'initial' })} />
         </form>

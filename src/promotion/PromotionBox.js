@@ -62,8 +62,9 @@ const PAGE = {
 };
 
 const PromotionTab = ({ count, children, ...props }) => (
-  <FeedTypeButton {...props} style={{ display: 'flex', flexDirection: 'column' }}>
-    <span style={{ fontSize: '2rem' }}>{count}</span>
+  <FeedTypeButton {...props}>
+    <span style={{ fontSize: '1.2rem' }}>{count}</span>
+    &nbsp;
     <span style={{ fontSize: '1rem' }}>{children}</span>
   </FeedTypeButton>
 );
@@ -118,6 +119,7 @@ export class PromotionBox extends Component {
       <React.Fragment>
         {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
         {!this.props.showPurrmoter && this.renderTabs(supportersCount, supportingCount)}
+        {Object.keys(items).length > 0 && this.renderList(items)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
           <Web3ProviderStatus>
             {(isEnabled) => {
@@ -129,7 +131,6 @@ export class PromotionBox extends Component {
             }}
           </Web3ProviderStatus>
         )}
-        {Object.keys(items).length > 0 && this.renderList(items)}
       </React.Fragment>
     );
   };

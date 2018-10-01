@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export const FlatContainer = styled.div`
   width: 96%;
   max-width: 300px;
   margin: 0 auto;
   border-radius: 12px;
-  padding: 30px;
+  padding: 15px;
   background-color: white;
   @media (max-width: 770px) {
     max-width: 98%;
@@ -56,3 +57,29 @@ export const SocialUsername = ({ link, ...restProps }) => {
 
   return <span {...restProps}>{username || link}</span>;
 };
+
+export const CopyButton = styled(
+  class extends React.Component {
+    state = { copied: false };
+
+    onCopy = () => {
+      this.setState({ copied: true }, () => {
+        setTimeout(() => this.setState({ copied: false }), 5000);
+      });
+    };
+
+    render() {
+      const { className, style, value, name } = this.props;
+      const { copied } = this.state;
+      return (
+        <div className={className} style={style}>
+          <CopyToClipboard text={value} onCopy={this.onCopy}>
+            <span>{copied ? '✓ copied' : `⎘ copy ${name}`}</span>
+          </CopyToClipboard>
+        </div>
+      );
+    }
+  },
+)`
+  position: relative;
+`;

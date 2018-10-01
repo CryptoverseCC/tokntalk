@@ -497,7 +497,7 @@ const CardBoxContent = styled.div`
   overflow: hidden;
   border-radius: 12px;
   background-color: white;
-  padding: 1.25rem;
+  padding: 15px;
   ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};
 `;
 const CardBox = styled(({ children, club, className, style }) => {
@@ -510,7 +510,6 @@ const CardBox = styled(({ children, club, className, style }) => {
   );
 })`
   position: relative;
-  margin-right: 10px;
   box-shadow: 0 2rem 4rem -1.5rem rgba(118, 103, 170, 0.09);
   :not(:first-child) {
     margin-top: 2rem;
