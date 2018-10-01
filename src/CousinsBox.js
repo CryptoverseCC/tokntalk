@@ -13,6 +13,27 @@ const CousinsList = styled(List)`
   ${niceScroll};
 `;
 
+const Row = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+`;
+
+const Item = styled.div`
+  width: 100px;
+  height: 100px;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ITEM_SIZE = 55;
+
 export class CousinsBox extends Component {
   state = {
     entities: [],
@@ -43,40 +64,44 @@ export class CousinsBox extends Component {
       <FlatContainer style={style}>
         <H4>{title || 'Cousins'}</H4>
         <AutoSizer disableHeight>
-          {({ width }) => (
-            <CousinsList
-              height={300}
-              width={width}
-              rowHeight={74}
-              rowRenderer={this.renderRow}
-              rowCount={activeEntity.isAddress ? this.state.entities.length : this.state.entities.length - 1}
-            />
-          )}
+          {({ width }) => {
+            const itemsPerRow = Math.floor(width / ITEM_SIZE);
+            const rowCount = Math.ceil(this.state.entities.length - (!activeEntity.isAddress | 0) / itemsPerRow);
+            return (
+              <List
+                className="List"
+                width={width}
+                height={200}
+                rowCount={rowCount}
+                rowHeight={ITEM_SIZE}
+                rowRenderer={({ index, key, style }) => {
+                  const items = [];
+                  const fromIndex = index * itemsPerRow;
+                  const toIndex = Math.min(
+                    fromIndex + itemsPerRow,
+                    this.state.entities.length - (!activeEntity.isAddress | 0),
+                  );
+
+                  for (let index = fromIndex; index < toIndex; index++) {
+                    const cousin = this.state.entities.filter((entity) => entity.id !== this.props.entity.id)[index];
+                    items.push(
+                      <Item key={index}>
+                        <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
+                      </Item>,
+                    );
+                  }
+
+                  return (
+                    <Row key={key} style={style}>
+                      {items}
+                    </Row>
+                  );
+                }}
+              />
+            );
+          }}
         </AutoSizer>
       </FlatContainer>
     ) : null;
   }
-
-  renderRow = ({ index, key, style }) => {
-    const cousin = this.state.entities.filter((entity) => entity.id !== this.props.entity.id)[index];
-    return (
-      <div
-        key={key}
-        style={{ display: 'flex', boxAlgin: 'center', alignItems: 'center', paddingTop: '20px', ...style }}
-      >
-        <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
-        <Link
-          to={`/${cousin.id}`}
-          style={{
-            fontFamily: 'AvenirNext',
-            fontSize: '1rem',
-            fontWeight: '600',
-            marginLeft: '10px',
-          }}
-        >
-          {cousin.name}
-        </Link>
-      </div>
-    );
-  };
 }
