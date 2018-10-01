@@ -95,7 +95,7 @@ const Header = () => {
             </ToggleHttpButton>
           )}
         </Context.Consumer>
-        <IfActiveEntity then={() => <CatDropdown />} other={<Status />} />
+        <IfActiveEntity then={() => <AvatarSwitcher />} other={<Status />} />
       </StyledHeader>
     </HeaderContainer>
   );
@@ -142,33 +142,22 @@ const ToggleButton = styled.button`
 `;
 const stopPropagation = (e) => e.stopPropagation();
 
-const CatDropdownToggle = ({ openDropdown }) => {
+const AvatarSwitcherToggle = ({ openDropdown }) => {
   return (
     <ToggleButton className="level" onClick={openDropdown}>
-      <span onClick={stopPropagation}>
-        <LinkedActiveEntityAvatar size="verySmall" />
+      <span
+        style={{
+          display: 'inline-flex',
+          fontSize: '0.8rem',
+          position: 'relative',
+          fontWeight: '600',
+          padding: '1.2em 0.6em 1em 0.6em',
+          color: '#264dd9',
+          marginLeft: '10px',
+        }}
+      >
+        Switch ▾
       </span>
-      <DropdownEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }}>
-        <span onClick={stopPropagation}>
-          <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
-        </span>
-        <span
-          style={{
-            display: 'inline-flex',
-            fontSize: '0.8rem',
-            position: 'relative',
-            fontWeight: '600',
-            padding: '1.2em 0.6em 1em 0.6em',
-            color: '#264dd9',
-            backgroundColor: '#ebefff',
-            borderRadius: '20px',
-            lineHeight: '1px',
-            marginLeft: '7px',
-          }}
-        >
-          Switch ▾
-        </span>
-      </DropdownEntityName>
     </ToggleButton>
   );
 };
@@ -191,7 +180,7 @@ const PickEntity = styled.button`
   }
 `;
 
-const CatDropdownContent = styled.ul`
+const AvatarSwitcherContent = styled.ul`
   box-shadow: 0 10px 30px rgba(6, 3, 16, 0.06);
   border-radius: 25px 0 12px 25px;
   padding: 0.5rem;
@@ -202,12 +191,23 @@ const CatDropdownContent = styled.ul`
   ${niceScroll};
 `;
 
-const CatDropdown = () => {
+const AvatarSwitcher = () => {
   return (
-    <div style={{ marginLeft: 'auto' }}>
+    <div
+      style={{
+        marginLeft: 'auto',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <span style={{ marginRight: '10px' }}>Active Avatar:</span>
+      <LinkedActiveEntityAvatar size="verySmall" style={{ marginRight: '10px' }} />
+      <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
       <Dropdown
-        Content={CatDropdownContent}
-        toggle={({ openDropdown }) => <CatDropdownToggle openDropdown={openDropdown} />}
+        Content={AvatarSwitcherContent}
+        toggle={({ openDropdown }) => <AvatarSwitcherToggle openDropdown={openDropdown} />}
         position="right"
       >
         {({ closeDropdown }) => (
