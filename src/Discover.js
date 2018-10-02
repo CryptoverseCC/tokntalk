@@ -80,6 +80,14 @@ export default class Discover extends Component {
 
 const IndexWithActiveEntity = ({ ...props }) => <Index {...props} />;
 
+const Title = styled.div`
+  margin: 30 0 15 0;
+
+  @media (max-width: 770px) {
+    margin: 3 0 2 0;
+  }
+`;
+
 class Index extends Component {
   static TAB = {
     MOST_ACTIVE: 1,
@@ -95,19 +103,25 @@ class Index extends Component {
       <React.Fragment>
         <div className="columns">
           <div className="column is-5">
-            <H2 style={{ marginBottom: '15px', marginTop: '30px' }}>Token Clubs</H2>
+            <Title>
+              <H2>Token Clubs</H2>
+            </Title>
             <p>Everything to keep up what’s happening around your tokens and to explore new opportunities.</p>
           </div>
           <div className="column is-5">
-            <H4 style={{ marginTop: '30px' }}>Go to club</H4>
+            <Title>
+              <H4>Go to club</H4>
+            </Title>
             <p style={{ fontSize: '0.8rem' }}>Paste ERC20 contract address</p>
-            <GenerateClub style={{ marginTop: '10px', height: '64px' }} />
+            <GenerateClub />
           </div>
           <div className="column is-2">
-            <H4 style={{ marginTop: '30px' }}>Add a club</H4>
-            <p style={{ fontSize: '0.8rem' }}>Make it visible here</p>
+            <Title>
+              <H4>Make you token more visible</H4>
+            </Title>
+            <p style={{ fontSize: '0.8rem' }}>Add custom artwork to distinguish your token from the rest.</p>
             <Intercom>
-              <AddToken style={{ marginTop: '10px', height: '60px' }}>Add a club</AddToken>
+              <AddToken>Make your token visible</AddToken>
             </Intercom>
           </div>
         </div>
@@ -903,12 +917,25 @@ const AddToken = styled.div`
     transform: scale(0.98);
     transition: all 0.2s cubic-bezier(0.5, 0, 0.1, 1), left 0s linear;
   }
+
+  margin-top: 10px;
+  height: 60px;
+
+  @media (max-width: 770px) {
+    height: 40px;
+  }
 `;
 
 const GenerateContainer = styled.div`
-  width: 440px;
+  max-width: 440px;
   font-size: 1rem;
   font-weight: 600;
+  margin-top: 10px;
+  height: 64px;
+
+  @media (max-width: 770px) {
+    height: 44px;
+  }
 `;
 
 const GenerateInput = styled.input`
@@ -934,11 +961,35 @@ const GenerateInput = styled.input`
 `;
 
 const GenerateInputContainer = styled.div`
-  width: 440px;
   height: 60px;
   position: relative;
   @media (max-width: 770px) {
     width: 100%;
+    height: 40px;
+  }
+`;
+
+const GenerateButton = styled.button`
+  cursor: pointer;
+  background-color: #264dd9;
+  padding: 16px 10px 15px 10px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  width: 'unset';
+
+  &:disabled {
+    cursor: not-allowed;
+    background: #e4dcfb;
+    transition: all 0.2s ease;
+  }
+
+  @media (max-width: 770px) {
+    padding: 6px 10px 5px 10px;
   }
 `;
 
@@ -963,13 +1014,17 @@ const GenerateClub = withRouter(
         <GenerateContainer style={style}>
           <GenerateInputContainer>
             <GenerateInput placeholder="0xAddress" value={contractAddress} onChange={this.onChange} />
-            <StyledButton
+            <GenerateButton
               disabled={!isValid}
               onClick={this.onGenerate}
-              style={{ width: 'unset', position: 'absolute', right: '7px', top: '7px' }}
+              style={{
+                position: 'absolute',
+                right: '7px',
+                top: '7px',
+              }}
             >
               Go
-            </StyledButton>
+            </GenerateButton>
           </GenerateInputContainer>
         </GenerateContainer>
       );

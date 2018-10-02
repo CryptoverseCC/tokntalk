@@ -38,7 +38,7 @@ export const SidebarProvider = withRouter(SidebarProviderCmp);
 
 export const SidebarToggler = () => (
   <SidebarContext.Consumer>
-    {({ toggle, open }) => <Burger onClick={toggle} open={open} style={{ marginRight: '15px' }} />}
+    {({ toggle, open }) => <Burger onClick={toggle} open={open} style={{ marginRight: '10px' }} />}
   </SidebarContext.Consumer>
 );
 
@@ -211,6 +211,10 @@ const IconContainer = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 770px) {
+    margin-right: 5px;
+  }
 `;
 
 const SidebarLeftContainer = styled.div`

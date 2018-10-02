@@ -23,6 +23,10 @@ const StyledHeader = styled.div`
   font-weight: 600;
   padding: 0 2rem;
   box-shadow: 0 0.6rem 1rem -0.3rem rgba(27, 36, 55, 0.04);
+
+  @media (max-width: 770px) {
+    padding: 0 10px;
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -88,13 +92,6 @@ const Header = () => {
           <CrossLink to="/about">About</CrossLink>
           <CrossLink to="/clubs">Explore clubs</CrossLink>
         </LinkContainer>
-        <Context.Consumer>
-          {({ appStore: { http, toggleHttpClaims } }) => (
-            <ToggleHttpButton http={http} onClick={toggleHttpClaims}>
-              {http ? 'Off Chain' : 'On Chain'}
-            </ToggleHttpButton>
-          )}
-        </Context.Consumer>
         <IfActiveEntity then={() => <AvatarSwitcher />} other={<Status />} />
       </StyledHeader>
     </HeaderContainer>
@@ -112,51 +109,51 @@ const DropdownEntityName = styled.div`
 `;
 
 const ToggleButton = styled.button`
-  border: none;
-  background: none;
-  outline: none;
-  cursor: pointer;
-  margin-left: auto;
-  position: relative;
+  align-items: center;
+  background-color: white;
+  border-radius: 10%;
+  border: 0;
+  box-shadow: 0 0.2rem 1.5rem -0.2rem rgba(118, 103, 170, 0.4);
+  color: rgb(98, 60, 234);
+  display: flex;
+  font-size: 20px;
+  justify-content: center;
+  pading: 10px;
+  z-index: 1;
+  margin-left: 15px;
 
   @media (max-width: 770px) {
-    &:before {
-      border-radius: 50%;
-      background-color: white;
-      box-shadow: 0 0.2rem 1.5rem -0.2rem rgba(118, 103, 170, 0.4);
-      z-index: 1;
-      content: '▾';
-      display: flex;
-      width: 30px;
-      height: 30px;
-      font-size: 20px;
-      color: rgb(98, 60, 234);
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translate(-50%, 50%);
-      align-items: center;
-      justify-content: center;
-    }
+    align-items: center;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 0.2rem 1.5rem -0.2rem rgba(118, 103, 170, 0.4);
+    color: rgb(98, 60, 234);
+    display: flex;
+    font-size: 20px;
+    height: 30px;
+    justify-content: center;
+    width: 30px;
+    z-index: 1;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 `;
 const stopPropagation = (e) => e.stopPropagation();
 
 const AvatarSwitcherToggle = ({ openDropdown }) => {
   return (
-    <ToggleButton className="level" onClick={openDropdown}>
+    <ToggleButton onClick={openDropdown}>
       <span
         style={{
-          display: 'inline-flex',
           fontSize: '0.8rem',
           position: 'relative',
           fontWeight: '600',
-          padding: '1.2em 0.6em 1em 0.6em',
+          padding: '5px',
           color: '#264dd9',
-          marginLeft: '10px',
         }}
       >
-        Switch ▾
+        <HiddenOnMobile>Switch</HiddenOnMobile>
+        &nbsp;▾
       </span>
     </ToggleButton>
   );
@@ -191,6 +188,20 @@ const AvatarSwitcherContent = styled.ul`
   ${niceScroll};
 `;
 
+const HiddenOnMobile = styled.span`
+  @media (max-width: 770px) {
+    display: none;
+  }
+`;
+
+const Avatar = styled.span`
+  margin-right: 10px;
+
+  @media (max-width: 770px) {
+    margin-right: 5px;
+  }
+`;
+
 const AvatarSwitcher = () => {
   return (
     <div
@@ -202,9 +213,11 @@ const AvatarSwitcher = () => {
         alignItems: 'center',
       }}
     >
-      <span style={{ marginRight: '10px' }}>Active Avatar:</span>
+      <Avatar>Avatar:</Avatar>
       <LinkedActiveEntityAvatar size="verySmall" style={{ marginRight: '10px' }} />
-      <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
+      <HiddenOnMobile>
+        <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
+      </HiddenOnMobile>
       <Dropdown
         Content={AvatarSwitcherContent}
         toggle={({ openDropdown }) => <AvatarSwitcherToggle openDropdown={openDropdown} />}
@@ -238,15 +251,14 @@ const AvatarSwitcher = () => {
 };
 
 const DropdownLink = styled(CrossLink)`
-  padding: 10px;
+  padding: 3px;
   margin: 0;
-  min-width: 5rem;
   color: #264dd9;
   font-weight: 600;
 `;
 
 const LinkDropdownContainer = styled.div`
-  margin-left: 10px;
+  margin-left: 5px;
   display: none;
   @media (max-width: 770px) {
     display: flex;
@@ -256,7 +268,6 @@ const LinkDropdownContainer = styled.div`
 const LinkDropdown = () => (
   <LinkDropdownContainer>
     <React.Fragment>
-      <DropdownLink to="/about">About</DropdownLink>
       <DropdownLink to="/clubs">Clubs</DropdownLink>
     </React.Fragment>
   </LinkDropdownContainer>
