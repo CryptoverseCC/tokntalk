@@ -322,7 +322,7 @@ const ByToken = ({ token }) => (
             backgroundPosition: '100% 50%',
           }}
         >
-          <H2>{token.name}</H2>
+          <H2 style={{ overflow: 'hidden' }}>{token.name}</H2>
           <ul style={{ fontWeight: '600' }}>
             <li style={{ marginBottom: '7px' }}>
               <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>

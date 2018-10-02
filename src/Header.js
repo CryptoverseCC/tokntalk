@@ -60,19 +60,6 @@ const LinkContainer = styled.ul`
   }
 `;
 
-const ToggleHttpButton = styled.button`
-  margin-left: 10px;
-  margin-top: -3px;
-  padding: 5px 10px;
-  background-color: ${({ http }) => (http ? '#ecf1f9' : '#fdcf0b')};
-  border: none;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border-radius: 3px;
-  outline: 0;
-  color: ${({ http }) => (http ? '#8c91a2' : '#2f343a')};
-`;
-
 const Header = () => {
   return (
     <HeaderContainer>

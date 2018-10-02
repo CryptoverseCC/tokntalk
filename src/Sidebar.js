@@ -12,6 +12,7 @@ import { niceScroll } from './cssUtils';
 import feedIcon from './img/feeds.svg';
 import discoverIcon from './img/discover.svg';
 import { mobileOrTablet } from './utils';
+import Context from './Context';
 
 const SidebarContext = React.createContext();
 
@@ -42,25 +43,46 @@ export const SidebarToggler = () => (
   </SidebarContext.Consumer>
 );
 
+const ToggleHttpButton = styled.button`
+  margin-left: 10px;
+  margin-top: -3px;
+  padding: 5px 10px;
+  background-color: ${({ http }) => (http ? '#ecf1f9' : '#fdcf0b')};
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 3px;
+  outline: 0;
+  color: ${({ http }) => (http ? '#8c91a2' : '#2f343a')};
+`;
+
 export const SidebarContainer = styled.div`
   display: flex;
   position: relative;
+`;
+
+const Header = styled(H4)`
+  padding: 30px 10px 10px 15px;
+
+  @media (max-width: 770px) {
+    padding: 5px 1px 3px 5px;
+  }
 `;
 
 export const SidebarLeft = () => (
   <SidebarContext.Consumer>
     {({ open, overlay }) => (
       <SidebarLeftContainer open={open} overlay={overlay}>
-        <LinkItem to="/" icon={<img style={{ width: '16px' }} src={feedIcon} />}>
-          Feed
+        <LinkItem to="/personal" icon={<img style={{ width: '16px' }} src={feedIcon} />}>
+          Personal Feed
         </LinkItem>
-        <LinkItem to="/clubs" icon={<img style={{ width: '16px' }} src={discoverIcon} />}>
-          Clubs
+        <LinkItem to="/" icon={<img style={{ width: '16px' }} src={feedIcon} />}>
+          All
         </LinkItem>
         <IfActiveEntity>
           {(entityId) => (
             <React.Fragment>
-              <H4 style={{ padding: '30px 10px 10px 15px' }}>Your Clubs</H4>
+              <Header>Your Clubs</Header>
               <ClubContainer>
                 <EntityClubs id={entityId}>
                   {(clubs) => clubs.map((club) => <Club key={club.address} token={club} />)}
@@ -69,6 +91,14 @@ export const SidebarLeft = () => (
             </React.Fragment>
           )}
         </IfActiveEntity>
+        <Header>Settings</Header>
+        <Context.Consumer>
+          {({ appStore: { http, toggleHttpClaims } }) => (
+            <ToggleHttpButton http={http} onClick={toggleHttpClaims}>
+              {http ? 'Off Chain' : 'On Chain'}
+            </ToggleHttpButton>
+          )}
+        </Context.Consumer>
         <SidebarFooter />
       </SidebarLeftContainer>
     )}
@@ -117,8 +147,18 @@ const SidebarRightContainer = styled.div`
 `;
 
 const StyledUnreadedMessages = styled(UnreadedCount)`
-  color: #1b2437;
-  background: white;
+  align-items: center;
+  background-color: #dd0000;
+  color: #fff;
+  display: flex;
+  font-size: 8px;
+  height: 10px;
+  padding: 7px;
+  transform: translate(50%, 70%);
+  width: 10px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 `;
 
 const ClubContainer = styled.div`
@@ -130,10 +170,14 @@ const Club = ({ token }) => (
   <LinkItem
     to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}
     primaryColor={token.primaryColor}
-    icon={<TokenImage token={token} />}
+    icon={
+      <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+        <TokenImage token={token} />
+        <StyledUnreadedMessages token={token} short={true} />
+      </div>
+    }
   >
     {token.name}
-    <StyledUnreadedMessages token={token} />
   </LinkItem>
 );
 
@@ -173,7 +217,7 @@ const LinkItem = styled(({ children, icon, primaryColor, ...props }) => (
   </NavLink>
 ))`
   display: block;
-  padding: 8px 15px;
+  padding: 6px 10px;
   font-size: 0.8rem;
   font-weight: 600;
   flex-shrink: 0;
@@ -199,6 +243,7 @@ const LinkItem = styled(({ children, icon, primaryColor, ...props }) => (
 
   @media (max-width: 770px) {
     max-width: unset;
+    padding: 2px 3px;
   }
 `;
 
@@ -231,6 +276,7 @@ const SidebarLeftContainer = styled.div`
   @media (max-width: 770px) {
     position: fixed;
     width: 100vw;
+    padding: 5px;
   }
 `;
 
