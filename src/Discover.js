@@ -102,26 +102,30 @@ class Index extends Component {
     return (
       <React.Fragment>
         <div className="columns">
-          <div className="column is-5">
+          <div className="column is-6">
             <Title>
               <H2>Token Clubs</H2>
             </Title>
             <p>Everything to keep up what’s happening around your tokens and to explore new opportunities.</p>
           </div>
-          <div className="column is-5">
+          <div className="column is-3">
             <Title>
               <H4>Go to club</H4>
             </Title>
-            <p style={{ fontSize: '0.8rem' }}>Paste ERC20 contract address</p>
+            <p style={{ fontSize: '0.8rem' }}>
+              Talk in any ERC20 token club. We support them all!
+              <br />
+              Paste ERC20 contract address:
+            </p>
             <GenerateClub />
           </div>
-          <div className="column is-2">
+          <div className="column is-3">
             <Title>
-              <H4>Make you token more visible</H4>
+              <H4>Make your token more visible</H4>
             </Title>
             <p style={{ fontSize: '0.8rem' }}>Add custom artwork to distinguish your token from the rest.</p>
             <Intercom>
-              <AddToken>Make your token visible</AddToken>
+              <AddToken>Add custom artwork</AddToken>
             </Intercom>
           </div>
         </div>
