@@ -51,7 +51,9 @@ export default class IndexPage extends Component {
   }
 
   changeFeedType = (feedType) => {
-    this.setState({ feedType });
+    if (this.state.feedType !== feedType) {
+      this.setState({ feedType });
+    }
   };
 
   render() {

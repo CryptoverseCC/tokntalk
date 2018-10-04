@@ -4,13 +4,7 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import styled, { keyframes } from 'styled-components';
 import uniqBy from 'lodash/fp/uniqBy';
 
-import {
-  IfActiveEntity,
-  LinkedActiveEntityAvatar,
-  LinkedEntityAvatar,
-  IsActiveEntityFromFamily,
-  DoesActiveEntityHasToken,
-} from '../Entity';
+import { IfActiveEntity, LinkedEntityAvatar, IsActiveEntityFromFamily, DoesActiveEntityHasToken } from '../Entity';
 import Link from '../Link';
 import Boost from './posts/Boost';
 import Post from './posts/Basic';

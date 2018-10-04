@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from './Link';
 import { ConnectedCommentForm, CommentForm } from './CommentForm';
 import { LinkedActiveEntityAvatar, IfActiveEntity } from './Entity';
 import styled from 'styled-components';
@@ -38,9 +37,7 @@ const Hero = (props) => (
         <HeroContainer>
           <AddStory>
             <article className="media">
-              <Link to={`/${entity}`}>
-                <Avatar />
-              </Link>
+              <Avatar />
               <ConnectedCommentForm Form={CommentForm} />
             </article>
           </AddStory>

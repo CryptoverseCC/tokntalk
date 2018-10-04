@@ -10,14 +10,18 @@ import PostReactions from './PostReactions';
 
 const Message = styled.p`
   font-size: 1rem;
-  margin: 20px;
   overflow-wrap: break-word;
   white-space: pre-wrap;
   word-break: break-word;
+  margin: 8px 0px 10px 20px;
+  background-color: #fbfbfb;
+  padding: 10px;
+  border-radius: 10px;
 
   @media (max-width: 770px) {
     font-size: 1rem;
     margin: 8px 0px 10px 20px;
+    padding: 10px;
   }
 `;
 
