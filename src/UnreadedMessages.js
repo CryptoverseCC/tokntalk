@@ -60,7 +60,7 @@ export class UnreadedMessagesProvider extends Component {
   }
 }
 
-export const UnreadedCount = ({ token, className, style }) => (
+export const UnreadedCount = ({ token, className, style, short = false }) => (
   <Context.Consumer>
     {(undreadedMessages) => {
       const count = undreadedMessages[token.address];
@@ -76,7 +76,7 @@ export const UnreadedCount = ({ token, className, style }) => (
           primaryColor={token.primaryColor}
           secondaryColor={token.secondaryColor}
         >
-          {count === null ? 'Undiscovered' : count > 100 ? '99+' : `${count} New`}
+          {count === null ? 'Undiscovered' : count > 100 ? '99+' : `${count} ${!short ? 'New' : ''}`}
         </UnreadedCountContainer>
       );
     }}
