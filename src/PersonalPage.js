@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
+import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
 import { FlatContainer } from './Components';

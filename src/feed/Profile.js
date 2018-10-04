@@ -46,7 +46,7 @@ const StatusRow = styled.div`
   font-size: 0.8rem;
 
   > * {
-    margin-right: 15px;
+    margin-right: 12px;
   }
 `;
 

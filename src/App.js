@@ -35,7 +35,6 @@ import { metamaskStatusChanged } from './Analytics';
 import { SidebarProvider, SidebarContainer, SidebarLeft, SidebarRight } from './Sidebar';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
-const GeneralPage = IndexPage;
 
 export const produceEntities = (myEntities, previousActiveEntity) => {
   const firstEntity = myEntities[0];

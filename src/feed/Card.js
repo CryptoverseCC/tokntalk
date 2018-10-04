@@ -4,7 +4,6 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 import styled, { keyframes } from 'styled-components';
 import uniqBy from 'lodash/fp/uniqBy';
 
-import { ConnectedReplyForm, ReplyForm } from '../CommentForm';
 import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
@@ -16,6 +15,7 @@ import Link from '../Link';
 import Boost from './posts/Boost';
 import Post from './posts/Basic';
 import Reply from './posts/Reply';
+import PostReplyForm from './posts/ReplyForm';
 import { CollapsableText, ShowMore } from './posts/CollapsableText';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from '../Icons';
 import { createEtherscanUrl, enhanceCustomClubProp } from '../utils';
@@ -86,11 +86,6 @@ const ReplyClubInfo = styled.div`
   *:focus-within + & {
     display: block;
   }
-`;
-
-const ReplyFormContainerAvatar = styled(LinkedActiveEntityAvatar)`
-  width: 32px;
-  height: 32px;
 `;
 
 const blink = keyframes`
@@ -188,24 +183,6 @@ const CardBox = styled(({ children, club, className, style }) => {
     }
   }
 `;
-
-const ReplyFormContainer = ({ about, children, ...props }) => (
-  <article className="media" style={{ borderTop: 'none' }}>
-    <div className="media-left is-hidden-mobile">
-      <div style={{ height: '64px', width: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-    </div>
-
-    <div className="media-content columns is-mobile">
-      <div className="column is-narrow">
-        <ReplyFormContainerAvatar />
-      </div>
-      <div className="column">
-        <ConnectedReplyForm Form={ReplyForm} about={about} {...props} />
-        {children}
-      </div>
-    </div>
-  </article>
-);
 
 const ViewMoreReplies = styled(({ leftCount, onClick, className }) => (
   <ShowMore className={className} onClick={onClick}>
@@ -316,20 +293,20 @@ export default class Card extends React.Component {
                           isClubFeed,
                         );
                         return (
-                          <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
+                          <PostReplyForm about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
                             <ReplyClubInfo warning={warning}>{message}</ReplyClubInfo>
-                          </ReplyFormContainer>
+                          </PostReplyForm>
                         );
                       }}
                     </DoesActiveEntityHasToken>
                   )}
                 </IsActiveEntityFromFamily>
               ) : (
-                <ReplyFormContainer about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
+                <PostReplyForm about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
                   {isClubFeed && (
                     <ReplyClubInfo>Your message will be displayed here and on the main feed.</ReplyClubInfo>
                   )}
-                </ReplyFormContainer>
+                </PostReplyForm>
               )
             }
           </IfActiveEntity>
