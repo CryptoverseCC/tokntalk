@@ -1012,6 +1012,7 @@ const clubs = [
   },
   {
     ...mapping.MOKENS,
+    entityPrefix: 'Moken #',
     logo: unknowClub,
     coverImage: unknowClubCover,
     primaryColor: '#EDF1F8',
@@ -1029,6 +1030,7 @@ const clubs = [
   },
   {
     ...mapping.FANBITS,
+    entityPrefix: 'Fanbit #',
     logo: unknowClub,
     coverImage: unknowClubCover,
     primaryColor: '#EDF1F8',
