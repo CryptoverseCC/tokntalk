@@ -201,11 +201,9 @@ const clubs = [
       { name: 'Discord', url: 'https://discord.gg/cryptokitties' },
       { name: 'Twitch', url: 'https://www.twitch.tv/directory/game/CryptoKitties' },
     ],
-    avatarSizes: {
-      verySmall: { containerSize: '32px', imgSize: '70px', imgTopOffset: '85%', imgLeftOffset: '55%' },
-      small: { containerSize: '44px', imgSize: '110px', imgTopOffset: '85%', imgLeftOffset: '55%' },
-      medium: { containerSize: '54px', imgSize: '120px', imgTopOffset: '77%', imgLeftOffset: '55%' },
-      large: { containerSize: '64px', imgSize: '130px', imgTopOffset: '70%', imgLeftOffset: '55%' },
+    avatar: {
+      scale: 2.7,
+      translate: '2%, 11%',
     },
   },
   {
@@ -229,6 +227,10 @@ const clubs = [
       { name: 'Discord', url: 'https://discord.gg/68DeTqc' },
       { name: 'Telegram', url: 'https://t.me/axieinfinity' },
     ],
+    avatar: {
+      scale: 2,
+      translate: '10%, 0%',
+    },
   },
   {
     ...mapping.AIRSWAP,
@@ -283,6 +285,10 @@ const clubs = [
       { name: 'Facebook', url: 'http://facebook.com/cryptobotsgame' },
       { name: 'Medium', url: 'https://medium.com/@cryptobots' },
     ],
+    avatar: {
+      scale: 1.4,
+      translate: '0%, 10%',
+    },
   },
   {
     ...mapping.ETH_MOJI,
@@ -717,6 +723,10 @@ const clubs = [
       { name: 'Reddit', url: 'https://www.reddit.com/r/cryptocrystal' },
       { name: 'Telegram', url: 'https://t.me/cryptocrystal_official' },
     ],
+    avatar: {
+      scale: 1.1,
+      translate: '0%, 0%',
+    },
   },
   {
     ...mapping.BAOBOSHICOIN,

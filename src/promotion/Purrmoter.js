@@ -17,20 +17,24 @@ const CatvertisedHeader = styled.div`
 const PurrmoterDiv = styled(({ hiddenOnMobile, ...restProps }) => <Link {...restProps} />)`
   overflow: hidden;
   display: flex;
-  ${({ hiddenOnMobile }) =>
-    hiddenOnMobile
-      ? `
-    @media (max-width: 770px) {
-      display: none;
-    }`
-      : ''};
+
+  @media (max-width: 770px) {
+    ${({ hiddenOnMobile }) => (hiddenOnMobile ? `display: none;` : '')};
+  }
 `;
 
-export const Purrmoter = ({ token }) => {
+const Avatar = styled(EntityAvatar)`
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+`;
+
+export const Purrmoter = ({ hiddenOnMobile, token }) => {
   return (
     <CatvertisedHeader>
-      <PurrmoterDiv to={`/${token}`}>
-        <EntityAvatar size="medium" id={token} />
+      <PurrmoterDiv to={`/${token}`} hiddenOnMobile={hiddenOnMobile}>
+        <Avatar id={token} />
         <EntityDescription>
           <CatvertisedName>
             <EntityNameWrapper>

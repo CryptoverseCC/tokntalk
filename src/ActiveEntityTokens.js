@@ -13,7 +13,6 @@ import trust from './img/wallets/trust.svg';
 import cipher from './img/wallets/cipher.svg';
 import metamask from './img/wallets/metamask.svg';
 import tokenpocket from './img/wallets/tokenpocket.png';
-import unlockBackground from './img/unlock_bg.png';
 const { REACT_APP_INTERFACE_VALUE: INTERFACE_VALUE } = process.env;
 
 const ActiveEntityTokens = () => (

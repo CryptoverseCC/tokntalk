@@ -3,13 +3,6 @@ import find from 'lodash/fp/find';
 import ercs721 from './erc721';
 import { getRanking } from './api';
 
-export const defaultAvatarSizes = {
-  verySmall: { containerSize: '24px', imgSize: '24px', imgTopOffset: '50%', imgLeftOffset: '50%' },
-  small: { containerSize: '44px', imgSize: '44px', imgTopOffset: '50%', imgLeftOffset: '50%' },
-  medium: { containerSize: '54px', imgSize: '54px', imgTopOffset: '50%', imgLeftOffset: '50%' },
-  large: { containerSize: '64px', imgSize: '64px', imgTopOffset: '50%', imgLeftOffset: '50%' },
-};
-
 export const getEntityData = async (entity) => {
   try {
     const response = await getRanking(
@@ -51,14 +44,4 @@ export const entityTranslations = {
   replyPlaceholder: 'Write your reply',
   noEntitiesError: 'No tokens found',
   emptyFeed: 'No messages yet. Be the first one!',
-};
-
-export const getAvatarSizes = (entity) => {
-  if (!entity) {
-    return defaultAvatarSizes;
-  }
-  const [, address] = entity.split(':');
-  const token = find({ address })(ercs721);
-
-  return token && token.avatarSizes ? token.avatarSizes : defaultAvatarSizes;
 };

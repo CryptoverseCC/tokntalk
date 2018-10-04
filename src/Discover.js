@@ -24,7 +24,6 @@ import {
   IfActiveEntity,
   IsActiveEntityFromFamily,
   LinkedActiveEntityAvatar,
-  ActiveEntityName,
   DoesActiveEntityHasToken,
 } from './Entity';
 import exportIcon from './img/export.svg';
@@ -34,7 +33,7 @@ import { PromotionBox } from './promotion/PromotionBox';
 import ProfileBox from './ProfileBox';
 import { TokenTile, SmallTokenTile } from './TokenTile';
 import { Intercom } from './Intercom';
-import { StyledButton } from './SendTokens';
+
 import StatusBox from './StatusBox';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 
@@ -376,7 +375,7 @@ const ByToken = ({ token }) => (
           )}
         </IsActiveEntityFromFamily>
       </div>
-      <div className="column is-3">
+      <div className="column is-3 is-hidden-mobile">
         <FlatContainer>
           <Members token={token} />
         </FlatContainer>
@@ -452,6 +451,11 @@ const NoActiveMembers = styled.div.attrs({ children: () => 'No Active Members' }
   font-weight: 600;
 `;
 
+const ActiveAvatar = styled(LinkedEntityAvatar)`
+  width: 40px;
+  height: 40px;
+`;
+
 const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
   <div style={{ marginTop: '15px' }}>
     <DiscoveryContext.Consumer>
@@ -467,10 +471,9 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
                 to={`/${isFromAddress ? author : context}`}
                 className="column is-12"
               >
-                <LinkedEntityAvatar
+                <ActiveAvatar
                   id={isFromAddress ? author : context}
                   entityInfo={isFromAddress ? author_info : context_info}
-                  size="medium"
                 />
                 <EntityInfo>
                   <Link
@@ -495,6 +498,11 @@ const RecentlyActive = ({ limit = Number.MAX_SAFE_INTEGER }) => (
   </div>
 );
 
+const SocialAvatar = styled(LinkedEntityAvatar)`
+  width: 40px;
+  height: 40px;
+`;
+
 const Social = ({ token, social, limit = Number.MAX_SAFE_INTEGER }) => {
   const Icon = socialIcons[social];
 
@@ -509,7 +517,7 @@ const Social = ({ token, social, limit = Number.MAX_SAFE_INTEGER }) => {
         return (
           <React.Fragment>
             {!data.loading && items.length ? (
-              <SocialHeader style={{ marginBottom: '15px', marginTop: '15px' }}>
+              <SocialHeader style={{ marginBottom: '15px', marginTop: '25px', borderBottom: '1px solid #666' }}>
                 {limit !== Number.MAX_SAFE_INTEGER ? (
                   <Link to={`${token.isCustom ? token.asset : token.symbol}/social/${social}`}>
                     <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
@@ -526,10 +534,9 @@ const Social = ({ token, social, limit = Number.MAX_SAFE_INTEGER }) => {
             <div className="columns is-multiline">
               {items.map(({ context, context_info, target, isFromAddress, author, author_info }) => (
                 <EntityContainer key={isFromAddress ? author : context} className="column is-12">
-                  <LinkedEntityAvatar
+                  <SocialAvatar
                     id={isFromAddress ? author : context}
                     entityInfo={isFromAddress ? author_info : context_info}
-                    size="medium"
                   />
                   <EntityInfo>
                     <Link to={`/${isFromAddress ? author : context}`}>
@@ -549,6 +556,9 @@ const Social = ({ token, social, limit = Number.MAX_SAFE_INTEGER }) => {
                   </EntityInfo>
                 </EntityContainer>
               ))}
+              <div className="column is-12">
+                <Link to={`${token.isCustom ? token.asset : token.symbol}/social/${social}`}>More ...</Link>
+              </div>
             </div>
           </React.Fragment>
         );
@@ -616,31 +626,25 @@ const SocialHeader = styled.p`
   font-weight: 600;
 `;
 
+const ClubFormAvatar = styled(LinkedActiveEntityAvatar)`
+  width: 48px;
+  height: 48px;
+  margin-right: 15px;
+
+  @media (max-width: 770px) {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+  }
+`;
+
 const ClubForm = ({ token }) => (
   <IfActiveEntity>
     {(entityId) => (
       <FormContainer>
         <article className="media">
-          <div className="media-left">
-            <LinkedActiveEntityAvatar size="large" />
-          </div>
-          <div className="media-content">
-            <div className="content">
-              <Link
-                to={`/${entityId}`}
-                style={{
-                  fontFamily: 'AvenirNext',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  marginBottom: '20px',
-                  marginTop: '10px',
-                }}
-              >
-                <ActiveEntityName />
-              </Link>
-              <ConnectedClubForm token={token} Form={CommentForm} />
-            </div>
-          </div>
+          <ClubFormAvatar size="large" />
+          <ConnectedClubForm token={token} Form={CommentForm} />
         </article>
       </FormContainer>
     )}
@@ -692,7 +696,9 @@ const IsLoading = ({ children }) => (
 
 const CustomClubInfo = styled((props) => (
   <WelcomeMessage {...props}>
-    <H1 style={{ fontSize: '3rem' }}>🎨</H1>
+    <H1 style={{ fontSize: '3rem' }}>
+      <span role="img">🎨</span>
+    </H1>
     <div style={{ marginLeft: '30px' }}>
       <H3>Make this token more visible!</H3>
       <p style={{ fontSize: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
@@ -886,6 +892,7 @@ const EntityContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 5px 15px;
 `;
 
 const EntityInfo = styled.div`

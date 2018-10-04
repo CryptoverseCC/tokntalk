@@ -13,6 +13,11 @@ const CousinsList = styled(List)`
   ${niceScroll};
 `;
 
+const Avatar = styled(LinkedEntityAvatar)`
+  width: 48px;
+  height: 48px;
+`;
+
 export class CousinsBox extends Component {
   state = {
     entities: [],
@@ -47,7 +52,7 @@ export class CousinsBox extends Component {
             <CousinsList
               height={300}
               width={width}
-              rowHeight={74}
+              rowHeight={54}
               rowRenderer={this.renderRow}
               rowCount={activeEntity.isAddress ? this.state.entities.length : this.state.entities.length - 1}
             />
@@ -60,16 +65,13 @@ export class CousinsBox extends Component {
   renderRow = ({ index, key, style }) => {
     const cousin = this.state.entities.filter((entity) => entity.id !== this.props.entity.id)[index];
     return (
-      <div
-        key={key}
-        style={{ display: 'flex', boxAlgin: 'center', alignItems: 'center', paddingTop: '20px', ...style }}
-      >
-        <LinkedEntityAvatar id={cousin.id} entityInfo={cousin} size="medium" />
+      <div key={key} style={{ display: 'flex', boxAlgin: 'center', alignItems: 'center', ...style }}>
+        <Avatar id={cousin.id} entityInfo={cousin} />
         <Link
           to={`/${cousin.id}`}
           style={{
             fontFamily: 'AvenirNext',
-            fontSize: '1rem',
+            fontSize: '0.8rem',
             fontWeight: '600',
             marginLeft: '10px',
           }}

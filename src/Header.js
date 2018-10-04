@@ -87,14 +87,6 @@ const Header = () => {
 
 export default Header;
 
-const DropdownEntityName = styled.div`
-  margin-left: 12px;
-  font-size: 0.9rem;
-  @media (max-width: 770px) {
-    display: none;
-  }
-`;
-
 const ToggleButton = styled.button`
   align-items: center;
   background-color: white;
@@ -125,7 +117,6 @@ const ToggleButton = styled.button`
     margin-right: 5px;
   }
 `;
-const stopPropagation = (e) => e.stopPropagation();
 
 const AvatarSwitcherToggle = ({ openDropdown }) => {
   return (
@@ -181,11 +172,33 @@ const HiddenOnMobile = styled.span`
   }
 `;
 
-const Avatar = styled.span`
+const AvatarLabel = styled.span`
   margin-right: 10px;
 
   @media (max-width: 770px) {
     margin-right: 5px;
+  }
+`;
+
+const ActiveAvatar = styled(LinkedActiveEntityAvatar)`
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+
+  @media (max-width: 770px) {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const Avatar = styled(EntityAvatar)`
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+
+  @media (max-width: 770px) {
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -200,8 +213,8 @@ const AvatarSwitcher = () => {
         alignItems: 'center',
       }}
     >
-      <Avatar>Avatar:</Avatar>
-      <LinkedActiveEntityAvatar size="verySmall" style={{ marginRight: '10px' }} />
+      <AvatarLabel>Avatar:</AvatarLabel>
+      <ActiveAvatar />
       <HiddenOnMobile>
         <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
       </HiddenOnMobile>
@@ -216,14 +229,14 @@ const AvatarSwitcher = () => {
               entities.map((entity) => {
                 const { id, ...entityInfo } = entity;
                 return (
-                  <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
+                  <li className="dropdown-item" style={{ padding: '0', minWidth: '15rem' }} key={entity.id}>
                     <PickEntity
                       onClick={() => {
                         changeActiveEntityTo(entity);
                         closeDropdown();
                       }}
                     >
-                      <EntityAvatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
+                      <Avatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
                       <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
                     </PickEntity>
                   </li>

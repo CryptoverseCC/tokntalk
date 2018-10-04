@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { getEntityPrefix, getEntityId } from './entityApi';
 import Context from './Context';

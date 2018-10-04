@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { isAddress } from 'web3-utils';
 
-import { Intercom } from './Intercom';
 import './css/landing.scss';
 import Logo from './Logo';
 import twitter from './img/landing/twitter.svg';
@@ -19,7 +18,6 @@ import arrowRight from './img/landing/tail-right.svg';
 import ThreadsFirst from './img/landing/threads-1.png';
 import ThreadsSecond from './img/landing/threads-2.png';
 import ThreadsThird from './img/landing/threads-3.png';
-import ThreadsFourth from './img/landing/threads-4.png';
 
 class Threads extends Component {
   state = {

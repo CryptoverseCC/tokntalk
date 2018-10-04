@@ -8,7 +8,6 @@ import Hero from './Hero';
 import { PromotionBox } from './promotion/PromotionBox';
 import { FlatContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
-import Investors from './Investors';
 import { Entities, WithActiveEntity } from './Entity';
 import StatusBox from './StatusBox';
 
@@ -62,7 +61,6 @@ export default class IndexPage extends Component {
       <React.Fragment>
         <div className="columns ordered-mobile">
           <div className="column is-7 fl-1 is-offset-1">
-            <Investors />
             <StatusBox check={[StatusBox.Web3Locked]} style={{ marginBottom: '30px' }}>
               <Hero />
             </StatusBox>

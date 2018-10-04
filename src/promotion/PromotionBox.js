@@ -22,7 +22,6 @@ const formatCurrency = (value, decimals) => fromWeiToString(value, decimals);
 
 const CatvertisedItemLink = styled(Link)`
   display: flex;
-  align-items: center;
   overflow: hidden;
 
   @media (max-width: 770px) {
@@ -49,6 +48,7 @@ const AddAKitty = styled.button`
 
   @media (max-width: 770px) {
     margin-top: 10px;
+    ${({ hiddenOnMobile }) => (hiddenOnMobile ? `display: none;` : '')};
   }
   background-color: ${({ disabled }) => (disabled ? '#f4f8fd' : '#ebefff')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -86,6 +86,13 @@ export class PromotionBox extends Component {
     flex-direction: column;
   `;
 
+  static Avatar = styled(EntityAvatar)`
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+  `;
+
   componentDidMount() {
     this.props.getBoosts(this.props.token, this.props.asset);
     this.props.getSupportings(this.props.token, this.props.asset);
@@ -117,14 +124,18 @@ export class PromotionBox extends Component {
   renderTabContent = (items, supportersCount, supportingCount) => {
     return (
       <React.Fragment>
-        {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
+        {this.props.showPurrmoter && <Purrmoter token={this.props.token} hiddenOnMobile={true} />}
         {!this.props.showPurrmoter && this.renderTabs(supportersCount, supportingCount)}
         {Object.keys(items).length > 0 && this.renderList(items)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
           <Web3ProviderStatus>
             {(isEnabled) => {
               return (
-                <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })} disabled={!isEnabled}>
+                <AddAKitty
+                  onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}
+                  disabled={!isEnabled}
+                  hiddenOnMobile={true}
+                >
                   Start supporting
                 </AddAKitty>
               );
@@ -137,13 +148,13 @@ export class PromotionBox extends Component {
 
   renderList = (items) => {
     return (
-      <CatvertisedList style={{ marginTop: '15px' }}>
+      <CatvertisedList>
         {Object.entries(items)
           .sort(([, { score: a }], [, { score: b }]) => b - a)
           .map(([id, { score, context_info: contextInfo }]) => (
             <CatvertisedItem key={id}>
               <CatvertisedItemLink to={`/${id}`}>
-                <EntityAvatar size="medium" id={id} entityInfo={contextInfo} />
+                <PromotionBox.Avatar id={id} entityInfo={contextInfo} />
                 <EntityDescription>
                   <CatvertisedName>
                     <EntityNameWrapper>{contextInfo.name}</EntityNameWrapper>
