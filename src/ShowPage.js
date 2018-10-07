@@ -490,6 +490,8 @@ export class SocialList extends React.Component {
         <Entity id={id}>
           {({ owner, external_link, background_color, image_preview_url }) => {
             const ownerEntity = owner && getEntityInfoForAddress(owner);
+            const communityToken = !this.isAddress(id) ? this.getCommunityToken(id) : null;
+            console.log(communityToken);
             return (
               <div>
                 {!this.isAddress(id) &&
@@ -499,6 +501,12 @@ export class SocialList extends React.Component {
                       <span style={{ marginLeft: '15px' }}>Owner ({ownerEntity.name})</span>
                     </SocialBadge>
                   )}
+                {!this.isAddress(id) && (
+                  <SocialBadge href={`/clubs/${communityToken.network}:${communityToken.address}`}>
+                    <TokenImage token={communityToken} size="verySmall" />
+                    <span style={{ marginLeft: '15px' }}>{communityToken.name} Club</span>
+                  </SocialBadge>
+                )}
                 <SocialBadge href={external_link}>
                   {this.isAddress(id) ? (
                     <SocialList.EntityAvatar entity={id} backgroundColor={background_color} src={image_preview_url} />
