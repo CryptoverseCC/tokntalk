@@ -7,8 +7,8 @@ import Link from '../../Link';
 import Message from './Message';
 
 const Avatar = styled(LinkedEntityAvatar)`
-  width: 48px;
-  height: 48px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   flex-grow: 0;
 `;
