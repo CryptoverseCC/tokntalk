@@ -20,9 +20,32 @@ import {
 
 const formatCurrency = (value, decimals) => fromWeiToString(value, decimals);
 
-const CatvertisedItemLink = styled(Link)`
+const PromotedList = styled(CatvertisedList)`
+  @media (max-width: 770px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: auto;
+  }
+`;
+
+const PromotedItem = styled(CatvertisedItem)`
+  @media (max-width: 770px) {
+    width: 17%;
+    margin: 0;
+
+    :last-child {
+      margin: 0;
+    }
+
+    & + & {
+      margin: 0;
+    }
+  }
+`;
+
+const PromotedItemLink = styled(Link)`
   display: flex;
-  align-items: center;
   overflow: hidden;
 
   @media (max-width: 770px) {
@@ -30,6 +53,7 @@ const CatvertisedItemLink = styled(Link)`
     align-items: normal;
     text-align: center;
     width: 100%;
+    margin: 0;
   }
 `;
 
@@ -49,6 +73,7 @@ const AddAKitty = styled.button`
 
   @media (max-width: 770px) {
     margin-top: 10px;
+    ${({ hiddenOnMobile }) => (hiddenOnMobile ? `display: none;` : '')};
   }
   background-color: ${({ disabled }) => (disabled ? '#f4f8fd' : '#ebefff')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -73,6 +98,7 @@ export class PromotionBox extends Component {
   static defaultProps = {
     asset: 'ethereum',
     assetInfo: { symbol: 'ETH', decimals: 18 },
+    limit: 5,
   };
 
   state = {
@@ -84,6 +110,17 @@ export class PromotionBox extends Component {
     width: 100%;
     position: relative;
     flex-direction: column;
+  `;
+
+  static Avatar = styled(EntityAvatar)`
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    @media (max-width: 770px) {
+      margin: auto;
+    }
   `;
 
   componentDidMount() {
@@ -119,12 +156,16 @@ export class PromotionBox extends Component {
       <React.Fragment>
         {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
         {!this.props.showPurrmoter && this.renderTabs(supportersCount, supportingCount)}
-        {Object.keys(items).length > 0 && this.renderList(items)}
+        {Object.keys(items).length > 0 && this.renderList(items, this.props.limit)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
           <Web3ProviderStatus>
             {(isEnabled) => {
               return (
-                <AddAKitty onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })} disabled={!isEnabled}>
+                <AddAKitty
+                  onClick={() => this.setState({ currentPage: PAGE.CATVERTISING })}
+                  disabled={!isEnabled}
+                  hiddenOnMobile={true}
+                >
                   Start supporting
                 </AddAKitty>
               );
@@ -135,15 +176,16 @@ export class PromotionBox extends Component {
     );
   };
 
-  renderList = (items) => {
+  renderList = (items, limit) => {
     return (
-      <CatvertisedList style={{ marginTop: '15px' }}>
+      <PromotedList>
         {Object.entries(items)
           .sort(([, { score: a }], [, { score: b }]) => b - a)
+          .slice(0, limit)
           .map(([id, { score, context_info: contextInfo }]) => (
-            <CatvertisedItem key={id}>
-              <CatvertisedItemLink to={`/${id}`}>
-                <EntityAvatar size="medium" id={id} entityInfo={contextInfo} />
+            <PromotedItem key={id}>
+              <PromotedItemLink to={`/${id}`}>
+                <PromotionBox.Avatar id={id} entityInfo={contextInfo} />
                 <EntityDescription>
                   <CatvertisedName>
                     <EntityNameWrapper>{contextInfo.name}</EntityNameWrapper>
@@ -152,10 +194,10 @@ export class PromotionBox extends Component {
                     {formatCurrency(score, this.props.assetInfo.decimals)} {this.props.assetInfo.symbol}
                   </CatvertisedScore>
                 </EntityDescription>
-              </CatvertisedItemLink>
-            </CatvertisedItem>
+              </PromotedItemLink>
+            </PromotedItem>
           ))}
-      </CatvertisedList>
+      </PromotedList>
     );
   };
 

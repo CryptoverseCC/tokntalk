@@ -10,7 +10,7 @@ import { TokenImage } from './clubs';
 import { UnreadedCount } from './UnreadedMessages';
 import { niceScroll } from './cssUtils';
 import feedIcon from './img/feeds.svg';
-import discoverIcon from './img/discover.svg';
+import notificationsIcon from './img/notifications.svg';
 import { mobileOrTablet } from './utils';
 import Context from './Context';
 
@@ -73,15 +73,18 @@ export const SidebarLeft = () => (
   <SidebarContext.Consumer>
     {({ open, overlay }) => (
       <SidebarLeftContainer open={open} overlay={overlay}>
-        <LinkItem to="/personal" icon={<img style={{ width: '16px' }} src={feedIcon} />}>
-          Personal Feed
-        </LinkItem>
-        <LinkItem to="/" icon={<img style={{ width: '16px' }} src={feedIcon} />}>
+        <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />}>
           All
         </LinkItem>
         <IfActiveEntity>
           {(entityId) => (
             <React.Fragment>
+              <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />}>
+                Club News
+              </LinkItem>
+              <LinkItem to="/notifications" icon={<img alt="" style={{ width: '16px' }} src={notificationsIcon} />}>
+                Notifications
+              </LinkItem>
               <Header>Your Clubs</Header>
               <ClubContainer>
                 <EntityClubs id={entityId}>

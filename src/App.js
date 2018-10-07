@@ -7,6 +7,7 @@ import { isAddress } from 'web3-utils';
 import Context from './Context';
 import IndexPage from './IndexPage';
 import PersonalPage from './PersonalPage';
+import Notifications from './Notifications';
 import ShowPage from './ShowPage';
 import {
   getMyEntities,
@@ -35,7 +36,6 @@ import { metamaskStatusChanged } from './Analytics';
 import { SidebarProvider, SidebarContainer, SidebarLeft, SidebarRight } from './Sidebar';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
-const GeneralPage = IndexPage;
 
 export const produceEntities = (myEntities, previousActiveEntity) => {
   const firstEntity = myEntities[0];
@@ -449,6 +449,7 @@ export default class App extends Component {
               <div>
                 {props.location.pathname === '/' && <IndexPage {...props} />}
                 {props.location.pathname === '/personal' && <PersonalPage {...props} />}
+                {props.location.pathname === '/notifications' && <Notifications {...props} />}
               </div>
             )}
           </Context.Consumer>

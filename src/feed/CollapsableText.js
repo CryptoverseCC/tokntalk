@@ -22,7 +22,8 @@ export class CollapsableText extends Component {
   constructor(props) {
     super(props);
 
-    const { text } = this.props;
+    let { text } = this.props;
+    text = text || '';
     let isCollapsed = false;
     let collapsedText;
     if (text.length > MAX_LENGTH) {

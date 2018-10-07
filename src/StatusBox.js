@@ -11,7 +11,7 @@ const Web3Locked = () => (
   <Web3LockedContainer>
     <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Unlock your wallet</p>
     <span>To connect with token owners alike</span>
-    <img style={{ width: '208px', height: 'auto', marginTop: '20px', textAlign: 'center' }} alt="" src={mouse} />
+    <img style={{ width: '208px', height: 'auto', marginTop: '0px', textAlign: 'center' }} alt="" src={mouse} />
   </Web3LockedContainer>
 );
 const StatusContainer = styled.div`
@@ -19,7 +19,7 @@ const StatusContainer = styled.div`
   align-items: center;
   font-weight: 600;
   border-radius: 12px;
-  padding: 30px;
+  padding: 10px;
 
   @media (max-width: 770px) {
     width: 96%;

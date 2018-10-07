@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -82,4 +82,5 @@ export const CopyButton = styled(
   },
 )`
   position: relative;
+  cursor: pointer;
 `;

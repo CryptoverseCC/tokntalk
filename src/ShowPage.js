@@ -21,7 +21,7 @@ import Link from './Link';
 import { findClub } from './clubs';
 import { TokenImage } from './clubs';
 import { PromotionBox } from './promotion/PromotionBox';
-import { FlatContainer, H2, H3, H4, SocialUsername, CopyButton } from './Components';
+import { FlatContainer, H3, H4, SocialUsername, CopyButton } from './Components';
 import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
@@ -92,6 +92,21 @@ export default class ShowPage extends Component {
     object-fit: contain;
   `;
 
+  static ProfileAvatar = styled(IdentityAvatar)`
+    width: 64px;
+    height: 64px;
+  `;
+
+  static FeedAvatar = styled(LinkedActiveEntityAvatar)`
+    width: 48px;
+    height: 48px;
+
+    @media (max-width: 770px) {
+      width: 32px;
+      height: 32px;
+    }
+  `;
+
   render() {
     const { EntityInfo, PromotionBox, Cousins, Communities, FeedContainer, ExternalLinks } = this;
     const { entityId } = this.props.match.params;
@@ -110,7 +125,7 @@ export default class ShowPage extends Component {
                     backgroundPositionX: '100%',
                   }}
                   avatar={
-                    <IdentityAvatar
+                    <ShowPage.ProfileAvatar
                       backgroundColor="transparent"
                       entity={entityId}
                       src={entity.image_preview_url}
@@ -123,12 +138,11 @@ export default class ShowPage extends Component {
                   <EntityInfo entity={entity} />
                   <ExternalLinks entity={entity} />
                 </ProfileBox>
-                <PromotionBox entity={entity} />
               </div>
               <div className="column is-6 fl-1">
                 <FeedContainer entity={entity} />
               </div>
-              <div className="column is-3">
+              <div className="column is-3 is-hidden-mobile">
                 {entity.isAddress && <Communities entity={entity} />}
                 <Cousins entity={entity} style={{ marginTop: entity.isAddress ? '20px' : '0px' }} />
               </div>
@@ -207,7 +221,7 @@ export default class ShowPage extends Component {
             >
               <article className="media">
                 <div className="media-left">
-                  <LinkedActiveEntityAvatar size="large" />
+                  <ShowPage.FeedAvatar />
                 </div>
                 <div className="media-content">
                   <div className="content">
@@ -251,10 +265,6 @@ const SocialBadge = styled.a`
   align-items: center;
   padding-bottom: 15px;
   cursor: pointer;
-
-  :last-child {
-    padding-bottom: 0;
-  }
 `;
 
 const InlineButton = styled.button`
@@ -273,7 +283,7 @@ const InlineButton = styled.button`
 const SocialIcon = styled(({ type, ...restProps }) => React.createElement(socialIcons[type], restProps))`
   flex-shrink: 0;
   width: auto;
-  height: 16px;
+  height: 20px;
 `;
 
 const LabelInput = styled.input`
@@ -461,6 +471,16 @@ export class SocialList extends React.Component {
     flex-direction: column;
   `;
 
+  static OwnerAvatar = styled(IdentityAvatar)`
+    width: 20px;
+    height: 20px;
+  `;
+
+  static EntityAvatar = styled(IdentityAvatar)`
+    width: 20px;
+    height: 20px;
+  `;
+
   render() {
     const { normalizeHref, getDomain } = this;
     const { facebook, twitter, instagram, github, discord, telegram, id, editable } = this.props;
@@ -470,25 +490,29 @@ export class SocialList extends React.Component {
         <Entity id={id}>
           {({ owner, external_link, background_color, image_preview_url }) => {
             const ownerEntity = owner && getEntityInfoForAddress(owner);
+            const communityToken = !this.isAddress(id) ? this.getCommunityToken(id) : null;
+            console.log(communityToken);
             return (
               <div>
                 {!this.isAddress(id) &&
                   ownerEntity && (
                     <SocialBadge href={`/${ownerEntity.id}`}>
-                      <IdentityAvatar entity={ownerEntity.id} size="verySmall" src={ownerEntity.image_preview_url} />
+                      <SocialList.OwnerAvatar entity={ownerEntity.id} src={ownerEntity.image_preview_url} />
                       <span style={{ marginLeft: '15px' }}>Owner ({ownerEntity.name})</span>
                     </SocialBadge>
                   )}
+                {!this.isAddress(id) && (
+                  <SocialBadge href={`/clubs/${communityToken.network}:${communityToken.address}`}>
+                    <TokenImage token={communityToken} size="verySmall" />
+                    <span style={{ marginLeft: '15px' }}>{communityToken.name} Club</span>
+                  </SocialBadge>
+                )}
                 <SocialBadge href={external_link}>
-                  {this.isAddress(id) && (
-                    <IdentityAvatar
-                      entity={id}
-                      backgroundColor={background_color}
-                      size="verySmall"
-                      src={image_preview_url}
-                    />
+                  {this.isAddress(id) ? (
+                    <SocialList.EntityAvatar entity={id} backgroundColor={background_color} src={image_preview_url} />
+                  ) : (
+                    <TokenImage token={this.getCommunityToken(id)} size="verySmall" />
                   )}
-                  {!this.isAddress(id) && <TokenImage token={this.getCommunityToken(id)} size="verySmall" />}
                   <span style={{ marginLeft: '15px' }}>{getDomain(external_link)}</span>
                 </SocialBadge>
               </div>

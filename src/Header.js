@@ -8,6 +8,7 @@ import TranslationsContext from './Translations';
 import Locked from './img/locked.svg';
 import NoMetamask from './img/no.svg';
 import NoIdentity from './img/noidentity.svg';
+import notificationsIcon from './img/notifications.svg';
 import Context from './Context';
 import Logo from './Logo';
 import Dropdown from './Dropdown';
@@ -87,14 +88,6 @@ const Header = () => {
 
 export default Header;
 
-const DropdownEntityName = styled.div`
-  margin-left: 12px;
-  font-size: 0.9rem;
-  @media (max-width: 770px) {
-    display: none;
-  }
-`;
-
 const ToggleButton = styled.button`
   align-items: center;
   background-color: white;
@@ -125,7 +118,6 @@ const ToggleButton = styled.button`
     margin-right: 5px;
   }
 `;
-const stopPropagation = (e) => e.stopPropagation();
 
 const AvatarSwitcherToggle = ({ openDropdown }) => {
   return (
@@ -181,11 +173,59 @@ const HiddenOnMobile = styled.span`
   }
 `;
 
-const Avatar = styled.span`
+const AvatarLabel = styled.span`
   margin-right: 10px;
 
   @media (max-width: 770px) {
     margin-right: 5px;
+  }
+`;
+
+const ActiveAvatar = styled(LinkedActiveEntityAvatar)`
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+
+  @media (max-width: 770px) {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const Avatar = styled(EntityAvatar)`
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+
+  @media (max-width: 770px) {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const Notifications = styled.img`
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+
+  @media (max-width: 770px) {
+    width: 11px;
+    height: 11px;
+  }
+`;
+
+const NotificationsLink = styled(Link)`
+  border-radius: 50%;
+  border: 1px solid;
+  border-color: #666;
+  width: 24px;
+  padding: 3px 0 0px 3px;
+  height: 24px;
+
+  @media (max-width: 770px) {
+    width: 18px;
+    padding: 1px 0 0px 2px;
+    height: 18px;
   }
 `;
 
@@ -200,11 +240,10 @@ const AvatarSwitcher = () => {
         alignItems: 'center',
       }}
     >
-      <Avatar>Avatar:</Avatar>
-      <LinkedActiveEntityAvatar size="verySmall" style={{ marginRight: '10px' }} />
-      <HiddenOnMobile>
-        <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
-      </HiddenOnMobile>
+      <ActiveAvatar />
+      <NotificationsLink to="/notifications">
+        <Notifications alt="" src={notificationsIcon} />
+      </NotificationsLink>
       <Dropdown
         Content={AvatarSwitcherContent}
         toggle={({ openDropdown }) => <AvatarSwitcherToggle openDropdown={openDropdown} />}
@@ -216,14 +255,14 @@ const AvatarSwitcher = () => {
               entities.map((entity) => {
                 const { id, ...entityInfo } = entity;
                 return (
-                  <li className="dropdown-item" style={{ padding: '5px 0', minWidth: '15rem' }} key={entity.id}>
+                  <li className="dropdown-item" style={{ padding: '0', minWidth: '15rem' }} key={entity.id}>
                     <PickEntity
                       onClick={() => {
                         changeActiveEntityTo(entity);
                         closeDropdown();
                       }}
                     >
-                      <EntityAvatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
+                      <Avatar id={id} entityInfo={entityInfo} size="small" lazy={false} />
                       <b style={{ marginLeft: '5px', fontSize: '0.9rem' }}>{entity.name}</b>
                     </PickEntity>
                   </li>

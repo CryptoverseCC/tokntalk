@@ -25,6 +25,7 @@ export const CatvertisedList = styled.ul`
   max-height: 340px;
   overflow-y: scroll;
   position: relative;
+  margin-top: 15px;
 
   ${niceScroll};
 
@@ -33,6 +34,8 @@ export const CatvertisedList = styled.ul`
     align-items: flex-start;
     overflow-y: unset;
     overflow-x: scroll;
+    margin-top: 0px;
+    height: 100px;
 
     ${CatvertisedName} {
       margin-left: 0;
@@ -51,11 +54,11 @@ export const CatvertisedItem = styled.li`
   position: relative;
   flex-shrink: 0;
   & + & {
-    margin-top: 20px;
+    margin-top: 5px;
   }
 
   :last-child {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
 
   @media (max-width: 770px) {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 
 import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import AppContext from './Context';
@@ -8,9 +9,15 @@ import Hero from './Hero';
 import { PromotionBox } from './promotion/PromotionBox';
 import { FlatContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
-import Investors from './Investors';
-import { Entities, WithActiveEntity } from './Entity';
 import StatusBox from './StatusBox';
+
+const ExplainerBox = styled(FlatContainer)`
+  margin-top: 20px;
+
+  @media (max-width: 770px) {
+    mergin-top: 10px;
+  }
+`;
 
 const { REACT_APP_DEFAULT_TOKEN_ID: DEFAULT_TOKEN_ID } = process.env;
 
@@ -26,23 +33,9 @@ const fetchPopularFeed = async () => {
   return items.filter(isValidFeedItem).map(enhanceFeedItem);
 };
 
-const fetchNotificationsFeed = async ({ tokens }) => {
-  const { items } = await getRanking(
-    [
-      {
-        algorithm: 'cryptoverse_notifications_feed',
-        params: { id: tokens },
-      },
-    ],
-    'api/decorate-with-opensea',
-  );
-  return items.filter(isValidFeedItem).map(enhanceFeedItem);
-};
-
 const NewestFeed = getFeed(getFeedItemsFromCache(), true, true, undefined, (f0, f1) => f1.created_at - f0.created_at);
 const PopularFeed = getFeed(fetchPopularFeed, false, false);
 const ActiveFeed = getFeed(getFeedItemsFromCache('cache-cryptoverse-active-feed'), true, false);
-const NotificationsFeed = getFeed(fetchNotificationsFeed, false, false);
 
 export default class IndexPage extends Component {
   state = { feedType: 'new' };
@@ -52,7 +45,9 @@ export default class IndexPage extends Component {
   }
 
   changeFeedType = (feedType) => {
-    this.setState({ feedType });
+    if (this.state.feedType !== feedType) {
+      this.setState({ feedType });
+    }
   };
 
   render() {
@@ -61,31 +56,19 @@ export default class IndexPage extends Component {
     return (
       <React.Fragment>
         <div className="columns ordered-mobile">
-          <div className="column is-7 fl-1 is-offset-1">
-            <Investors />
+          <div className="column is-9 fl-1">
             <StatusBox check={[StatusBox.Web3Locked]} style={{ marginBottom: '30px' }}>
               <Hero />
             </StatusBox>
-            <WithActiveEntity>
-              {(activeEntity) => (
-                <FeedTypeSwitcher
-                  type={feedType}
-                  onChange={this.changeFeedType}
-                  style={{ marginBottom: '2em' }}
-                  options={
-                    activeEntity ? defaultUnloggedFeeds.concat(FeedTypeSwitcher.NOTIFICATIONS) : defaultUnloggedFeeds
-                  }
-                />
-              )}
-            </WithActiveEntity>
+            <FeedTypeSwitcher
+              type={feedType}
+              onChange={this.changeFeedType}
+              style={{ marginBottom: '2em' }}
+              options={defaultUnloggedFeeds}
+            />
             {feedType === FeedTypeSwitcher.NEW && <NewestFeed />}
             {feedType === FeedTypeSwitcher.POPULAR && <PopularFeed />}
             {feedType === FeedTypeSwitcher.ACTIVE && <ActiveFeed />}
-            {feedType === FeedTypeSwitcher.NOTIFICATIONS && (
-              <Entities>
-                {({ entities }) => <NotificationsFeed options={{ tokens: entities.map((entity) => entity.id) }} />}
-              </Entities>
-            )}
           </div>
           <div className="column is-3">
             <FlatContainer>
@@ -100,6 +83,10 @@ export default class IndexPage extends Component {
                 )}
               </AppContext.Consumer>
             </FlatContainer>
+            <ExplainerBox>
+              This feed represents all messages posted on Tok'n'talk. Use it to discover new valuable communities and
+              interesting characters.
+            </ExplainerBox>
           </div>
         </div>
       </React.Fragment>

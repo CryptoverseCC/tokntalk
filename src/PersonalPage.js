@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem } from './api';
+import TranslationsContext from './Translations';
+import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
 import { FlatContainer } from './Components';
@@ -31,14 +32,19 @@ export default class PersonalPage extends Component {
     return (
       <React.Fragment>
         <div className="columns ordered-mobile">
-          <div className="column is-8 fl-1 is-offset-1">
+          <div className="column is-9 fl-1">
             <IfActiveEntity>
               {(id) => (
                 <React.Fragment>
                   <Context.Consumer>
                     {({ entityStore: { getEntity } }) => (
                       <PersonalFeed
-                        options={{ id: getEntity(id).tokens.map((token) => `${token.network}:${token.address}`) }}
+                        options={{ id: getEntity(id).tokens.map((token) => token.id) }}
+                        emptyFeedMessage={
+                          <TranslationsContext.Consumer>
+                            {({ emptyPersonalFeed }) => emptyPersonalFeed}
+                          </TranslationsContext.Consumer>
+                        }
                       />
                     )}
                   </Context.Consumer>
@@ -46,7 +52,7 @@ export default class PersonalPage extends Component {
               )}
             </IfActiveEntity>
           </div>
-          <div className="column is-2">
+          <div className="column is-3">
             <FlatContainer>
               This feed represents all messages posted in clubs that you belong to (you hold their token).
             </FlatContainer>

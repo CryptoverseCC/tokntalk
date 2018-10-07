@@ -4,42 +4,65 @@ import { EntityName, EntityAvatar } from '../Entity';
 import Link from '../Link';
 import { EntityDescription, EntityNameWrapper, CatvertisedScore, CatvertisedName } from './Styles';
 
-const CatvertisedHeader = styled.div`
+const PurrmoterHeader = styled.div`
   display: flex;
   flex-direction: column;
 
   @media (max-width: 770px) {
     flex-direction: row;
     align-items: baseline;
+    margin-bottom: 10px;
   }
 `;
 
-const PurrmoterDiv = styled(({ hiddenOnMobile, ...restProps }) => <Link {...restProps} />)`
+const PurrmoterDiv = styled(Link)`
   overflow: hidden;
   display: flex;
-  ${({ hiddenOnMobile }) =>
-    hiddenOnMobile
-      ? `
-    @media (max-width: 770px) {
-      display: none;
-    }`
-      : ''};
+
+  @media (max-width: 770px) {
+    display: none;
+  }
 `;
 
-export const Purrmoter = ({ token }) => {
+const PurrmoterDivMobile = styled(Link)`
+  overflow: hidden;
+  display: none;
+
+  @media (max-width: 770px) {
+    display: flex;
+  }
+`;
+
+const Avatar = styled(EntityAvatar)`
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+`;
+
+export const Purrmoter = ({ hiddenOnMobile, token }) => {
   return (
-    <CatvertisedHeader>
+    <PurrmoterHeader>
       <PurrmoterDiv to={`/${token}`}>
-        <EntityAvatar size="medium" id={token} />
+        <Avatar id={token} />
         <EntityDescription>
           <CatvertisedName>
             <EntityNameWrapper>
               <EntityName id={token} />
             </EntityNameWrapper>
           </CatvertisedName>
-          <CatvertisedScore>Space Owner</CatvertisedScore>
+          <CatvertisedScore>Page Owner</CatvertisedScore>
         </EntityDescription>
       </PurrmoterDiv>
-    </CatvertisedHeader>
+      <PurrmoterDivMobile to={`/${token}`}>
+        <EntityDescription>
+          <CatvertisedName>
+            <EntityNameWrapper>
+              Supporters of <EntityName id={token} />
+            </EntityNameWrapper>
+          </CatvertisedName>
+        </EntityDescription>
+      </PurrmoterDivMobile>
+    </PurrmoterHeader>
   );
 };

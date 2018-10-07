@@ -86,6 +86,7 @@ const TokNTalk = withRouter(
 
             <Route exact path="/" component={App.Index} />
             <Route exact path="/personal" component={App.Index} />
+            <Route exact path="/notifications" component={App.Index} />
             <Route path="/clubs" component={App.Discover} />
             <Route path="/discover" component={rewriteCmp('/discover', '/clubs')} />
             <Route exact path="/:entityId" component={validateEntityId(App.ShowPage)} />

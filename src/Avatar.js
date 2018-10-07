@@ -1,58 +1,76 @@
 import React from 'react';
-import { getAvatarSizes } from './entityApi';
 import styled, { css } from 'styled-components';
 import placeholder from './img/anonkitty.svg';
+import find from 'lodash/fp/find';
+import ercs721 from './erc721';
+
+export const getAvatarScale = (entity) => {
+  const defaultAvatarSettings = {
+    scale: 1.8,
+    translate: '0%, 10%',
+  };
+
+  const addressAvatarSettings = {
+    scale: 1,
+    translate: '0%, 0%',
+  };
+
+  if (!entity) {
+    return 1;
+  }
+  const [, address] = entity.split(':');
+  const token = find({ address })(ercs721);
+  const avatarSettings = token ? token.avatar || defaultAvatarSettings : addressAvatarSettings;
+
+  return avatarSettings;
+};
+
+const BaseContainer = styled.div`
+  position: relative;
+`;
 
 const AvatarContainer = styled.div`
   overflow: hidden;
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   flex-shrink: 0;
   font-family: 'AvenirNext';
   border-radius: 16%;
-  ${({ backgroundColor, containerSize }) => css`
+  ${({ backgroundColor }) => css`
     background-color: ${backgroundColor ? `#${backgroundColor}` : '#f5f8fd'};
-    width: ${containerSize};
-    height: ${containerSize};
   `};
 `;
 
 const Avatar = styled.img`
-  position: absolute;
-  transform: translate(-50%, -50%);
-  max-width: none;
-  ${({ imgSize, imgLeftOffset, imgTopOffset }) => css`
-    left: ${imgLeftOffset};
-    top: ${imgTopOffset};
-    width: ${imgSize};
-  `};
+  transform: scale(${({ scale }) => scale}) translate(${({ translate }) => translate});
+
+  height: 100%;
 `;
 
 const ReactionContainer = styled.div`
   position: absolute;
-  bottom: 0;
-  left: 38%;
-  transform: translate(-38%, 50%);
+  bottom: -10px;
+  left: -15px;
 `;
 
-const IdentityAvatar = ({ entity, size, reaction, style = {}, backgroundColor, src, lazy = true, ...restProps }) => {
-  const { containerSize, imgSize, imgTopOffset, imgLeftOffset } = getAvatarSizes(entity)[size];
+const IdentityAvatar = ({ entity, reaction, style = {}, backgroundColor, src, lazy = true, ...restProps }) => {
+  const { scale, translate } = getAvatarScale(entity);
   return (
-    <div style={{ position: 'relative', ...style }} {...restProps}>
-      <AvatarContainer backgroundColor={backgroundColor} containerSize={containerSize}>
-        <Avatar src={src} imgSize={imgSize} imgTopOffset={imgTopOffset} imgLeftOffset={imgLeftOffset} />
+    <BaseContainer style={{ ...style }} {...restProps}>
+      <AvatarContainer backgroundColor={backgroundColor}>
+        <Avatar src={src} scale={scale} translate={translate} />
       </AvatarContainer>
       {reaction && <ReactionContainer>{reaction}</ReactionContainer>}
-    </div>
+    </BaseContainer>
   );
 };
 
-export const AvatarPlaceholder = ({ entity, size }) => {
-  const { containerSize } = getAvatarSizes(entity)[size];
+export const AvatarPlaceholder = ({ entity }) => {
+  const { scale, translate } = getAvatarScale(entity);
   return (
-    <AvatarContainer backgroundColor="#DED5FF" containerSize={containerSize}>
-      <Avatar src={placeholder} imgSize="75%" imgLeftOffset="50%" imgTopOffset="65%" />
+    <AvatarContainer backgroundColor="#DED5FF">
+      <Avatar src={placeholder} scale={scale} translate={translate} />
     </AvatarContainer>
   );
 };
