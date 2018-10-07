@@ -82,4 +82,5 @@ export const CopyButton = styled(
   },
 )`
   position: relative;
+  cursor: pointer;
 `;

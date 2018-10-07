@@ -8,6 +8,7 @@ import TranslationsContext from './Translations';
 import Locked from './img/locked.svg';
 import NoMetamask from './img/no.svg';
 import NoIdentity from './img/noidentity.svg';
+import notificationsIcon from './img/notifications.svg';
 import Context from './Context';
 import Logo from './Logo';
 import Dropdown from './Dropdown';
@@ -202,6 +203,32 @@ const Avatar = styled(EntityAvatar)`
   }
 `;
 
+const Notifications = styled.img`
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+
+  @media (max-width: 770px) {
+    width: 11px;
+    height: 11px;
+  }
+`;
+
+const NotificationsLink = styled(Link)`
+  border-radius: 50%;
+  border: 1px solid;
+  border-color: #666;
+  width: 24px;
+  padding: 3px 0 0px 3px;
+  height: 24px;
+
+  @media (max-width: 770px) {
+    width: 18px;
+    padding: 1px 0 0px 2px;
+    height: 18px;
+  }
+`;
+
 const AvatarSwitcher = () => {
   return (
     <div
@@ -213,11 +240,10 @@ const AvatarSwitcher = () => {
         alignItems: 'center',
       }}
     >
-      <AvatarLabel>Avatar:</AvatarLabel>
       <ActiveAvatar />
-      <HiddenOnMobile>
-        <LinkedActiveEntityName style={{ fontFamily: 'AvenirNext', fontSize: '0.8rem', fontWeight: '600' }} />
-      </HiddenOnMobile>
+      <NotificationsLink to="/notifications">
+        <Notifications alt="" src={notificationsIcon} />
+      </NotificationsLink>
       <Dropdown
         Content={AvatarSwitcherContent}
         toggle={({ openDropdown }) => <AvatarSwitcherToggle openDropdown={openDropdown} />}
