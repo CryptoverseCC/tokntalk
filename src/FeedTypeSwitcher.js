@@ -39,7 +39,7 @@ export const FeedTypeButton = styled.div`
   }
 `;
 
-const defaultOptions = () => [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR];
+const defaultOptions = () => [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ADS];
 
 const FeedTypeSwitcher = ({ type, onChange, style, className, options = defaultOptions() }) => (
   <div className={className} style={style}>
@@ -57,5 +57,6 @@ FeedTypeSwitcher.ACTIVE = 'active';
 FeedTypeSwitcher.REDDIT = 'reddit';
 FeedTypeSwitcher.TWITTER = 'twitter';
 FeedTypeSwitcher.NOTIFICATIONS = 'notifications';
+FeedTypeSwitcher.ADS = 'ads';
 
 export default FeedTypeSwitcher;

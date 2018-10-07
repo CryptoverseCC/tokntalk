@@ -39,10 +39,23 @@ const fetchNotificationsFeed = async ({ tokens }) => {
   return items.filter(isValidFeedItem).map(enhanceFeedItem);
 };
 
+const fetchFeedWithAds = async () => {
+  const { items } = await getRanking(
+    [
+      {
+        algorithm: 'cryptoverse_feed_with_ads',
+      },
+    ],
+    'api/decorate-with-opensea',
+  );
+  return items.filter(isValidFeedItem).map(enhanceFeedItem);
+};
+
 const NewestFeed = getFeed(getFeedItemsFromCache(), true, true, undefined, (f0, f1) => f1.created_at - f0.created_at);
 const PopularFeed = getFeed(fetchPopularFeed, false, false);
 const ActiveFeed = getFeed(getFeedItemsFromCache('cache-cryptoverse-active-feed'), true, false);
 const NotificationsFeed = getFeed(fetchNotificationsFeed, false, false);
+const FeedWithAds = getFeed(fetchFeedWithAds, false, false);
 
 export default class IndexPage extends Component {
   state = { feedType: 'new' };
@@ -57,7 +70,12 @@ export default class IndexPage extends Component {
 
   render() {
     const { feedType } = this.state;
-    const defaultUnloggedFeeds = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE];
+    const defaultUnloggedFeeds = [
+      FeedTypeSwitcher.NEW,
+      FeedTypeSwitcher.POPULAR,
+      FeedTypeSwitcher.ACTIVE,
+      FeedTypeSwitcher.ADS,
+    ];
     return (
       <React.Fragment>
         <div className="columns ordered-mobile">
@@ -86,6 +104,7 @@ export default class IndexPage extends Component {
                 {({ entities }) => <NotificationsFeed options={{ tokens: entities.map((entity) => entity.id) }} />}
               </Entities>
             )}
+            {feedType == FeedTypeSwitcher.ADS && <FeedWithAds />}
           </div>
           <div className="column is-3">
             <FlatContainer>

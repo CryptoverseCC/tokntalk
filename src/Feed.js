@@ -673,6 +673,10 @@ export class Card extends React.Component {
             />
           );
         })}
+        {feedItem.ads &&
+          feedItem.ads.map((ad) => {
+            return <p key={ad.id}>{ad.target}</p>;
+          })}
         {!disabledInteractions && (
           <IfActiveEntity>
             {() =>
@@ -967,7 +971,6 @@ class Feed extends Component {
                 ...this.getTemporaryReactions(feedItem.id),
                 ...(feedItem.likes || []),
               ]);
-
               return (
                 <Card
                   collapseReplies
