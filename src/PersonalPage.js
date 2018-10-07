@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
-import TranslationsContext from './Translations';
 import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
 import { FlatContainer } from './Components';
-import { IfActiveEntity } from './Entity';
-import Context from './Context';
+import { Entity, WithActiveEntity } from './Entity';
 
 const fetchPersonalFeed = async (params) => {
   const { items } = await getRanking(
@@ -32,25 +30,22 @@ export default class PersonalPage extends Component {
     return (
       <React.Fragment>
         <div className="columns ordered-mobile">
-          <div className="column is-9 fl-1">
-            <IfActiveEntity>
-              {(id) => (
+          <div className="column is-8 fl-1 is-offset-1">
+            <WithActiveEntity>
+              {(activeEntity) => (
                 <React.Fragment>
-                  <Context.Consumer>
-                    {({ entityStore: { getEntity } }) => (
-                      <PersonalFeed
-                        options={{ id: getEntity(id).tokens.map((token) => token.id) }}
-                        emptyFeedMessage={
-                          <TranslationsContext.Consumer>
-                            {({ emptyPersonalFeed }) => emptyPersonalFeed}
-                          </TranslationsContext.Consumer>
-                        }
-                      />
-                    )}
-                  </Context.Consumer>
+                  {activeEntity && (
+                    <Entity id={activeEntity.id}>
+                      {(entity) => (
+                        <PersonalFeed
+                          options={{ id: entity.tokens.map((token) => `${token.network}:${token.address}`) }}
+                        />
+                      )}
+                    </Entity>
+                  )}
                 </React.Fragment>
               )}
-            </IfActiveEntity>
+            </WithActiveEntity>
           </div>
           <div className="column is-3">
             <FlatContainer>
