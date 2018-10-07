@@ -89,6 +89,7 @@ const TokNTalk = withRouter(
             <Route path="/clubs" component={App.Discover} />
             <Route path="/discover" component={rewriteCmp('/discover', '/clubs')} />
             <Route exact path="/:entityId" component={validateEntityId(App.ShowPage)} />
+            <Route exact path="/create-ad/:claimId" component={App.CreateAd} />
             {!isModal ? <Route exact path="/thread/:claimId" component={App.Thread} /> : null}
           </Switch>
           {isModal ? <Route exact path="/thread/:claimId" component={App.ModalThread} /> : null}

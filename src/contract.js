@@ -173,3 +173,35 @@ export const mintTokensContractAbi = [
     type: 'function',
   },
 ];
+
+export const createAdContract = [
+  {
+    constant: true,
+    inputs: [{ name: 'threadId', type: 'string' }, { name: 'threadCreationTimestamp', type: 'uint256' }],
+    name: 'maxAllowedPayment',
+    outputs: [{ name: '', type: 'uint256' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      { name: 'data', type: 'string' },
+      { name: 'threadId', type: 'string' },
+      { name: 'threadCreationTimestamp', type: 'uint256' },
+      { name: 'recipients', type: 'address[]' },
+      { name: 'ratios', type: 'uint256[]' },
+      { name: 'ratiosSum', type: 'uint256' },
+      { name: 'maxTimestamp', type: 'uint256' },
+      { name: 'v', type: 'uint8' },
+      { name: 'r', type: 'bytes32' },
+      { name: 's', type: 'bytes32' },
+    ],
+    name: 'post',
+    outputs: [],
+    payable: true,
+    stateMutability: 'payable',
+    type: 'function',
+  },
+];

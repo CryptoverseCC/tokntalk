@@ -33,6 +33,7 @@ import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 import { metamaskStatusChanged } from './Analytics';
 import { SidebarProvider, SidebarContainer, SidebarLeft, SidebarRight } from './Sidebar';
+import { CreateAd } from './CreateAd';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 const GeneralPage = IndexPage;
@@ -466,6 +467,18 @@ export default class App extends Component {
           <Context.Consumer>
             {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
           </Context.Consumer>
+        </SidebarRight>
+      </SidebarContainer>
+    </SidebarProvider>
+  );
+
+  static CreateAd = (props) => (
+    <SidebarProvider>
+      <Header />
+      <SidebarContainer>
+        <SidebarLeft />
+        <SidebarRight>
+          <CreateAd {...props} />
         </SidebarRight>
       </SidebarContainer>
     </SidebarProvider>

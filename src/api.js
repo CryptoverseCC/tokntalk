@@ -16,6 +16,7 @@ import {
   claimWithTokenValueTransferContractAbi,
   erc20ContractAbi,
   mintTokensContractAbi,
+  createAdContract,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
 import { findClub } from './clubs';
@@ -672,4 +673,56 @@ const getMintTokensContract = async () => {
 const getMintedTokens = async (from) => {
   const contract = await getMintTokensContract();
   return await contract.methods.mintedBy(from).call();
+};
+
+export const createThreadAd = async (threadId, target, value) => {
+  const chainRequest = await createAdSignature(threadId, target);
+  console.log(chainRequest);
+  return await createAdOnChain(value, chainRequest);
+};
+
+const createAdSignature = async (threadId, target) => {
+  const claim = JSON.stringify({
+    claim: {
+      about: threadId,
+      target: target,
+      type: ['about', 'ad'],
+    },
+  });
+  const body = JSON.stringify({ claim: claim });
+  console.log(body);
+  const call = await fetch(`${USERFEEDS_API_ADDRESS}/api/get-ad-signature`, {
+    method: 'POST',
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return await call.json();
+};
+
+const getCreateAdContract = async () => {
+  const web3 = await getWeb3();
+  const contractAddress = '0x53b7c52090750c30a40babd50024588e527292c3'; //kovan
+  const contract = new web3.eth.Contract(createAdContract, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  return contract;
+};
+
+const createAdOnChain = async (value, chainRequest) => {
+  const {
+    adRequest: { addresses, claim, createdAtInSeconds, ratio, ratioSum, threadId, validUntilInSeconds },
+    v,
+    r,
+    s,
+  } = chainRequest;
+  debugger;
+  const { from } = await getWeb3State();
+  const contract = await getCreateAdContract();
+  return new Promise((resolve) => {
+    contract.methods
+      .post(claim, threadId, createdAtInSeconds, addresses, ratio, ratioSum, validUntilInSeconds, v, r, s)
+      .send({ from, value })
+      .on('transactionHash', (transactionHash) => resolve(transactionHash));
+  });
 };
