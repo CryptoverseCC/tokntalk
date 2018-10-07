@@ -8,7 +8,7 @@ const HeroContainer = styled.div``;
 const AddStory = styled.div`
   box-shadow: rgba(118, 103, 170, 0.12) 0px 2rem 3rem -1.5rem;
   border-radius: 12px;
-  display: block;
+  display: flex;
   padding: 1.25rem;
   background-color: white;
   @media (max-width: 770px) {
@@ -24,10 +24,15 @@ const Avatar = styled(LinkedActiveEntityAvatar)`
   margin-right: 15px;
 
   @media (max-width: 770px) {
-    width: 32px;
-    height: 32px;
-    margin-right: 5px;
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
   }
+`;
+
+const Form = styled(CommentForm)`
+  width: 100%;
+  padding: 0px 50px 0px 0px;
 `;
 
 const Hero = (props) => (
@@ -36,10 +41,8 @@ const Hero = (props) => (
       <div {...props}>
         <HeroContainer>
           <AddStory>
-            <article className="media">
-              <Avatar />
-              <ConnectedCommentForm Form={CommentForm} />
-            </article>
+            <Avatar />
+            <ConnectedCommentForm Form={Form} />
           </AddStory>
         </HeroContainer>
       </div>

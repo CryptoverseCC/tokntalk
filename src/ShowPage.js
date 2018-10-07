@@ -138,12 +138,11 @@ export default class ShowPage extends Component {
                   <EntityInfo entity={entity} />
                   <ExternalLinks entity={entity} />
                 </ProfileBox>
-                <PromotionBox entity={entity} />
               </div>
               <div className="column is-6 fl-1">
                 <FeedContainer entity={entity} />
               </div>
-              <div className="column is-3">
+              <div className="column is-3 is-hidden-mobile">
                 {entity.isAddress && <Communities entity={entity} />}
                 <Cousins entity={entity} style={{ marginTop: entity.isAddress ? '20px' : '0px' }} />
               </div>

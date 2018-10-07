@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { createEtherscanUrl } from '../../utils';
 import { LinkedEntityAvatar } from '../../Entity';
 import Link from '../../Link';
-import Post from './Basic';
+import Message from './Message';
 
 const Avatar = styled(LinkedEntityAvatar)`
   width: 48px;
@@ -14,7 +14,7 @@ const Avatar = styled(LinkedEntityAvatar)`
 `;
 
 const Boost = ({ feedItem, onVerify }) => (
-  <Post
+  <Message
     id={feedItem.id}
     from={feedItem.target}
     entityInfo={feedItem.target_info}

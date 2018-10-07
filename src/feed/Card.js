@@ -7,28 +7,29 @@ import uniqBy from 'lodash/fp/uniqBy';
 import { IfActiveEntity, LinkedEntityAvatar, IsActiveEntityFromFamily, DoesActiveEntityHasToken } from '../Entity';
 import Link from '../Link';
 import Boost from './posts/Boost';
-import Post from './posts/Basic';
-import Reply from './posts/Reply';
-import PostReplyForm from './posts/ReplyForm';
-import { CollapsableText, ShowMore } from './posts/CollapsableText';
+import Message from './posts/Message';
+import Response from './posts/Response';
+import Reaction from './posts/Reaction';
+import Reply from './Reply';
+import ReplyForm from './ReplyForm';
+import { CollapsableText, ShowMore } from './CollapsableText';
 import { FacebookIcon, TwitterIcon, InstagramIcon, GithubIcon } from '../Icons';
 import { createEtherscanUrl, enhanceCustomClubProp } from '../utils';
 
-const IconContainer = styled.div`
+const ReactionIcon = styled.div`
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  height: 28px;
+  width: 28px;
+  background-color: white;
+  border: 1px solid #ddd;
 `;
 
-const Reaction = styled(IconContainer)`
-  height: 20px;
-  width: 20px;
-`;
-
-const FacebookLabel = styled(Reaction).attrs({
-  children: <FacebookIcon style={{ width: '16px', marginLeft: '-1px', marginTop: '1px' }} />,
+const FacebookLabel = styled(ReactionIcon).attrs({
+  children: <FacebookIcon style={{ width: '20px' }} />,
 })`
   background-color: white;
   ${FacebookIcon} {
@@ -36,8 +37,8 @@ const FacebookLabel = styled(Reaction).attrs({
   }
 `;
 
-const GithubLabel = styled(Reaction).attrs({
-  children: <GithubIcon style={{ width: '16px', marginLeft: '-1px', marginTop: '1px' }} />,
+const GithubLabel = styled(ReactionIcon).attrs({
+  children: <GithubIcon style={{ width: '20px' }} />,
 })`
   background-color: white;
   ${GithubIcon} {
@@ -45,8 +46,8 @@ const GithubLabel = styled(Reaction).attrs({
   }
 `;
 
-const TwitterLabel = styled(Reaction).attrs({
-  children: <TwitterIcon style={{ width: '16px', marginLeft: '-1px', marginTop: '1px' }} />,
+const TwitterLabel = styled(ReactionIcon).attrs({
+  children: <TwitterIcon style={{ width: '20px' }} />,
 })`
   background-color: white;
   ${TwitterIcon} {
@@ -54,8 +55,8 @@ const TwitterLabel = styled(Reaction).attrs({
   }
 `;
 
-const InstagramLabel = styled(Reaction).attrs({
-  children: <InstagramIcon style={{ width: '16px', marginLeft: '-1px', marginTop: '1px' }} />,
+const InstagramLabel = styled(ReactionIcon).attrs({
+  children: <InstagramIcon style={{ width: '20px' }} />,
 })`
   background-color: white;
   ${InstagramIcon} {
@@ -152,6 +153,10 @@ const CardBoxContent = styled.div`
   background-color: white;
   padding: 15px;
   ${({ added }) => (added ? `animation: ${blink} 1s ease-out 1` : '')};
+
+  @media (max-width: 770px) {
+    padding: 10px;
+  }
 `;
 
 const CardBox = styled(({ children, club, className, style }) => {
@@ -220,12 +225,33 @@ export default class Card extends React.Component {
     const { areRepliesCollapsed } = this.state;
     const { feedItem, replies, reactions, disabledInteractions, isClubFeed, hidePermalink } = this.props;
 
+    if (feedItem.type === 'like') {
+      return (
+        <React.Fragment>
+          <Reaction
+            feedItem={feedItem}
+            disabledInteractions={disabledInteractions}
+            reactionSuffix="likes:"
+            messageSuffix={this.getSuffix(feedItem.target)}
+          />
+        </React.Fragment>
+      );
+    }
+
+    if (feedItem.type === 'response') {
+      return (
+        <React.Fragment>
+          <Response feedItem={feedItem} />
+        </React.Fragment>
+      );
+    }
+
     return (
       <React.Fragment>
         {feedItem.type === 'boost' ? (
           <Boost feedItem={feedItem} onVerify={this.onVerify} />
         ) : (
-          <Post
+          <Message
             id={feedItem.id}
             style={{ borderTop: 'none' }}
             from={feedItem.isFromAddress ? feedItem.author : feedItem.context}
@@ -287,20 +313,20 @@ export default class Card extends React.Component {
                           isClubFeed,
                         );
                         return (
-                          <PostReplyForm about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
+                          <ReplyForm about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
                             <ReplyClubInfo warning={warning}>{message}</ReplyClubInfo>
-                          </PostReplyForm>
+                          </ReplyForm>
                         );
                       }}
                     </DoesActiveEntityHasToken>
                   )}
                 </IsActiveEntityFromFamily>
               ) : (
-                <PostReplyForm about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
+                <ReplyForm about={feedItem.id} inputRef={(ref) => (this.replyForm = ref)}>
                   {isClubFeed && (
                     <ReplyClubInfo>Your message will be displayed here and on the main feed.</ReplyClubInfo>
                   )}
-                </PostReplyForm>
+                </ReplyForm>
               )
             }
           </IfActiveEntity>
@@ -310,8 +336,8 @@ export default class Card extends React.Component {
   };
 
   static CounterpartyAvatar = styled(LinkedEntityAvatar)`
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     margin-left: 0.325em;
     display: inline-block;
   `;

@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { LinkedActiveEntityAvatar } from '../../Entity';
-import { ConnectedReplyForm, ReplyForm } from '../../CommentForm';
+import { LinkedActiveEntityAvatar } from '../Entity';
+import { ConnectedReplyForm, ReplyForm } from '../CommentForm';
 
 const Avatar = styled(LinkedActiveEntityAvatar)`
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
+
+  @media (max-width: 770px) {
+    width: 38px;
+    height: 38px;
+  }
 `;
 
 const Container = styled.div`
@@ -18,11 +23,11 @@ const Form = styled(ReplyForm)`
   margin-left: 10px;
 `;
 
-const PostReplyForm = ({ about, children, ...props }) => (
+const RForm = ({ about, children, ...props }) => (
   <Container>
     <Avatar />
     <ConnectedReplyForm Form={Form} about={about} {...props} />
   </Container>
 );
 
-export default PostReplyForm;
+export default RForm;

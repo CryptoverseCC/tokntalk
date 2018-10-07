@@ -20,7 +20,31 @@ import {
 
 const formatCurrency = (value, decimals) => fromWeiToString(value, decimals);
 
-const CatvertisedItemLink = styled(Link)`
+const PromotedList = styled(CatvertisedList)`
+  @media (max-width: 770px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: auto;
+  }
+`;
+
+const PromotedItem = styled(CatvertisedItem)`
+  @media (max-width: 770px) {
+    width: 17%;
+    margin: 0;
+
+    :last-child {
+      margin: 0;
+    }
+
+    & + & {
+      margin: 0;
+    }
+  }
+`;
+
+const PromotedItemLink = styled(Link)`
   display: flex;
   overflow: hidden;
 
@@ -29,6 +53,7 @@ const CatvertisedItemLink = styled(Link)`
     align-items: normal;
     text-align: center;
     width: 100%;
+    margin: 0;
   }
 `;
 
@@ -73,6 +98,7 @@ export class PromotionBox extends Component {
   static defaultProps = {
     asset: 'ethereum',
     assetInfo: { symbol: 'ETH', decimals: 18 },
+    limit: 5,
   };
 
   state = {
@@ -87,10 +113,14 @@ export class PromotionBox extends Component {
   `;
 
   static Avatar = styled(EntityAvatar)`
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
 
     flex-shrink: 0;
+
+    @media (max-width: 770px) {
+      margin: auto;
+    }
   `;
 
   componentDidMount() {
@@ -124,9 +154,9 @@ export class PromotionBox extends Component {
   renderTabContent = (items, supportersCount, supportingCount) => {
     return (
       <React.Fragment>
-        {this.props.showPurrmoter && <Purrmoter token={this.props.token} hiddenOnMobile={true} />}
+        {this.props.showPurrmoter && <Purrmoter token={this.props.token} />}
         {!this.props.showPurrmoter && this.renderTabs(supportersCount, supportingCount)}
-        {Object.keys(items).length > 0 && this.renderList(items)}
+        {Object.keys(items).length > 0 && this.renderList(items, this.props.limit)}
         {this.state.currentPage === PAGE.SUPPORTERS && (
           <Web3ProviderStatus>
             {(isEnabled) => {
@@ -146,14 +176,15 @@ export class PromotionBox extends Component {
     );
   };
 
-  renderList = (items) => {
+  renderList = (items, limit) => {
     return (
-      <CatvertisedList>
+      <PromotedList>
         {Object.entries(items)
           .sort(([, { score: a }], [, { score: b }]) => b - a)
+          .slice(0, limit)
           .map(([id, { score, context_info: contextInfo }]) => (
-            <CatvertisedItem key={id}>
-              <CatvertisedItemLink to={`/${id}`}>
+            <PromotedItem key={id}>
+              <PromotedItemLink to={`/${id}`}>
                 <PromotionBox.Avatar id={id} entityInfo={contextInfo} />
                 <EntityDescription>
                   <CatvertisedName>
@@ -163,10 +194,10 @@ export class PromotionBox extends Component {
                     {formatCurrency(score, this.props.assetInfo.decimals)} {this.props.assetInfo.symbol}
                   </CatvertisedScore>
                 </EntityDescription>
-              </CatvertisedItemLink>
-            </CatvertisedItem>
+              </PromotedItemLink>
+            </PromotedItem>
           ))}
-      </CatvertisedList>
+      </PromotedList>
     );
   };
 

@@ -5,27 +5,27 @@ import styled from 'styled-components';
 import Profile from '../Profile';
 import { VerifyButton } from '../Buttons.js';
 import Link from '../../Link';
-import { CollapsableText } from './CollapsableText';
-import PostReactions from './PostReactions';
+import { CollapsableText } from '../CollapsableText';
+import Reactions from '../Reactions';
 
-const Message = styled.p`
-  font-size: 1rem;
+const Text = styled.p`
+  font-size: 1.5rem;
   overflow-wrap: break-word;
   white-space: pre-wrap;
   word-break: break-word;
-  margin: 8px 0px 10px 20px;
-  background-color: #fbfbfb;
+  margin: 8px 0px 10px 50px;
+  background-color: #f9f9f9;
   padding: 10px;
   border-radius: 10px;
 
   @media (max-width: 770px) {
     font-size: 1rem;
-    margin: 8px 0px 10px 20px;
+    margin: 8px 0px 10px 45px;
     padding: 10px;
   }
 `;
 
-const Post = ({
+const Message = ({
   id,
   from,
   entityInfo,
@@ -43,15 +43,17 @@ const Post = ({
   return (
     <div>
       <Profile from={from} entityInfo={entityInfo} suffix={suffix} reaction={reaction}>
-        <PostReactions
-          id={id}
-          reactions={reactions}
-          replies={replies}
-          disabledInteractions={disabledInteractions}
-          onReply={onReply}
-          onShowLikers={onShowLikers}
-          style={{ fontSize: '1rem' }}
-        />
+        {reactions && (
+          <Reactions
+            id={id}
+            reactions={reactions}
+            replies={replies}
+            disabledInteractions={disabledInteractions}
+            onReply={onReply}
+            onShowLikers={onShowLikers}
+            style={{ fontSize: '1rem' }}
+          />
+        )}
         <span>{timeago().format(createdAt)}</span>
         <VerifyButton onClick={onVerify} />
         <Link
@@ -64,11 +66,11 @@ const Post = ({
           Permalink
         </Link>
       </Profile>
-      <Message>
+      <Text>
         <CollapsableText text={message} />
-      </Message>
+      </Text>
     </div>
   );
 };
 
-export default Post;
+export default Message;

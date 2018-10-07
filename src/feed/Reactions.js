@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { IfActiveEntity, IfActiveEntityLiked } from '../../Entity';
-import Context from '../../Context';
-import { LikeIcon, ReplyIcon } from '../../Icons';
+import { IfActiveEntity, IfActiveEntityLiked } from '../Entity';
+import Context from '../Context';
+import { LikeIcon, ReplyIcon } from '../Icons';
 
 const IconContainer = styled.div`
   border-radius: 50%;
@@ -151,11 +151,11 @@ const EnabledReactions = ({ id, reactions, replies = [], onReply, onShowLikers }
   </ReactionsContainer>
 );
 
-const PostReactions = ({ id, reactions, replies, disabledInteractions, onReply, onShowLikers, style }) =>
+const Reactions = ({ id, reactions, replies, disabledInteractions, onReply, onShowLikers, style }) =>
   disabledInteractions ? (
     <DisabledReactions reactions={reactions} replies={replies} onShowLikers={onShowLikers} />
   ) : (
     <EnabledReactions id={id} reactions={reactions} replies={replies} onReply={onReply} onShowLikers={onShowLikers} />
   );
 
-export default PostReactions;
+export default Reactions;

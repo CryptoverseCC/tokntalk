@@ -517,7 +517,7 @@ const Social = ({ token, social, limit = Number.MAX_SAFE_INTEGER }) => {
         return (
           <React.Fragment>
             {!data.loading && items.length ? (
-              <SocialHeader style={{ marginBottom: '15px', marginTop: '25px', borderBottom: '1px solid #666' }}>
+              <SocialHeader style={{ marginBottom: '15px', marginTop: '25px', borderBottom: '1px solid #DDD' }}>
                 {limit !== Number.MAX_SAFE_INTEGER ? (
                   <Link to={`${token.isCustom ? token.asset : token.symbol}/social/${social}`}>
                     <Icon style={{ width: '16px', height: '16px', marginRight: '10px', marginBottom: '-2px' }} />
@@ -556,9 +556,11 @@ const Social = ({ token, social, limit = Number.MAX_SAFE_INTEGER }) => {
                   </EntityInfo>
                 </EntityContainer>
               ))}
-              <div className="column is-12">
-                <Link to={`${token.isCustom ? token.asset : token.symbol}/social/${social}`}>More ...</Link>
-              </div>
+              {limit !== Number.MAX_SAFE_INTEGER && (
+                <div className="column is-12">
+                  <Link to={`${token.isCustom ? token.asset : token.symbol}/social/${social}`}>More ...</Link>
+                </div>
+              )}
             </div>
           </React.Fragment>
         );

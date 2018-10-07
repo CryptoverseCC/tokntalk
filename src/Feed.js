@@ -54,6 +54,7 @@ class Feed extends Component {
       style,
       disabledInteractions,
       isClubFeed,
+      emptyFeedMessage,
     } = this.props;
     const { showLikes, feedItemLikes, showVerify, verifiableItem } = this.state;
 
@@ -103,7 +104,9 @@ class Feed extends Component {
         ) : (
           <EmptyFeedPlaceholder>
             <b>
-              <TranslationsContext.Consumer>{({ emptyFeed }) => emptyFeed}</TranslationsContext.Consumer>
+              {emptyFeedMessage || (
+                <TranslationsContext.Consumer>{({ emptyFeed }) => emptyFeed}</TranslationsContext.Consumer>
+              )}
             </b>
           </EmptyFeedPlaceholder>
         )}
@@ -246,7 +249,7 @@ export const getFeed = (
     };
 
     render() {
-      const { className } = this.props;
+      const { className, emptyFeedMessage } = this.props;
       const { feedItems, feedLoading, feedLoadingMore } = this.state;
 
       return (
@@ -270,6 +273,7 @@ export const getFeed = (
                 temporaryReactions={temporaryReactions}
                 getMoreFeedItems={this.getMoreFeedItems}
                 feedLoadingMore={feedLoadingMore}
+                emptyFeedMessage={emptyFeedMessage}
               />
             );
           }}

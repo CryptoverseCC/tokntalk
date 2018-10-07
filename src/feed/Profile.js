@@ -23,19 +23,16 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  margin-left: 15px;
+  margin-left: 10px;
+  width: 100%;
 
   @media (max-width: 770px) {
-    mergin-left: 5px;
+    margin-left: 5px;
   }
 `;
 
 const NameContainer = styled.div`
   display: flex;
-`;
-
-const Suffix = styled.div`
-  margin-left: 5px;
 `;
 
 const StatusRow = styled.div`
@@ -71,7 +68,8 @@ const Profile = ({
           <Link to={`/${from}`} style={{ display: 'block' }}>
             <Name>{entityInfo.name}</Name>
           </Link>
-          <Suffix>{suffix}</Suffix>
+          {suffix && <span>&nbsp;</span>}
+          {suffix}
         </NameContainer>
         <StatusRow>{children}</StatusRow>
       </Content>

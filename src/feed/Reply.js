@@ -2,25 +2,25 @@ import React from 'react';
 import timeago from 'timeago.js';
 import styled from 'styled-components';
 
-import Profile from '../Profile';
-import { VerifyButton } from '../Buttons.js';
+import Profile from './Profile';
+import { VerifyButton } from './Buttons.js';
 import { CollapsableText } from './CollapsableText';
-import PostReactions from './PostReactions';
+import Reactions from './Reactions';
 
 const Message = styled.p`
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin: 20px;
   overflow-wrap: break-word;
   white-space: pre-wrap;
   word-break: break-word;
-  margin: 0px 0px 10px 20px;
-  background-color: #fbfbfb;
+  margin: 0px 0px 10px 50px;
+  background-color: #f9f9f9;
   padding: 10px;
   border-radius: 10px;
 
   @media (max-width: 770px) {
     font-size: 1rem;
-    margin: 0px 0px 10px 20px;
+    margin: 8px 0px 10px 45px;
     padding: 10px;
   }
 `;
@@ -33,8 +33,6 @@ const ReplyContainer = styled.div`
 
 const ReplyProfile = styled(Profile)`
   display: flex;
-  transform: scale(0.8);
-  transform-origin: top left;
 `;
 
 const Reply = ({
@@ -52,13 +50,15 @@ const Reply = ({
 }) => (
   <ReplyContainer>
     <ReplyProfile from={from} entityInfo={entityInfo}>
-      <PostReactions
-        id={id}
-        reactions={reactions}
-        disabledInteractions={disabledInteractions}
-        onShowLikers={onShowLikers}
-        style={{ fontSize: '1rem' }}
-      />
+      {reactions && (
+        <Reactions
+          id={id}
+          reactions={reactions}
+          disabledInteractions={disabledInteractions}
+          onShowLikers={onShowLikers}
+          style={{ fontSize: '1rem' }}
+        />
+      )}
       <span>{timeago().format(createdAt)}</span>
       <VerifyButton onClick={onVerify} />
     </ReplyProfile>

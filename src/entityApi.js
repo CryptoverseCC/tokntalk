@@ -44,4 +44,6 @@ export const entityTranslations = {
   replyPlaceholder: 'Write your reply',
   noEntitiesError: 'No tokens found',
   emptyFeed: 'No messages yet. Be the first one!',
+  emptyNotificationsFeed: 'No messages yet. Join conversations, be a part of the community!',
+  emptyPersonalFeed: 'No messages yet. Join communities by buying their tokens.',
 };
