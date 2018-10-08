@@ -33,7 +33,7 @@ const ReactionProfile = styled(Profile)`
   }
 `;
 
-const Reaction = ({ feedItem, reactionSuffix, messageSuffix, disabledInteractions }) => (
+const Reaction = ({ feedItem, reactionSuffix, messageSuffix, disabledInteractions, onVerify }) => (
   <div>
     <ReactionProfile
       reaction={<LikeReaction />}
@@ -44,10 +44,10 @@ const Reaction = ({ feedItem, reactionSuffix, messageSuffix, disabledInteraction
       suffix={<span>{reactionSuffix}</span>}
     >
       <span>{timeago().format(feedItem.created_at)}</span>
-      <VerifyButton onClick={() => this.onVerify(feedItem)} />
+      <VerifyButton onClick={() => onVerify(feedItem)} />
     </ReactionProfile>
     {feedItem.target.type === 'boost' ? (
-      <Boost feedItem={feedItem.target} onVerify={this.onVerify} />
+      <Boost feedItem={feedItem.target} onVerify={onVerify} />
     ) : (
       <Message
         from={feedItem.target.isFromAddress ? feedItem.target.author : feedItem.target.context}
@@ -57,7 +57,7 @@ const Reaction = ({ feedItem, reactionSuffix, messageSuffix, disabledInteraction
         family={feedItem.target.family}
         suffix={messageSuffix}
         disabledInteractions={disabledInteractions}
-        onVerify={() => this.onVerify(feedItem.target)}
+        onVerify={() => onVerify(feedItem.target)}
       />
     )}
   </div>

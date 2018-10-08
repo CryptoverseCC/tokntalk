@@ -1026,7 +1026,7 @@ const clubs = [
     logo: unknowClub,
     coverImage: unknowClubCover,
     primaryColor: '#EDF1F8',
-    secondaryColor: '#ffffff',
+    secondaryColor: '#1b2438',
     shadowColor: 'rgba(27,36,56,0.09)',
     externalLinks: [
       { name: 'Project page', url: 'https://mokens.io/' },
@@ -1044,7 +1044,7 @@ const clubs = [
     logo: unknowClub,
     coverImage: unknowClubCover,
     primaryColor: '#EDF1F8',
-    secondaryColor: '#ffffff',
+    secondaryColor: '#1b2438',
     shadowColor: 'rgba(27,36,56,0.09)',
     externalLinks: [
       { name: 'Project page', url: 'https://fanbits.com/' },

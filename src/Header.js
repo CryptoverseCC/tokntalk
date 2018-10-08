@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Link from './Link';
 import NetworkWarning from './NetworkWarning';
-import { IfActiveEntity, Entities, EntityAvatar, LinkedActiveEntityAvatar, LinkedActiveEntityName } from './Entity';
+import { IfActiveEntity, Entities, EntityAvatar, LinkedActiveEntityAvatar } from './Entity';
 import TranslationsContext from './Translations';
 import Locked from './img/locked.svg';
 import NoMetamask from './img/no.svg';
@@ -170,14 +170,6 @@ const AvatarSwitcherContent = styled.ul`
 const HiddenOnMobile = styled.span`
   @media (max-width: 770px) {
     display: none;
-  }
-`;
-
-const AvatarLabel = styled.span`
-  margin-right: 10px;
-
-  @media (max-width: 770px) {
-    margin-right: 5px;
   }
 `;
 

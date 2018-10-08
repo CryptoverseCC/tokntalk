@@ -108,7 +108,7 @@ export default class ShowPage extends Component {
   `;
 
   render() {
-    const { EntityInfo, PromotionBox, Cousins, Communities, FeedContainer, ExternalLinks } = this;
+    const { EntityInfo, Cousins, Communities, FeedContainer, ExternalLinks } = this;
     const { entityId } = this.props.match.params;
     const tokenClub = this.getCommunityToken(entityId);
 

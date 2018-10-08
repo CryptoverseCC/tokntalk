@@ -233,6 +233,7 @@ export default class Card extends React.Component {
             disabledInteractions={disabledInteractions}
             reactionSuffix="likes:"
             messageSuffix={this.getSuffix(feedItem.target)}
+            onVerify={this.onVerify}
           />
         </React.Fragment>
       );
@@ -241,7 +242,7 @@ export default class Card extends React.Component {
     if (feedItem.type === 'response') {
       return (
         <React.Fragment>
-          <Response feedItem={feedItem} />
+          <Response feedItem={feedItem} onVerify={this.onVerify} />
         </React.Fragment>
       );
     }

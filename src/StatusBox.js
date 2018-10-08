@@ -6,6 +6,7 @@ import AppContext from './Context';
 import { SwitcherIcon, ExclamationMark } from './Icons';
 import unlockBackground from './img/unlock_bg.png';
 import mouse from './img/mouse_click.png';
+import OpenSea from './OpenSea';
 
 const Web3Locked = () => (
   <Web3LockedContainer>
@@ -36,24 +37,37 @@ const Web3LockedContainer = StatusContainer.extend`
 const WarningContainerColored = StatusContainer.extend`
   background: ${({ primaryColor }) => primaryColor};
   color: ${({ secondaryColor }) => secondaryColor};
+
+  display: flex;
+  align-items: baseline
+  flex-direction: column;
+`;
+
+const StatusHeader = styled.div`
+  display: flex;
 `;
 
 const NoToken = ({ token }) => (
-  <WarningContainerColored
-    primaryColor={token.primaryColor}
-    secondaryColor={token.secondaryColor}
-    className="is-flex"
-    style={{ alignItems: 'center' }}
-  >
-    <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
-    <div>
-      <p style={{ fontSize: '1.5rem', color: token.secondaryColor, lineHeight: '1.2' }}>
-        Acquire {token.name} to participate!
-      </p>
-      <p style={{ fontSize: '1rem', color: token.secondaryColor, opacity: '0.6' }}>
-        Then you'll be able to join the conversation.
-      </p>
-    </div>
+  <WarningContainerColored primaryColor={token.primaryColor} secondaryColor={token.secondaryColor}>
+    <StatusHeader>
+      <ExclamationMark style={{ marginRight: '30px', fill: token.secondaryColor }} />
+      <div>
+        <p style={{ fontSize: '1.5rem', color: token.secondaryColor, lineHeight: '1.2' }}>
+          Acquire {token.name} to participate!
+        </p>
+        <p style={{ fontSize: '1rem', color: token.secondaryColor, opacity: '0.6' }}>
+          Then you'll be able to join the conversation.
+        </p>
+      </div>
+    </StatusHeader>
+    {token.is721 ? (
+      <AppContext>
+        {({ web3Store }) =>
+          web3Store.networkName === 'ethereum' &&
+          web3Store.from && <OpenSea token={token} style={{ marginTop: '15px' }} />
+        }
+      </AppContext>
+    ) : null}
   </WarningContainerColored>
 );
 
