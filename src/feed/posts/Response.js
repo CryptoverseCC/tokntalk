@@ -20,7 +20,7 @@ const Name = styled(Link)`
   }
 `;
 
-const Response = ({ feedItem }) => {
+const Response = ({ feedItem, onVerify }) => {
   const reply = feedItem.reply_to;
   const entityInfo = feedItem.isFromAddress ? feedItem.author_info : feedItem.context_info;
   const from = feedItem.isFromAddress ? feedItem.author : feedItem.context;
@@ -45,7 +45,7 @@ const Response = ({ feedItem }) => {
           </Name>
         </Container>
       }
-      onVerify={() => this.onVerify(feedItem)}
+      onVerify={() => onVerify(feedItem)}
     />
   );
 };

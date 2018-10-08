@@ -7,6 +7,15 @@ import { niceScroll } from './cssUtils';
 import { LinkedEntityAvatar } from './Entity';
 import Link from './Link';
 
+let OpenSeaLib;
+
+const getOpenSeaLib = () => {
+  if (!OpenSeaLib) {
+    OpenSeaLib = import('opensea-js');
+  }
+  return OpenSeaLib;
+};
+
 export default class OpenSea extends Component {
   state = {
     items: [],
@@ -16,7 +25,7 @@ export default class OpenSea extends Component {
   OpenSeaLib = undefined;
 
   async componentDidMount() {
-    this.getOpenSeaLib();
+    getOpenSeaLib();
     const { token } = this.props;
     const { items } = await fetch(
       `https://api.userfeeds.io/api/cheap-tokens?id=${token.network}:${token.address}`,
@@ -24,15 +33,8 @@ export default class OpenSea extends Component {
     this.setState({ items });
   }
 
-  getOpenSeaLib = () => {
-    if (!this.OpenSeaLib) {
-      this.OpenSeaLib = import('opensea-js');
-    }
-    return this.OpenSeaLib;
-  };
-
   buy = async (item) => {
-    const [web3, OpenSeaJs] = await Promise.all([getWeb3(), this.getOpenSeaLib()]);
+    const [web3, OpenSeaJs] = await Promise.all([getWeb3(), getOpenSeaLib()]);
     const { OpenSeaPort, Network, orderFromJSON } = OpenSeaJs;
     const [accountAddress] = await web3.eth.getAccounts();
 
@@ -84,7 +86,10 @@ const Avatar = styled(LinkedEntityAvatar)`
 
 const Offer = styled(
   class extends Component {
-    state = { buyState: undefined };
+    state = {
+      buyState: undefined,
+      loading: true,
+    };
 
     onBuy = async () => {
       try {
@@ -95,6 +100,24 @@ const Offer = styled(
         console.log(e);
         this.setState({ buyState: 'failure' });
       }
+    };
+
+    verifyOrder = async (item) => {
+      const [web3, OpenSeaJs] = await Promise.all([getWeb3(), getOpenSeaLib()]);
+      const { OpenSeaPort, Network, orderFromJSON } = OpenSeaJs;
+      const [accountAddress] = await web3.eth.getAccounts();
+
+      const seaport = new OpenSeaPort(web3.currentProvider, { networkName: Network.Main });
+      let valid = await seaport.isOrderFulfillable({
+        order: orderFromJSON(item.sell_order),
+        accountAddress: accountAddress.toLowerCase(),
+      });
+
+      this.setState({ loading: false, buyState: valid ? null : 'failure' });
+    };
+
+    componentDidMount = async () => {
+      await this.verifyOrder(this.props.offer);
     };
 
     static Details = styled.div`
@@ -124,13 +147,17 @@ const Offer = styled(
             </Link>
             <span style={{ color: '#918f9b', fontSize: '0.8rem' }}>{fromWeiToString(offer.price, 18)} ETH</span>
           </Offer.Details>
-          <BuyButton
-            disabled={!!buyState}
-            onClick={this.onBuy}
-            primaryColor={primaryColor}
-            secondaryColor={secondaryColor}
-            state={buyState}
-          />
+          {this.state.loading ? (
+            <ButtonLoader />
+          ) : (
+            <BuyButton
+              disabled={!!buyState}
+              onClick={this.onBuy}
+              primaryColor={primaryColor}
+              secondaryColor={secondaryColor}
+              state={buyState}
+            />
+          )}
         </div>
       );
     }
@@ -140,6 +167,23 @@ const Offer = styled(
   border-radius: 5px;
   display: flex;
   padding: 10px;
+`;
+
+const ButtonLoader = styled.button.attrs({
+  children: ({ state }) => {
+    return '⏳';
+  },
+  disabled: true,
+})`
+  cursor: not-allowed;
+  flex-shrink: 0;
+  margin-left: auto;
+  outline: unset;
+  font-weight: bold;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  align-self: center;
 `;
 
 const BuyButton = styled.button.attrs({
