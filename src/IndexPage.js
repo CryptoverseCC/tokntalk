@@ -10,6 +10,7 @@ import { PromotionBox } from './promotion/PromotionBox';
 import { FlatContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import StatusBox from './StatusBox';
+import Announcement from './Announcements';
 
 const ExplainerBox = styled(FlatContainer)`
   margin-top: 20px;
@@ -57,6 +58,7 @@ export default class IndexPage extends Component {
       <React.Fragment>
         <div className="columns ordered-mobile">
           <div className="column is-9 fl-1">
+            <Announcement />
             <StatusBox check={[StatusBox.Web3Locked]} style={{ marginBottom: '30px' }}>
               <Hero />
             </StatusBox>
