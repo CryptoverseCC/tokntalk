@@ -73,7 +73,7 @@ export default class Announcement extends Component {
         {ANNOUNCEMENTS.map((announcement, number) => {
           const index = ANNOUNCEMENTS.length - number;
           return (
-            <Container name={announcement.name} dismissed={index <= this.state.dismissed}>
+            <Container key={index} name={announcement.name} dismissed={index <= this.state.dismissed}>
               {announcement.content}
               <Dismiss onClick={() => this.dismiss(index)}>Dismiss</Dismiss>
             </Container>
