@@ -686,8 +686,8 @@ const createAdSignature = async (threadId, target) => {
     claim: {
       about: threadId,
       target: target,
-      type: ['about', 'ad'],
     },
+    type: ['about', 'ad'],
   });
   const body = JSON.stringify({ claim: claim });
   console.log(body);
