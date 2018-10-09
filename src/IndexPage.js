@@ -59,7 +59,7 @@ export default class IndexPage extends Component {
         <div className="columns ordered-mobile">
           <div className="column is-9 fl-1">
             <Announcement />
-            <StatusBox check={[StatusBox.Web3Locked]} style={{ marginBottom: '30px' }}>
+            <StatusBox check={StatusBox.Web3Locked} style={{ marginBottom: '30px' }}>
               <Hero />
             </StatusBox>
             <FeedTypeSwitcher

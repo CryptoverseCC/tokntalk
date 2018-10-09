@@ -127,7 +127,7 @@ export default class ShowPage extends Component {
                   avatar={
                     <ShowPage.ProfileAvatar
                       backgroundColor="transparent"
-                      entity={entityId}
+                      id={entityId}
                       src={entity.image_preview_url}
                       size="medium"
                       style={{ alignSelf: 'flex-end' }}
@@ -212,7 +212,7 @@ export default class ShowPage extends Component {
 
   FeedContainer = ({ entity }) => (
     <React.Fragment>
-      <StatusBox check={[StatusBox.Web3Locked]} style={{ marginBottom: '1.5rem' }}>
+      <StatusBox check={StatusBox.Web3Locked} style={{ marginBottom: '1.5rem' }}>
         <IfActiveEntity>
           {(token) => (
             <div
@@ -491,13 +491,12 @@ export class SocialList extends React.Component {
           {({ owner, external_link, background_color, image_preview_url }) => {
             const ownerEntity = owner && getEntityInfoForAddress(owner);
             const communityToken = !this.isAddress(id) ? this.getCommunityToken(id) : null;
-            console.log(communityToken);
             return (
               <div>
                 {!this.isAddress(id) &&
                   ownerEntity && (
                     <SocialBadge href={`/${ownerEntity.id}`}>
-                      <SocialList.OwnerAvatar entity={ownerEntity.id} src={ownerEntity.image_preview_url} />
+                      <SocialList.OwnerAvatar id={ownerEntity.id} src={ownerEntity.image_preview_url} />
                       <span style={{ marginLeft: '15px' }}>Owner ({ownerEntity.name})</span>
                     </SocialBadge>
                   )}
@@ -509,7 +508,7 @@ export class SocialList extends React.Component {
                 )}
                 <SocialBadge href={external_link}>
                   {this.isAddress(id) ? (
-                    <SocialList.EntityAvatar entity={id} backgroundColor={background_color} src={image_preview_url} />
+                    <SocialList.EntityAvatar id={id} backgroundColor={background_color} src={image_preview_url} />
                   ) : (
                     <TokenImage token={this.getCommunityToken(id)} size="verySmall" />
                   )}

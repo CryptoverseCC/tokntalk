@@ -4,7 +4,7 @@ import placeholder from './img/anonkitty.svg';
 import find from 'lodash/fp/find';
 import ercs721 from './erc721';
 
-export const getAvatarScale = (entity) => {
+export const getAvatarScale = (id) => {
   const defaultAvatarSettings = {
     scale: 1.8,
     translate: '0%, 10%',
@@ -15,10 +15,10 @@ export const getAvatarScale = (entity) => {
     translate: '0%, 0%',
   };
 
-  if (!entity) {
+  if (!id) {
     return 1;
   }
-  const [, address] = entity.split(':');
+  const [, address] = id.split(':');
   const token = find({ address })(ercs721);
   const avatarSettings = token ? token.avatar || defaultAvatarSettings : addressAvatarSettings;
 
@@ -54,8 +54,8 @@ const ReactionContainer = styled.div`
   left: -15px;
 `;
 
-const IdentityAvatar = ({ entity, reaction, style = {}, backgroundColor, src, lazy = true, ...restProps }) => {
-  const { scale, translate } = getAvatarScale(entity);
+const IdentityAvatar = ({ id, reaction, style = {}, backgroundColor, src, lazy = true, ...restProps }) => {
+  const { scale, translate } = getAvatarScale(id);
   return (
     <BaseContainer style={{ ...style }} {...restProps}>
       <AvatarContainer backgroundColor={backgroundColor}>
@@ -66,8 +66,8 @@ const IdentityAvatar = ({ entity, reaction, style = {}, backgroundColor, src, la
   );
 };
 
-export const AvatarPlaceholder = ({ entity }) => {
-  const { scale, translate } = getAvatarScale(entity);
+export const AvatarPlaceholder = ({ id }) => {
+  const { scale, translate } = getAvatarScale(id);
   return (
     <AvatarContainer backgroundColor="#DED5FF">
       <Avatar src={placeholder} scale={scale} translate={translate} />

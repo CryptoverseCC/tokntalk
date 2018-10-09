@@ -76,7 +76,7 @@ const ActiveEntityIsNotFromFamily = ({ token }) => (
     primaryColor={token.primaryColor}
     secondaryColor={token.secondaryColor}
     className="is-flex"
-    style={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
+    style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', fontWeight: 600 }}
   >
     <SwitcherIcon style={{ marginRight: '30px', fill: token.secondaryColor }} />
     <div>
@@ -90,13 +90,20 @@ class StatusBox extends Component {
   static Web3Locked = ({ entityStore: { activeEntity } }) => (activeEntity ? null : <Web3Locked />);
 
   static HasToken = (token) => ({ entityStore: { activeEntity, getEntity } }) => {
-    if (!activeEntity) return <NoToken token={token} />;
-    const hasToken = !!getEntity(activeEntity.id).tokens.find((t) => t.asset === token.asset);
+    if (!activeEntity) return <Web3Locked />;
+
+    const entity = getEntity(activeEntity.id);
+    const hasToken = !!entity.tokens.find((t) => t.asset === token.asset);
     return hasToken ? null : <NoToken token={token} />;
   };
 
-  static IsFromFamily = (token) => ({ entityStore: { activeEntity } }) => {
-    if (!activeEntity) return <ActiveEntityIsNotFromFamily token={token} />;
+  static IsFromFamily = (token) => ({ entityStore: { activeEntity, getEntity } }) => {
+    if (!activeEntity) return <Web3Locked />;
+
+    const entity = getEntity(activeEntity.id);
+    const hasToken = !!entity.tokens.find((t) => t.asset === token.asset);
+    if (!hasToken) return <NoToken token={token} />;
+
     const [network, address] = activeEntity.id.split(':');
     const is = `${network}:${address}` === token.asset;
     return is ? null : <ActiveEntityIsNotFromFamily token={token} />;
@@ -104,7 +111,7 @@ class StatusBox extends Component {
 
   render() {
     const { state, check, children, style, className } = this.props;
-    const status = check.reduce((acc, check) => (acc ? acc : check(state)), null);
+    const status = check(state);
 
     return (
       <div style={style} className={className}>

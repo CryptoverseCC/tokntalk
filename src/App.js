@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import update from 'react-addons-update';
+
 import find from 'lodash/fp/find';
 import isEqual from 'lodash/isEqual';
 import produce from 'immer';
@@ -44,7 +46,9 @@ export const produceEntities = (myEntities, previousActiveEntity) => {
       !!previousActiveEntity && typeof previousActiveEntity === 'object' ? id === previousActiveEntity.id : false,
   );
 
-  return { myEntities, activeEntity: refreshedPreviousActiveEntity ? refreshedPreviousActiveEntity : firstEntity };
+  const activeEntity = refreshedPreviousActiveEntity ? refreshedPreviousActiveEntity : firstEntity;
+
+  return { myEntities, activeEntity: activeEntity };
 };
 
 export default class App extends Component {
@@ -58,7 +62,7 @@ export default class App extends Component {
     myEntities: [],
     entityInfo: JSON.parse(this.storage.getItem('entityInfo') || '{}'),
     entityLabels: {},
-    entityTokens: {},
+    entityTokens: [],
     feedItem: null,
     feedItemLoading: false,
     temporaryFeedItems: [],
@@ -93,6 +97,8 @@ export default class App extends Component {
   refreshMyEntities = async () => {
     try {
       const newMyEntities = produceEntities(await getMyEntities(), this.previousActiveEntity());
+      console.debug('Refreshing Entities');
+      await this.refreshEntity(newMyEntities.activeEntity.id);
       this.setState(newMyEntities, this.saveActiveEntity);
     } catch (e) {}
   };
@@ -106,10 +112,12 @@ export default class App extends Component {
     }
   };
 
-  changeActiveEntityTo = (newActiveEntity) => {
+  changeActiveEntityTo = async (newActiveEntity) => {
     if (!this.state.myEntities.find(({ id }) => id === newActiveEntity.id)) {
       return;
     }
+    await this.refreshEntity(newActiveEntity.id);
+
     this.setState({ activeEntity: newActiveEntity }, this.saveActiveEntity);
   };
 
@@ -125,23 +133,17 @@ export default class App extends Component {
   };
 
   getEntityLabels = async (entityId) => {
-    if (this.entityLabelRequests[entityId]) return;
     const entityLabelRequest = getLabels(entityId);
     this.entityLabelRequests[entityId] = entityLabelRequest;
     const labels = await entityLabelRequest;
-    this.setState({
-      entityLabels: { ...this.state.entityLabels, [entityId]: labels },
-    });
+    return labels;
   };
 
   getEntityTokens = async (entityId) => {
-    if (this.entityTokensRequests[entityId]) return;
     const entityTokensRequests = getEntityTokens(entityId);
     this.entityTokensRequests[entityId] = entityTokensRequests;
     const tokens = await entityTokensRequests;
-    this.setState({
-      entityTokens: { ...this.state.entityTokens, [entityId]: tokens },
-    });
+    return tokens;
   };
 
   toggleHttpClaims = () => {
@@ -158,7 +160,6 @@ export default class App extends Component {
   };
 
   getEntityInfo = async (entityId) => {
-    if (this.entityInfoRequests[entityId]) return;
     let entityData;
     if (isAddress(entityId)) {
       entityData = getEntityInfoForAddress(entityId);
@@ -168,23 +169,35 @@ export default class App extends Component {
       entityData = await entityInfoRequest;
     }
 
-    this.setState({ entityInfo: { ...this.state.entityInfo, [entityId]: entityData } }, this.saveEntities);
+    return entityData;
+  };
+
+  refreshEntity = async (entityId) => {
+    let entityInfo = this.state.entityInfo[entityId];
+    if (!entityInfo) entityInfo = await this.getEntityInfo(entityId);
+    let entityLabels = this.state.entityLabels[entityId];
+    if (!entityLabels) entityLabels = await this.getEntityLabels(entityId);
+    let entityTokens = this.state.entityTokens[entityId];
+    if (!entityTokens) entityTokens = await this.getEntityTokens(entityId);
+
+    const newState = update(this.state, {
+      entityInfo: { [entityId]: { $set: entityInfo } },
+      entityLabels: { [entityId]: { $set: entityLabels } },
+      entityTokens: { [entityId]: { $set: entityTokens } },
+    });
+
+    this.setState(newState, this.saveEntities);
   };
 
   getEntity = (entityId) => {
-    const entityInfo = this.state.entityInfo[entityId];
-    if (!entityInfo) this.getEntityInfo(entityId);
-    const entityLabels = this.state.entityLabels[entityId];
-    if (!entityLabels) this.getEntityLabels(entityId);
-    const entityTokens = this.state.entityTokens[entityId];
-    if (!entityTokens) this.getEntityTokens(entityId);
+    this.refreshEntity(entityId);
+    let entityInfo = this.state.entityInfo[entityId];
+    let entityLabels = this.state.entityLabels[entityId];
+    let entityTokens = this.state.entityTokens[entityId];
     const boost = this.state.boosts[entityId] || { score: 0 };
     const boostValue = boost.score;
-
     return {
-      background_color: undefined,
       id: entityId,
-      name: undefined,
       boostValue,
       tokens: entityTokens || [],
       ...entityInfo,

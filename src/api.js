@@ -215,6 +215,9 @@ export const getEntities = async (from) =>
         return {
           ...context_info,
           id: context,
+          background_color: undefined,
+          name: undefined,
+          tokens: [],
           name,
         };
       }),

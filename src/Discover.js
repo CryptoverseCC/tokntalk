@@ -355,13 +355,7 @@ const ByToken = ({ token }) => (
       </div>
       <div className="column is-6 fl-1">
         {token.isCustom && <CustomClubInfo style={{ marginBottom: '-20px' }} />}
-        <StatusBox
-          check={[
-            StatusBox.Web3Locked,
-            StatusBox.HasToken(token),
-            ...(token.is721 ? [StatusBox.IsFromFamily(token)] : []),
-          ]}
-        >
+        <StatusBox check={token.is721 ? StatusBox.IsFromFamily(token) : StatusBox.HasToken}>
           <ClubForm token={token} />
         </StatusBox>
         <IsActiveEntityFromFamily asset={`${token.network}:${token.address}`}>

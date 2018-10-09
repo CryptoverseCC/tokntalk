@@ -762,6 +762,7 @@ const clubs = [
   },
   {
     ...mapping.CRYPTOBASEBALL,
+    entityPrefix: 'Player #',
     logo: cryptobaseball,
     coverImage: cryptobaseballCover,
     primaryColor: '#010d21',
@@ -838,6 +839,7 @@ const clubs = [
   },
   {
     ...mapping.GODS_UNCHAINED,
+    entityPrefix: 'GOD #',
     logo: godsunchained,
     coverImage: godsunchainedCover,
     primaryColor: '#1a1840',
@@ -853,6 +855,7 @@ const clubs = [
   },
   {
     ...mapping.CRYPTOGIRLS,
+    entityPrefix: 'Girl #',
     logo: cryptogirls,
     coverImage: cryptogirlsCover,
     primaryColor: '#746eff',
@@ -870,7 +873,7 @@ const clubs = [
   },
   {
     ...mapping.BLOCKCHAIN_CUTIES,
-    entityPrefix: 'Cuties #',
+    entityPrefix: 'Cutie #',
     logo: blockchaincuties,
     coverImage: blockchaincutiesCover,
     primaryColor: '#525079',
@@ -886,6 +889,7 @@ const clubs = [
   },
   {
     ...mapping.CRYPTO_ARTE,
+    entityPrefix: 'Art #',
     logo: cryptoarte,
     coverImage: cryptoarteCover,
     primaryColor: '#CFFFFA',
@@ -911,6 +915,7 @@ const clubs = [
   },
   {
     ...mapping.WAR_RIDERS,
+    entityPrefix: 'Rider #',
     logo: warriders,
     coverImage: warridersCover,
     primaryColor: '#0b0d23',
@@ -990,6 +995,7 @@ const clubs = [
   },
   {
     ...mapping.JOHN_ORION_YOUNG,
+    entityPrefix: 'JOY #',
     logo: joy,
     coverImage: joyCover,
     primaryColor: '#F9E957',
@@ -1008,6 +1014,7 @@ const clubs = [
   },
   {
     ...mapping.COINBASE_WALLET_CRYPTO_SWAG,
+    entityPrefix: 'SWAG #',
     logo: coinbase,
     coverImage: coinbaseCover,
     primaryColor: '#0443c2',
