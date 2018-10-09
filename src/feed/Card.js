@@ -130,6 +130,8 @@ const ClubLink = styled(
   background: ${({ club }) => club.primaryColor};
   box-shadow: ${({ club }) => `0 1rem 1rem -0.5rem ${club.shadowColor}`};
   transition: all 0.15s ease;
+  max-width: 200px;
+  overflow: hidden;
 
   ::after {
     content: '→';
