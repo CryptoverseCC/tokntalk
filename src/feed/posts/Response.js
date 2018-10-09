@@ -27,7 +27,8 @@ const Response = ({ feedItem, onVerify }) => {
 
   return (
     <Message
-      id={from}
+      id={feedItem.id}
+      createdAt={feedItem.created_at}
       entityInfo={entityInfo}
       from={from}
       family={feedItem.family}
