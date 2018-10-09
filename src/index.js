@@ -77,6 +77,11 @@ const TokNTalk = withRouter(
           {redirect && <Redirect to="/about" />}
           <ScrollTop />
           <Switch location={isModal ? this.previousLocation : location}>
+            <Route
+              sensitive
+              path="/:slug1*:slug2([A-Z]):slug3*/"
+              render={(props) => <Redirect to={`${props.location.pathname.toLowerCase()}`} />}
+            />
             <Route exact path="/about" component={About} />
             <Route exact path="/communities" component={Communities} />
             <Route exact path="/threads" component={Threads} />

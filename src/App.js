@@ -62,7 +62,7 @@ export default class App extends Component {
     myEntities: [],
     entityInfo: JSON.parse(this.storage.getItem('entityInfo') || '{}'),
     entityLabels: {},
-    entityTokens: [],
+    entityTokens: {},
     feedItem: null,
     feedItemLoading: false,
     temporaryFeedItems: [],
