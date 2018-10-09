@@ -322,7 +322,10 @@ const ByToken = ({ token }) => (
           }}
         >
           <H2 style={{ overflow: 'hidden' }}>{token.name}</H2>
-          <ul style={{ fontWeight: '600' }}>
+          <ul style={{ fontWeight: '600', marginTop: '10px' }}>
+            <li style={{ marginBottom: '7px' }}>
+              <a href={`https://trivial.co/t/${token.address}`}>Research with Trivial.co</a>
+            </li>
             <li style={{ marginBottom: '7px' }}>
               <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
             </li>
@@ -585,7 +588,10 @@ const SocialPage = ({ token, match }) => {
           }}
         >
           <H2>{token.name}</H2>
-          <ul style={{ fontWeight: '600' }}>
+          <ul style={{ fontWeight: '600', marginTop: '10px' }}>
+            <li style={{ marginBottom: '7px' }}>
+              <a href={`https://trivial.co/t/${token.address}`}>Research with Trivial.co</a>
+            </li>
             <li style={{ marginBottom: '7px' }}>
               <a href={`https://etherscan.io/address/${token.address}`}>Etherscan.io</a>
             </li>
