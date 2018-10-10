@@ -212,7 +212,7 @@ export default class ShowPage extends Component {
 
   FeedContainer = ({ entity }) => (
     <React.Fragment>
-      <StatusBox check={StatusBox.Web3Locked} style={{ marginBottom: '1.5rem' }}>
+      <StatusBox check={StatusBox.Web3LockedCheck} style={{ marginBottom: '1.5rem' }}>
         <IfActiveEntity>
           {(token) => (
             <div

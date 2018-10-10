@@ -87,7 +87,7 @@ const ActiveEntityIsNotFromFamily = ({ token }) => (
 );
 
 class StatusBox extends Component {
-  static Web3Locked = ({ entityStore: { activeEntity } }) => (activeEntity ? null : <Web3Locked />);
+  static Web3LockedCheck = ({ entityStore: { activeEntity } }) => (activeEntity ? null : <Web3Locked />);
 
   static HasToken = (token) => ({ entityStore: { activeEntity, getEntity } }) => {
     if (!activeEntity) return <Web3Locked />;
