@@ -77,11 +77,6 @@ const TokNTalk = withRouter(
           {redirect && <Redirect to="/about" />}
           <ScrollTop />
           <Switch location={isModal ? this.previousLocation : location}>
-            <Route
-              sensitive
-              path="/:slug1*:slug2([A-Z]):slug3*/"
-              render={(props) => <Redirect to={`${props.location.pathname.toLowerCase()}`} />}
-            />
             <Route exact path="/about" component={About} />
             <Route exact path="/communities" component={Communities} />
             <Route exact path="/threads" component={Threads} />
@@ -94,6 +89,11 @@ const TokNTalk = withRouter(
             <Route exact path="/notifications" component={App.Index} />
             <Route path="/clubs" component={App.Discover} />
             <Route path="/discover" component={rewriteCmp('/discover', '/clubs')} />
+            <Route
+              sensitive
+              path="/:slug1*:slug2([A-Z]):slug3*/"
+              render={(props) => <Redirect to={`${props.location.pathname.toLowerCase()}`} />}
+            />
             <Route exact path="/:entityId" component={validateEntityId(App.ShowPage)} />
             {!isModal ? <Route exact path="/thread/:claimId" component={App.Thread} /> : null}
           </Switch>
