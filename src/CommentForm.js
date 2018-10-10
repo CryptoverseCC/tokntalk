@@ -50,6 +50,10 @@ export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea inner
   &:focus::-webkit-input-placeholder {
     color: #78818c;
   }
+
+  @media (max-width: 770px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const ReplyForm = styled(CommentForm)`
@@ -121,6 +125,11 @@ const MetamaskButton = styled.button`
             box-shadow: 0 0.7rem 1.5rem -0.35rem rgba(118, 103, 170, 1);
           }
         `};
+
+  @media (max-width: 770px) {
+    right: 0px;
+    bottom: 0px;
+  }
 `;
 
 export class TextAreaForm extends React.Component {

@@ -32,7 +32,7 @@ const Avatar = styled(LinkedActiveEntityAvatar)`
 
 const Form = styled(CommentForm)`
   width: 100%;
-  padding: 0px 50px 0px 0px;
+  padding: 0px 45px 0px 0px;
 `;
 
 const Hero = (props) => (

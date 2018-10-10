@@ -39,7 +39,7 @@ const PopularFeed = getFeed(fetchPopularFeed, false, false);
 const ActiveFeed = getFeed(getFeedItemsFromCache('cache-cryptoverse-active-feed'), true, false);
 
 export default class IndexPage extends Component {
-  state = { feedType: 'new' };
+  state = { feedType: FeedTypeSwitcher.ACTIVE };
 
   componentDidMount() {
     pageView();
@@ -53,7 +53,7 @@ export default class IndexPage extends Component {
 
   render() {
     const { feedType } = this.state;
-    const defaultUnloggedFeeds = [FeedTypeSwitcher.NEW, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.ACTIVE];
+    const defaultUnloggedFeeds = [FeedTypeSwitcher.ACTIVE, FeedTypeSwitcher.POPULAR, FeedTypeSwitcher.NEW];
     return (
       <React.Fragment>
         <div className="columns ordered-mobile">
@@ -72,7 +72,7 @@ export default class IndexPage extends Component {
             {feedType === FeedTypeSwitcher.POPULAR && <PopularFeed />}
             {feedType === FeedTypeSwitcher.ACTIVE && <ActiveFeed />}
           </div>
-          <div className="column is-3">
+          <div className="column is-3 is-hidden-mobile">
             <FlatContainer>
               <AppContext.Consumer>
                 {({ boostStore: { getBoosts, getSupportings } }) => (
