@@ -12,6 +12,10 @@ const CoverImage = styled.div`
   background-size: cover;
   padding-top: 50%;
   width: 100%;
+
+  @media (max-width: 770px) {
+    padding-top: 30%;
+  }
 `;
 
 const Avatar = styled(({ children, className, style }) => (

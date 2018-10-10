@@ -8,10 +8,11 @@ import openseaImg from './img/announcements/opensea.png';
 
 const ANNOUNCEMENTS = [
   {
-    name: 'OpenSea',
+    id: 'OpenSea',
+    title: 'OpenSea Integration - Buy NFTs from club page.',
     content: (
       <div>
-        <H3>Announcement: OpenSea Integration</H3>
+        <H3>OpenSea Integration</H3>
         <p>
           We've introduced new way of joining token clubs. Now if you don't have required token to join given NFT club.
           We will show you 3 cheapest items offered on OpenSea marketplace and you'll be able to buy them directly form
@@ -25,12 +26,7 @@ const ANNOUNCEMENTS = [
 
 const STORAGE_KEY = "Tok'n'Talk_announcements";
 
-const Dismiss = styled.button`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-
-  margin-top: 15px;
+const Button = styled.button`
   font-family: 'AvenirNext';
   font-weight: 600;
   border: none;
@@ -38,9 +34,29 @@ const Dismiss = styled.button`
   color: white;
   background-color: #264dd9;
   font-size: 1rem;
-  padding: 1em 0.75rem 0.75em 0.75rem;
+  padding: 0.5em;
   border-radius: 12px;
   cursor: pointer;
+
+  @media (max-width: 770px) {
+    padding: 0.1em 0.5rem 0.1em 0.5rem;
+  }
+`;
+
+const Dismiss = styled(Button)`
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+`;
+
+const ShowMore = styled(Button)`
+  position: absolute;
+  right: 90px;
+  bottom: 5px;
+
+  @media (max-width: 770px) {
+    right: 80px;
+  }
 `;
 
 const Container = styled(FlatContainer)`
@@ -49,36 +65,72 @@ const Container = styled(FlatContainer)`
   max-width: 100%;
   margin-bottom: 10px;
   position: relative;
+  padding-bottom: 30px;
 `;
 
-export default class Announcement extends Component {
+function getInitialState() {
+  // Upgrade preexisting values
+  const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+  return typeof value === 'object'
+    ? value
+    : value === 1
+      ? localStorage.setItem(STORAGE_KEY, JSON.stringify(['OpenSea'])) || ['OpenSea']
+      : localStorage.setItem(STORAGE_KEY, JSON.stringify([])) || [];
+}
+
+class Announcement extends Component {
   state = {
-    dismissed: localStorage.getItem(STORAGE_KEY) | 0,
+    open: false,
+  };
+
+  onShowMore() {
+    this.setState({
+      open: true,
+    });
+  }
+
+  render() {
+    const { announcement, onDismiss } = this.props;
+    const { open } = this.state;
+
+    return (
+      <Container name={announcement.name}>
+        {open ? announcement.content : <H3>{announcement.title}</H3>}
+        {!open && <ShowMore onClick={this.onShowMore.bind(this)}>Show more</ShowMore>}
+        <Dismiss onClick={onDismiss}>Dismiss</Dismiss>
+      </Container>
+    );
+  }
+}
+
+export default class Announcements extends Component {
+  state = {
+    dismissed: getInitialState(),
   };
 
   dismiss = (value) => {
     this.setState(
       {
-        dismissed: value,
+        dismissed: this.state.dismissed.concat([value]),
       },
       () => {
-        localStorage.setItem(STORAGE_KEY, value);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.dismissed));
       },
     );
   };
 
   render() {
+    const { dismissed } = this.state;
+
     return (
       <React.Fragment>
-        {ANNOUNCEMENTS.map((announcement, number) => {
-          const index = ANNOUNCEMENTS.length - number;
-          return (
-            <Container key={index} name={announcement.name} dismissed={index <= this.state.dismissed}>
-              {announcement.content}
-              <Dismiss onClick={() => this.dismiss(index)}>Dismiss</Dismiss>
-            </Container>
-          );
-        })}
+        {ANNOUNCEMENTS.map(
+          (announcement, index) =>
+            dismissed.includes(announcement.id) ? null : (
+              <Announcement key={index} announcement={announcement} onDismiss={() => this.dismiss(announcement.id)} />
+            ),
+        )}
       </React.Fragment>
     );
   }

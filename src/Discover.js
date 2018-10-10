@@ -43,6 +43,8 @@ const WelcomeMessage = styled.div`
   background-color: #ecf1f9;
   display: flex;
   align-items: center;
+  position: relative;
+  margin-bottom: 10px;
   @media (max-width: 770px) {
     width: 96%;
     margin-left: 2%;
@@ -696,33 +698,72 @@ const IsLoading = ({ children }) => (
   <DiscoveryContext.Consumer>{({ loading }) => loading && children}</DiscoveryContext.Consumer>
 );
 
-const CustomClubInfo = (props) => (
-  <WelcomeMessage {...props}>
-    <H1 style={{ fontSize: '3rem' }}>
-      <span role="img">🎨</span>
-    </H1>
-    <div style={{ marginLeft: '30px' }}>
-      <H3>Make this token more visible!</H3>
-      <p style={{ fontSize: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-        Help to list it officially on Tokntalk: send us relevant links and artworks.
-        <br />
-        <br />
-        We would love to know: <b>Reddit</b>, <b>Twitter</b>, <b>Discord</b>, <b>Telegram</b>, etc., and artwork we
-        should use to list this club in our `Newest clubs` tab and any other information that you think relevant.
-      </p>
-      <p>
-        You can always contact us at{' '}
-        <Link to="/thread/claim:0x35df61fa026498b5254b9dcf669b1f7baef9e09767de2f10c347f3e83e910b7869dae53cd906ee6e78b179053b2e9797eb2bc64fe1f1d0841a27aef222ade2681c">
-          Tokntalk
-        </Link>{' '}
-        or on <A href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram</A> if you have any questions.
-      </p>
-      <br />
-      <br />
-      You are <b>The Hero</b> this community deserves. <b>It's your time!</b>
-    </div>
-  </WelcomeMessage>
-);
+class CustomClubInfo extends Component {
+  state = { open: false };
+
+  static Button = styled.button`
+    font-family: 'AvenirNext';
+    font-weight: 600;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #264dd9;
+    font-size: 1rem;
+    padding: 0.5em;
+    border-radius: 12px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+
+    @media (max-width: 770px) {
+      padding: 0.1em 0.5rem 0.1em 0.5rem;
+    }
+  `;
+
+  toggle() {
+    this.setState({ open: !this.state.open });
+  }
+
+  render(props) {
+    const { open } = this.state;
+
+    return (
+      <WelcomeMessage {...props}>
+        <H1 style={{ fontSize: '3rem' }}>
+          <span role="img">🎨</span>
+        </H1>
+        <div style={{ marginLeft: '30px' }}>
+          <H3>Make this token more visible!</H3>
+          {!open && <CustomClubInfo.Button onClick={this.toggle.bind(this)}>Show More</CustomClubInfo.Button>}
+          {open && (
+            <div>
+              <p style={{ fontSize: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                Help to list it officially on Tokntalk: send us relevant links and artworks.
+                <br />
+                <br />
+                We would love to know: <b>Reddit</b>, <b>Twitter</b>, <b>Discord</b>, <b>Telegram</b>, etc., and artwork
+                we should use to list this club in our `Newest clubs` tab and any other information that you think
+                relevant.
+              </p>
+              <p>
+                You can always contact us at{' '}
+                <Link to="/thread/claim:0x35df61fa026498b5254b9dcf669b1f7baef9e09767de2f10c347f3e83e910b7869dae53cd906ee6e78b179053b2e9797eb2bc64fe1f1d0841a27aef222ade2681c">
+                  Tokntalk
+                </Link>{' '}
+                or on <A href="https://t.me/joinchat/Ff2fyUYwRF7m3Vxew5UxnA">Telegram</A> if you have any questions.
+              </p>
+              <br />
+              <br />
+              You are <b>The Hero</b> this community deserves. <b>It's your time!</b>
+              <CustomClubInfo.Button onClick={this.toggle.bind(this)}>Hide</CustomClubInfo.Button>
+            </div>
+          )}
+        </div>
+      </WelcomeMessage>
+    );
+  }
+}
 
 const RedditFeed = (props) => {
   const url = props.url + '.embed';
