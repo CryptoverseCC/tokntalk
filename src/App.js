@@ -417,7 +417,7 @@ export default class App extends Component {
 
   static Index = (props) => <Async load={import('./app/Index')} componentProps={props} />;
 
-  static Thread = (props) => <Async load={import('./app/Thread').Thread} componentProps={props} />;
+  static Thread = (props) => <Async load={import('./app/Thread')} componentProps={props} />;
 
-  static ModalThread = (props) => <Async load={import('./app/Thread').ModalThread} componentProps={props} />;
+  static ModalThread = (props) => <Async load={import('./app/ModalThread')} componentProps={props} />;
 }

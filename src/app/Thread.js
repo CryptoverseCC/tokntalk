@@ -2,7 +2,7 @@ import React from 'react';
 
 import Context from '../Context';
 import Header from '../Header';
-import { Thread, ModalThread } from '../Thread';
+import { Thread } from '../Thread';
 import { SidebarProvider, SidebarContainer, SidebarLeft, SidebarRight } from '../Sidebar';
 
 const ThreadApp = (props) => (
@@ -19,10 +19,4 @@ const ThreadApp = (props) => (
   </SidebarProvider>
 );
 
-const ModalThreadApp = (props) => (
-  <Context.Consumer>
-    {({ feedStore }) => <ModalThread {...props} getFeedItem={feedStore.getFeedItem} />}
-  </Context.Consumer>
-);
-
-export { ModalThreadApp, ThreadApp };
+export default ThreadApp;

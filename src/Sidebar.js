@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { NavLink, withRouter } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 
 import { A } from './Link';
 import Intercom from './Intercom';
@@ -71,24 +72,28 @@ const Header = styled(H4)`
 
 export const SidebarLeft = () => (
   <SidebarContext.Consumer>
-    {({ open, overlay }) => (
+    {({ open, overlay, toggle }) => (
       <SidebarLeftContainer open={open} overlay={overlay}>
-        <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />}>
+        <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
           All
         </LinkItem>
         <IfActiveEntity>
           {(entityId) => (
             <React.Fragment>
-              <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />}>
+              <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
                 Club News
               </LinkItem>
-              <LinkItem to="/notifications" icon={<img alt="" style={{ width: '16px' }} src={notificationsIcon} />}>
+              <LinkItem
+                to="/notifications"
+                icon={<img alt="" style={{ width: '16px' }} src={notificationsIcon} />}
+                toggle={toggle}
+              >
                 Notifications
               </LinkItem>
               <Header>Your Clubs</Header>
               <ClubContainer>
                 <EntityClubs id={entityId}>
-                  {(clubs) => clubs.map((club) => <Club key={club.address} token={club} />)}
+                  {(clubs) => clubs.map((club) => <Club key={club.address} token={club} toggle={toggle} />)}
                 </EntityClubs>
               </ClubContainer>
             </React.Fragment>
@@ -169,7 +174,7 @@ const ClubContainer = styled.div`
   ${niceScroll};
 `;
 
-const Club = ({ token }) => (
+const Club = ({ token, toggle }) => (
   <LinkItem
     to={token.isCustom ? `/clubs/${token.network}:${token.address}` : `/clubs/${token.symbol}`}
     primaryColor={token.primaryColor}
@@ -179,6 +184,7 @@ const Club = ({ token }) => (
         <StyledUnreadedMessages token={token} short={true} />
       </div>
     }
+    toggle={toggle}
   >
     {token.name}
   </LinkItem>
@@ -213,8 +219,15 @@ const SidebarFooter = styled(({ className }) => (
   padding: 10px;
 `;
 
-const LinkItem = styled(({ children, icon, primaryColor, ...props }) => (
-  <NavLink {...props} exact activeClassName="selected">
+const LinkItem = styled(({ children, icon, primaryColor, toggle, ...props }) => (
+  <NavLink
+    {...props}
+    exact
+    activeClassName="selected"
+    onClick={() => {
+      isMobile ? toggle() : null;
+    }}
+  >
     <IconContainer primaryColor={primaryColor}>{icon}</IconContainer>
     {children}
   </NavLink>

@@ -57,6 +57,7 @@
     "react-code-splitting": "^1.2.1",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dev-utils": "^5.0.1",
+    "react-device-detect": "^1.6.1",
     "react-dom": "^16.4.2",
     "react-ga": "^2.5.3",
     "react-hover-observer": "^2.1.0",
