@@ -72,7 +72,7 @@ function getInitialState() {
   // Upgrade preexisting values
   const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-  return typeof value === 'object'
+  return Array.isArray(value)
     ? value
     : value === 1
       ? localStorage.setItem(STORAGE_KEY, JSON.stringify(['OpenSea'])) || ['OpenSea']
