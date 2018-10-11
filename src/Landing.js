@@ -16,15 +16,15 @@ import arrowUp from './img/landing/round-up.svg';
 import arrowRight from './img/landing/tail-right.svg';
 import exitBig from './img/landing/exit-big.svg';
 
-import buildThird from './img/landing/build-3.png';
-import TokenOwnersFirst from './img/landing/TokenOwnersFirst.png';
-import TokenOwnersSecond from './img/landing/TokenOwnersSecond.png';
-import TokenOwnersSixth from './img/landing/TokenOwnersSixth.png';
-import UserFirst from './img/landing/UserFirst.png';
-import UserSecond from './img/landing/UserSecond.png';
-import UserTransferable from './img/landing/UserTransferable.png';
-import UserConnected from './img/landing/UserConnected.png';
-import UsersNew from './img/landing/UsersNew.png';
+import buildThird from './img/landing/build-3.webp';
+import TokenOwnersFirst from './img/landing/TokenOwnersFirst.webp';
+import TokenOwnersSecond from './img/landing/TokenOwnersSecond.webp';
+import TokenOwnersSixth from './img/landing/TokenOwnersSixth.webp';
+import UserFirst from './img/landing/UserFirst.webp';
+import UserSecond from './img/landing/UserSecond.webp';
+import UserTransferable from './img/landing/UserTransferable.webp';
+import UserConnected from './img/landing/UserConnected.webp';
+import UsersNew from './img/landing/UsersNew.webp';
 
 import { pageView } from './Analytics';
 
