@@ -35,7 +35,6 @@ import { TokenTile, SmallTokenTile } from './TokenTile';
 import { Intercom } from './Intercom';
 
 import StatusBox from './StatusBox';
-import { TwitterTimelineEmbed } from 'react-twitter-embed';
 
 const WelcomeMessage = styled.div`
   border-radius: 12px;
@@ -767,6 +766,7 @@ class CustomClubInfo extends Component {
 
 const RedditFeed = (props) => {
   const url = props.url + '.embed';
+
   return (
     <iframe
       title="reddit"
@@ -776,10 +776,23 @@ const RedditFeed = (props) => {
   );
 };
 
-const TwitterFeed = (props) => {
-  const profile = props.url.replace(/https:\/\/twitter.com\//, '');
-  return <TwitterTimelineEmbed sourceType="profile" screenName={profile} options={{ height: 1500 }} />;
-};
+class TwitterFeed extends Component {
+  state = {
+    Timeline: () => <span>Loading...</span>,
+  };
+
+  componentDidMount() {
+    import('react-twitter-embed')
+      .then((module) => this.setState({ Timeline: module.TwitterTimelineEmbed }))
+      .catch(() => {});
+  }
+
+  render() {
+    const profile = this.props.url.replace(/https:\/\/twitter.com\//, '');
+    const { Timeline } = this.state;
+    return <Timeline sourceType="profile" screenName={profile} options={{ height: 1500 }} />;
+  }
+}
 
 export class FeedForToken extends Component {
   storage = Storage();

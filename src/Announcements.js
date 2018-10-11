@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import TranslationsContext from './Translations';
 import { FlatContainer, H3 } from './Components';
 
 import openseaImg from './img/announcements/opensea.png';

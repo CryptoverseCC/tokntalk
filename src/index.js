@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { isAddress } from 'web3-utils';
+import Async from 'react-code-splitting';
 
 import './index.css';
 import App from './App';
-import About from './Landing';
-import Communities from './Communities';
-import Threads from './Threads';
-import NotFound from './NotFound';
-import FAQ from './FAQPage';
 import { Storage, ScrollTop, rewriteCmp, validateParams } from './utils';
 import { runInContext, Sentry } from './Sentry';
 
 import registerServiceWorker from './registerServiceWorker';
-import { ChangellyFastBuy } from './Changelly';
-import { CoinbaseWidget } from './CoinbaseWidget';
+
+const About = (props) => <Async load={import('./Landing')} componentProps={props} />;
+const Communities = (props) => <Async load={import('./Communities')} componentProps={props} />;
+const Threads = (props) => <Async load={import('./Threads')} componentProps={props} />;
+const NotFound = (props) => <Async load={import('./NotFound')} componentProps={props} />;
+const FAQ = (props) => <Async load={import('./FAQPage')} componentProps={props} />;
+const GetTokens = (props) => <Async load={import('./GetTokens')} componentProps={props} />;
 
 const runMigrations = (storage) => {
   let version = parseInt(storage.getItem('version'), 10);
@@ -82,7 +83,7 @@ const TokNTalk = withRouter(
             <Route exact path="/threads" component={Threads} />
             <Route exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
-            <Route exact path="/how-to-get-tokens" component={Widgets} />
+            <Route exact path="/how-to-get-tokens" component={GetTokens} />
 
             <Route exact path="/" component={App.Index} />
             <Route exact path="/personal" component={App.Index} />
@@ -104,17 +105,8 @@ const TokNTalk = withRouter(
   },
 );
 
-const Widgets = () => {
-  return (
-    <div>
-      <ChangellyFastBuy />
-      <CoinbaseWidget />
-    </div>
-  );
-};
-
 const startApp = () => {
-  ReactDOM.render(
+  render(
     <Sentry>
       <App>
         <Router>

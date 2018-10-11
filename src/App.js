@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import update from 'react-addons-update';
+import Async from 'react-code-splitting';
 
 import find from 'lodash/fp/find';
 import isEqual from 'lodash/isEqual';
@@ -7,10 +8,6 @@ import produce from 'immer';
 import { isAddress } from 'web3-utils';
 
 import Context from './Context';
-import IndexPage from './IndexPage';
-import PersonalPage from './PersonalPage';
-import Notifications from './Notifications';
-import ShowPage from './ShowPage';
 import {
   getMyEntities,
   getWeb3State,
@@ -28,14 +25,10 @@ import {
   getFeedItem,
 } from './api';
 import { getEntityData } from './entityApi';
-import Header from './Header';
-import { Thread, ModalThread } from './Thread';
-import Discover from './Discover';
 import { Storage, getEntityInfoForAddress } from './utils';
 import { UnreadedMessagesProvider } from './UnreadedMessages';
 import WalletModal from './WalletModal';
 import { metamaskStatusChanged } from './Analytics';
-import { SidebarProvider, SidebarContainer, SidebarLeft, SidebarRight } from './Sidebar';
 
 const { REACT_APP_INTERFACE_BOOST_NETWORK: INTERFACE_BOOST_NETWORK } = process.env;
 
@@ -418,76 +411,13 @@ export default class App extends Component {
     );
   }
 
-  static ShowPage = (props) => (
-    <SidebarProvider overlay>
-      <Header />
-      <SidebarContainer>
-        <SidebarLeft />
-        <SidebarRight>
-          <Context.Consumer>
-            {({ feedStore, entityStore }) => (
-              <ShowPage
-                {...props}
-                getFeedItems={feedStore.getFeedItems}
-                getNewFeedItems={feedStore.getNewFeedItems}
-                getEntityInfo={entityStore.getEntityInfo}
-              />
-            )}
-          </Context.Consumer>
-        </SidebarRight>
-      </SidebarContainer>
-    </SidebarProvider>
-  );
+  static ShowPage = (props) => <Async load={import('./app/ShowPage')} componentProps={props} />;
 
-  static Discover = (props) => (
-    <SidebarProvider overlay>
-      <Header />
-      <SidebarContainer>
-        <SidebarLeft />
-        <SidebarRight>
-          <Discover {...props} />
-        </SidebarRight>
-      </SidebarContainer>
-    </SidebarProvider>
-  );
+  static Discover = (props) => <Async load={import('./app/Discover')} componentProps={props} />;
 
-  static Index = (props) => (
-    <SidebarProvider>
-      <Header />
-      <SidebarContainer>
-        <SidebarLeft />
-        <SidebarRight>
-          <Context.Consumer>
-            {({ feedStore }) => (
-              <div>
-                {props.location.pathname === '/' && <IndexPage {...props} />}
-                {props.location.pathname === '/personal' && <PersonalPage {...props} />}
-                {props.location.pathname === '/notifications' && <Notifications {...props} />}
-              </div>
-            )}
-          </Context.Consumer>
-        </SidebarRight>
-      </SidebarContainer>
-    </SidebarProvider>
-  );
+  static Index = (props) => <Async load={import('./app/Index')} componentProps={props} />;
 
-  static Thread = (props) => (
-    <SidebarProvider>
-      <Header />
-      <SidebarContainer>
-        <SidebarLeft />
-        <SidebarRight>
-          <Context.Consumer>
-            {({ feedStore }) => <Thread {...props} getFeedItem={feedStore.getFeedItem} />}
-          </Context.Consumer>
-        </SidebarRight>
-      </SidebarContainer>
-    </SidebarProvider>
-  );
+  static Thread = (props) => <Async load={import('./app/Thread').Thread} componentProps={props} />;
 
-  static ModalThread = (props) => (
-    <Context.Consumer>
-      {({ feedStore }) => <ModalThread {...props} getFeedItem={feedStore.getFeedItem} />}
-    </Context.Consumer>
-  );
+  static ModalThread = (props) => <Async load={import('./app/Thread').ModalThread} componentProps={props} />;
 }

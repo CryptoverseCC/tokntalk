@@ -54,6 +54,7 @@
     "react": "^16.4.2",
     "react-addons-update": "^15.6.2",
     "react-autosize-textarea": "^3.0.3",
+    "react-code-splitting": "^1.2.1",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.2",
@@ -98,9 +99,10 @@
     "@storybook/addons": "^3.4.10",
     "@storybook/react": "^3.4.10",
     "babel-core": "^6.26.0",
-    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-prettier": "^3.0.0",
     "firebase-tools": "^3.19.3",
-    "prettier": "^1.14.0"
+    "prettier": "^1.14.0",
+    "webpack-bundle-analyzer": "^3.0.2"
   },
   "jest": {
     "collectCoverageFrom": [
