@@ -13,14 +13,14 @@ export default class Dropdown extends React.Component {
     e.stopPropagation();
     this.setState({ active: true }, () => {
       window.addEventListener('click', this.onWindowClick);
-      window.addEventListener('touchstart', this.onWindowClick);
+      window.addEventListener('touchstart', this.onWindowClick, { passive: true });
     });
   };
 
   closeDropdown = () => {
     this.setState({ active: false });
     window.removeEventListener('click', this.onWindowClick);
-    window.removeEventListener('touchstart', this.onWindowClick);
+    window.removeEventListener('touchstart', this.onWindowClick, { passive: true });
   };
 
   onWindowClick = (event) => {

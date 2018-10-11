@@ -6,13 +6,13 @@ export default class Modal extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       window.addEventListener('click', this.onWindowClick);
-      window.addEventListener('touchstart', this.onWindowClick);
+      window.addEventListener('touchstart', this.onWindowClick, { passive: true });
     }, 100);
   }
 
   componentWillUnmount() {
     window.removeEventListener('click', this.onWindowClick);
-    window.removeEventListener('touchstart', this.onWindowClick);
+    window.removeEventListener('touchstart', this.onWindowClick, { passive: true });
   }
 
   closeModal = () => {
