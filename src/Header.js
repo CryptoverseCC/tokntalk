@@ -26,7 +26,7 @@ const StyledHeader = styled.div`
   box-shadow: 0 0.6rem 1rem -0.3rem rgba(27, 36, 55, 0.04);
 
   @media (max-width: 770px) {
-    padding: 0 10px;
+    padding: 0 20px;
   }
 `;
 
@@ -51,13 +51,9 @@ const CrossLink = styled(Link)`
   font-weight: 600;
   font-size: 0.8rem;
   padding-left: 10px;
-`;
 
-const LinkContainer = styled.ul`
-  display: flex;
-  align-items: center;
   @media (max-width: 770px) {
-    display: none;
+    margin-left: 0px;
   }
 `;
 
@@ -70,16 +66,15 @@ const Header = () => {
         <Link to="/">
           <Logo />
         </Link>
-        <LinkDropdown />
-        <LinkContainer>
+        <HiddenOnMobile>
           <TitleLink to="/">
             Tok
             <span style={{ color: '#78818c' }}>n</span>
             talk
           </TitleLink>
-          <CrossLink to="/about">About</CrossLink>
-          <CrossLink to="/clubs">Explore clubs</CrossLink>
-        </LinkContainer>
+        </HiddenOnMobile>
+        <CrossLink to="/about">Intro</CrossLink>
+        <CrossLink to="/clubs">Clubs</CrossLink>
         <IfActiveEntity then={() => <AvatarSwitcher />} other={<Status />} />
       </StyledHeader>
     </HeaderContainer>
@@ -174,24 +169,24 @@ const HiddenOnMobile = styled.span`
 `;
 
 const ActiveAvatar = styled(LinkedActiveEntityAvatar)`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px;
 
   @media (max-width: 770px) {
-    width: 16px;
-    height: 16px;
+    width: 26px;
+    height: 26px;
   }
 `;
 
 const Avatar = styled(EntityAvatar)`
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   margin-right: 10px;
 
   @media (max-width: 770px) {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
   }
 `;
 
@@ -201,8 +196,10 @@ const Notifications = styled.img`
   margin-right: 10px;
 
   @media (max-width: 770px) {
-    width: 11px;
-    height: 11px;
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+    margin-left: 3px;
   }
 `;
 
@@ -215,9 +212,9 @@ const NotificationsLink = styled(Link)`
   height: 24px;
 
   @media (max-width: 770px) {
-    width: 18px;
+    width: 30px;
     padding: 1px 0 0px 2px;
-    height: 18px;
+    height: 30px;
   }
 `;
 

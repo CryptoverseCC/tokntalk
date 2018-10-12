@@ -66,16 +66,11 @@ const TokNTalk = withRouter(
 
     render() {
       const { location } = this.props;
-      const redirect = !storage.getItem('visited') && location.pathname === '/';
-      if (redirect) {
-        storage.setItem('visited', Date.now());
-      }
 
       const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
 
       return (
         <React.Fragment>
-          {redirect && <Redirect to="/about" />}
           <ScrollTop />
           <Switch location={isModal ? this.previousLocation : location}>
             <Route exact path="/about" component={About} />

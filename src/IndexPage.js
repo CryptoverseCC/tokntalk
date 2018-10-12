@@ -5,12 +5,14 @@ import { getFeedItemsFromCache, getRanking, isValidFeedItem, enhanceFeedItem } f
 import AppContext from './Context';
 import { pageView } from './Analytics';
 import { getFeed } from './Feed';
+import Link from './Link';
 import Hero from './Hero';
 import { PromotionBox } from './promotion/PromotionBox';
 import { FlatContainer } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import StatusBox from './StatusBox';
 import Announcement from './Announcements';
+import { Storage } from './utils';
 
 const ExplainerBox = styled(FlatContainer)`
   margin-top: 20px;
@@ -38,6 +40,22 @@ const NewestFeed = getFeed(getFeedItemsFromCache(), true, true, undefined, (f0, 
 const PopularFeed = getFeed(fetchPopularFeed, false, false);
 const ActiveFeed = getFeed(getFeedItemsFromCache('cache-cryptoverse-active-feed'), true, false);
 
+const storage = Storage();
+
+const FirstTimeVisitor = () => {
+  const visited = storage.getItem('visited');
+  storage.setItem('visited', visited || Date.now());
+  const showIntro = Date.now() < parseInt(visited) + 2 * 60 * 1000; // 2 min
+  return showIntro ? (
+    <FlatContainer>
+      Welcome! Looks like you're new here.
+      <br />
+      Check out our <Link to="/about">Intro Page</Link> <br />
+      or hop in and start talking with your fellow token holdres.
+    </FlatContainer>
+  ) : null;
+};
+
 export default class IndexPage extends Component {
   state = { feedType: FeedTypeSwitcher.ACTIVE };
 
@@ -58,6 +76,7 @@ export default class IndexPage extends Component {
       <React.Fragment>
         <div className="columns ordered-mobile">
           <div className="column is-9 fl-1">
+            <FirstTimeVisitor />
             <Announcement />
             <StatusBox check={StatusBox.Web3LockedCheck} style={{ marginBottom: '30px' }}>
               <Hero />

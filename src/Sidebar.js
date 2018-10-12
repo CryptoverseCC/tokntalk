@@ -39,9 +39,7 @@ class SidebarProviderCmp extends Component {
 export const SidebarProvider = withRouter(SidebarProviderCmp);
 
 export const SidebarToggler = () => (
-  <SidebarContext.Consumer>
-    {({ toggle, open }) => <Burger onClick={toggle} open={open} style={{ marginRight: '10px' }} />}
-  </SidebarContext.Consumer>
+  <SidebarContext.Consumer>{({ toggle, open }) => <Burger onClick={toggle} open={open} />}</SidebarContext.Consumer>
 );
 
 const ToggleHttpButton = styled.button`
@@ -70,43 +68,52 @@ const Header = styled(H4)`
   }
 `;
 
+const Settings = styled.div``;
+
+const FeedsContainer = styled.div`
+  overflow: scroll;
+  flex-grow: 100;
+`;
+
 export const SidebarLeft = () => (
   <SidebarContext.Consumer>
     {({ open, overlay, toggle }) => (
       <SidebarLeftContainer open={open} overlay={overlay}>
-        <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
-          All
-        </LinkItem>
-        <IfActiveEntity>
-          {(entityId) => (
-            <React.Fragment>
-              <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
-                Club News
-              </LinkItem>
-              <LinkItem
-                to="/notifications"
-                icon={<img alt="" style={{ width: '16px' }} src={notificationsIcon} />}
-                toggle={toggle}
-              >
-                Notifications
-              </LinkItem>
-              <Header>Your Clubs</Header>
-              <ClubContainer>
+        <FeedsContainer>
+          <Header>Feeds</Header>
+          <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
+            All
+          </LinkItem>
+          <IfActiveEntity>
+            {(entityId) => (
+              <React.Fragment>
+                <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
+                  Club News
+                </LinkItem>
+                <LinkItem
+                  to="/notifications"
+                  icon={<img alt="" style={{ width: '16px' }} src={notificationsIcon} />}
+                  toggle={toggle}
+                >
+                  Notifications
+                </LinkItem>
                 <EntityClubs id={entityId}>
                   {(clubs) => clubs.map((club) => <Club key={club.address} token={club} toggle={toggle} />)}
                 </EntityClubs>
-              </ClubContainer>
-            </React.Fragment>
-          )}
-        </IfActiveEntity>
-        <Header>Settings</Header>
-        <Context.Consumer>
-          {({ appStore: { http, toggleHttpClaims } }) => (
-            <ToggleHttpButton http={http} onClick={toggleHttpClaims}>
-              {http ? 'Off Chain' : 'On Chain'}
-            </ToggleHttpButton>
-          )}
-        </Context.Consumer>
+              </React.Fragment>
+            )}
+          </IfActiveEntity>
+        </FeedsContainer>
+        <Settings>
+          <Header>Settings</Header>
+          <Context.Consumer>
+            {({ appStore: { http, toggleHttpClaims } }) => (
+              <ToggleHttpButton http={http} onClick={toggleHttpClaims}>
+                {http ? 'Off Chain' : 'On Chain'}
+              </ToggleHttpButton>
+            )}
+          </Context.Consumer>
+        </Settings>
         <SidebarFooter />
       </SidebarLeftContainer>
     )}
@@ -172,6 +179,7 @@ const StyledUnreadedMessages = styled(UnreadedCount)`
 const ClubContainer = styled.div`
   overflow-y: scroll;
   ${niceScroll};
+  height: 300px;
 `;
 
 const Club = ({ token, toggle }) => (
@@ -220,14 +228,7 @@ const SidebarFooter = styled(({ className }) => (
 `;
 
 const LinkItem = styled(({ children, icon, primaryColor, toggle, ...props }) => (
-  <NavLink
-    {...props}
-    exact
-    activeClassName="selected"
-    onClick={() => {
-      isMobile ? toggle() : null;
-    }}
-  >
+  <NavLink {...props} exact activeClassName="selected" onClick={() => (isMobile ? toggle() : null)}>
     <IconContainer primaryColor={primaryColor}>{icon}</IconContainer>
     {children}
   </NavLink>
@@ -324,9 +325,12 @@ const Burger = styled((props) => (
   </div>
 ))`
   & {
-    width: ${BurgerBarWidth};
-    height: calc(${BurgerBarHeight} + ${BurgerBarSpacing} * 2);
-    cursor: pointer;
+    margin-bottom: 15px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .hamburger-menu,
