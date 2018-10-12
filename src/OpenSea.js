@@ -27,10 +27,10 @@ export default class OpenSea extends Component {
   async componentDidMount() {
     getOpenSeaLib();
     const { token } = this.props;
-    const { items } = await fetch(
-      `https://api.userfeeds.io/api/cheap-tokens?id=${token.network}:${token.address}`,
-    ).then((res) => res.json());
-    this.setState({ items });
+    const { items } = await fetch(`https://api.userfeeds.io/api/cheap-tokens?id=${token.network}:${token.address}`)
+      .then((res) => res.json())
+      .catch((err) => []);
+    this.setState({ items, loading: false });
   }
 
   buy = async (item) => {
@@ -47,10 +47,12 @@ export default class OpenSea extends Component {
 
   render() {
     const { token, style } = this.props;
-    const { items } = this.state;
+    const { items, loading } = this.state;
 
     return (
       <ScrollableContainer style={style}>
+        {loading && <span>Loading offers from OpenSea...</span>}
+        {!loading && !items && <span>No offers found or loading error occured</span>}
         {items.map((offer) => (
           <div key={offer.context}>
             <Offer
