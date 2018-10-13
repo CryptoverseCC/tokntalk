@@ -31,6 +31,8 @@ import ProfileBox from './ProfileBox';
 import { Token } from './ActiveEntityTokens';
 import StatusBox from './StatusBox';
 import { getEntityInfoForAddress } from './utils';
+import Nfts from './profile/Nfts';
+import ViewSwitcher from './ViewSwitcher';
 
 const ScrollableContainer = styled.div`
   ${niceScroll};
@@ -60,7 +62,10 @@ const Feed = getFeed(
 );
 
 export default class ShowPage extends Component {
-  state = { editing: undefined };
+  state = {
+    editing: undefined,
+    viewType: 'feed',
+  };
 
   componentDidMount() {
     pageView();
@@ -73,6 +78,12 @@ export default class ShowPage extends Component {
       this.props.getEntityInfo(nextProps.match.params.entityId);
     }
   }
+
+  changeViewType = (viewType) => {
+    if (this.state.viewType !== viewType) {
+      this.setState({ viewType });
+    }
+  };
 
   static ProfileImageContainer = styled.div`
     position: relative;
@@ -110,7 +121,12 @@ export default class ShowPage extends Component {
   render() {
     const { EntityInfo, Cousins, Communities, FeedContainer, ExternalLinks } = this;
     const { entityId } = this.props.match.params;
+    const { viewType } = this.state;
     const tokenClub = this.getCommunityToken(entityId);
+
+    const FEED = 'feed';
+    const NFTS = 'NFTs';
+    const views = [FEED];
 
     return (
       <Entity id={entityId}>
@@ -140,7 +156,14 @@ export default class ShowPage extends Component {
                 </ProfileBox>
               </div>
               <div className="column is-6 fl-1">
-                <FeedContainer entity={entity} />
+                <ViewSwitcher
+                  type={viewType}
+                  style={{ marginBottom: '2em' }}
+                  onChange={this.changeViewType}
+                  options={views.concat(entity.isAddress ? [NFTS] : [])}
+                />
+                {viewType === FEED && <FeedContainer entity={entity} />}
+                {viewType === NFTS && <Nfts entity={entity} />}
               </div>
               <div className="column is-3 is-hidden-mobile">
                 {entity.isAddress && <Communities entity={entity} />}
