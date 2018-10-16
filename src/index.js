@@ -66,7 +66,6 @@ const TokNTalk = withRouter(
 
     render() {
       const { location } = this.props;
-
       const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
 
       return (
@@ -90,7 +89,7 @@ const TokNTalk = withRouter(
               path="/:slug1*:slug2([A-Z]):slug3*/"
               render={(props) => <Redirect to={`${props.location.pathname.toLowerCase()}`} />}
             />
-            <Route exact path="/:entityId" component={validateEntityId(App.ShowPage)} />
+            <Route path="/:entityId" component={validateEntityId(App.ShowPage)} />
             {!isModal ? <Route exact path="/thread/:claimId" component={App.Thread} /> : null}
           </Switch>
           {isModal ? <Route exact path="/thread/:claimId" component={App.ModalThread} /> : null}

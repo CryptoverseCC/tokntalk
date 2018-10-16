@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
+import { Switch, Route } from 'react-router-dom';
 
 import { getRanking, isValidFeedItem, enhanceFeedItem } from './api';
 import { pageView } from './Analytics';
@@ -32,6 +33,9 @@ import { Token } from './ActiveEntityTokens';
 import StatusBox from './StatusBox';
 import { getEntityInfoForAddress } from './utils';
 import Nfts from './profile/Nfts';
+import Clubs from './profile/Clubs';
+import Origin from './profile/Origin';
+import Supporters from './profile/Supporters';
 import ViewSwitcher from './ViewSwitcher';
 
 const ScrollableContainer = styled.div`
@@ -120,13 +124,17 @@ export default class ShowPage extends Component {
 
   render() {
     const { EntityInfo, Cousins, Communities, FeedContainer, ExternalLinks } = this;
+    const { match } = this.props;
     const { entityId } = this.props.match.params;
     const { viewType } = this.state;
     const tokenClub = this.getCommunityToken(entityId);
 
-    const FEED = 'feed';
-    const NFTS = 'NFTs';
-    const views = [FEED];
+    const FEED = { name: 'Feed', path: '' };
+    const NFTS = { name: 'NFTs', path: 'nfts' };
+    const CLUBS = { name: 'Clubs', path: 'clubs' };
+    const ORIGIN = { name: 'Origin', path: 'origin' };
+    const SUPPORTERS = { name: 'Supporters', path: 'supporters' };
+    const views = [FEED, SUPPORTERS];
 
     return (
       <Entity id={entityId}>
@@ -155,19 +163,24 @@ export default class ShowPage extends Component {
                   <ExternalLinks entity={entity} />
                 </ProfileBox>
               </div>
-              <div className="column is-6 fl-1">
+              <div className="column is-8 fl-1">
                 <ViewSwitcher
+                  match={match}
                   type={viewType}
                   style={{ marginBottom: '2em' }}
                   onChange={this.changeViewType}
-                  options={views.concat(entity.isAddress ? [NFTS] : [])}
+                  options={views.concat(entity.isAddress ? [CLUBS, NFTS] : [ORIGIN])}
                 />
-                {viewType === FEED && <FeedContainer entity={entity} />}
-                {viewType === NFTS && <Nfts entity={entity} />}
-              </div>
-              <div className="column is-3 is-hidden-mobile">
-                {entity.isAddress && <Communities entity={entity} />}
-                <Cousins entity={entity} style={{ marginTop: entity.isAddress ? '20px' : '0px' }} />
+                <Switch>
+                  <Route exact path={`${match.url}`} render={() => <FeedContainer entity={entity} />} />
+                  <Route
+                    path={`${match.url}/${SUPPORTERS.path}`}
+                    render={() => <Supporters entity={entity} asset="ethereum" />}
+                  />
+                  <Route path={`${match.url}/${CLUBS.path}`} render={() => <Clubs entity={entity} />} />
+                  <Route path={`${match.url}/${NFTS.path}`} render={() => <Nfts entity={entity} />} />
+                  <Route path={`${match.url}/${ORIGIN.path}`} render={() => <Origin entity={entity} />} />
+                </Switch>
               </div>
             </div>
           </React.Fragment>
@@ -198,40 +211,6 @@ export default class ShowPage extends Component {
       />
     </React.Fragment>
   );
-
-  PromotionBox = ({ entity }) => (
-    <FlatContainer style={{ marginTop: '20px' }}>
-      <AppContext.Consumer>
-        {({ boostStore: { getBoosts, getSupportings } }) => (
-          <PromotionBox getBoosts={getBoosts} getSupportings={getSupportings} token={entity.id} showPurrmoter={false} />
-        )}
-      </AppContext.Consumer>
-    </FlatContainer>
-  );
-
-  Cousins = ({ entity, style }) => (
-    <AppContext.Consumer>
-      {({ entityStore: { entityInfo } }) => {
-        if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
-          const owner = entity.isAddress ? entity.id : entity.owner;
-          const title = entity.isAddress ? 'Avatars' : 'Other avatars of this owner';
-          return <CousinsBox entity={entity} owner={owner} title={title} style={style} />;
-        }
-      }}
-    </AppContext.Consumer>
-  );
-
-  Communities = ({ entity }) =>
-    entity.tokens.length ? (
-      <FlatContainer>
-        <H4>Clubs</H4>
-        <ScrollableContainer>
-          {entity.tokens.map((token) => (
-            <Token key={token.address} token={token} />
-          ))}
-        </ScrollableContainer>
-      </FlatContainer>
-    ) : null;
 
   FeedContainer = ({ entity }) => (
     <React.Fragment>
@@ -497,11 +476,19 @@ export class SocialList extends React.Component {
   static OwnerAvatar = styled(IdentityAvatar)`
     width: 20px;
     height: 20px;
+    flex-shrink: 0;
   `;
 
   static EntityAvatar = styled(IdentityAvatar)`
     width: 20px;
     height: 20px;
+    flex-shrink: 0;
+  `;
+
+  static TokenImage = styled(TokenImage)`
+    background-color: ${({ token }) => token.primaryColor};
+    border-radius: 50%;
+    padding: 3px;
   `;
 
   render() {
@@ -525,7 +512,7 @@ export class SocialList extends React.Component {
                   )}
                 {!this.isAddress(id) && (
                   <SocialBadge href={`/clubs/${communityToken.network}:${communityToken.address}`}>
-                    <TokenImage token={communityToken} size="verySmall" />
+                    <SocialList.TokenImage token={communityToken} size="verySmall" />
                     <span style={{ marginLeft: '15px' }}>{communityToken.name} Club</span>
                   </SocialBadge>
                 )}
@@ -533,7 +520,7 @@ export class SocialList extends React.Component {
                   {this.isAddress(id) ? (
                     <SocialList.EntityAvatar id={id} backgroundColor={background_color} src={image_preview_url} />
                   ) : (
-                    <TokenImage token={this.getCommunityToken(id)} size="verySmall" />
+                    <SocialList.TokenImage token={this.getCommunityToken(id)} size="verySmall" />
                   )}
                   <span style={{ marginLeft: '15px' }}>{getDomain(external_link)}</span>
                 </SocialBadge>

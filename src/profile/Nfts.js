@@ -17,8 +17,7 @@ const NiceGrid = styled(Grid)`
 `;
 
 const CoverImage = styled.div`
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-radius: 12px;
   background-image: ${({ src }) => `url(${src})`};
   background-color: ${({ primaryColor }) => primaryColor};
   background-repeat: no-repeat;
@@ -26,6 +25,12 @@ const CoverImage = styled.div`
   background-size: contain;
   width: 300px;
   height: 200px;
+`;
+
+const Cover = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Cell = styled.div`
@@ -38,7 +43,7 @@ const Cell = styled.div`
   position: relative;
 `;
 
-const Name = styled(Link)`
+const Name = styled.span`
   font-family: AvenirNext;
   font-size: 1.5rem;
   font-weight: 600;
@@ -108,7 +113,7 @@ export class Avatars extends Component {
             columnCount={parseInt(width / cellSize)}
             columnWidth={cellSize}
             height={height}
-            rowCount={parseInt(this.state.entities.length / parseInt(width / cellSize)) + 1}
+            rowCount={parseInt(this.state.entities.length / parseInt(width / cellSize))}
             rowHeight={cellSize}
             width={width}
           />
@@ -124,12 +129,14 @@ export class Avatars extends Component {
       <div key={key} style={style}>
         {entity && (
           <Cell>
-            <div>
+            <Cover to={`/${entity.id}`}>
               <CoverImage src={entity.image_preview_url} primaryColor={entity.primaryColor} />
-              <Name to={`/${entity.id}`}>{entity.name}</Name>
-            </div>
+              <Name>{entity.name}</Name>
+            </Cover>
             <Tools>
-              <TransferButton entity={entity} />
+              {
+                //<TransferButton entity={entity} />
+              }
             </Tools>
           </Cell>
         )}
@@ -143,21 +150,18 @@ export default class Nfts extends Component {
     const { entity } = this.props;
     return (
       <React.Fragment>
-        <div>
-          <H4>Tokens</H4>
-          <AppContext.Consumer>
-            {({ entityStore: { entityInfo } }) => {
-              if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
-                const owner = entity.isAddress ? entity.id : entity.owner;
-                return (
-                  <div style={{ width: '100%', height: '700px', backgroundColor: 'lightred' }}>
-                    <Avatars entity={entity} owner={owner} />
-                  </div>
-                );
-              }
-            }}
-          </AppContext.Consumer>
-        </div>
+        <AppContext.Consumer>
+          {({ entityStore: { entityInfo } }) => {
+            if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
+              const owner = entity.isAddress ? entity.id : entity.owner;
+              return (
+                <div style={{ width: '100%', height: 'calc(100vh - 190px)' }}>
+                  <Avatars entity={entity} owner={owner} />
+                </div>
+              );
+            }
+          }}
+        </AppContext.Consumer>
       </React.Fragment>
     );
   }

@@ -33,6 +33,13 @@ export const claimWithTokenValueTransferContractAddressesForNetworkId = {
   [netWorkIdForNetworkName.kovan]: '0xcf53d90e7f71c7db557bc42c5a85d36dd53956c0',
 };
 
+export const claimWithConfigurableValueMultiTransferContractAddressesForNetworkId = {
+  [netWorkIdForNetworkName.ethereum]: '0xfad31a5672fBd8243E9691E8a5F958699CD0AaA9',
+  [netWorkIdForNetworkName.ropsten]: '0x298611B2798d280910274C222A9dbDfBA914B058',
+  [netWorkIdForNetworkName.rinkeby]: '0x1f8A01833A0B083CCcd87fffEe50EF1D35621fD2',
+  [netWorkIdForNetworkName.kovan]: '0x0c20Daa719Cd4fD73eAf23d2Cb687cD07d500E17',
+};
+
 export const claimContractAbi = [
   {
     constant: false,

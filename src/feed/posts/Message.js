@@ -14,7 +14,6 @@ const Text = styled.p`
   white-space: pre-wrap;
   word-break: break-word;
   margin: 8px 0px 10px 50px;
-  background-color: #f9f9f9;
   padding: 10px;
   border-radius: 10px;
 

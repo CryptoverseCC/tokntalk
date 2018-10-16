@@ -99,7 +99,7 @@ const Offer = styled(
         await this.props.onBuy(this.props.offer);
         this.setState({ buyState: 'success' });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         this.setState({ buyState: 'failure' });
       }
     };
