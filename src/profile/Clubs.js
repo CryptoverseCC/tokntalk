@@ -68,7 +68,7 @@ export class ClubsGrid extends Component {
             columnCount={parseInt(width / cellSize)}
             columnWidth={cellSize}
             height={height}
-            rowCount={parseInt(entity.tokens.length / parseInt(width / cellSize))}
+            rowCount={parseInt(entity.tokens.length / parseInt(width / cellSize)) + 1}
             rowHeight={cellSize}
             width={width}
           />
@@ -79,7 +79,9 @@ export class ClubsGrid extends Component {
 
   renderCell = (entity, columnCount, { columnIndex, rowIndex, key, style }) => {
     let index = rowIndex * columnCount + columnIndex;
-    const club = entity.tokens.filter((entity) => entity.id !== this.props.entity.id)[index];
+    const clubs = entity.tokens.filter((entity) => entity.id !== this.props.entity.id);
+    const club = clubs[index];
+    if (club) return null;
     return (
       <div key={key} style={style}>
         {club && (

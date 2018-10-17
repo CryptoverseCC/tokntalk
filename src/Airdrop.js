@@ -4,7 +4,7 @@ import { BN } from 'web3-utils';
 
 import Context from './Context';
 import Dropdown from './Dropdown';
-import { withActiveEntity, EntityAvatar } from './Entity';
+import { withActiveEntity, EntityAvatar, WithBoosts, EntityName } from './Entity';
 import { claimWithTokenMultiValueTransfer, claimWithMultiValueTransfer } from './api';
 import { getEntityData } from './entityApi';
 import { toWei } from './balance';
@@ -218,9 +218,8 @@ class Airdrop extends Component {
   onInputChange = (e) => this.setState({ value: e.target.value });
 
   onConfirm = async () => {
-    const { assetInfo } = this.props;
     const { token, value, recipients } = this.state;
-    const PPP = new BN(10).pow(new BN(assetInfo.decimals));
+    const PPP = new BN(10).pow(new BN(token.decimals));
 
     const recipientsAddresses = await Promise.all(
       recipients.map(async ([_, { id }]) => (await getEntityData(id)).owner),
@@ -267,11 +266,9 @@ class Airdrop extends Component {
 
   render() {
     return (
-      <Context.Consumer>
-        {({ boostStore: { boosts } }) => {
-          return <React.Fragment>{this.renderContent(boosts)}</React.Fragment>;
-        }}
-      </Context.Consumer>
+      <WithBoosts entity={this.props.entity} asset={this.props.asset}>
+        {(boosts) => this.renderContent(boosts)}
+      </WithBoosts>
     );
   }
 
@@ -372,7 +369,9 @@ class Airdrop extends Component {
           <StyledButton disabled={value <= 0} onClick={() => this.onSend(20, boosts)}>
             Top 20
           </StyledButton>
-          <span>supporters</span>
+          <span>
+            <EntityName id={this.props.entity.id} /> supporters
+          </span>
           <StyledButton onClick={this.props.onClose}>Cancel</StyledButton>
         </Form>
       </Container>

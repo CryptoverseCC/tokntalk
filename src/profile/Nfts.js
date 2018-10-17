@@ -113,7 +113,7 @@ export class Avatars extends Component {
             columnCount={parseInt(width / cellSize)}
             columnWidth={cellSize}
             height={height}
-            rowCount={parseInt(this.state.entities.length / parseInt(width / cellSize))}
+            rowCount={parseInt(this.state.entities.length / parseInt(width / cellSize)) + 1}
             rowHeight={cellSize}
             width={width}
           />
@@ -124,7 +124,9 @@ export class Avatars extends Component {
 
   renderCell = (columnCount, { columnIndex, rowIndex, key, style }) => {
     let index = rowIndex * columnCount + columnIndex;
-    const entity = this.state.entities.filter((entity) => entity.id !== this.props.entity.id)[index];
+    const entities = this.state.entities.filter((entity) => entity.id !== this.props.entity.id);
+    const entity = entities[index];
+    if (!entity) return null;
     return (
       <div key={key} style={style}>
         {entity && (

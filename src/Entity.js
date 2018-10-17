@@ -41,6 +41,15 @@ export const WithActiveEntity = ({ children }) => (
   <Context.Consumer>{({ entityStore: { activeEntity } }) => children(activeEntity)}</Context.Consumer>
 );
 
+export const WithBoosts = ({ entity, asset, children }) => (
+  <Context.Consumer>
+    {({ boostStore: { getBoosts, boosts } }) => {
+      getBoosts(entity.id, asset);
+      return children(boosts);
+    }}
+  </Context.Consumer>
+);
+
 export const IfIsActiveEntity = ({ id, children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) => (activeEntity && activeEntity.id === id ? then || children : other || null)}

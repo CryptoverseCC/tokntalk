@@ -186,7 +186,7 @@ export default class SupporterForm extends React.Component {
       this.setState({ step: 'signing' });
       const { transactionHash, networkName } = await boost(
         this.state.entity,
-        this.props.token,
+        this.props.entity.id,
         toWei(this.state.value, this.props.assetInfo.decimals),
         this.props.asset,
       );

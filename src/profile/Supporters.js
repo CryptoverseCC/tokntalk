@@ -8,7 +8,7 @@ import { fromWeiToString } from '../balance';
 import Link from '../Link';
 import Context from '../Context';
 import { getEntities } from '../api';
-import { LinkedEntityAvatar } from '../Entity';
+import { LinkedEntityAvatar, Entity, WithBoosts, EntityName } from '../Entity';
 import { FlatContainer, H4, StyledButton } from '../Components';
 import { niceScroll } from '../cssUtils';
 import { Token } from '../ActiveEntityTokens';
@@ -77,34 +77,40 @@ const Position = styled.span`
 
 export class Avatars extends Component {
   render() {
-    const { entity, activeEntity, style, assetInfo } = this.props;
+    const { entity, activeEntity, style, assetInfo, asset } = this.props;
     const cellSize = 300;
     return (
-      <Context.Consumer>
-        {({ boostStore: { boosts } }) => {
-          const boostsList = Object.entries(boosts);
+      <WithBoosts entity={entity} asset={asset}>
+        {(boosts) => {
+          const boostsList = Object.entries(boosts || {});
           const columnsNumber = boostsList.length;
           return (
             <React.Fragment>
-              <AutoSizer>
-                {({ width, height }) => (
-                  <NiceGrid
-                    cellRenderer={({ ...args }) =>
-                      this.renderCell(boostsList, assetInfo, parseInt(width / cellSize), args)
-                    }
-                    columnCount={parseInt(width / cellSize)}
-                    columnWidth={cellSize}
-                    height={height}
-                    rowCount={parseInt(boostsList.length / parseInt(width / cellSize)) + 1}
-                    rowHeight={cellSize}
-                    width={width}
-                  />
-                )}
-              </AutoSizer>
+              {boostsList.length ? (
+                <AutoSizer>
+                  {({ width, height }) => (
+                    <NiceGrid
+                      cellRenderer={({ ...args }) =>
+                        this.renderCell(boostsList, assetInfo, parseInt(width / cellSize), args)
+                      }
+                      columnCount={parseInt(width / cellSize)}
+                      columnWidth={cellSize}
+                      height={height}
+                      rowCount={parseInt(boostsList.length / parseInt(width / cellSize)) + 1}
+                      rowHeight={cellSize}
+                      width={width}
+                    />
+                  )}
+                </AutoSizer>
+              ) : (
+                <span>
+                  <EntityName id={entity.id} /> have no supporters.
+                </span>
+              )}
             </React.Fragment>
           );
         }}
-      </Context.Consumer>
+      </WithBoosts>
     );
   }
 
@@ -129,27 +135,19 @@ export class Avatars extends Component {
 }
 
 class SupportersImpl extends Component {
-  componentDidMount() {
-    this.props.getBoosts(this.props.entity.id, this.props.asset);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.entity.id !== this.props.entity.id) {
-      this.props.getBoosts(nextProps.entity.id, nextProps.asset);
-    }
-  }
-
   render() {
     const { entity, asset, assetInfo } = this.props;
     return (
       <div style={{ width: '100%', height: 'calc(100vh - 230px)' }}>
         <Toolbar>
           <span>
-            <StyledButton>Support {entity.name}</StyledButton>
+            <StyledButton>
+              Support <Entity id={entity.id}>{(entity) => entity.name}</Entity>
+            </StyledButton>
             <StyledButton>Airdrop</StyledButton>
           </span>
           <span>
-            <SupporterForm token={entity.id} asset={asset} assetInfo={assetInfo} />
+            <SupporterForm entity={entity} asset={asset} assetInfo={assetInfo} />
             <Airdrop entity={entity} asset={asset} assetInfo={assetInfo} />
           </span>
         </Toolbar>
@@ -163,16 +161,7 @@ export default class Supporters extends Component {
   render() {
     return (
       <React.Fragment>
-        <Context.Consumer>
-          {({ boostStore: { getBoosts } }) => (
-            <SupportersImpl
-              getBoosts={getBoosts}
-              asset={'ethereum'}
-              assetInfo={{ symbol: 'ETH', decimals: 18 }}
-              {...this.props}
-            />
-          )}
-        </Context.Consumer>
+        <SupportersImpl asset={'ethereum'} assetInfo={{ symbol: 'ETH', decimals: 18 }} {...this.props} />
       </React.Fragment>
     );
   }
