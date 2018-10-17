@@ -40,6 +40,13 @@ export const claimWithConfigurableValueMultiTransferContractAddressesForNetworkI
   [netWorkIdForNetworkName.kovan]: '0x0c20Daa719Cd4fD73eAf23d2Cb687cD07d500E17',
 };
 
+export const claimWithConfigurableTokenValueMultiTransferContractAddressesForNetworkId = {
+  [netWorkIdForNetworkName.ethereum]: '0xeCBED48098C4F25a16195c45DdF5fD736E28B14b',
+  [netWorkIdForNetworkName.ropsten]: '0x1A97Aba0fb047cd8cd8F4c14D890bE6E7004fae9',
+  [netWorkIdForNetworkName.rinkeby]: '0xA105908d1Bd7e76Ec4Dfddd08d9E0c89F6B39474',
+  [netWorkIdForNetworkName.kovan]: '0xcF53D90E7f71C7Db557Bc42C5a85D36dD53956C0',
+};
+
 export const claimContractAbi = [
   {
     constant: false,

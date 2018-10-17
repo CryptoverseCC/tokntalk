@@ -5,7 +5,8 @@ import { BN } from 'web3-utils';
 import Context from './Context';
 import Dropdown from './Dropdown';
 import { withActiveEntity, EntityAvatar } from './Entity';
-import { claimWithTokenMultiValueTransfer } from './api';
+import { claimWithTokenMultiValueTransfer, claimWithMultiValueTransfer } from './api';
+import { getEntityData } from './entityApi';
 import { toWei } from './balance';
 import { A } from './Link';
 import closeIcon from './img/small-remove.svg';
@@ -195,8 +196,8 @@ class Airdrop extends Component {
     super(props);
     this.state = {
       step: 'send',
-      token: { name: 'Ethereum', symbol: 'ETH' },
-      value: 0,
+      token: this.props.assetInfo,
+      value: 0.00001,
       txHash: '',
       tokens: this.filterTokens(this.props.activeEntity.tokens),
     };
@@ -219,31 +220,39 @@ class Airdrop extends Component {
   onConfirm = async () => {
     const { assetInfo } = this.props;
     const { token, value, recipients } = this.state;
+    const PPP = new BN(10).pow(new BN(assetInfo.decimals));
 
-    const recipientsAddresses = recipients.map(([_, { id }]) => id); //TODO: convert to owner addresses
+    const recipientsAddresses = await Promise.all(
+      recipients.map(async ([_, { id }]) => (await getEntityData(id)).owner),
+    ); //TODO: convert to owner addresses
 
     const values = recipients.map(([id, { score }]) => new BN(score.toFixed(0)));
 
     const sum = values.reduce((acc, i) => acc.add(i), new BN(0));
-    const valueWei = new BN(value).mul(new BN(10).pow(new BN(assetInfo.decimals)));
-    const split = values.map((i) =>
-      i
-        .mul(new BN(1000))
-        .div(sum)
-        .mul(valueWei)
-        .div(new BN(1000)),
-    );
+    // BN does not support decimals so airdrops of fractions would not work
+    // We will support fractions up to 10 decimal points. It doesn't make sense to support less either way.
+    const valueWei = new BN(value * 10000000000).mul(PPP).div(new BN(10000000000));
+    const split = values.map((i) => i.mul(valueWei).div(sum));
 
     try {
       let txHash = '';
-      if (token.symbol !== 'ETH') {
-        txHash = await claimWithTokenMultiValueTransfer(recipientsAddresses, split);
+      if (token.symbol === 'ETH') {
+        txHash = await claimWithMultiValueTransfer(
+          { claim: { target: 'ETH Airdrop to my supporters' } },
+          recipientsAddresses,
+          split,
+          valueWei,
+        );
       } else {
-        throw Error('ERC20 are not supported yet');
+        txHash = await claimWithTokenMultiValueTransfer(
+          { claim: { target: 'ETH Airdrop to my supporters' } },
+          recipientsAddresses,
+          token.address,
+          split,
+        );
       }
       this.setState({ step: 'sent', txHash });
     } catch (e) {
-      console.error(e);
       this.setState({ step: 'failure' });
     }
   };

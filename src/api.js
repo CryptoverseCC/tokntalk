@@ -13,6 +13,7 @@ import {
   claimWithValueTransferContractAddressesForNetworkId,
   claimWithTokenValueTransferContractAddressesForNetworkId,
   claimWithConfigurableValueMultiTransferContractAddressesForNetworkId,
+  claimWithConfigurableTokenValueMultiTransferContractAddressesForNetworkId,
   claimWithValueTransferContractAbi,
   claimWithTokenValueTransferContractAbi,
   erc20ContractAbi,
@@ -408,6 +409,15 @@ const getClaimWithConfigurableValueMultiTransferContract = async () => {
   return contract;
 };
 
+const getClaimWithConfigurableTokenValueMultiTransferContract = async () => {
+  const web3 = await getWeb3();
+  const { networkId } = await getWeb3State();
+  const contractAddress = claimWithConfigurableTokenValueMultiTransferContractAddressesForNetworkId[networkId];
+  const contract = new web3.eth.Contract(claimWithTokenValueTransferContractAbi, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  return contract;
+};
+
 const getErc20Contract = async (contractAddress) => {
   const web3 = await getWeb3();
   const contract = new web3.eth.Contract(erc20ContractAbi, contractAddress);
@@ -525,12 +535,24 @@ const claimWithTokenValueTransfer = async (data, value, ownerAddress, erc20) => 
   });
 };
 
-export const claimWithTokenMultiValueTransfer = async (data, recipients, values) => {
+export const claimWithMultiValueTransfer = async (data, recipients, values, value) => {
   const { from } = await getWeb3State();
   const contract = await getClaimWithConfigurableValueMultiTransferContract();
   return new Promise((resolve, reject) => {
     contract.methods
-      .post(JSON.stringify(data), recipients, values)
+      .post(JSON.stringify(data), recipients, values.map((i) => new BN(i).toString(10)))
+      .send({ from, value: new BN(value).toString(10) })
+      .on('transactionHash', (transactionHash) => resolve(transactionHash))
+      .catch(reject);
+  });
+};
+
+export const claimWithTokenMultiValueTransfer = async (data, recipients, tokenAddress, values) => {
+  const { from } = await getWeb3State();
+  const contract = await getClaimWithConfigurableTokenValueMultiTransferContract();
+  return new Promise((resolve, reject) => {
+    contract.methods
+      .post(JSON.stringify(data), recipients, tokenAddress, values.map((i) => new BN(i).toString(10)))
       .send({ from })
       .on('transactionHash', (transactionHash) => resolve(transactionHash))
       .catch(reject);

@@ -92,18 +92,6 @@ export default class IndexPage extends Component {
             {feedType === FeedTypeSwitcher.ACTIVE && <ActiveFeed />}
           </div>
           <div className="column is-3 is-hidden-mobile">
-            <FlatContainer>
-              <AppContext.Consumer>
-                {({ boostStore: { getBoosts, getSupportings } }) => (
-                  <PromotionBox
-                    getBoosts={getBoosts}
-                    getSupportings={getSupportings}
-                    token={DEFAULT_TOKEN_ID}
-                    showPurrmoter={true}
-                  />
-                )}
-              </AppContext.Consumer>
-            </FlatContainer>
             <ExplainerBox>
               This feed represents all messages posted on Tok'n'talk. Use it to discover new valuable communities and
               interesting characters.

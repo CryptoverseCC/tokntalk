@@ -88,7 +88,7 @@ export const SidebarLeft = () => (
             {(entityId) => (
               <React.Fragment>
                 <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
-                  Club News
+                  My Clubs Feed
                 </LinkItem>
                 <LinkItem
                   to="/notifications"
