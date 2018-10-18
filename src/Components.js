@@ -84,3 +84,42 @@ export const CopyButton = styled(
   position: relative;
   cursor: pointer;
 `;
+
+export const StyledButton = styled.button`
+  cursor: pointer;
+  background-color: #264dd9;
+  padding: 16px 10px 15px 10px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin: 0px 0px 0px 5px;
+
+  &:disabled {
+    cursor: not-allowed;
+    background: #e4dcfb;
+    transition: all 0.2s ease;
+  }
+`;
+
+export const StyledInput = styled.div.attrs({
+  children: (props) => <input {...props} />,
+})`
+  flex-grown: 0;
+  postion: relative;
+
+  & > input {
+    height: 100%;
+    width: 70px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #264dd9;
+    background-color: #f3f6ff;
+    border-radius: 12px;
+    padding: 10px;
+  }
+`;

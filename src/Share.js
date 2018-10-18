@@ -32,11 +32,14 @@ const SharePopup = styled(Modal)`
   padding: 15px;
   border-radius: 4px;
   font-size: 0.8em;
+  z-index: 1;
 `;
 
 const ShareItem = styled.p`
   color: #264dd9;
   cursor: default;
+  padding: 6px;
+  font-size: 0.8rem;
 
   &:hover {
     color: #2f2670;
@@ -94,7 +97,7 @@ class Share extends Component {
     const { author, message, etherscanUrl } = this.props;
     this.setState({ loading: true, sharingState: 'image' });
 
-    toIpfsImage(message, `https://cryptopurr.co/${author}`, etherscanUrl, author, this.onProgress)
+    toIpfsImage(message, `https://tokntalk.club/${author}`, etherscanUrl, author, this.onProgress)
       .then((ipfsUrl) => {
         const encodedMessage = encodeURIComponent(message);
 
@@ -102,7 +105,7 @@ class Share extends Component {
         switch (type) {
           case 'tweet':
             const encodedlinkToShare = encodeURIComponent(
-              `https://share.cryptopurr.co/share/?img=${encodeURIComponent(
+              `https://share.tokntalk.club/share/?img=${encodeURIComponent(
                 ipfsUrl,
               )}&title=${author}&description=${encodedMessage}`,
             );

@@ -269,6 +269,7 @@ export default class Card extends React.Component {
               Object.keys(LabelItems).includes(feedItem.label) &&
               React.createElement(LabelItems[feedItem.label])
             }
+            etherscanUrl={createEtherscanUrl(feedItem)}
             onVerify={() => this.onVerify(feedItem)}
             replies={replies}
             disabledInteractions={disabledInteractions}
@@ -294,7 +295,6 @@ export default class Card extends React.Component {
               message={reply.target}
               family={reply.family}
               reactions={reactions}
-              etherscanUrl={createEtherscanUrl(reply)}
               onShowLikers={this.onShowLikers(reply, reactions)}
               onVerify={() => this.onVerify(reply)}
               disabledInteractions={disabledInteractions}

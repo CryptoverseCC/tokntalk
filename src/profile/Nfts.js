@@ -1,31 +1,80 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import List from 'react-virtualized/dist/commonjs/List';
+import Grid from 'react-virtualized/dist/commonjs/Grid';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 
 import Link from '../Link';
 import AppContext from '../Context';
 import { getEntities } from '../api';
-import { LinkedEntityAvatar } from '../Entity';
+import { LinkedEntityAvatar, EntityName } from '../Entity';
 import { FlatContainer, H4 } from '../Components';
 import { niceScroll } from '../cssUtils';
 import { Token } from '../ActiveEntityTokens';
 
-const ScrollableContainer = styled.div`
-  ${niceScroll};
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 300px;
-`;
-
-const CousinsList = styled(List)`
+const NiceGrid = styled(Grid)`
   ${niceScroll};
 `;
 
-const Avatar = styled(LinkedEntityAvatar)`
-  width: 48px;
-  height: 48px;
+const CoverImage = styled.div`
+  border-radius: 12px;
+  background-image: ${({ src }) => `url(${src})`};
+  background-color: ${({ primaryColor }) => primaryColor};
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 200px;
+  height: 150px;
+`;
+
+const Cover = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Cell = styled.div`
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  position: relative;
+`;
+
+const Name = styled.span`
+  font-family: AvenirNext;
+  font-size: 1rem;
+  font-weight: 600;
+  overflow: hidden;
+`;
+
+const Tools = styled.div`
+  width: 100%;
+`;
+
+const TransferButton = styled(
+  class Transfer extends Component {
+    render() {
+      return <span>Transfer</span>;
+    }
+  },
+)`
+  font-family: 'AvenirNext';
+  font-weight: 600;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: #264dd9;
+  font-size: 1rem;
+  padding: 0.5em;
+  border-radius: 12px;
+  cursor: pointer;
+
+  @media (max-width: 770px) {
+    padding: 0.1em 0.5rem 0.1em 0.5rem;
+  }
 `;
 
 export class Avatars extends Component {
@@ -52,42 +101,51 @@ export class Avatars extends Component {
   };
 
   render() {
-    const { entity: activeEntity, style, title } = this.props;
+    const { entity, style, title } = this.props;
+    const cellSize = 200;
+    const columnsNumber = this.state.entities.length;
 
     return this.state.entities.length ? (
-      <FlatContainer style={style}>
-        <H4>{title || 'Cousins'}</H4>
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <CousinsList
-              height={300}
-              width={width}
-              rowHeight={54}
-              rowRenderer={this.renderRow}
-              rowCount={activeEntity.isAddress ? this.state.entities.length : this.state.entities.length - 1}
-            />
-          )}
-        </AutoSizer>
-      </FlatContainer>
-    ) : null;
+      <AutoSizer>
+        {({ width, height }) => (
+          <NiceGrid
+            cellRenderer={({ ...args }) => this.renderCell(parseInt(width / cellSize), args)}
+            columnCount={parseInt(width / cellSize)}
+            columnWidth={cellSize}
+            height={height}
+            rowCount={parseInt(this.state.entities.length / parseInt(width / cellSize)) + 1}
+            rowHeight={cellSize}
+            width={width}
+          />
+        )}
+      </AutoSizer>
+    ) : (
+      <span>
+        <EntityName id={entity.id} /> doesn't hold any NFTs.
+      </span>
+    );
   }
 
-  renderRow = ({ index, key, style }) => {
-    const cousin = this.state.entities.filter((entity) => entity.id !== this.props.entity.id)[index];
+  renderCell = (columnCount, { columnIndex, rowIndex, key, style }) => {
+    let index = rowIndex * columnCount + columnIndex;
+    const entities = this.state.entities.filter((entity) => entity.id !== this.props.entity.id);
+    const entity = entities[index];
+    if (!entity) return null;
     return (
-      <div key={key} style={{ display: 'flex', boxAlgin: 'center', alignItems: 'center', ...style }}>
-        <Avatar id={cousin.id} entityInfo={cousin} />
-        <Link
-          to={`/${cousin.id}`}
-          style={{
-            fontFamily: 'AvenirNext',
-            fontSize: '0.8rem',
-            fontWeight: '600',
-            marginLeft: '10px',
-          }}
-        >
-          {cousin.name}
-        </Link>
+      <div key={key} style={style}>
+        {entity && (
+          <Cell>
+            <Cover to={`/${entity.id}`}>
+              <CoverImage src={entity.image_preview_url} primaryColor={entity.primaryColor} />
+              <Name>{entity.name}</Name>
+            </Cover>
+            <Tools>
+              {
+                //<TransferButton entity={entity} />
+              }
+            </Tools>
+          </Cell>
+        )}
       </div>
     );
   };
@@ -98,23 +156,18 @@ export default class Nfts extends Component {
     const { entity } = this.props;
     return (
       <React.Fragment>
-        <div>
-          <H4>Types</H4>
-          {entity.tokens.length ? (
-            <ScrollableContainer>
-              {entity.tokens.map((token) => token.is721 && <Token key={token.address} token={token} />)}
-            </ScrollableContainer>
-          ) : null}
-          <H4>Tokens</H4>
-          <AppContext.Consumer>
-            {({ entityStore: { entityInfo } }) => {
-              if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
-                const owner = entity.isAddress ? entity.id : entity.owner;
-                return <Avatars id={entity.id} owner={owner} />;
-              }
-            }}
-          </AppContext.Consumer>
-        </div>
+        <AppContext.Consumer>
+          {({ entityStore: { entityInfo } }) => {
+            if ((!entity.isAddress && entityInfo[entity.id]) || entity.isAddress) {
+              const owner = entity.isAddress ? entity.id : entity.owner;
+              return (
+                <div style={{ width: '100%', height: 'calc(100vh - 190px)' }}>
+                  <Avatars entity={entity} owner={owner} />
+                </div>
+              );
+            }
+          }}
+        </AppContext.Consumer>
       </React.Fragment>
     );
   }

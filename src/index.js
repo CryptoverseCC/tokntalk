@@ -16,7 +16,7 @@ const Communities = (props) => <Async load={import('./Communities')} componentPr
 const Threads = (props) => <Async load={import('./Threads')} componentProps={props} />;
 const NotFound = (props) => <Async load={import('./NotFound')} componentProps={props} />;
 const FAQ = (props) => <Async load={import('./FAQPage')} componentProps={props} />;
-const GetTokens = (props) => <Async load={import('./GetTokens')} componentProps={props} />;
+const GetTokens = (props) => <Async load={import('./app/GetTokens')} componentProps={props} />;
 
 const runMigrations = (storage) => {
   let version = parseInt(storage.getItem('version'), 10);
@@ -66,7 +66,6 @@ const TokNTalk = withRouter(
 
     render() {
       const { location } = this.props;
-
       const isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
 
       return (
@@ -90,7 +89,7 @@ const TokNTalk = withRouter(
               path="/:slug1*:slug2([A-Z]):slug3*/"
               render={(props) => <Redirect to={`${props.location.pathname.toLowerCase()}`} />}
             />
-            <Route exact path="/:entityId" component={validateEntityId(App.ShowPage)} />
+            <Route path="/:entityId" component={validateEntityId(App.ShowPage)} />
             {!isModal ? <Route exact path="/thread/:claimId" component={App.Thread} /> : null}
           </Switch>
           {isModal ? <Route exact path="/thread/:claimId" component={App.ModalThread} /> : null}

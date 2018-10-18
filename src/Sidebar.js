@@ -80,6 +80,10 @@ export const SidebarLeft = () => (
     {({ open, overlay, toggle }) => (
       <SidebarLeftContainer open={open} overlay={overlay}>
         <FeedsContainer>
+          <Header>Tools</Header>
+          <LinkItem to="/how-to-get-tokens" icon={<span>🛠</span>} toggle={toggle}>
+            How to get tokens?
+          </LinkItem>
           <Header>Feeds</Header>
           <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
             All
@@ -88,7 +92,7 @@ export const SidebarLeft = () => (
             {(entityId) => (
               <React.Fragment>
                 <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
-                  Club News
+                  My Clubs Feed
                 </LinkItem>
                 <LinkItem
                   to="/notifications"

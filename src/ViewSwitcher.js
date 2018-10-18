@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, Route } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import capitalize from 'lodash/capitalize';
 
@@ -10,6 +11,7 @@ export const ViewButton = styled.div`
   padding: 5px;
   color: #78818c;
   text-align: center;
+  margin-right: 15px;
 
   ${({ selected }) =>
     selected &&
@@ -28,24 +30,28 @@ export const ViewButton = styled.div`
       }
     `};
 
-  :not(:first-child) {
-    margin-left: 15px;
-  }
-
   @media (max-width: 770px) {
-    :first-child {
-      margin-left: 2%;
-    }
+    margin-right: 5px;
   }
 `;
 
-const ViewSwitcher = ({ type, onChange, style, className, options }) => (
+const ViewSwitcher = ({ match, style, className, options }) => (
   <div className={className} style={style}>
-    {options.map((option) => (
-      <ViewButton key={option} onClick={() => onChange(option)} selected={type === option}>
-        {capitalize(option)}
-      </ViewButton>
-    ))}
+    {options.map((option) => {
+      const route = [match.url].concat(option.path || []).join('/'); // do not include trailing slash
+      return (
+        <Route
+          key={route}
+          path={route}
+          exact={true}
+          children={({ match }) => (
+            <Link to={route}>
+              <ViewButton selected={match}>{option.name}</ViewButton>
+            </Link>
+          )}
+        />
+      );
+    })}
   </div>
 );
 
