@@ -16,7 +16,7 @@ const Communities = (props) => <Async load={import('./Communities')} componentPr
 const Threads = (props) => <Async load={import('./Threads')} componentProps={props} />;
 const NotFound = (props) => <Async load={import('./NotFound')} componentProps={props} />;
 const FAQ = (props) => <Async load={import('./FAQPage')} componentProps={props} />;
-const GetTokens = (props) => <Async load={import('./GetTokens')} componentProps={props} />;
+const GetTokens = (props) => <Async load={import('./app/GetTokens')} componentProps={props} />;
 
 const runMigrations = (storage) => {
   let version = parseInt(storage.getItem('version'), 10);
