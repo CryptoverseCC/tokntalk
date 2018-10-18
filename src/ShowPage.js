@@ -269,6 +269,13 @@ const SocialBadge = styled.a`
   cursor: pointer;
 `;
 
+const SocialBadgeLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  padding-bottom: 15px;
+  cursor: pointer;
+`;
+
 const InlineButton = styled.button`
   outline: none;
   background: none;
@@ -505,16 +512,16 @@ export class SocialList extends React.Component {
               <div>
                 {!this.isAddress(id) &&
                   ownerEntity && (
-                    <SocialBadge href={`/${ownerEntity.id}`}>
+                    <SocialBadgeLink to={`/${ownerEntity.id}`}>
                       <SocialList.OwnerAvatar id={ownerEntity.id} src={ownerEntity.image_preview_url} />
                       <span style={{ marginLeft: '15px' }}>Owner ({ownerEntity.name})</span>
-                    </SocialBadge>
+                    </SocialBadgeLink>
                   )}
                 {!this.isAddress(id) && (
-                  <SocialBadge href={`/clubs/${communityToken.network}:${communityToken.address}`}>
+                  <SocialBadgeLink to={`/clubs/${communityToken.network}:${communityToken.address}`}>
                     <SocialList.TokenImage token={communityToken} size="verySmall" />
                     <span style={{ marginLeft: '15px' }}>{communityToken.name} Club</span>
-                  </SocialBadge>
+                  </SocialBadgeLink>
                 )}
                 <SocialBadge href={external_link}>
                   {this.isAddress(id) ? (

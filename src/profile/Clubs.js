@@ -6,7 +6,7 @@ import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 
 import Link from '../Link';
 import AppContext from '../Context';
-import { LinkedEntityAvatar } from '../Entity';
+import { LinkedEntityAvatar, EntityName } from '../Entity';
 import { niceScroll } from '../cssUtils';
 import { Token } from '../ActiveEntityTokens';
 
@@ -21,8 +21,8 @@ const CoverImage = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  width: 300px;
-  height: 200px;
+  width: 200px;
+  height: 150px;
   background-clip: padding-box;
   border: 20px solid transparent;
 `;
@@ -57,7 +57,7 @@ const Tools = styled.div`
 export class ClubsGrid extends Component {
   render() {
     const { entity, style } = this.props;
-    const cellSize = 300;
+    const cellSize = 200;
     const columnsNumber = entity.tokens.length;
 
     return entity.tokens.length ? (
@@ -74,19 +74,23 @@ export class ClubsGrid extends Component {
           />
         )}
       </AutoSizer>
-    ) : null;
+    ) : (
+      <span>
+        <EntityName id={entity.id} /> doesn't hold any tokens
+      </span>
+    );
   }
 
   renderCell = (entity, columnCount, { columnIndex, rowIndex, key, style }) => {
     let index = rowIndex * columnCount + columnIndex;
     const clubs = entity.tokens.filter((entity) => entity.id !== this.props.entity.id);
     const club = clubs[index];
-    if (club) return null;
+    if (!club) return null;
     return (
       <div key={key} style={style}>
         {club && (
           <Cell>
-            <Cover to={`/clubs/${club.id}`}>
+            <Cover to={`/clubs/${club.network}:${club.address}`}>
               <CoverImage src={club.logo} primaryColor={club.primaryColor} />
               <Name>{club.name}</Name>
             </Cover>

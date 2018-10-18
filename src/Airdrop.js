@@ -5,12 +5,22 @@ import { BN } from 'web3-utils';
 import Context from './Context';
 import Dropdown from './Dropdown';
 import { withActiveEntity, EntityAvatar, WithBoosts, EntityName } from './Entity';
-import { claimWithTokenMultiValueTransfer, claimWithMultiValueTransfer } from './api';
+import {
+  claimWithTokenMultiValueTransfer,
+  claimWithMultiValueTransfer,
+  setApprove,
+  getClaimWithConfigurableTokenValueMultiTransferContract,
+} from './api';
 import { getEntityData } from './entityApi';
 import { toWei } from './balance';
 import { A } from './Link';
 import closeIcon from './img/small-remove.svg';
 import { StyledButton } from './Components';
+
+const Bigger = styled.span`
+  font-weight: 600;
+  font-size: 0.8rem;
+`;
 
 const Container = styled.div`
   position: relative;
@@ -20,9 +30,10 @@ const Container = styled.div`
 `;
 
 const Avatar = styled(EntityAvatar)`
-  width: 24px;
-  height: 24px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
+  margin: 0px 10px 5px 10px;
 `;
 
 const SendingContainer = Container.extend`
@@ -41,17 +52,28 @@ const SentContainer = SendingContainer.extend`
 const ConfirmContainer = SendingContainer.extend`
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  border-radius: 12px;
 `;
 
 const ConfirmHeader = styled.div`
   display: flex;
   width: 100%;
+  justify-content: space-between;
 `;
 
 const ConfirmRecipients = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-evenly;
+  flex-direction: column;
+  font-size: 0.8rem;
+`;
+
+const ApproveContainer = SendingContainer.extend`
+  display: flex;
+  padding: 10px;
+  border-radius: 12px;
 `;
 
 const TokenSelectorContent = styled.ul`
@@ -184,7 +206,7 @@ const Pulsar = styled((props) => (
   }
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -197,7 +219,7 @@ class Airdrop extends Component {
     this.state = {
       step: 'send',
       token: this.props.assetInfo,
-      value: 0.00001,
+      value: 1,
       txHash: '',
       tokens: this.filterTokens(this.props.activeEntity.tokens),
     };
@@ -217,7 +239,20 @@ class Airdrop extends Component {
 
   onInputChange = (e) => this.setState({ value: e.target.value });
 
+  onApprove = async () => {
+    const { token, value } = this.state;
+    const spenderContract = await getClaimWithConfigurableTokenValueMultiTransferContract();
+    this.setState({ step: 'approving' });
+    try {
+      await setApprove(token.address, toWei(value, token.decimals), spenderContract.options.address);
+    } catch (e) {
+      this.setState({ step: 'failure' });
+    }
+    this.setState({ step: 'confirm' });
+  };
+
   onConfirm = async () => {
+    const { entity, activeEntity } = this.props;
     const { token, value, recipients } = this.state;
     const PPP = new BN(10).pow(new BN(token.decimals));
 
@@ -233,22 +268,21 @@ class Airdrop extends Component {
     const valueWei = new BN(value * 10000000000).mul(PPP).div(new BN(10000000000));
     const split = values.map((i) => i.mul(valueWei).div(sum));
 
+    const claim = {
+      claim: {
+        target: `I performed Airdrop of ${value} ${token.symbol} to ${recipientsAddresses.length} of ${
+          entity.name
+        } supporters.`,
+      },
+      context: activeEntity.id,
+    };
+
     try {
       let txHash = '';
       if (token.symbol === 'ETH') {
-        txHash = await claimWithMultiValueTransfer(
-          { claim: { target: 'ETH Airdrop to my supporters' } },
-          recipientsAddresses,
-          split,
-          valueWei,
-        );
+        txHash = await claimWithMultiValueTransfer(claim, recipientsAddresses, split, valueWei);
       } else {
-        txHash = await claimWithTokenMultiValueTransfer(
-          { claim: { target: 'ETH Airdrop to my supporters' } },
-          recipientsAddresses,
-          token.address,
-          split,
-        );
+        txHash = await claimWithTokenMultiValueTransfer(claim, recipientsAddresses, token.address, split);
       }
       this.setState({ step: 'sent', txHash });
     } catch (e) {
@@ -257,11 +291,25 @@ class Airdrop extends Component {
   };
 
   onSend = async (number, boosts) => {
+    const { token, value } = this.state;
+
     const recipients = Object.entries(boosts)
       .sort(([, { score: a }], [, { score: b }]) => b - a)
       .slice(0, number);
 
-    this.setState({ step: 'confirm', recipients: recipients });
+    const PPP = new BN(10).pow(new BN(token.decimals));
+    const recipientsAddresses = await Promise.all(
+      recipients.map(async ([_, { id }]) => (await getEntityData(id)).owner),
+    ); //TODO: convert to owner addresses
+
+    const values = recipients.map(([id, { score }]) => new BN(score.toFixed(0)));
+    const sum = values.reduce((acc, i) => acc.add(i), new BN(0));
+    // BN does not support decimals so airdrops of fractions would not work
+    // We will support fractions up to 10 decimal points. It doesn't make sense to support less either way.
+    const valueWei = new BN(value * 10000000000).mul(PPP).div(new BN(10000000000));
+    const split = values.map((i) => (parseInt(i.mul(valueWei).div(sum)) / parseInt(PPP.toString())).toFixed(4));
+
+    this.setState({ step: token.symbol !== 'ETH' ? 'approve' : 'confirm', recipients, recipientsAddresses, split });
   };
 
   render() {
@@ -316,31 +364,53 @@ class Airdrop extends Component {
       );
     }
 
+    if (step === 'approve') {
+      return (
+        <ApproveContainer>
+          <span style={{ marginLeft: '15px' }}>
+            Approve {value} {token.symbol} for Airdrop
+          </span>
+          <StyledButton onClick={this.onApprove}>Approve</StyledButton>
+          <StyledButton onClick={() => this.setState({ step: 'send' })}>Cancel</StyledButton>
+        </ApproveContainer>
+      );
+    }
+
+    if (step === 'approving') {
+      return (
+        <ApproveContainer>
+          <span style={{ marginLeft: '15px' }}>
+            Approving {value} {token.symbol} for Airdrop. Please confirm transaction and wait for it to complete.
+          </span>
+          <StyledButton onClick={this.onApprove}>Continue</StyledButton>
+          <StyledButton onClick={() => this.setState({ step: 'send' })}>Cancel</StyledButton>
+        </ApproveContainer>
+      );
+    }
+
     if (step === 'confirm') {
       return (
         <ConfirmContainer>
           <ConfirmHeader>
-            <span style={{ marginLeft: '15px' }}>Confirm Airdrop to</span>
-            <StyledButton
-              style={{ background: '#000000', marginLeft: 'auto', marginRight: '10px' }}
-              onClick={this.onConfirm}
-            >
-              Confirm
-            </StyledButton>
-            <StyledButton
-              style={{ background: '#000000', marginLeft: 'auto', marginRight: '10px' }}
-              onClick={() => this.setState({ step: 'send' })}
-            >
-              Cancel
-            </StyledButton>
+            <span style={{ marginLeft: '15px' }}>Confirm Airdrop</span>
+            <StyledButton onClick={this.onConfirm}>Confirm</StyledButton>
+            <StyledButton onClick={() => this.setState({ step: 'send' })}>Cancel</StyledButton>
           </ConfirmHeader>
 
           <ConfirmRecipients>
-            {this.state.recipients.map(([id, { context_info: entity }]) => (
-              <span key={id}>
+            {this.state.recipients.map(([id, { context_info: entity }], index) => (
+              <div key={id} style={{ display: 'flex', marginBottom: '10px', fontWeight: 100, fontSize: '0.7rem' }}>
                 <Avatar id={entity.id} entityInfo={entity} />
-                {entity.name}
-              </span>
+                <div>
+                  <Bigger>{entity.name}</Bigger> owner: <br />
+                  <Bigger>{this.state.recipientsAddresses[index]}</Bigger>
+                  <br />
+                  will receive:{' '}
+                  <Bigger>
+                    {this.state.split[index]} {this.state.token.symbol}
+                  </Bigger>
+                </div>
+              </div>
             ))}
           </ConfirmRecipients>
         </ConfirmContainer>

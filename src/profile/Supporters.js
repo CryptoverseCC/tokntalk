@@ -27,8 +27,8 @@ const CoverImage = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  width: 300px;
-  height: 200px;
+  width: 200px;
+  height: 150px;
 `;
 
 const Cover = styled(Link)`
@@ -49,7 +49,7 @@ const Cell = styled.div`
 
 const Name = styled.span`
   font-family: AvenirNext;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
   overflow: hidden;
 `;
@@ -59,15 +59,16 @@ const Position = styled.span`
   top: 0;
   left: 0;
   font-weight: 600;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   color: #999;
   background-color: white;
   z-index: 10;
-  padding: 2px 7px 0 7px;
+  padding: 2px 2px 0 2px;
   border: 10px solid #eee;
-  border-radius: 20px;
+  border-radius: 10px;
   display:flex;
   flex-direction: column;
+  align-items: center;
 
   ::after {
     content: '${({ score }) => score}';
@@ -78,7 +79,7 @@ const Position = styled.span`
 export class Avatars extends Component {
   render() {
     const { entity, activeEntity, style, assetInfo, asset } = this.props;
-    const cellSize = 300;
+    const cellSize = 200;
     return (
       <WithBoosts entity={entity} asset={asset}>
         {(boosts) => {

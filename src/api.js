@@ -409,7 +409,7 @@ const getClaimWithConfigurableValueMultiTransferContract = async () => {
   return contract;
 };
 
-const getClaimWithConfigurableTokenValueMultiTransferContract = async () => {
+export const getClaimWithConfigurableTokenValueMultiTransferContract = async () => {
   const web3 = await getWeb3();
   const { networkId } = await getWeb3State();
   const contractAddress = claimWithConfigurableTokenValueMultiTransferContractAddressesForNetworkId[networkId];
@@ -486,13 +486,13 @@ const claimWithValueTransfer = async (data, value, ownerAddress) => {
   });
 };
 
-export const setApprove = async (erc20, value) => {
-  const spender = claimWithTokenValueTransferContractAddressesForNetworkId[1];
+export const setApprove = async (erc20, value, spenderContract) => {
+  const spender = spenderContract || claimWithTokenValueTransferContractAddressesForNetworkId[1];
   const { from } = await getWeb3State();
   const contract = await getErc20Contract(erc20);
   const result = await contract.methods.allowance(from, spender).call();
   const allowance = new BN(result);
-  if (allowance.gten(value)) {
+  if (allowance.gte(new BN(value))) {
     return Promise.resolve(true);
   }
   return contract.methods.approve(spender, new BN(value).sub(allowance)).send({ from });

@@ -53,16 +53,18 @@ export default class OpenSea extends Component {
       <ScrollableContainer style={style}>
         {loading && <span>Loading offers from OpenSea...</span>}
         {!loading && !items && <span>No offers found or loading error occured</span>}
-        {items.map((offer) => (
-          <div key={offer.context}>
-            <Offer
-              offer={offer}
-              onBuy={this.buy}
-              primaryColor={token.primaryColor}
-              secondaryColor={token.secondaryColor}
-            />
-          </div>
-        ))}
+        {!loading &&
+          items &&
+          items.map((offer) => (
+            <div key={offer.context}>
+              <Offer
+                offer={offer}
+                onBuy={this.buy}
+                primaryColor={token.primaryColor}
+                secondaryColor={token.secondaryColor}
+              />
+            </div>
+          ))}
       </ScrollableContainer>
     );
   }

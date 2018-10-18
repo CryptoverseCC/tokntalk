@@ -7,7 +7,7 @@ import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import Link from '../Link';
 import AppContext from '../Context';
 import { getEntities } from '../api';
-import { LinkedEntityAvatar } from '../Entity';
+import { LinkedEntityAvatar, EntityName } from '../Entity';
 import { FlatContainer, H4 } from '../Components';
 import { niceScroll } from '../cssUtils';
 import { Token } from '../ActiveEntityTokens';
@@ -23,8 +23,8 @@ const CoverImage = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  width: 300px;
-  height: 200px;
+  width: 200px;
+  height: 150px;
 `;
 
 const Cover = styled(Link)`
@@ -45,7 +45,7 @@ const Cell = styled.div`
 
 const Name = styled.span`
   font-family: AvenirNext;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
   overflow: hidden;
 `;
@@ -102,7 +102,7 @@ export class Avatars extends Component {
 
   render() {
     const { entity, style, title } = this.props;
-    const cellSize = 300;
+    const cellSize = 200;
     const columnsNumber = this.state.entities.length;
 
     return this.state.entities.length ? (
@@ -119,7 +119,11 @@ export class Avatars extends Component {
           />
         )}
       </AutoSizer>
-    ) : null;
+    ) : (
+      <span>
+        <EntityName id={entity.id} /> doesn't hold any NFTs.
+      </span>
+    );
   }
 
   renderCell = (columnCount, { columnIndex, rowIndex, key, style }) => {
