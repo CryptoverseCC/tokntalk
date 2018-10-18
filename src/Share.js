@@ -78,8 +78,8 @@ class Share extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <ShareItem onClick={(e) => this.share('tweet', e)}>Tweet it</ShareItem>
-                <ShareItem onClick={(e) => this.share('image', e)}>Get an image</ShareItem>
+                {/*<ShareItem onClick={(e) => this.share('tweet', e)}>Tweet it</ShareItem>*/}
+                <ShareItem onClick={(e) => this.share('image', e)}>Get verifiable image</ShareItem>
               </React.Fragment>
             )}
           </SharePopup>
