@@ -265,9 +265,9 @@ export default class SupporterForm extends React.Component {
 
   renderForm = (boosts) => {
     return (
-      <Form style={{ display: 'flex', alignItems: 'center' }}>
+      <Form style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
         <span>Put </span>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', padding: '2px 8px 2px 8px' }}>
           <Entities>
             {({ entities }) =>
               entities.length > 0 && (
@@ -340,6 +340,7 @@ export default class SupporterForm extends React.Component {
           flexDirection: 'column',
           textAlign: 'center',
           alignItems: 'center',
+          flexWrap: 'wrap',
         }}
       >
         <CatvertisedClose

@@ -68,6 +68,7 @@ const ConfirmRecipients = styled.div`
   justify-content: space-evenly;
   flex-direction: column;
   font-size: 0.8rem;
+  word-break: break-all;
 `;
 
 const ApproveContainer = SendingContainer.extend`
@@ -211,6 +212,7 @@ const Form = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
 `;
 
 class Airdrop extends Component {
