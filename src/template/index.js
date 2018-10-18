@@ -3,6 +3,7 @@ import escape from 'escape-html';
 import QRious from 'qrious';
 import IpfsAdd from 'ipfs-api/src/add';
 import html2canvas from 'html2canvas';
+import logo from '../img/logo_text.svg';
 
 // ToDo remove - use opensea
 const colors = {
@@ -31,27 +32,49 @@ const isDev = process.env.NODE_ENV === 'development';
 const ipfsAdd = IpfsAdd({ host: 'ipfs.infura.io', port: '5001', protocol: 'https', 'api-path': '/api/v0/' });
 const isSvg = /.svg$/;
 
-const { token_id, content, etherscan_url, link } = qs.parse(window.location.search.replace('?', ''));
+const { entity, content, etherscan_url, link } = qs.parse(window.location.search.replace('?', ''));
+const contract = entity.split(':')[1];
+const token_id = entity.split(':')[2];
 
 const $container = document.querySelector('.main');
+const $logo = document.querySelector('.logo');
 const $catAvatarImg = document.querySelector('.kitten_img .img');
 const $catId = document.querySelector('.kitty-name');
 const $message = document.querySelector('.text p');
-const $qr = document.querySelector('.qr canvas');
-const $footer = document.querySelector('.link');
+const $qrLink = document.querySelector('.qr-link');
+const $qrTransaction = document.querySelector('.qr-transaction');
 
-fetch(`https://api.cryptokitties.co/kitties/${token_id}`)
+$logo.src = logo;
+
+fetch(`https://api.userfeeds.io/api/decorate-with-opensea`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  method: 'POST',
+  body: JSON.stringify({
+    flow: [
+      {
+        algorithm: 'experimental_owner_of_erc721',
+        params: {
+          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
+        },
+      },
+    ],
+  }),
+})
   .then((res) => res.json())
-  .then((catInfo) => {
-    if (catInfo.name) {
-      $catId.innerHTML += catInfo.name;
+  .then((data) => {
+    const entityInfo = data.items[0];
+    if (entityInfo.context_info.name) {
+      $catId.innerHTML += entityInfo.context_info.name;
     } else {
       $catId.innerHTML += `#${token_id}`;
     }
 
-    $catAvatarImg.style.background = colors[catInfo.color];
+    $catAvatarImg.style.background = colors[entityInfo.color];
 
-    return drawImageOnCanvas(catInfo.image_url_cdn, $catAvatarImg);
+    return drawImageOnCanvas(entityInfo.context_info.image_preview_url, $catAvatarImg);
   })
   .then(() => {
     if (isInIframe()) {
@@ -69,12 +92,18 @@ fetch(`https://api.cryptokitties.co/kitties/${token_id}`)
 
 $message.innerHTML = escape(content);
 
-new QRious({
-  element: $qr,
-  value: etherscan_url,
-});
+if (etherscan_url !== 'undefined') {
+  new QRious({
+    element: $qrTransaction.querySelector('canvas'),
+    value: etherscan_url,
+  });
+  $qrTransaction.style.display = 'flex';
+}
 
-$footer.innerHTML = link;
+new QRious({
+  element: $qrLink.querySelector('canvas'),
+  value: link,
+});
 
 const MIN_FONT_SIZE = 0.8;
 const adjustFontSize = ($element, fontSize) => {
@@ -89,7 +118,7 @@ const adjustFontSize = ($element, fontSize) => {
 adjustFontSize($message, 6);
 
 function drawImageOnCanvas(imageUrl, $canvas) {
-  return fetch(`https://cors-anywhere.herokuapp.com/${imageUrl}`)
+  return fetch(imageUrl)
     .then((res) => {
       if (!isSvg.test(imageUrl)) {
         return res.blob();

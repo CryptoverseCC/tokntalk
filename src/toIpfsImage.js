@@ -2,7 +2,7 @@ const DEFAULT_TIMEOUT = 45 * 1000;
 const { REACT_APP_BASENAME: BASENAME } = process.env;
 const templateUrl = `${window.location.origin}${BASENAME ? `/${BASENAME}` : ''}/template.html`;
 
-export default function(content, link, etherscanUrl, tokenId, onProgress) {
+export default function(content, link, etherscanUrl, entity, onProgress) {
   return new Promise((resolve, reject) => {
     const iframe = document.createElement('iframe');
 
@@ -36,7 +36,7 @@ export default function(content, link, etherscanUrl, tokenId, onProgress) {
 
     window.addEventListener('message', onMessage);
 
-    const iframeUrl = `${templateUrl}?token_id=${tokenId}&etherscan_url=${encodeURIComponent(
+    const iframeUrl = `${templateUrl}?entity=${entity}&etherscan_url=${encodeURIComponent(
       etherscanUrl,
     )}&link=${encodeURIComponent(link)}&content=${encodeURIComponent(content)}`;
     iframe.src = iframeUrl;

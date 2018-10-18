@@ -272,7 +272,7 @@ module.exports = {
       inject: true,
       filename: 'template.html',
       template: paths.templateHtml,
-      chunks: ['template'],
+      chunks: ['template', 'vendor'],
       minify: {
         emoveComments: true,
         collapseWhitespace: true,

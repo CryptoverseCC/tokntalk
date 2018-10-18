@@ -9,6 +9,7 @@
 <body>
   <div class="device">
     <div class="main">
+      <img class="logo">
       <div class="kitten_img">
         <canvas class="img" width="266" height="266"></canvas>
       </div>
@@ -18,9 +19,14 @@
       <div class="footer">
         <div class="footer-content">
           <h3 class="kitty-name"></h3>
-          <h4 class="link"></h4>
+          <h4 class="link">https://tokntalk.club/</h4>
         </div>
-        <div class="qr">
+        <div class="qr-link">
+          <span>Verify message</span>
+          <canvas></canvas>
+        </div>
+        <div class="qr-transaction">
+          <span>Verify transaction</span>
           <canvas></canvas>
         </div>
       </div>
@@ -51,6 +57,13 @@
       padding: 50px;
     }
 
+    .logo {
+      position: absolute;
+      left: 65px;
+      top: 20px;
+      height: 80px;
+    }
+
     .kitten_img .img {
       position: absolute;
       left: -55%;
@@ -67,10 +80,16 @@
       width: 120px;
       height: 120px;
       border-radius: 120px;
+      position: absolute;
+      top: 120px;
+      left: 55px;
     }
 
     .text {
-      max-height: 70%;
+      position: absolute;
+      top: 140px;
+      left: 190px;
+      height: 400px;
     }
 
     .text p {
@@ -79,7 +98,6 @@
       line-height: 1.1;
       color: #060310;
       font-weight: 500;
-      max-width: 1020px;
       word-wrap: break-word;
       white-space: pre-wrap;
       overflow-wrap: break-word
@@ -112,8 +130,16 @@
       font-weight: 400;
     }
 
-    .qr {
+    .qr-link {
       margin-left: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .qr-transaction {
+      margin-left: auto;
+      display: none;
+      flex-direction: column;
     }
 
     canvas {

@@ -7,6 +7,7 @@ import { VerifyButton } from '../Buttons.js';
 import Link from '../../Link';
 import { CollapsableText } from '../CollapsableText';
 import Reactions from '../Reactions';
+import Share from '../../Share';
 
 const Text = styled.p`
   font-size: 1.5rem;
@@ -38,6 +39,7 @@ const Message = ({
   onReply,
   onShowLikers,
   reactions,
+  etherscanUrl,
 }) => {
   return (
     <div>
@@ -64,6 +66,7 @@ const Message = ({
         >
           Permalink
         </Link>
+        <Share author={from} message={message} etherscanUrl={etherscanUrl} />
       </Profile>
       <Text>
         <CollapsableText text={message} />

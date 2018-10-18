@@ -230,7 +230,7 @@ module.exports = {
       inject: true,
       filename: 'template.html',
       template: paths.templateHtml,
-      chunks: ['template'],
+      chunks: ['template', 'vendor'],
     }),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
