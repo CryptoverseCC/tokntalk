@@ -13,6 +13,7 @@ import {
   IfActiveEntity,
   LinkedActiveEntityAvatar,
   ActiveEntityName,
+  WithActiveEntity,
 } from './Entity';
 import AppContext from './Context';
 import IdentityAvatar from './Avatar';
@@ -27,7 +28,6 @@ import checkMark from './img/checkmark.svg';
 import closeIcon from './img/small-remove.svg';
 import { CousinsBox } from './CousinsBox';
 import { niceScroll } from './cssUtils';
-import SendTokens from './SendTokens';
 import ProfileBox from './ProfileBox';
 import { Token } from './ActiveEntityTokens';
 import StatusBox from './StatusBox';
@@ -36,6 +36,7 @@ import Nfts from './profile/Nfts';
 import Clubs from './profile/Clubs';
 import Origin from './profile/Origin';
 import Supporters from './profile/Supporters';
+import SendTokens from './profile/SendTokens';
 import ViewSwitcher from './ViewSwitcher';
 
 const ScrollableContainer = styled.div`
@@ -134,58 +135,73 @@ export default class ShowPage extends Component {
     const CLUBS = { name: 'Clubs', path: 'clubs' };
     const ORIGIN = { name: 'Origin', path: 'origin' };
     const SUPPORTERS = { name: 'Supporters', path: 'supporters' };
+    const SEND_TOKENS = { name: 'Send Tokens', path: 'send' };
     const views = [FEED, SUPPORTERS];
 
     return (
-      <Entity id={entityId}>
-        {(entity) => (
-          <React.Fragment>
-            <div className="columns ordered-mobile">
-              <div className="column is-3">
-                <ProfileBox
-                  coverImage={entity.image_preview_url}
-                  coverImageStyle={{
-                    backgroundSize: entity.isAddress ? 'cover' : 'contain',
-                    backgroundPositionX: '100%',
-                  }}
-                  avatar={
-                    <ShowPage.ProfileAvatar
-                      backgroundColor="transparent"
-                      id={entityId}
-                      src={entity.image_preview_url}
-                      size="medium"
-                      style={{ alignSelf: 'flex-end' }}
-                    />
-                  }
-                  primaryColor={entity.background_color ? `#${entity.background_color}` : tokenClub.primaryColor}
-                >
-                  <EntityInfo entity={entity} />
-                  <ExternalLinks entity={entity} />
-                </ProfileBox>
-              </div>
-              <div className="column is-8 fl-1">
-                <ViewSwitcher
-                  match={match}
-                  type={viewType}
-                  style={{ marginBottom: '2em' }}
-                  onChange={this.changeViewType}
-                  options={views.concat(entity.isAddress ? [CLUBS, NFTS] : [ORIGIN])}
-                />
-                <Switch>
-                  <Route exact path={`${match.url}`} render={() => <FeedContainer entity={entity} />} />
-                  <Route
-                    path={`${match.url}/${SUPPORTERS.path}`}
-                    render={() => <Supporters entity={entity} asset="ethereum" />}
-                  />
-                  <Route path={`${match.url}/${CLUBS.path}`} render={() => <Clubs entity={entity} />} />
-                  <Route path={`${match.url}/${NFTS.path}`} render={() => <Nfts entity={entity} />} />
-                  <Route path={`${match.url}/${ORIGIN.path}`} render={() => <Origin entity={entity} />} />
-                </Switch>
-              </div>
-            </div>
-          </React.Fragment>
-        )}
-      </Entity>
+      <WithActiveEntity>
+        {(activeEntity) => {
+          return (
+            <Entity id={entityId}>
+              {(entity) => (
+                <React.Fragment>
+                  <div className="columns ordered-mobile">
+                    <div className="column is-3">
+                      <ProfileBox
+                        coverImage={entity.image_preview_url}
+                        coverImageStyle={{
+                          backgroundSize: entity.isAddress ? 'cover' : 'contain',
+                          backgroundPositionX: '100%',
+                        }}
+                        avatar={
+                          <ShowPage.ProfileAvatar
+                            backgroundColor="transparent"
+                            id={entityId}
+                            src={entity.image_preview_url}
+                            size="medium"
+                            style={{ alignSelf: 'flex-end' }}
+                          />
+                        }
+                        primaryColor={entity.background_color ? `#${entity.background_color}` : tokenClub.primaryColor}
+                      >
+                        <EntityInfo entity={entity} />
+                        <ExternalLinks entity={entity} />
+                      </ProfileBox>
+                    </div>
+                    <div className="column is-8 fl-1">
+                      <ViewSwitcher
+                        match={match}
+                        type={viewType}
+                        style={{ marginBottom: '2em' }}
+                        onChange={this.changeViewType}
+                        options={views
+                          .concat(entity.isAddress ? [CLUBS, NFTS] : [ORIGIN])
+                          .concat(
+                            entity.isAddress && activeEntity && entity.id !== activeEntity.id ? [SEND_TOKENS] : [],
+                          )}
+                      />
+                      <Switch>
+                        <Route exact path={`${match.url}`} render={() => <FeedContainer entity={entity} />} />
+                        <Route
+                          path={`${match.url}/${SUPPORTERS.path}`}
+                          render={() => <Supporters entity={entity} asset="ethereum" />}
+                        />
+                        <Route path={`${match.url}/${CLUBS.path}`} render={() => <Clubs entity={entity} />} />
+                        <Route path={`${match.url}/${NFTS.path}`} render={() => <Nfts entity={entity} />} />
+                        <Route path={`${match.url}/${ORIGIN.path}`} render={() => <Origin entity={entity} />} />
+                        <Route
+                          path={`${match.url}/${SEND_TOKENS.path}`}
+                          render={() => <SendTokens sender={activeEntity} receiver={entity} />}
+                        />
+                      </Switch>
+                    </div>
+                  </div>
+                </React.Fragment>
+              )}
+            </Entity>
+          );
+        }}
+      </WithActiveEntity>
     );
   }
 
@@ -195,9 +211,6 @@ export default class ShowPage extends Component {
         <EntityName id={entity.id} />
       </H3>
       {entity.isAddress && <CopyButton value={entity.id} name="address" />}
-      <AppContext>
-        {({ web3Store }) => web3Store.networkName === 'ethereum' && entity.isAddress && <SendTokens to={entity} />}
-      </AppContext>
     </React.Fragment>
   );
 

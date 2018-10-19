@@ -21,6 +21,7 @@ import {
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
 import { findClub } from './clubs';
+import { toWei } from './balance';
 import ercs721 from './erc721';
 
 const {
@@ -503,7 +504,7 @@ export const transferEth = async (to, value) => {
   const { from } = await getWeb3State();
 
   return new Promise((resolve, reject) => {
-    const promiEvent = web3.eth.sendTransaction({ from, to, value });
+    const promiEvent = web3.eth.sendTransaction({ from, to, value: toWei(value, 18) });
     promiEvent.on('error', reject);
     promiEvent.on('transactionHash', resolve);
   });
@@ -512,6 +513,19 @@ export const transferEth = async (to, value) => {
 export const transferErc20 = async (erc20, to, value) => {
   const { from } = await getWeb3State();
   const contract = await getErc20Contract(erc20);
+
+  const decimals = await contract.methods.decimals().call();
+
+  return new Promise((resolve, reject) => {
+    const promiEvent = contract.methods.transfer(to, toWei(value, decimals)).send({ from });
+    promiEvent.on('error', reject);
+    promiEvent.on('transactionHash', resolve);
+  });
+};
+
+export const transferErc721 = async (erc721, to, value) => {
+  const { from } = await getWeb3State();
+  const contract = await getErc20Contract(erc721);
 
   return new Promise((resolve, reject) => {
     const promiEvent = contract.methods.transfer(to, value).send({ from });

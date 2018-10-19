@@ -6,7 +6,7 @@ import { isMobile } from 'react-device-detect';
 import { A } from './Link';
 import Intercom from './Intercom';
 import { H4 } from './Components';
-import { IfActiveEntity, EntityClubs } from './Entity';
+import { IfActiveEntity, EntityClubs, EntityAvatar } from './Entity';
 import { TokenImage } from './clubs';
 import { UnreadedCount } from './UnreadedMessages';
 import { niceScroll } from './cssUtils';
@@ -60,8 +60,13 @@ export const SidebarContainer = styled.div`
   position: relative;
 `;
 
+const Avatar = styled(EntityAvatar)`
+  width: 18px;
+  height: 18px;
+`;
+
 const Header = styled(H4)`
-  padding: 30px 10px 10px 15px;
+  padding: 5px;
 
   @media (max-width: 770px) {
     padding: 5px 1px 3px 5px;
@@ -73,6 +78,7 @@ const Settings = styled.div``;
 const FeedsContainer = styled.div`
   overflow: scroll;
   flex-grow: 100;
+  ${niceScroll};
 `;
 
 export const SidebarLeft = () => (
@@ -80,6 +86,22 @@ export const SidebarLeft = () => (
     {({ open, overlay, toggle }) => (
       <SidebarLeftContainer open={open} overlay={overlay}>
         <FeedsContainer>
+          <IfActiveEntity>
+            {(entityId) => (
+              <React.Fragment>
+                <LinkItem to={entityId} icon={<Avatar id={entityId} />} toggle={toggle}>
+                  My Profile
+                </LinkItem>
+                <LinkItem
+                  to="/notifications"
+                  icon={<img alt="" style={{ width: '16px' }} src={notificationsIcon} />}
+                  toggle={toggle}
+                >
+                  Notifications
+                </LinkItem>
+              </React.Fragment>
+            )}
+          </IfActiveEntity>
           <Header>Tools</Header>
           <LinkItem to="/how-to-get-tokens" icon={<span>🛠</span>} toggle={toggle}>
             How to get tokens?
@@ -93,13 +115,6 @@ export const SidebarLeft = () => (
               <React.Fragment>
                 <LinkItem to="/personal" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
                   My Clubs Feed
-                </LinkItem>
-                <LinkItem
-                  to="/notifications"
-                  icon={<img alt="" style={{ width: '16px' }} src={notificationsIcon} />}
-                  toggle={toggle}
-                >
-                  Notifications
                 </LinkItem>
                 <EntityClubs id={entityId}>
                   {(clubs) => clubs.map((club) => <Club key={club.address} token={club} toggle={toggle} />)}

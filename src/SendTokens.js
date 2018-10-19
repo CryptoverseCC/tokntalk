@@ -236,9 +236,9 @@ class SendTokens extends Component {
     try {
       let txHash = '';
       if (token.symbol !== 'ETH') {
-        txHash = await transferErc20(token.address, recipient, toWei(value, token.decimals));
+        txHash = await transferErc20(token.address, recipient, value);
       } else {
-        txHash = await transferEth(recipient, toWei(value, 18));
+        txHash = await transferEth(recipient, value);
       }
       this.setState({ step: 'sent', txHash });
     } catch (e) {
