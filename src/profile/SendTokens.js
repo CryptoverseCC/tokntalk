@@ -99,7 +99,6 @@ export class Tokens extends Component {
     try {
       const entities = await getEntities(senderAddress);
       const tokens = (await getEntityTokens(senderAddress)).filter((token) => !token.is721);
-      console.log(entities, tokens);
       this.setState({ entities, tokens });
     } catch (ex) {}
   };

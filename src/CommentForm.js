@@ -9,6 +9,7 @@ import TranslationsContext from './Translations';
 export const CommentForm = styled.form`
   position: relative;
   display: flex;
+  width: 100%;
 `;
 
 export const StyledTextArea = styled(({ inputRef, ...props }) => <TextArea innerRef={inputRef} {...props} />)`

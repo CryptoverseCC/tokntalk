@@ -154,6 +154,22 @@ export const erc20ContractAbi = [
   },
 ];
 
+export const erc721ContractAbi = [
+  // Add safeTransferFrom
+  {
+    constant: false,
+    name: 'transferFrom',
+    inputs: [
+      { name: '_from', type: 'address' },
+      { name: '_to', type: 'address' },
+      { name: '_tokenId', type: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
+    payable: true,
+    type: 'function',
+  },
+];
+
 export const mintTokensContractAbi = [
   {
     constant: false,

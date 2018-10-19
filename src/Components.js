@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-export const FlatContainer = styled.div`
+export const Container = styled.div`
   width: 96%;
-  max-width: 300px;
   margin: 0 auto;
   border-radius: 12px;
   padding: 15px;
@@ -12,6 +11,10 @@ export const FlatContainer = styled.div`
   @media (max-width: 770px) {
     max-width: 98%;
   }
+`;
+
+export const FlatContainer = styled(Container)`
+  max-width: 300px;
 `;
 
 export const WarningContainer = FlatContainer.extend`

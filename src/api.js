@@ -17,6 +17,7 @@ import {
   claimWithValueTransferContractAbi,
   claimWithTokenValueTransferContractAbi,
   erc20ContractAbi,
+  erc721ContractAbi,
   mintTokensContractAbi,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
@@ -426,6 +427,13 @@ const getErc20Contract = async (contractAddress) => {
   return contract;
 };
 
+const getErc721Contract = async (contractAddress) => {
+  const web3 = await getWeb3();
+  const contract = new web3.eth.Contract(erc721ContractAbi, contractAddress);
+  contract.setProvider(web3.currentProvider);
+  return contract;
+};
+
 const createFeedItemBase = async (id, entity, http) => {
   const { from, blockNumber, networkName } = await getWeb3State();
 
@@ -525,10 +533,10 @@ export const transferErc20 = async (erc20, to, value) => {
 
 export const transferErc721 = async (erc721, to, value) => {
   const { from } = await getWeb3State();
-  const contract = await getErc20Contract(erc721);
+  const contract = await getErc721Contract(erc721);
 
   return new Promise((resolve, reject) => {
-    const promiEvent = contract.methods.transfer(to, value).send({ from });
+    const promiEvent = contract.methods.transferFrom(from, to, value).send({ from });
     promiEvent.on('error', reject);
     promiEvent.on('transactionHash', resolve);
   });

@@ -3,7 +3,7 @@ import React from 'react';
 import Link from './Link';
 import { ChangellyFastBuy } from './Changelly';
 import { CoinbaseWidget } from './CoinbaseWidget';
-import { FlatContainer, H4 } from './Components';
+import { Container, FlatContainer, H4 } from './Components';
 import { IfActiveEntity } from './Entity';
 
 const GetTokens = () => {
@@ -11,7 +11,7 @@ const GetTokens = () => {
     <React.Fragment>
       <div className="columns ordered-mobile">
         <div className="column is-8 fl-1 is-offset-1">
-          <div>
+          <Container>
             <H4>Tok'n'talk Supporters</H4>
             <div>
               <p>
@@ -41,11 +41,11 @@ const GetTokens = () => {
             <div>
               <p>Let us know what other solutions are there at info@cryptoverse.cc or directly on Tok'n'talk</p>
             </div>
-          </div>
+          </Container>
 
           {/*<CoinbaseWidget />*/}
         </div>
-        <div className="column is-3">
+        <div className="column is-3 is-hidden-mobile">
           <FlatContainer>
             You can buy tokens from one of companies presented here.
             <br />
