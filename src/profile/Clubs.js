@@ -83,8 +83,7 @@ export class ClubsGrid extends Component {
 
   renderCell = (entity, columnCount, { columnIndex, rowIndex, key, style }) => {
     let index = rowIndex * columnCount + columnIndex;
-    const clubs = entity.tokens.filter((entity) => entity.id !== this.props.entity.id);
-    const club = clubs[index];
+    const club = entity.tokens[index];
     if (!club) return null;
     return (
       <div key={key} style={style}>

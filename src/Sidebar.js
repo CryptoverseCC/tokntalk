@@ -73,6 +73,7 @@ const Settings = styled.div``;
 const FeedsContainer = styled.div`
   overflow: scroll;
   flex-grow: 100;
+  ${niceScroll};
 `;
 
 export const SidebarLeft = () => (

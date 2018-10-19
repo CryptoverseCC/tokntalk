@@ -114,6 +114,20 @@ export const claimWithTokenValueTransferContractAbi = [
 
 export const erc20ContractAbi = [
   {
+    constant: true,
+    inputs: [],
+    name: 'decimals',
+    outputs: [
+      {
+        name: '',
+        type: 'uint8',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     constant: false,
     inputs: [{ name: '_spender', type: 'address' }, { name: '_value', type: 'uint256' }],
     name: 'approve',
