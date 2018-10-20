@@ -104,7 +104,10 @@ export const SidebarLeft = () => (
           </IfActiveEntity>
           <Header>Tools</Header>
           <LinkItem to="/how-to-get-tokens" icon={<span>🛠</span>} toggle={toggle}>
-            How to get tokens?
+            How To Get ETH?
+          </LinkItem>
+          <LinkItem to="/create-tokens" icon={<span>🛠</span>} toggle={toggle}>
+            Create Tokens
           </LinkItem>
           <Header>Feeds</Header>
           <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>

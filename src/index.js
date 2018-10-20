@@ -17,6 +17,7 @@ const Threads = (props) => <Async load={import('./Threads')} componentProps={pro
 const NotFound = (props) => <Async load={import('./NotFound')} componentProps={props} />;
 const FAQ = (props) => <Async load={import('./FAQPage')} componentProps={props} />;
 const GetTokens = (props) => <Async load={import('./app/GetTokens')} componentProps={props} />;
+const CreateTokens = (props) => <Async load={import('./app/CreateTokens')} componentProps={props} />;
 
 const runMigrations = (storage) => {
   let version = parseInt(storage.getItem('version'), 10);
@@ -78,6 +79,7 @@ const TokNTalk = withRouter(
             <Route exact path="/faq" component={FAQ} />
             <Route exact path="/404" component={NotFound} />
             <Route exact path="/how-to-get-tokens" component={GetTokens} />
+            <Route exact path="/create-tokens" component={CreateTokens} />
 
             <Route exact path="/" component={App.Index} />
             <Route exact path="/personal" component={App.Index} />

@@ -3,6 +3,7 @@ import escape from 'escape-html';
 import QRious from 'qrious';
 import IpfsAdd from 'ipfs-api/src/add';
 import html2canvas from 'html2canvas';
+import jazzicon from 'jazzicon';
 import logo from '../img/logo_text.svg';
 
 // ToDo remove - use opensea
@@ -46,24 +47,52 @@ const $qrTransaction = document.querySelector('.qr-transaction');
 
 $logo.src = logo;
 
-fetch(`https://api.userfeeds.io/api/decorate-with-opensea`, {
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-  method: 'POST',
-  body: JSON.stringify({
-    flow: [
-      {
-        algorithm: 'experimental_owner_of_erc721',
-        params: {
-          context: 'ethereum:0x06012c8cf97bead5deae237070f9587f8e7a266d:134330',
-        },
+function generateIconForAddress(address) {
+  const icon = jazzicon(100, parseInt(address.slice(2, 10), 16)).firstChild;
+  const serializer = new XMLSerializer();
+  const blob = new Blob([serializer.serializeToString(icon)], { type: 'image/svg+xml' });
+  return URL.createObjectURL(blob);
+}
+
+const entityInfo = new Promise((resolve, reject) => {
+  if (entity.split(':').length > 1) {
+    fetch(`https://api.userfeeds.io/api/decorate-with-opensea`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    ],
-  }),
+      method: 'POST',
+      body: JSON.stringify({
+        flow: [
+          {
+            algorithm: 'experimental_owner_of_erc721',
+            params: {
+              context: entity,
+            },
+          },
+        ],
+      }),
+    }).then((res) => resolve(res.json()));
+  } else {
+    resolve({
+      items: [
+        {
+          context_info: {
+            name: entity,
+            image_preview_url: generateIconForAddress(entity),
+            size: {
+              width: '120px',
+              height: '120px',
+              left: '0',
+              top: '0',
+            },
+          },
+          color: '#FFF',
+        },
+      ],
+    });
+  }
 })
-  .then((res) => res.json())
   .then((data) => {
     const entityInfo = data.items[0];
     if (entityInfo.context_info.name) {
@@ -73,6 +102,13 @@ fetch(`https://api.userfeeds.io/api/decorate-with-opensea`, {
     }
 
     $catAvatarImg.style.background = colors[entityInfo.color];
+
+    if (entityInfo.context_info.size) {
+      $catAvatarImg.style.width = entityInfo.context_info.size.width;
+      $catAvatarImg.style.height = entityInfo.context_info.size.height;
+      $catAvatarImg.style.top = entityInfo.context_info.size.top;
+      $catAvatarImg.style.left = entityInfo.context_info.size.left;
+    }
 
     return drawImageOnCanvas(entityInfo.context_info.image_preview_url, $catAvatarImg);
   })

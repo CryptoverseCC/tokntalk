@@ -10,6 +10,7 @@ import {
   claimContractAddressesForNetworkId,
   claimContractAbi,
   networkNameForNetworkId,
+  networkExplorerForNetworkId,
   claimWithValueTransferContractAddressesForNetworkId,
   claimWithTokenValueTransferContractAddressesForNetworkId,
   claimWithConfigurableValueMultiTransferContractAddressesForNetworkId,
@@ -19,6 +20,7 @@ import {
   erc20ContractAbi,
   erc721ContractAbi,
   mintTokensContractAbi,
+  ERC20Bytecode,
 } from './contract';
 import { getEntityData, getEntityId, getEntityPrefix } from './entityApi';
 import { findClub } from './clubs';
@@ -350,6 +352,7 @@ export const getWeb3State = async (storage) => {
       web3.eth.getBlockNumber(),
     ]);
     const networkName = networkNameForNetworkId[networkId];
+    const explorerDomain = networkExplorerForNetworkId[networkId];
     const provider = getCurrentProviderName();
     return {
       from,
@@ -358,6 +361,7 @@ export const getWeb3State = async (storage) => {
       blockNumber,
       web3,
       networkName,
+      explorerDomain,
       provider,
     };
   } catch (e) {
@@ -368,6 +372,7 @@ export const getWeb3State = async (storage) => {
       blockNumber: undefined,
       web3: undefined,
       networkName: undefined,
+      explorerDomain: undefined,
       provider: false,
     };
   }
@@ -539,6 +544,28 @@ export const transferErc721 = async (erc721, to, value) => {
     const promiEvent = contract.methods.transferFrom(from, to, value).send({ from });
     promiEvent.on('error', reject);
     promiEvent.on('transactionHash', resolve);
+  });
+};
+
+export const deployERC20 = async ({ name, symbol, decimals, totalSupply, onTransactionHash, onReceipt }) => {
+  const web3 = await getWeb3();
+  const { from, networkName } = await getWeb3State();
+  const newContract = new web3.eth.Contract(erc20ContractAbi);
+  const args = [
+    web3.utils.asciiToHex(name),
+    web3.utils.asciiToHex(symbol),
+    decimals,
+    totalSupply,
+    '0x6be450972b30891b16c8588dcbc10c8c2aef04da',
+    100,
+  ];
+
+  return new Promise((resolve, reject) => {
+    const promiEvent = newContract.deploy({ data: `0x${ERC20Bytecode.object}`, arguments: args }).send({ from });
+    promiEvent.on('error', reject);
+    promiEvent.on('transactionHash', onTransactionHash);
+    promiEvent.on('receipt', onReceipt);
+    promiEvent.on('confirmation', resolve);
   });
 };
 
