@@ -120,9 +120,9 @@ export default class App extends Component {
   };
 
   refreshWeb3State = async () => {
-    const { from, isListening, provider, networkName } = await getWeb3State(this.storage);
+    const { from, isListening, provider, networkName, explorerDomain } = await getWeb3State(this.storage);
     if (this.state.from !== from) this.refreshMyEntities();
-    this.setState({ from, isListening, provider, networkName });
+    this.setState({ from, isListening, provider, networkName, explorerDomain });
   };
 
   getEntityLabels = async (entityId) => {
@@ -352,6 +352,7 @@ export default class App extends Component {
       provider,
       from,
       networkName,
+      explorerDomain,
       boosts,
       supportings,
       http,
@@ -400,6 +401,7 @@ export default class App extends Component {
             provider,
             from,
             networkName,
+            explorerDomain,
             waitingForConfirm,
             exportWallet,
           },

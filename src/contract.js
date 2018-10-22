@@ -12,6 +12,13 @@ export const networkNameForNetworkId = {
   [netWorkIdForNetworkName.kovan]: 'kovan',
 };
 
+export const networkExplorerForNetworkId = {
+  [netWorkIdForNetworkName.ethereum]: 'etherscan.io',
+  [netWorkIdForNetworkName.ropsten]: 'ropsten.etherscan.io',
+  [netWorkIdForNetworkName.rinkeby]: 'rinkeby.etherscan.io',
+  [netWorkIdForNetworkName.kovan]: 'kovan.etherscan.io',
+};
+
 export const claimContractAddressesForNetworkId = {
   [netWorkIdForNetworkName.ethereum]: '0xFd74f0ce337fC692B8c124c094c1386A14ec7901',
   [netWorkIdForNetworkName.ropsten]: '0x6f32a6F579CFEed1FFfDc562231C957ECC894001',

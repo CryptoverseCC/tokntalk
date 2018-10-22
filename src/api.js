@@ -10,6 +10,7 @@ import {
   claimContractAddressesForNetworkId,
   claimContractAbi,
   networkNameForNetworkId,
+  networkExplorerForNetworkId,
   claimWithValueTransferContractAddressesForNetworkId,
   claimWithTokenValueTransferContractAddressesForNetworkId,
   claimWithConfigurableValueMultiTransferContractAddressesForNetworkId,
@@ -351,6 +352,7 @@ export const getWeb3State = async (storage) => {
       web3.eth.getBlockNumber(),
     ]);
     const networkName = networkNameForNetworkId[networkId];
+    const explorerDomain = networkExplorerForNetworkId[networkId];
     const provider = getCurrentProviderName();
     return {
       from,
@@ -359,6 +361,7 @@ export const getWeb3State = async (storage) => {
       blockNumber,
       web3,
       networkName,
+      explorerDomain,
       provider,
     };
   } catch (e) {
@@ -369,6 +372,7 @@ export const getWeb3State = async (storage) => {
       blockNumber: undefined,
       web3: undefined,
       networkName: undefined,
+      explorerDomain: undefined,
       provider: false,
     };
   }

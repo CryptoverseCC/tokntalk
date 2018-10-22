@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { deployERC20 } from './api';
-import Link from './Link';
+import Link, { A } from './Link';
+import Context from './Context';
 import { ChangellyFastBuy } from './Changelly';
 import { CoinbaseWidget } from './CoinbaseWidget';
 import { Container, FlatContainer, H3, H4, StyledInput, StyledButton } from './Components';
@@ -24,6 +25,7 @@ const Input = styled.div.attrs({
     background-color: #f3f6ff;
     border-radius: 12px;
     padding: 10px;
+    margin: 4px 0px 20px 0px;
   }
 `;
 
@@ -40,17 +42,21 @@ class ERC20 extends Component {
     decimals: 8,
     feeAddress: '0x6Be450972b30891B16c8588DcBc10c8c2aEf04da',
     feeDivider: 1000,
+    error: null,
+    loading: false,
   };
 
   async createToken() {
+    this.setState({ loading: true });
     try {
       const contract = await deployERC20({
         ...this.state,
         onTransactionHash: (t) => this.setState({ transaction: t }),
-        onReceipt: (r) => this.setState({ receipt: r }),
+        onReceipt: (r) => this.setState({ receipt: r, loading: false }),
       });
       console.log(contract);
     } catch (e) {
+      this.setState({ loading: false, error: e });
       console.error(e);
       return;
     }
@@ -58,16 +64,25 @@ class ERC20 extends Component {
 
   render() {
     return (
-      <IfActiveEntity>
+      <IfActiveEntity other={<div>Unlock your Wallet to create tokens</div>}>
         {(entityId) => (
           <React.Fragment>
             <Form>
               <div>
-                Name <Input value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} />
+                Name{' '}
+                <Input
+                  value={this.state.name}
+                  disabled={this.state.loading}
+                  onChange={(e) => this.setState({ name: e.target.value })}
+                />
               </div>
               <div>
                 Symbol (eg. MKR, ZRX, CK, MOKEN)
-                <Input value={this.state.symbol} onChange={(e) => this.setState({ symbol: e.target.value })} />
+                <Input
+                  value={this.state.symbol}
+                  disabled={this.state.loading}
+                  onChange={(e) => this.setState({ symbol: e.target.value })}
+                />
               </div>
               <div>
                 Total supply (min: 1, max: 2^
@@ -75,6 +90,7 @@ class ERC20 extends Component {
                 -1), default: 21000000)
                 <Input
                   value={this.state.totalSupply}
+                  disabled={this.state.loading}
                   onChange={(e) => this.setState({ totalSupply: parseInt(e.target.value || 0) })}
                 />
               </div>
@@ -83,14 +99,48 @@ class ERC20 extends Component {
                 Decimals (min: 0, max: 18, default: 8)
                 <Input
                   value={this.state.decimals}
+                  disabled={this.state.loading}
                   onChange={(e) =>
                     this.setState({ decimals: parseInt(e.target.value || 0) > 18 ? 18 : parseInt(e.target.value || 0) })
                   }
                 />
               </div>
-              <StyledButton onClick={this.createToken.bind(this)}>Create Token</StyledButton>
-              {JSON.stringify(this.state.receipt)}
-              {this.state.transaction}
+              <StyledButton onClick={this.createToken.bind(this)} disabled={this.state.loading}>
+                {this.state.loading ? 'Creating...' : 'Create Token'}
+              </StyledButton>
+              <Context.Consumer>
+                {({ web3Store: { networkName, explorerDomain } }) => (
+                  <div>
+                    <br />
+                    {this.state.transaction &&
+                      !this.state.receipt && (
+                        <span>
+                          Check progress:{' '}
+                          <A href={`https://${explorerDomain}/tx/${this.state.transaction}`} target="_blank">
+                            {this.state.transaction}
+                          </A>
+                        </span>
+                      )}
+                    {this.state.receipt && (
+                      <div>
+                        <div>Success!</div>
+                        <b>
+                          Your new token address is{' '}
+                          <A
+                            href={`https://${explorerDomain}/token/${this.state.receipt.contractAddress}`}
+                            target="_blank"
+                          >
+                            {this.state.receipt.contractAddress}
+                          </A>
+                        </b>
+                        <br />
+                        Go to your token{' '}
+                        <Link to={`/clubs/${networkName}:${this.state.receipt.contractAddress}`}>club page</Link>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Context.Consumer>
             </Form>
           </React.Fragment>
         )}
