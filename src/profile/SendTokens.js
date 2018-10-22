@@ -174,7 +174,7 @@ export class Tokens extends Component {
           <Cell>
             <Cover to={`/clubs/${token.network}:${token.address}`}>
               <CoverImage src={token.logo} primaryColor={token.primaryColor} />
-              <Name>{token.name}</Name>
+              <Name>{token.name.length > 20 ? token.shortName : token.name}</Name>
             </Cover>
             <Tools>
               <StyledInput

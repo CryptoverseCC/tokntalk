@@ -253,13 +253,15 @@ export const getEntityTokens = async (entityId) => {
     .map(([network, address]) => findClub(network, address));
 
   const [customTokens, supportedTokens] = partition(tokens, 'isCustom');
-  const customTokensInfo = await getAssetsInfo(customTokens.map(({ network, address }) => `${network}:${address}`));
+  const customTokensInfo = customTokens.length
+    ? await getAssetsInfo(customTokens.map(({ network, address }) => `${network}:${address}`))
+    : {};
   const enhancedCustomClubs = customTokens.map((token) => {
     if (!customTokensInfo[token.asset]) {
       return token;
     }
-    const { name, symbol } = customTokensInfo[token.asset];
-    return token.extend({ name, symbol });
+    const { name, shortName, symbol } = customTokensInfo[token.asset];
+    return token.extend({ name, shortName, symbol });
   });
 
   return [...supportedTokens, ...enhancedCustomClubs];
@@ -274,6 +276,13 @@ export const getAssetsInfo = async (assets) => {
       },
     },
   ]);
+
+  Object.keys(assetsInfo).map(
+    (key) =>
+      (assetsInfo[key].shortName = `${assetsInfo[key].name.substr(0, 10)}...${assetsInfo[key].name.substring(
+        assetsInfo[key].name.length - 7,
+      )}`),
+  );
 
   return assetsInfo;
 };

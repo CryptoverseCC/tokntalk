@@ -93,8 +93,8 @@ export const enhanceCustomClubProp = (inPropName, ourPropName) => (Cmp) =>
     getCustomClubInfo = async (club) => {
       const info = await getAssetsInfo([club.asset]);
       if (info[club.asset]) {
-        const { name, symbol } = info[club.asset];
-        const shortName = `${name.substr(0, 10)}...${name.substring(name.length - 7)}`;
+        const { name, shortName, symbol } = info[club.asset];
+
         const enhancedClub = club.extend({ name, shortName, symbol });
         this.setState({ club: enhancedClub });
       }
