@@ -73,7 +73,7 @@ export const TokenTile = ({ linkTo, token, ...restProps }) => {
           </div>
           <div>
             <p style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{token.symbol}</p>
-            <H4>{token.name}</H4>
+            <H4>{token.name.length > 20 ? token.shortName : token.name}</H4>
           </div>
         </TokenTileWrapper>
       </TokenTileCotainer>
@@ -130,7 +130,7 @@ export const SmallTokenTile = ({ linkTo, token, ...restProps }) => {
         </TokenLogo>
         <div>
           <p style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#78818c' }}>{token.symbol}</p>
-          <H4>{token.name}</H4>
+          <H4>{token.name.length > 20 ? token.shortName : token.name}</H4>
         </div>
       </SmallTokenTileContainer>
     </Link>
