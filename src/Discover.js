@@ -25,6 +25,7 @@ import {
   IsActiveEntityFromFamily,
   LinkedActiveEntityAvatar,
   DoesActiveEntityHasToken,
+  EntityName,
 } from './Entity';
 import exportIcon from './img/export.svg';
 import { FEED_VERSION_KEY } from './UnreadedMessages';

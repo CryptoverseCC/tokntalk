@@ -266,9 +266,14 @@ export const getEntityTokens = async (entityId) => {
 };
 
 export const getAssetsInfo = async (assets) => {
-  const assetsInfo = await fetch(`${USERFEEDS_API_ADDRESS}/api/token_info?ids=${assets.join('&ids=')}`).then((res) =>
-    res.json(),
-  );
+  const assetsInfo = await getRanking([
+    {
+      algorithm: 'cryptoverse_token_info',
+      params: {
+        id: assets,
+      },
+    },
+  ]);
 
   return assetsInfo;
 };

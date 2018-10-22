@@ -52,6 +52,7 @@ export const H3 = styled.p`
 export const H4 = styled.p`
   font-size: 1rem;
   font-weight: 700;
+  overflow: hidden;
 `;
 
 export const SocialUsername = ({ link, ...restProps }) => {
