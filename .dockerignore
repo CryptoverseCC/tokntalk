@@ -1,0 +1,8 @@
+.git
+.cache
+.storybook
+/node_modules
+/build
+env.encrypted
+key
+yarn-error.log
