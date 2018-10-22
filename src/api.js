@@ -551,14 +551,7 @@ export const deployERC20 = async ({ name, symbol, decimals, totalSupply, onTrans
   const web3 = await getWeb3();
   const { from, networkName } = await getWeb3State();
   const newContract = new web3.eth.Contract(erc20ContractAbi);
-  const args = [
-    web3.utils.asciiToHex(name),
-    web3.utils.asciiToHex(symbol),
-    decimals,
-    totalSupply,
-    '0x6be450972b30891b16c8588dcbc10c8c2aef04da',
-    100,
-  ];
+  const args = [name, symbol, decimals, totalSupply, '0x6be450972b30891b16c8588dcbc10c8c2aef04da', 100];
 
   return new Promise((resolve, reject) => {
     const promiEvent = newContract.deploy({ data: `0x${ERC20Bytecode.object}`, arguments: args }).send({ from });
