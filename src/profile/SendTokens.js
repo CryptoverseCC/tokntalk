@@ -85,12 +85,12 @@ export class Tokens extends Component {
   };
 
   componentDidMount() {
-    this.update(this.props.sender.id);
+    this.update(this.props.sender);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.sender.id !== this.props.sender.id) {
-      this.setState({ entities: [] });
+      this.setState({ entities: [], tokens: [] });
       this.update(nextProps.sender.id);
     }
   }
@@ -100,7 +100,9 @@ export class Tokens extends Component {
       const entities = await getEntities(senderAddress);
       const tokens = (await getEntityTokens(senderAddress)).filter((token) => !token.is721);
       this.setState({ entities, tokens });
-    } catch (ex) {}
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   render() {

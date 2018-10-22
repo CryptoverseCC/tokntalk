@@ -13,6 +13,10 @@ export const IfOnMainnet = ({ children, then, other }) => (
   </Context.Consumer>
 );
 
+export const WithWallet = ({ children }) => (
+  <Context.Consumer>{({ web3Store: { from, networkName } }) => children(from, networkName)}</Context.Consumer>
+);
+
 export const IfActiveEntity = ({ children, then, other }) => (
   <Context.Consumer>
     {({ entityStore: { activeEntity } }) =>
