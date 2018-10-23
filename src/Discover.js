@@ -324,7 +324,9 @@ const ByToken = ({ token }) => (
             backgroundPosition: '100% 50%',
           }}
         >
-          <H2 style={{ overflow: 'hidden' }}>{token.name}</H2>
+          <Link to={`/clubs/${token.network}:${token.address}`}>
+            <H2 style={{ overflow: 'hidden' }}>{token.name}</H2>
+          </Link>
           <CopyButton value={token.address} name="address" />
           <ul style={{ fontWeight: '600', marginTop: '10px' }}>
             <li style={{ marginBottom: '7px' }}>
@@ -585,7 +587,9 @@ const SocialPage = ({ token, match }) => {
             backgroundPosition: '100% 50%',
           }}
         >
-          <H2>{token.name}</H2>
+          <Link to={`/clubs/${token.network}:${token.address}`}>
+            <H2>{token.name}</H2>
+          </Link>
           <ul style={{ fontWeight: '600', marginTop: '10px' }}>
             <li style={{ marginBottom: '7px' }}>
               <a href={`https://trivial.co/t/${token.address}`}>Research with Trivial.co</a>
@@ -882,12 +886,12 @@ export class FeedForToken extends Component {
     const redditURL = (token.externalLinks.find((item) => item.name === 'Reddit') || {}).url;
     const twitterURL = (token.externalLinks.find((item) => item.name === 'Twitter') || {}).url;
 
-    if (redditURL) {
-      switcherOptions.push(FeedTypeSwitcher.REDDIT);
-    }
-    if (twitterURL) {
-      switcherOptions.push(FeedTypeSwitcher.TWITTER);
-    }
+    // if (redditURL) {
+    //   switcherOptions.push(FeedTypeSwitcher.REDDIT);
+    // }
+    // if (twitterURL) {
+    //   switcherOptions.push(FeedTypeSwitcher.TWITTER);
+    // }
 
     return (
       <React.Fragment>
