@@ -91,7 +91,7 @@ export class ClubsGrid extends Component {
           <Cell>
             <Cover to={`/clubs/${club.network}:${club.address}`}>
               <CoverImage src={club.logo} primaryColor={club.primaryColor} />
-              <Name>{club.name}</Name>
+              <Name>{club.name.length > 20 ? club.shortName : club.name}</Name>
             </Cover>
             <Tools>
               {

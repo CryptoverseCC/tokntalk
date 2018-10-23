@@ -279,8 +279,8 @@ export const getAssetsInfo = async (assets) => {
 
   Object.keys(assetsInfo).map(
     (key) =>
-      (assetsInfo[key].shortName = `${assetsInfo[key].name.substr(0, 10)}...${assetsInfo[key].name.substring(
-        assetsInfo[key].name.length - 7,
+      (assetsInfo[key].shortName = `${assetsInfo[key].name.substr(0, 7)}...${assetsInfo[key].name.substring(
+        assetsInfo[key].name.length - 5,
       )}`),
   );
 
