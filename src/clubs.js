@@ -157,6 +157,9 @@ import snookarmaCover from './img/tokens/snookarma.png';
 import cryptoarte from './img/tokens/cryptoarte-icon.svg';
 import cryptoarteCover from './img/tokens/cryptoarte.png';
 
+import beginnersClub from './img/tokens/beginners-icon.svg';
+import beginnersClubCover from './img/tokens/beginners.png';
+
 import unknowClub from './img/tokens/unknown-icon.svg';
 import unknowClubCover from './img/tokens/unknown.png';
 
@@ -1043,6 +1046,20 @@ const clubs = [
       { name: 'Blog', url: 'https://medium.com/mokens' },
       { name: 'Discord', url: 'https://discord.gg/ZyaqFhE' },
       { name: 'Peepeth', url: 'https://peepeth.com/mokens' },
+    ],
+  },
+  {
+    ...mapping.TTBEGINNERS,
+    name: "Tok'n'talk Beginners",
+    logo: beginnersClub,
+    coverImage: beginnersClubCover,
+    primaryColor: '#EDF1F8',
+    secondaryColor: '#1b2438',
+    shadowColor: 'rgba(27,36,56,0.09)',
+    externalLinks: [
+      { name: 'Project page', url: 'https://tokntalk.club/' },
+      { name: 'Twitter', url: 'https://twitter.com/tokntalkclub' },
+      { name: 'Blog', url: 'https://medium.com/tokntalk-club' },
     ],
   },
   {

@@ -34,6 +34,7 @@ import { PromotionBox } from './promotion/PromotionBox';
 import ProfileBox from './ProfileBox';
 import { TokenTile, SmallTokenTile } from './TokenTile';
 import { Intercom } from './Intercom';
+import { CopyButton } from './Components';
 
 import StatusBox from './StatusBox';
 
@@ -324,6 +325,7 @@ const ByToken = ({ token }) => (
           }}
         >
           <H2 style={{ overflow: 'hidden' }}>{token.name}</H2>
+          <CopyButton value={token.address} name="address" />
           <ul style={{ fontWeight: '600', marginTop: '10px' }}>
             <li style={{ marginBottom: '7px' }}>
               <a href={`https://trivial.co/t/${token.address}`}>Research with Trivial.co</a>
