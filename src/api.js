@@ -554,8 +554,33 @@ export const transferErc721 = async (erc721, to, value) => {
   const { from } = await getWeb3State();
   const contract = await getErc721Contract(erc721);
 
+  console.log(erc721);
+
+  const methods = (addr, from, to, value) => {
+    const data = {
+      default: contract.methods.transfer(to, value),
+      '0x79986af15539de2db9a5086382daeda917a9cf0c': contract.methods.transferFrom(from, to, value),
+      '0xcfbc9103362aec4ce3089f155c2da2eea1cb7602': contract.methods.transferFrom(from, to, value),
+      '0xd4202b234c15255bf0511d3380e83bda9172a72b': contract.methods.transferFrom(from, to, value),
+      '0xc70be5b7c19529ef642d16c10dfe91c58b5c3bf0': contract.methods.transferFrom(from, to, value),
+      '0xdcaad9fd9a74144d226dbf94ce6162ca9f09ed7e': contract.methods.transferFrom(from, to, value),
+      '0x323a3e1693e7a0959f65972f3bf2dfcb93239dfe': contract.methods.transferFrom(from, to, value),
+      '0xf5b0a3efb8e8e4c201e2a935f110eaaf3ffecb8d': contract.methods.transferFrom(from, to, value),
+      '0xdde2d979e8d39bb8416eafcfc1758f3cab2c9c72': contract.methods.transferFrom(from, to, value),
+      /*'0x71c118b00759b0851785642541ceb0f4ceea0bd5': contract.methods.transfer(to, value),
+      '0x7fdcd2a1e52f10c28cb7732f46393e297ecadda1': contract.methods.transfer(to, value),
+      '0xd73be539d6b2076bab83ca6ba62dfe189abc6bbe': contract.methods.transfer(to, value),
+      */
+    };
+    return data[addr.toLowerCase()] || data['default'];
+  };
+
+  const transfer = methods(erc721, from, to, value);
+
+  console.log(transfer);
+
   return new Promise((resolve, reject) => {
-    const promiEvent = contract.methods.transferFrom(from, to, value).send({ from });
+    const promiEvent = transfer.send({ from });
     promiEvent.on('error', reject);
     promiEvent.on('transactionHash', resolve);
   });
