@@ -8,7 +8,7 @@ import { getFeed } from './Feed';
 import Link from './Link';
 import Hero from './Hero';
 import { PromotionBox } from './promotion/PromotionBox';
-import { FlatContainer } from './Components';
+import { FlatContainer, Container } from './Components';
 import FeedTypeSwitcher from './FeedTypeSwitcher';
 import StatusBox from './StatusBox';
 import Announcement from './Announcements';
@@ -47,12 +47,12 @@ const FirstTimeVisitor = () => {
   storage.setItem('visited', visited || Date.now());
   const showIntro = Date.now() < parseInt(visited) + 2 * 60 * 1000; // 2 min
   return showIntro ? (
-    <FlatContainer>
+    <Container style={{ marginBottom: '10px', width: '100%', border: '2px solid #DDD' }}>
       Welcome! Looks like you're new here.
       <br />
       Check out our <Link to="/about">Intro Page</Link> <br />
       or hop in and start talking with your fellow token holdres.
-    </FlatContainer>
+    </Container>
   ) : null;
 };
 
@@ -76,8 +76,8 @@ export default class IndexPage extends Component {
       <React.Fragment>
         <div className="columns ordered-mobile">
           <div className="column is-9 fl-1">
-            <FirstTimeVisitor />
             <Announcement />
+            <FirstTimeVisitor />
             <StatusBox check={StatusBox.Web3LockedCheck} style={{ marginBottom: '30px' }}>
               <Hero />
             </StatusBox>

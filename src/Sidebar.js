@@ -13,6 +13,7 @@ import { niceScroll } from './cssUtils';
 import feedIcon from './img/feeds.svg';
 import notificationsIcon from './img/notifications.svg';
 import { mobileOrTablet } from './utils';
+import ExportWalletButton from './ExportWalletButton';
 import Context from './Context';
 
 const SidebarContext = React.createContext();
@@ -109,6 +110,7 @@ export const SidebarLeft = () => (
           <LinkItem to="/create-tokens" icon={<span>🛠</span>} toggle={toggle}>
             Create Tokens
           </LinkItem>
+          <ExportWalletButton />
           <Header>Feeds</Header>
           <LinkItem to="/" icon={<img alt="" style={{ width: '16px' }} src={feedIcon} />} toggle={toggle}>
             All

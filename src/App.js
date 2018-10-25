@@ -321,6 +321,15 @@ export default class App extends Component {
     return { privateKey, mnemonic };
   };
 
+  hasInternalWallet = () => {
+    return !!this.storage.getItem('mnemonic');
+  };
+
+  clearWallet = () => {
+    const mnemonic = this.storage.setItem('mnemonic', '');
+    const privateKey = this.storage.setItem('privateKey', '');
+  };
+
   render() {
     const {
       changeActiveEntityTo,
@@ -338,6 +347,8 @@ export default class App extends Component {
       getSupportings,
       toggleHttpClaims,
       exportWallet,
+      hasInternalWallet,
+      clearWallet,
     } = this;
     const {
       activeEntity,
@@ -404,6 +415,8 @@ export default class App extends Component {
             explorerDomain,
             waitingForConfirm,
             exportWallet,
+            hasInternalWallet,
+            clearWallet,
           },
         }}
       >

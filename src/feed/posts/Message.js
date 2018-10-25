@@ -26,10 +26,19 @@ const Text = styled.p`
   }
 `;
 
+const Preview = styled.div`
+  margin: 8px 0px 10px 50px;
+  padding: 10px;
+
+  @media (max-width: 770px) {
+    margin: 8px 0px 10px 45px;
+    padding: 10px;
+  }
+`;
+
 const getUrl = (message) => {
   const expression = /(\bhttps?:\/\/[^.,?!:;)\s<>"]+(?:[.,?!:;)]+[^.,?!:;)\s<>"]+)+)/g;
   const urls = message.match(expression) || [];
-  console.log(urls);
   return urls[0];
 };
 
@@ -78,8 +87,8 @@ const Message = ({
       </Profile>
       <Text>
         <CollapsableText text={message} />
-        {getUrl(message) ? <MicrolinkCard url={getUrl(message)} /> : null}
       </Text>
+      <Preview>{getUrl(message) ? <MicrolinkCard url={getUrl(message)} /> : null}</Preview>
     </div>
   );
 };

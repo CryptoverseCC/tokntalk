@@ -18,7 +18,7 @@ const ModalContainer = styled.div`
   ${niceScroll};
 `;
 
-export class ExportWalletButton extends React.Component {
+export default class ExportWalletButton extends React.Component {
   state = {
     showModal: false,
   };
@@ -26,20 +26,39 @@ export class ExportWalletButton extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <StyledButton style={{ marginTop: '10px' }} onClick={() => this.setState({ showModal: true })}>
-          Save wallet
-        </StyledButton>
-        {this.state.showModal && <ExportWalletModal onClose={() => this.setState({ showModal: false })} />}
+        <AppContext>
+          {({ web3Store: { exportWallet, hasInternalWallet, clearWallet, from } }) =>
+            hasInternalWallet() && (
+              <React.Fragment>
+                <StyledButton style={{ marginTop: '10px' }} onClick={() => this.setState({ showModal: true })}>
+                  Export internal wallet
+                </StyledButton>
+                {this.state.showModal && (
+                  <ExportWalletModal
+                    onClose={() => this.setState({ showModal: false })}
+                    onClear={() => {
+                      clearWallet();
+                      setTimeout(() => {
+                        this.setState({ showModal: false });
+                      }, 500);
+                    }}
+                  />
+                )}
+              </React.Fragment>
+            )
+          }
+        </AppContext>
       </React.Fragment>
     );
   }
 }
 
-const ExportWalletModal = ({ onClose }) => {
+const ExportWalletModal = ({ onClose, onClear }) => {
   return (
     <AppContext>
-      {({ web3Store: { exportWallet, from } }) => (
+      {({ web3Store: { exportWallet, hasInternalWallet, from } }) => (
         <FixedModal onClose={onClose}>
+          clear
           <ModalContainer>
             {from && (
               <div>
@@ -63,6 +82,9 @@ const ExportWalletModal = ({ onClose }) => {
             <div className="column is-four-quarters">
               <CopyableHash>{exportWallet().mnemonic}</CopyableHash>
             </div>
+            <StyledButton style={{ marginTop: '10px', background: '#EE0000' }} onClick={onClear}>
+              I've copied mnemonic to another wallet. Remove it from browser memory (Cannot be recovered!!!).
+            </StyledButton>
           </ModalContainer>
         </FixedModal>
       )}
