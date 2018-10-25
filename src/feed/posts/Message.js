@@ -1,6 +1,7 @@
 import React from 'react';
 import timeago from 'timeago.js';
 import styled from 'styled-components';
+import MicrolinkCard from 'react-microlink';
 
 import Profile from '../Profile';
 import { VerifyButton } from '../Buttons.js';
@@ -24,6 +25,13 @@ const Text = styled.p`
     padding: 10px;
   }
 `;
+
+const getUrl = (message) => {
+  const expression = /(\bhttps?:\/\/[^.,?!:;)\s<>"]+(?:[.,?!:;)]+[^.,?!:;)\s<>"]+)+)/g;
+  const urls = message.match(expression) || [];
+  console.log(urls);
+  return urls[0];
+};
 
 const Message = ({
   id,
@@ -70,6 +78,7 @@ const Message = ({
       </Profile>
       <Text>
         <CollapsableText text={message} />
+        {getUrl(message) ? <MicrolinkCard url={getUrl(message)} /> : null}
       </Text>
     </div>
   );
