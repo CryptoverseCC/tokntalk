@@ -24,3 +24,42 @@ export const metamaskStatusChanged = (providerName, accounts) => {
     );
   }
 };
+
+export const messageInput = (account, value) => {
+  if (NODE_ENV === 'production' && REACT_APP_GOOGLE_ANALYTICS_ID) {
+    import('react-ga').then(({ default: ReactGA }) =>
+      ReactGA.event({
+        category: 'interactions',
+        action: 'message-input',
+        label: account,
+        value: value,
+      }),
+    );
+  }
+};
+
+export const messageSign = (account, value) => {
+  if (NODE_ENV === 'production' && REACT_APP_GOOGLE_ANALYTICS_ID) {
+    import('react-ga').then(({ default: ReactGA }) =>
+      ReactGA.event({
+        category: 'interactions',
+        action: 'message-sign',
+        label: account,
+        value: value,
+      }),
+    );
+  }
+};
+
+export const messageSent = (account, value) => {
+  if (NODE_ENV === 'production' && REACT_APP_GOOGLE_ANALYTICS_ID) {
+    import('react-ga').then(({ default: ReactGA }) =>
+      ReactGA.event({
+        category: 'interactions',
+        action: 'message-sent',
+        label: account,
+        value: value,
+      }),
+    );
+  }
+};
